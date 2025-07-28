@@ -66,7 +66,7 @@
       <h1>Cookbook</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/gsm.core-v1.1.4-rc/vignettes/articles/Cookbook.Rmd" class="external-link"><code>vignettes/articles/Cookbook.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/dev/vignettes/articles/Cookbook.Rmd" class="external-link"><code>vignettes/articles/Cookbook.Rmd</code></a></small>
       <div class="d-none name"><code>Cookbook.Rmd</code></div>
     </div>
 
@@ -99,11 +99,11 @@ homepage</a>.</p>
 <span></span>
 <span><span class="co">## Install and load gsm.kri</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Gilead-BioStats/gsm.kri"</span>, ref <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gsm.kri</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Install and load gsm.reporting</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Gilead-BioStats/gsm.reporting"</span>, ref <span class="op">=</span> <span class="st">"main"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gsm.kri</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example-1---adverse-events-metric---scripted">Example 1 - Adverse Events Metric - Scripted<a class="anchor" aria-label="anchor" href="#example-1---adverse-events-metric---scripted"></a>
@@ -121,10 +121,10 @@ Adverse Events (SAEs) and implements pipes to run through the
 workflow.</li>
 <li>
 <strong>Example 1.3</strong> generates bar charts showing SAE rates
-and z-scores by study using <a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a>.</li>
+and z-scores by study using <code>{gsm.kri}</code>.</li>
 <li>
 <strong>Example 1.4</strong> generates a scatter plot with
-confidence bound for SAE rates using <a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a>.</li>
+confidence bound for SAE rates using <code>{gsm.kri}</code>.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#### Example 1.1 - Generate an Adverse Event Metric using the standard {gsm.core} workflow</span></span>
@@ -167,7 +167,7 @@ confidence bound for SAE rates using <a href="https://github.com/Gilead-BioStats
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">SAE_KRI</span><span class="op">$</span><span class="va">Flag</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">### Example 1.3 - Visualize Metric distribution using Bar Charts using provided htmlwidgets</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gsm.kri</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  Metric<span class="op">=</span> <span class="st">"Serious Adverse Event Rate"</span>,</span>
@@ -175,13 +175,13 @@ confidence bound for SAE rates using <a href="https://github.com/Gilead-BioStats
 <span>  Denominator<span class="op">=</span> <span class="st">"Days on Study"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Widget_BarChart.html" class="external-link">Widget_BarChart</a></span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">SAE_KRI</span>, lMetric<span class="op">=</span><span class="va">labels</span>, strOutcome<span class="op">=</span><span class="st">"Metric"</span><span class="op">)</span></span>
-<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Widget_BarChart.html" class="external-link">Widget_BarChart</a></span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">SAE_KRI</span>, lMetric<span class="op">=</span><span class="va">labels</span>, strOutcome<span class="op">=</span><span class="st">"Score"</span><span class="op">)</span></span>
-<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Widget_BarChart.html" class="external-link">Widget_BarChart</a></span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">SAE_KRI</span>, lMetric<span class="op">=</span><span class="va">labels</span>, strOutcome<span class="op">=</span><span class="st">"Numerator"</span><span class="op">)</span></span>
+<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">Widget_BarChart</span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">SAE_KRI</span>, lMetric<span class="op">=</span><span class="va">labels</span>, strOutcome<span class="op">=</span><span class="st">"Metric"</span><span class="op">)</span></span>
+<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">Widget_BarChart</span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">SAE_KRI</span>, lMetric<span class="op">=</span><span class="va">labels</span>, strOutcome<span class="op">=</span><span class="st">"Score"</span><span class="op">)</span></span>
+<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">Widget_BarChart</span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">SAE_KRI</span>, lMetric<span class="op">=</span><span class="va">labels</span>, strOutcome<span class="op">=</span><span class="st">"Numerator"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">### Example 1.4 - Create Scatter plot with confidence bounds</span></span>
 <span><span class="va">dfBounds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Analyze_NormalApprox_PredictBounds.html">Analyze_NormalApprox_PredictBounds</a></span><span class="op">(</span><span class="va">SAE_KRI</span>, vThreshold <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>,<span class="op">-</span><span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Widget_ScatterPlot.html" class="external-link">Widget_ScatterPlot</a></span><span class="op">(</span><span class="va">SAE_KRI</span>, lMetric <span class="op">=</span> <span class="va">labels</span>, dfBounds <span class="op">=</span> <span class="va">dfBounds</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">Widget_ScatterPlot</span><span class="op">(</span><span class="va">SAE_KRI</span>, lMetric <span class="op">=</span> <span class="va">labels</span>, dfBounds <span class="op">=</span> <span class="va">dfBounds</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example-2---adverse-events-metrics---workflow">Example 2 - Adverse Events Metrics - Workflow<a class="anchor" aria-label="anchor" href="#example-2---adverse-events-metrics---workflow"></a>
@@ -202,7 +202,7 @@ to generate the SAE metric.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gsm.mapping</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gsm.kri</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#### Example 2.1 - Configurable Adverse Event Workflow</span></span>
 <span></span>
@@ -297,7 +297,7 @@ to generate the SAE metric.</li>
 <span><span class="va">AE_KRI</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RunWorkflow.html">RunWorkflow</a></span><span class="op">(</span>lWorkflow <span class="op">=</span> <span class="va">AE_workflow</span>, lData <span class="op">=</span> <span class="va">AE_data</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create Barchart from workflow</span></span>
-<span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Widget_BarChart.html" class="external-link">Widget_BarChart</a></span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">AE_KRI</span><span class="op">$</span><span class="va">Analysis_Summary</span><span class="op">)</span></span>
+<span><span class="fu">Widget_BarChart</span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">AE_KRI</span><span class="op">$</span><span class="va">Analysis_Summary</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#### Example 2.2 - Run Country-Level Metric</span></span>
 <span><span class="va">AE_country_workflow</span> <span class="op">&lt;-</span> <span class="va">AE_workflow</span></span>
@@ -305,7 +305,7 @@ to generate the SAE metric.</li>
 <span><span class="va">AE_country_workflow</span><span class="op">$</span><span class="va">steps</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">params</span><span class="op">$</span><span class="va">strGroupCol</span> <span class="op">&lt;-</span> <span class="st">"country"</span></span>
 <span></span>
 <span><span class="va">AE_country_KRI</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RunWorkflow.html">RunWorkflow</a></span><span class="op">(</span>lWorkflow <span class="op">=</span> <span class="va">AE_country_workflow</span>, lData <span class="op">=</span> <span class="va">AE_data</span><span class="op">)</span></span>
-<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Widget_BarChart.html" class="external-link">Widget_BarChart</a></span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">AE_country_KRI</span><span class="op">$</span><span class="va">Analysis_Summary</span>, lMetric <span class="op">=</span> <span class="va">AE_country_workflow</span><span class="op">$</span><span class="va">meta</span><span class="op">)</span></span>
+<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">Widget_BarChart</span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">AE_country_KRI</span><span class="op">$</span><span class="va">Analysis_Summary</span>, lMetric <span class="op">=</span> <span class="va">AE_country_workflow</span><span class="op">$</span><span class="va">meta</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#### Example 2.3 - Create SAE workflow</span></span>
 <span></span>
@@ -328,7 +328,7 @@ to generate the SAE metric.</li>
 <span></span>
 <span><span class="co"># Run the updated workflow</span></span>
 <span><span class="va">SAE_KRI</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RunWorkflow.html">RunWorkflow</a></span><span class="op">(</span>lWorkflow <span class="op">=</span> <span class="va">SAE_workflow</span>, lData <span class="op">=</span> <span class="va">AE_data</span> <span class="op">)</span></span>
-<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Widget_BarChart.html" class="external-link">Widget_BarChart</a></span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">SAE_KRI</span><span class="op">$</span><span class="va">Analysis_Summary</span>, lMetric <span class="op">=</span> <span class="va">SAE_workflow</span><span class="op">$</span><span class="va">meta</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">Widget_BarChart</span><span class="op">(</span>dfResults <span class="op">=</span> <span class="va">SAE_KRI</span><span class="op">$</span><span class="va">Analysis_Summary</span>, lMetric <span class="op">=</span> <span class="va">SAE_workflow</span><span class="op">$</span><span class="va">meta</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example-3---study-level-reporting-workflows">Example 3 - Study-Level Reporting Workflows<a class="anchor" aria-label="anchor" href="#example-3---study-level-reporting-workflows"></a>
@@ -346,14 +346,14 @@ generate a report for all 12 standard site-level KRIs.</li>
 <code>gsm.mapping::CombineSpecs()</code>.</li>
 <li>
 <strong>Example 3.3</strong> generates a report using
-<a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a> incorporating multiple timepoints using the
+<code>{gsm.kri}</code> incorporating multiple timepoints using the
 sample <code>reporting</code> data saved as part of
 <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>.</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gsm.mapping</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gsm.kri</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">gsm.reporting</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -438,16 +438,16 @@ sample <code>reporting</code> data saved as part of
 <span></span>
 <span><span class="co">#### 3.3 Site-Level KRI Report with multiple SnapshotDate</span></span>
 <span><span class="co"># Below relies on the clindata stuff, do we need to rerun/rewrite reporting datasets?</span></span>
-<span><span class="va">lCharts</span> <span class="op">&lt;-</span> <span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/MakeCharts.html" class="external-link">MakeCharts</a></span><span class="op">(</span></span>
+<span><span class="va">lCharts</span> <span class="op">&lt;-</span> <span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">MakeCharts</span><span class="op">(</span></span>
 <span>  dfResults <span class="op">=</span> <span class="fu">gsm.core</span><span class="fu">::</span><span class="va"><a href="../reference/reportingResults.html">reportingResults</a></span>,</span>
 <span>  dfGroups <span class="op">=</span> <span class="fu">gsm.core</span><span class="fu">::</span><span class="va"><a href="../reference/reportingGroups.html">reportingGroups</a></span>,</span>
 <span>  dfMetrics <span class="op">=</span> <span class="fu">gsm.core</span><span class="fu">::</span><span class="va"><a href="../reference/reportingMetrics.html">reportingMetrics</a></span>,</span>
 <span>  dfBounds <span class="op">=</span> <span class="fu">gsm.core</span><span class="fu">::</span><span class="va"><a href="../reference/reportingBounds.html">reportingBounds</a></span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">kri_report_path</span> <span class="op">&lt;-</span> <span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Report_KRI.html" class="external-link">Report_KRI</a></span><span class="op">(</span></span>
+<span><span class="va">kri_report_path</span> <span class="op">&lt;-</span> <span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">Report_KRI</span><span class="op">(</span></span>
 <span>  lCharts <span class="op">=</span> <span class="va">lCharts</span>,</span>
-<span>  dfResults <span class="op">=</span>  <span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/gsm.kri/reference/FilterByLatestSnapshotDate.html" class="external-link">FilterByLatestSnapshotDate</a></span><span class="op">(</span><span class="va">reportingResults</span><span class="op">)</span>,</span>
+<span>  dfResults <span class="op">=</span>  <span class="fu">gsm.kri</span><span class="fu">::</span><span class="fu">FilterByLatestSnapshotDate</span><span class="op">(</span><span class="va">reportingResults</span><span class="op">)</span>,</span>
 <span>  dfGroups <span class="op">=</span>  <span class="fu">gsm.core</span><span class="fu">::</span><span class="va"><a href="../reference/reportingGroups.html">reportingGroups</a></span>,</span>
 <span>  dfMetrics <span class="op">=</span> <span class="fu">gsm.core</span><span class="fu">::</span><span class="va"><a href="../reference/reportingMetrics.html">reportingMetrics</a></span></span>
 <span><span class="op">)</span></span>
