@@ -1,3 +1,10 @@
+# gsm.core v1.1.4
+
+This patch release enhances the `RunQuery` function's type handling and schema application capabilities.
+
+- Improved type handling in `RunQuery` to use existing data frame column types when not explicitly specified in the schema
+- Enhanced error handling for unsupported column types with proper logging
+
 # gsm.core v1.1.3
 
 This patch addresses a bug in the `lSource` .rda object found in the `STUDCOMP` domain, affecting only examples and reports that use it.
