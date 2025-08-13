@@ -1,3 +1,7 @@
+# gsm.core v1.1.5
+
+This patch release enhances the `Flag` function to support `vRiskScoreWeight` which are weights to apply to each flag value
+
 # gsm.core v1.1.4
 
 This patch release enhances the `RunQuery` function's type handling and schema application capabilities.
