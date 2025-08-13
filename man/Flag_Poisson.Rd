@@ -26,6 +26,8 @@ Flag_Poisson(
 
 \item{vFlagOrder}{\code{numeric} Vector of ordered flag values. Output data.frame will be sorted based on flag column using the order provided. NULL (or values that don't match vFlag) will leave the data unsorted. Must have identical values to vFlag. Default is \code{c(2,-2,1,-1,0)} which puts largest z-score outliers first in the data set.}
 
+\item{vRiskScoreWeight}{\code{numeric} Vector of weights to apply to each flag value. If provided, the output data.frame will have an additional column \code{Weight} with the corresponding weight for each flag. Default: \code{NULL}.}
+
 \item{nAccrualThreshold}{\code{numeric} Specifies the minimum value required to return a \code{score} and calculate a \code{flag}. Default: NULL}
 
 \item{strAccrualMetric}{\code{character} Specifies the Metric to apply \code{nAccrualThreshold} to in order to determine the validity of a flag. Options are "Numerator", "Denominator" or "Difference". If "Difference" is specified, the threshold is based on the difference between the Denominator and the Numerator for a given Group. Default: \code{NULL}.}
