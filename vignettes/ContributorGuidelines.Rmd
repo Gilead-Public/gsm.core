@@ -18,22 +18,42 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This page outlines the development process for `{gsm}` packages, including how to contribute by filing issues, bug reports, and submitting code via a Pull Request.
+This page outlines the development process for `{gsm}` packages. It summarizes both our project management and development workflows. The project management workflow focuses on using issues to are capture user requirements, bugs and technical requirements. The development workflow explains how to submit code using the GitHub flow paradigm.
 
-## Prerequisites
 
-Before contributing code via a Pull Request, make sure to file an [issue](https://github.com/Gilead-BioStats/gsm.core/issues/new/choose) using one of the pre-specified issue templates. Choose the template that best categorizes what you aim to contribute, which generally can be one of the following:
+# Project Management
 
--   Bugfix Issue: Fix a bug in the code
--   Feature Issue: Develop a new feature
--   QC Issue: Update QC framework, including documentation, qualification, automation, etc.
--   Business Requirement: Create a parent issue for a Business Requirement (Gilead Team only)
+The project management workflow focuses on using issues to capture user requirements, bugs, and technical requirements. We also use the [gsm Roadmap](https://github.com/orgs/Gilead-BioStats/projects/41) GitHub Project to track issues and set priorities across repositories. 
 
-Someone from the development team will decide if the issue is in scope. If so, the issue will be appropriately triaged and assigned to a core developer, or approval to submit a Pull Request associated with the submitted issue will be granted. If it is decided that the issue is out of scope or otherwise irrelevant, the issue will be closed.
 
-The issue templates provide comments/prompts to help ensure that all relevant information is included. When submitting issues for bug fixes or specific feature requests, it is often helpful to provide a minimal [reprex](https://www.tidyverse.org/help/#reprex), or reproducible example, to help the core developers visualize the issue.
+## Issues
 
-Suggestions or other input that might not warrant formal submission of an issue can be filed under [discussions](https://github.com/Gilead-BioStats/gsm.core/discussions), which can help facilitate discourse of specific use-cases or requests.
+Issues are the primary way to communicate what needs to be done and to track progress. Several issue templates are provided to help streamline this process, including: 
+
+- [Requirements](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=business_requirement.md): Use this template to create a User Requirement. Requirements are then assigned sub-issues using the issue types below. 
+- [Bug](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=bug_report.md): Bug reports for when something isn't working
+- [Feature](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=feature_request.md): User-facing Functionality
+- [Technical Task](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=qc_update.md): Non-user facing tasks, such as infrastructure updates or internal tooling improvements.
+- [Documentation Task](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=documentation.md): Improvements or additions to the documentation including function docs, readme updates and vignettes.
+
+The issue templates are maintained in {gsm.utils} and automatically updated in all gsm packages whenever updates are made. Note that suggestions or other input that might not warrant formal submission of an issue can be filed under [discussions](https://github.com/Gilead-BioStats/gsm.core/discussions), which can help facilitate discourse of specific use-cases or requests.
+
+## Road Map
+
+The [gsm Roadmap](https://github.com/orgs/Gilead-BioStats/projects/41) GitHub Project is used to track issues and set priorities across projects. The gsm team generally batches work in to quarterly releases, although package releases can happen more frequently. Key cross-repo views in the project include: 
+
+- Roadmap - a list of issues split out by quarter. Generally speaking, related functionality should be grouped in to a Requirement. Key columns include: 
+   - Status - Issue status (e.g. To Do, In Progress, Done)
+   - Repository/Milestone
+   - Roadmap - Quarter where the requirement is planned for completion
+   - Triage - has the requirement been approved for development work
+   - Type - Bug, Feature, Task, Documentation
+- Issues - a list of all open non-requirement issues, split by type.
+- Releases - All open issues grouped by repo and sorted by milestone. 
+
+# Development Workflow
+
+Development is done using R package development best practices (Add link to book) and Github Flow (Add link).
 
 ## Branches
 
@@ -44,9 +64,9 @@ The core branches that are used in this repository are:
 -   `fix`: Used to develop new functionality in the package. See [Development Process](#development-process) below for more details.
 -   `release`: Used to conduct regression testing and finalize QC documentation for a release. See [Release Process](#release-process) below for more details.
 
-# Development Process {#development-process}
-
 All code development takes place in `fix` branches. This section provides general guidance about this process flow. A detailed step-by-step workflow for code development in `fix` branches can be found in the first section of [Appendix 1](#fix-branch-workflow) below.
+
+# Best Practices 
 
 Once an issue is filed and delegated to a core developer, a `fix` branch will be opened, which is where all package development related to that issue will be conducted. Each `fix` branch should be linked to one or more of the filed GitHub [issue(s)](https://github.com/Gilead-BioStats/gsm.core/issues). The issue(s) will be referenced in the naming of the `fix` branch. For example, a branch named `fix-111` addresses issue #111. Tasks related to documentation, testing, and/or qualification may also use `fix` branches and associated issues.
 
