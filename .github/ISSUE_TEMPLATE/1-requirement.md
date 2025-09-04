@@ -13,7 +13,7 @@ Project: Gilead-BioStats/41
 ## Implementation Overview
 <!-- High-level description of how the requirement will be implemented. -->
 
-## Effected Packages
+## Affected Packages
 <!-- Describe which packages will be changed to meet this requirement. Are there downstream effects? -->
 
 ## QC Approach
