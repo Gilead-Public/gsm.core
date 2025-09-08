@@ -11,7 +11,8 @@ on:
 
 jobs:
   call-release-workflow:
-    uses: Gilead-BioStats/gsm.utils/.github/workflows/r_releaser.yml@releaser-workflow
+    uses: Gilead-BioStats/gsm.utils/.github/workflows/r_releaser.yaml@releaser-workflow
+
     with:
       tag: ${{ github.event.release.tag_name || inputs.tag }}
     secrets: inherit
