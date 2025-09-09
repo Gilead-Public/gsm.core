@@ -150,7 +150,7 @@ GitHub Actions run automatically on all Pull Requests to `dev` and `main` to cat
 
 ---
 
-# Appendix – Quick Reference
+# Appendix 1 – Quick Reference
 
 ### Fix Branch Workflow
 
@@ -178,3 +178,71 @@ GitHub Actions run automatically on all Pull Requests to `dev` and `main` to cat
 * [ ] No sensitive data or hardcoded paths.
 * [ ] Qualification specs + reports updated.
 * [ ] All GitHub Actions checks pass.
+
+---
+
+# Appendix 2- Quarterly Release Instructions
+  
+This document describes the process for performing a quarterly release of the `{gsm}` suite of R packages on GitHub. The primary difference between this release and off-cycle releases is that given the likelihood of multiple packages being simultaneously updated, the releases must be done in a specified order to avoid dependency conflicts.
+
+---
+  
+## Release Workflow for Quarterly Releases
+
+This workflow is similar to the standard release workflow, but with additional emphasis on ensuring dependencies are up to date and properly listed in `DESCRIPTION` given this quarter's release plan.
+  
+1. Create a **release branch** (e.g., `release-QX.Y`) from `main` in each package repository.
+2. Update the version number in `DESCRIPTION` to align with the Milestones created for this quarter 
+3. Add `NEWS.md` entry with release notes.
+4. Run quality checks, unit tests, and qualification tests to ensure all are passing.
+5. Confirm **dependencies are up to date** and properly listed in `DESCRIPTION` given this quarter's release plan and the instructions in the Release Order section below.
+6. Create and merge a PR for the release branch.
+7. Tag the release with the semantic version (e.g. `v1.1.0`).
+8. Ensure that qualification report and tarball are appropriately attached to each release, as required.
+9. Publish the release on GitHub (use auto-generated release notes + NEWS.md).
+
+---
+
+## Release Order
+
+Many `{gsm}` packages depend on a small set of foundational packages (`gsm.core`, `gsm.mapping`, `gsm.kri`, and `gsm.reporting`). These core packages define shared data structures, helper functions, and reporting utilities that downstream packages rely on. 
+
+Because of this dependency structure, it is **critical** to release packages in the correct order. If a downstream package is released before its dependencies are updated, it may:
+
+* Fail to build or check due to mismatched versions.
+* Introduce inconsistencies in shared functions or data definitions.
+* Break automated workflows (CI/CD, simulations, reporting pipelines).
+
+To prevent these issues, follow the release sequence below:
+
+1. **gsm.core** – foundational utilities used by nearly all other packages.
+2. **gsm.mapping** – builds on `gsm.core` to provide study-specific mappings.
+3. **gsm.kri** – depends on `gsm.core` and `gsm.mapping`; provides core risk indicator functionality.
+4. **gsm.reporting** – depends on `gsm.core` and `gsm.kri`; underpins all reporting templates.
+5. **gsm.datasim** – depends on `gsm.core` and `gsm.mapping` for generating simulated study data.
+6. **gsm.qtl** – depends on `gsm.core` and `gsm.kri`.
+7. **gsm.endpoints** – uses `gsm.mapping` and `gsm.core`. Also extends `gsm.kri` and `gsm.reporting` for endpoint-specific analyses.
+8. **grail** – suggests `gsm.core`, `gsm.mapping`, `gsm.kri` and `gsm.reporting`.
+9. **grail.ado** - depends on `grail` for passing data to ADO.
+10. **gsm.rrm** - suggests `grail` and `gsm.core`.
+11. **gsm.template** – depends on `gsm.core`, `gsm.datasim` and `gsm.mapping`.
+12. **gsm.app** – depends on `gsm.core` and `gsm.kri`. Suggests `gsm.mapping` and `gsm.reporting`.`
+13. **gsm.ae** – depends on `gsm.app` and `gsm.mapping`
+14. **gsm.qc** – depends on `gsm.core`, `gsm.mapping`, `gsm.kri` and `gsm.reporting`.
+15. **gsm.utils** – optional utilities; No gsm dependencies at this time
+
+
+**Note:** Not every package requires a release in every cycle. If no changes have been made (and the version number/NEWS.md do not need updating), simply skip that package and continue with the next in the sequence.
+
+By following this order, you ensure that every package is released with its latest compatible dependencies already available, minimizing risk of conflicts and downstream errors.
+
+---
+  
+## Post-Release Steps
+  
+* Verify that all release tags are visible on GitHub.
+* Add qualification documentation to `r-qualification` repo, as required
+* Update [Package Tracker in Analytics WG spreadsheet](https://gileadconnect.sharepoint.com/:x:/r/teams/RiskBasedMonitoringInitiative/Shared%20Documents/Analytics_Technology/Analytics%20Working%20Groups/Analytics%20WG%20Tracker.xlsx?d=w8bc03988c6764d66ba2b769648a0f496&csf=1&web=1&e=Qlc7Nw&nav=MTVfezI1RDA4QURDLUY0ODItNEE3Mi05QTZCLTBCMzY5QjdERTYzQ30) with release dates, links to releases and qualification information.
+* Write up a summary of the release updates in an OpenRBQM Discussion.
+* Announce release completion to the team on the `gsm` Teams channel with link to OpenRBQM Release Discussion.
+
