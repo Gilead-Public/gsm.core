@@ -108,12 +108,14 @@ Releases move code from development into production. The goal is to ensure **rel
 1. **Create a `release-x.y.z` branch** from `dev` (using [semantic versioning](https://semver.org/)).
 2. **Prepare the release** – update version, NEWS, documentation, qualification files, and run checks (`devtools::check()`, spell check, `pkgdown::build_site()`).
 3. **Open a release PR** into `main` using the release template. Assign yourself and request QC review.
-4. **QC reviewers** complete checklists and may request fixes. Any fixes are made in `fix-*` branches and merged back into the release branch.
-5. **Complete the release** – once approved, follow the following steps:
+4. **Link PR to relevant parent issue** in the [gsm Roadmap project board](https://github.com/orgs/Gilead-BioStats/projects/41/). 
+5. **QC reviewers** complete checklists and may request fixes. Any fixes are made in `fix-*` branches and merged back into the release branch.
+6. **Complete the release** – once approved, follow the following steps:
     * Merge PR into `main`
     * Create a GitHub Release
     * Attach QC reports
     * Create a PR that syncs `main` back into `dev`
+    * Ensure related Issues are Closed
 
 👉 This process makes sure that every release is tested, documented, and signed off before it goes live.
 
@@ -162,8 +164,8 @@ GitHub Actions run automatically on all Pull Requests to `dev` and `main` to cat
 
 1. Create `release-x.y.z` branch from `dev`.
 2. Update version, NEWS, docs, qualification files.
-3. Run checks locally + CI.
-4. Open release PR to `main` with template.
+3. Run checks locally + CI in a clean working environment.
+4. Open release PR to `main`.
 5. QC reviewers complete checklist.
 6. Merge, publish GitHub Release, attach QC report.
 7. Sync `main` → `dev`, close issues, clean up branches.
