@@ -32,6 +32,7 @@
 #' @param vThreshold `numeric` Vector of numeric values representing threshold values. Default is `c(-3,-2,2,3)` which is typical for z-scores.
 #' @param vFlag `numeric` Vector of flag values. There must be one more item in Flag than thresholds - that is `length(vThreshold)+1 == length(vFlagValues)`. Default is `c(-2,-1,0,1,2)`, which is typical for z-scores.
 #' @param vFlagOrder `numeric` Vector of ordered flag values. Output data.frame will be sorted based on flag column using the order provided. NULL (or values that don't match vFlag) will leave the data unsorted. Must have identical values to vFlag. Default is `c(2,-2,1,-1,0)` which puts largest z-score outliers first in the data set.
+#' @param vRiskScoreWeight `numeric` Vector of weights to apply to each flag value. If provided, the output data.frame will have an additional column `Weight` with the corresponding weight for each flag. Default: `NULL`.
 #' @param nAccrualThreshold `numeric` Specifies the minimum value required to return a `score` and calculate a `flag`. Default: NULL
 #' @param strAccrualMetric `character` Specifies the Metric to apply `nAccrualThreshold` to in order to determine the validity of a flag. Options are "Numerator", "Denominator" or "Difference". If "Difference" is specified, the threshold is based on the difference between the Denominator and the Numerator for a given Group. Default: `NULL`.
 #'
@@ -51,6 +52,7 @@ Flag <- function(
   vThreshold = c(-3, -2, 2, 3),
   vFlag = c(-2, -1, 0, 1, 2),
   vFlagOrder = c(2, -2, 1, -1, 0),
+  vRiskScoreWeight = NULL,
   nAccrualThreshold = NULL,
   strAccrualMetric = NULL
 ) {
@@ -105,6 +107,18 @@ Flag <- function(
     }
   }
 
+  ## Add weights if provided
+  if (!is.null(vRiskScoreWeight)) {
+    ##make sure vFlag and vRiskScoreWeight are the same length
+    stop_if(cnd = length(vFlag) != length(vRiskScoreWeight),
+            message = "vFlag and vRiskScoreWeight must be the same length")
+    dfFlagWeights <- data.frame(Flag = c(vFlag, NA),
+                                Weight = c(vRiskScoreWeight, NA),
+                                WeightMax = max(vRiskScoreWeight, na.rm = TRUE))
+    dfFlagged <- dfFlagged %>%
+      left_join(dfFlagWeights, by = "Flag")
+  }
+
   return(dfFlagged)
 }
 
@@ -120,6 +134,7 @@ Flag <- function(
 #' @param vThreshold `numeric` Vector of numeric values representing threshold values. Default is `c(-3,-2,2,3)` which is typical for z-scores.
 #' @param vFlag `numeric` Vector of flag values. There must be one more item in Flag than thresholds - that is `length(vThreshold)+1 == length(vFlagValues)`. Default is `c(-2,-1,0,1,2)`, which is typical for z-scores.
 #' @param vFlagOrder `numeric` Vector of ordered flag values. Output data.frame will be sorted based on flag column using the order provided. NULL (or values that don't match vFlag) will leave the data unsorted. Must have identical values to vFlag. Default is `c(2,-2,1,-1,0)` which puts largest z-score outliers first in the data set.
+#' @param vRiskScoreWeight `numeric` Vector of weights to apply to each flag value. If provided, the output data.frame will have an additional column `Weight` with the corresponding weight for each flag. Default: `NULL`.
 #' @param nAccrualThreshold `numeric` Specifies the minimum value required to return a `score` and calculate a `flag`. Default: NULL
 #' @param strAccrualMetric `character` Specifies the Metric to apply `nAccrualThreshold` to in order to determine the validity of a flag. Options are "Numerator", "Denominator" or "Difference". If "Difference" is specified, the threshold is based on the difference between the Denominator and the Numerator for a given Group. Default: `NULL`.
 #'
@@ -141,6 +156,7 @@ Flag_NormalApprox <- Flag
 #' @param vThreshold `numeric` Vector of numeric values representing threshold values. Default is `c(-3,-2,2,3)` which is typical for z-scores.
 #' @param vFlag `numeric` Vector of flag values. There must be one more item in Flag than thresholds - that is `length(vThreshold)+1 == length(vFlagValues)`. Default is `c(-2,-1,0,1,2)`, which is typical for z-scores.
 #' @param vFlagOrder `numeric` Vector of ordered flag values. Output data.frame will be sorted based on flag column using the order provided. NULL (or values that don't match vFlag) will leave the data unsorted. Must have identical values to vFlag. Default is `c(2,-2,1,-1,0)` which puts largest z-score outliers first in the data set.
+#' @param vRiskScoreWeight `numeric` Vector of weights to apply to each flag value. If provided, the output data.frame will have an additional column `Weight` with the corresponding weight for each flag. Default: `NULL`.
 #' @param nAccrualThreshold `numeric` Specifies the minimum value required to return a `score` and calculate a `flag`. Default: NULL
 #' @param strAccrualMetric `character` Specifies the Metric to apply `nAccrualThreshold` to in order to determine the validity of a flag. Options are "Numerator", "Denominator" or "Difference". If "Difference" is specified, the threshold is based on the difference between the Denominator and the Numerator for a given Group. Default: `NULL`.
 #'
