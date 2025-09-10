@@ -215,21 +215,21 @@ Because of this dependency structure, it is **critical** to release packages in 
 
 To prevent these issues, follow the release sequence below:
 
-1. **gsm.core** – foundational utilities used by nearly all other packages.
-2. **gsm.mapping** – builds on `gsm.core` to provide study-specific mappings.
-3. **gsm.kri** – depends on `gsm.core` and `gsm.mapping`; provides core risk indicator functionality.
-4. **gsm.reporting** – depends on `gsm.core` and `gsm.kri`; underpins all reporting templates.
-5. **gsm.datasim** – depends on `gsm.core` and `gsm.mapping` for generating simulated study data.
-6. **gsm.qtl** – depends on `gsm.core` and `gsm.kri`.
-7. **gsm.endpoints** – uses `gsm.mapping` and `gsm.core`. Also extends `gsm.kri` and `gsm.reporting` for endpoint-specific analyses.
-8. **grail** – suggests `gsm.core`, `gsm.mapping`, `gsm.kri` and `gsm.reporting`.
-9. **grail.ado** - depends on `grail` for passing data to ADO.
-10. **gsm.rrm** - suggests `grail` and `gsm.core`.
-11. **gsm.template** – depends on `gsm.core`, `gsm.datasim` and `gsm.mapping`.
-12. **gsm.app** – depends on `gsm.core` and `gsm.kri`. Suggests `gsm.mapping` and `gsm.reporting`.`
-13. **gsm.ae** – depends on `gsm.app` and `gsm.mapping`
-14. **gsm.qc** – depends on `gsm.core`, `gsm.mapping`, `gsm.kri` and `gsm.reporting`.
-15. **gsm.utils** – optional utilities; No gsm dependencies at this time
+1. **gsm.core** – Foundational utilities used by nearly all other packages.
+2. **gsm.mapping** – Builds on `gsm.core` to provide study-specific mappings.
+3. **gsm.kri** – Depends on `gsm.core` and `gsm.mapping`; provides core risk indicator functionality.
+4. **gsm.reporting** – Depends on `gsm.core` and `gsm.kri`; underpins all reporting templates.
+5. **gsm.datasim** – Depends on `gsm.core` and `gsm.mapping` for generating simulated study data.
+6. **gsm.qtl** – Depends on `gsm.core` and `gsm.kri`.
+7. **gsm.endpoints** – Uses `gsm.mapping` and `gsm.core`. Also extends `gsm.kri` and `gsm.reporting` for endpoint-specific analyses.
+8. **grail** – Suggests `gsm.core`, `gsm.mapping`, `gsm.kri` and `gsm.reporting`.
+9. **grail.ado** - Depends on `grail` for passing data to ADO.
+10. **gsm.rrm** - Suggests `grail` and `gsm.core`.
+11. **gsm.template** – Depends on `gsm.core`, `gsm.datasim` and `gsm.mapping`.
+12. **gsm.app** – Depends on `gsm.core` and `gsm.kri`. Suggests `gsm.mapping` and `gsm.reporting`.`
+13. **gsm.ae** – Depends on `gsm.app` and `gsm.mapping`
+14. **gsm.qc** – Depends on `gsm.core`, `gsm.mapping`, `gsm.kri` and `gsm.reporting`.
+15. **gsm.utils** – Optional utilities. No gsm dependencies at this time
 
 
 **Note:** Not every package requires a release in every cycle. If no changes have been made (and the version number/NEWS.md do not need updating), simply skip that package and continue with the next in the sequence.
