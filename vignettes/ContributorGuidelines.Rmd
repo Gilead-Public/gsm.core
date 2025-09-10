@@ -141,10 +141,10 @@ styler::style_dir("tests", recursive = TRUE, transformers = double_indent_style)
 
 GitHub Actions run automatically on all Pull Requests to `dev` and `main` to catch issues early:
 
-* **R CMD check** – confirms the package builds and passes tests.
+* **R CMD check** – Confirms the package builds and passes tests.
 * **Pkgdown** – Generates `pkgdown` docs.
-* **Release checks** – run on multiple platforms (Linux, macOS, Windows) to confirm reproducibility.
-* **Qualification Reports** – built and attached to releases for traceability. *Only run on merges to `main`.*
+* **Release checks** – Run on multiple platforms (Linux, macOS, Windows) to confirm reproducibility.
+* **Qualification Reports** – Built and attached to releases for traceability. *Only run on merges to `main`.*
 
 👉 Contributors don’t typically need to configure anything—just push code and the checks will run.
 
