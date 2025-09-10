@@ -89,7 +89,7 @@ We use a simple branching model to keep work organized:
 
 Pull Requests are where code review happens. To keep them smooth:
 
-* Follow the [tidyverse style guide](https://style.tidyverse.org/) See the Code Style section below for details on styling code per GSM standards.
+* Follow the [tidyverse style guide](https://style.tidyverse.org/). See the Code Style section below for details on styling code per GSM standards.
 * All functions must have **roxygen2 docs** (`@param`, `@return`, examples, etc.).
 * All changes must include **unit tests** showing expected behavior.
 * If Qualification double-programming tests were required per the content of the issue(s) tied to the PR, these tests must exist and be passing.
