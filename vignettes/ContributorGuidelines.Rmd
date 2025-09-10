@@ -75,7 +75,7 @@ We use a simple branching model to keep work organized:
 
 ## Development Workflow
 
-1. **Open an issue** – every change begins with an issue using the right template (`Bug`, `Feature`,`Technical Task`, or `Documentation Task`). This creates a clear record of what’s being worked on.
+1. **Open an issue** – every change begins with an issue using the right template (`Requirements`, `Bug`, `Feature`,`Technical Task`, or `Documentation Task`). This creates a clear record of what’s being worked on.
 2. **Create a branch** – branch names link to issues (e.g., `fix-111` for issue #111) so progress is traceable.
 3. **Develop & document** – write clean, consistent code, add roxygen2 documentation, and create/update [testthat](https://testthat.r-lib.org/) unit tests.
 4. **Open a Pull Request** – submit your branch to `dev`, assign yourself, request a reviewer, and link the issue. CI checks will run automatically.
