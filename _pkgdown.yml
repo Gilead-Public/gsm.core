@@ -28,7 +28,6 @@ articles:
       - articles/DataModel
       - articles/gsmExtensions
       - KRIMethod
-      - ContributorGuidelines
 reference:
   - title: Analyze
     desc: Conduct statistical analysis based on input data

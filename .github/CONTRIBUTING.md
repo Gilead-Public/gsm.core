@@ -1,21 +1,3 @@
----
-title: "Contributor Guidelines"
-description: "This page outlines the development process for `{gsm}` packages, including how to contribute by filing issues, bug reports, and submitting code via a Pull Request."
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Contributor Guidelines}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r setup, include = FALSE}
-library(gsm.core)
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
 # Introduction
 
 This page outlines the development process for `{gsm}` packages. It summarizes both our project management and development workflows. The project management workflow focuses on using issues to are capture user requirements, bugs and technical requirements. The development workflow explains how to submit code using the GitHub flow paradigm.
@@ -30,13 +12,15 @@ The project management workflow focuses on using issues to capture user requirem
 
 Issues are the primary way to communicate what needs to be done and to track progress. Several issue templates are provided to help streamline this process, including: 
 
-- [Requirements](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=business_requirement.md): Use this template to create a User Requirement. Requirements are then assigned sub-issues using the issue types below. 
-- [Bug](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=bug_report.md): Bug reports for when something isn't working
-- [Feature](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=feature_request.md): User-facing Functionality
-- [Technical Task](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=qc_update.md): Non-user facing tasks, such as infrastructure updates or internal tooling improvements.
-- [Documentation Task](https://github.com/Gilead-BioStats/gsm.core/issues/new?template=documentation.md): Improvements or additions to the documentation including function docs, readme updates and vignettes.
+- Requirements: Use this template to create a User Requirement. Requirements are then assigned sub-issues using the issue types below. 
+- Bug: Bug reports for when something isn't working
+- Feature: User-facing Functionality
+- Technical Task: Non-user facing tasks, such as infrastructure updates or internal tooling improvements.
+- Documentation Task: Improvements or additions to the documentation including function docs, readme updates and vignettes.
 
-The issue templates are maintained in {[gsm.utils](https://github.com/Gilead-BioStats/gsm.utils)} and automatically updated in all gsm packages whenever updates are made. Note that suggestions or other input that might not warrant formal submission of an issue can be filed under [discussions](https://github.com/Gilead-BioStats/gsm.core/discussions), which can help facilitate discourse of specific use-cases or requests.
+
+
+The issue templates automatically appear when you select `New Issue` to create a new issue in a given repository, are maintained in {[gsm.utils](https://github.com/Gilead-BioStats/gsm.utils)} and automatically updated in all gsm packages whenever updates are made. Note that suggestions or other input that might not warrant formal submission of an issue can be filed in the Github `Discussions` tab for that repository, which can help facilitate discourse of specific use-cases or requests.
 
 ---
 
@@ -141,10 +125,10 @@ styler::style_dir("tests", recursive = TRUE, transformers = double_indent_style)
 
 GitHub Actions run automatically on all Pull Requests to `dev` and `main` to catch issues early:
 
-* **R CMD check** – Confirms the package builds and passes tests.
+* **R CMD check** – Confirms the package builds and passes tests on multiple platforms (Linux, macOS, Windows).
 * **Pkgdown** – Generates `pkgdown` docs.
-* **Release checks** – Run on multiple platforms (Linux, macOS, Windows) to confirm reproducibility.
 * **Qualification Reports** – Built and attached to releases for traceability. *Only run on merges to `main`.*
+* **Release** - Builds and attaches tarball to releases
 
 👉 Contributors don’t typically need to configure anything—just push code and the checks will run.
 
@@ -168,13 +152,13 @@ GitHub Actions run automatically on all Pull Requests to `dev` and `main` to cat
 4. Open release PR to `main`.
 5. QC reviewers complete checklist.
 6. Merge, publish GitHub Release, attach QC report.
-7. Sync `main` → `dev`, close issues, clean up branches.
+7. Sync `main` → `dev` with a PR, close issues, clean up branches.
 
 ### QC Checklist
 
 * [ ] Roxygen2 docs complete (`@export`, `@param`, `@return`, examples).
 * [ ] Unit tests for inputs, outputs, error handling.
-* [ ] `devtools::check()` passes (no errors/warnings/notes).
+* [ ] Run `devtools::check()` to ensure all checks pass (no errors/warnings/notes).
 * [ ] No sensitive data or hardcoded paths.
 * [ ] Qualification specs + reports updated.
 * [ ] All GitHub Actions checks pass.
@@ -191,7 +175,7 @@ This document describes the process for performing a quarterly release of the `{
 
 This workflow is similar to the standard release workflow, but with additional emphasis on ensuring dependencies are up to date and properly listed in `DESCRIPTION` given this quarter's release plan.
   
-1. Create a **release branch** (e.g., `release-QX.Y`) from `main` in each package repository.
+1. Create a **release branch** (e.g., `release-x.y.z`) from `main` in each package repository.
 2. Update the version number in `DESCRIPTION` to align with the Milestones created for this quarter.
 3. Add `NEWS.md` entry with release notes.
 4. Run quality checks, unit tests, and qualification tests to ensure all are passing.
