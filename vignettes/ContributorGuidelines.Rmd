@@ -42,7 +42,7 @@ The issue templates are maintained in {[gsm.utils](https://github.com/Gilead-Bio
 
 ## Road Map
 
-The [gsm Roadmap](https://github.com/orgs/Gilead-BioStats/projects/41) GitHub Project is used to track issues and set priorities across projects. The gsm team generally batches work in to quarterly releases, although package releases can happen more frequently. Key cross-repo views in the project include: 
+The [gsm Roadmap](https://github.com/orgs/Gilead-BioStats/projects/41) GitHub Project is used to track issues and set priorities across projects. The gsm team generally batches work into quarterly releases, although package releases can happen more frequently. Key cross-repo views in the project include: 
 
 - Roadmap - a list of issues split out by quarter. Generally speaking, related functionality should be grouped in to a Requirement. Key columns include: 
    - Status - Issue status (e.g. To Do, In Progress, Done)
