@@ -12,11 +12,11 @@ The project management workflow focuses on using issues to capture user requirem
 
 Issues are the primary way to communicate what needs to be done and to track progress. Several issue templates are provided to help streamline this process, including: 
 
-- Requirements: Use this template to create a User Requirement. Requirements are then assigned sub-issues using the issue types below. 
-- Bug: Bug reports for when something isn't working
-- Feature: User-facing Functionality
-- Technical Task: Non-user facing tasks, such as infrastructure updates or internal tooling improvements.
-- Documentation Task: Improvements or additions to the documentation including function docs, readme updates and vignettes.
+- Requirements – Use this template to create a User Requirement. Requirements are then assigned sub-issues using the issue types below. 
+- Bug – Bug reports for when something isn't working
+- Feature – User-facing Functionality
+- Technical Task – Non-user facing tasks, such as infrastructure updates or internal tooling improvements.
+- Documentation Task – Improvements or additions to the documentation including function docs, readme updates and vignettes.
 
 
 
