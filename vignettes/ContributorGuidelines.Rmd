@@ -44,14 +44,14 @@ The issue templates are maintained in {[gsm.utils](https://github.com/Gilead-Bio
 
 The [gsm Roadmap](https://github.com/orgs/Gilead-BioStats/projects/41) GitHub Project is used to track issues and set priorities across projects. The gsm team generally batches work into quarterly releases, although package releases can happen more frequently. Key cross-repo views in the project include: 
 
-- Roadmap - a list of issues split out by quarter. Generally speaking, related functionality should be grouped in to a Requirement. Key columns include: 
-   - Status - Issue status (e.g. To Do, In Progress, Done)
+- Roadmap – A list of issues split out by quarter. Generally speaking, related functionality should be grouped into a Requirement. Key columns include: 
+   - Status – Issue status (e.g. To Do, In Progress, Done).
    - Repository/Milestone
-   - Roadmap - Quarter where the requirement is planned for completion
-   - Triage - has the requirement been approved for development work
-   - Type - Bug, Feature, Task, Documentation
-- Issues - a list of all open non-requirement issues, split by type.
-- Releases - All open issues grouped by repo and sorted by milestone. 
+   - Roadmap – Quarter when the requirement is planned for completion.
+   - Triage – Has the requirement been approved for development work?
+   - Type – Bug, Feature, Task, Documentation.
+- Issues – A list of all open non-requirement issues, split by type.
+- Releases – All open issues grouped by repo and sorted by milestone. 
 
 # Development Workflow
 
