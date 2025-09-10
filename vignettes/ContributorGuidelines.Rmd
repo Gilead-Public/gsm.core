@@ -64,10 +64,10 @@ The goal is to keep code reliable, traceable, and easy for everyone to contribut
 
 We use a simple branching model to keep work organized:
 
-* **`main`** – stable, production-ready code. Every package release comes from here.
-* **`dev`** – working branch that collects all new features, bugfixes, and QC tasks before release.
-* **`fix-*`** – short-lived branches for specific issues (feature, bug, or QC task). All development starts here.
-* **`release-*`** – temporary branches for regression testing, QC, and documentation before merging into `main`.
+* **`main`** – Stable, production-ready code. Every package release comes from here.
+* **`dev`** – Working branch that collects all new features, bugfixes, and QC tasks before release.
+* **`fix-*`** – Short-lived branches for specific issues (feature, bug, or QC task). All development starts here.
+* **`release-*`** – Temporary branches for regression testing, QC, and documentation before merging into `main`.
 
 👉 This structure ensures that unfinished work never goes directly into production, but can still be tested and reviewed in isolation.
 
