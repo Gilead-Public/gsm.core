@@ -226,7 +226,7 @@ By following this order, you ensure that every package is released with its late
   
 * Verify that all release tags are visible on GitHub.
 * Add qualification documentation to `r-qualification` repo, as required.
-* Update [Package Tracker in Analytics WG spreadsheet](https://gileadconnect.sharepoint.com/:x:/r/teams/RiskBasedMonitoringInitiative/Shared%20Documents/Analytics_Technology/Analytics%20Working%20Groups/Analytics%20WG%20Tracker.xlsx?d=w8bc03988c6764d66ba2b769648a0f496&csf=1&web=1&e=Qlc7Nw&nav=MTVfezI1RDA4QURDLUY0ODItNEE3Mi05QTZCLTBCMzY5QjdERTYzQ30) with release dates, links to releases and qualification information.
+* Update the Package Release Tracker with release dates, links to releases and qualification information. *Gilead Only*
 * Write up a summary of the release updates in an OpenRBQM Discussion.
 * Announce release completion to the team on the `gsm` Teams channel with link to OpenRBQM Release Discussion.
 
