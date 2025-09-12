@@ -115,6 +115,7 @@ Flag <- function(
       message = "vFlag and vRiskScoreWeight must be the same length"
     )
     dfFlagWeights <- data.frame(
+      # NA rows are required here to ensure that NA flags still get a WeightMax for the denominator calculation
       Flag = c(vFlag, NA),
       Weight = c(vRiskScoreWeight, NA),
       WeightMax = max(vRiskScoreWeight, na.rm = TRUE)
