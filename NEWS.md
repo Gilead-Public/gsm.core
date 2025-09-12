@@ -1,6 +1,6 @@
 # gsm.core v1.1.5
 
-This patch release enhances the `Flag` function to support `vRiskScoreWeight` which are weights to apply to each flag value
+This patch release enhances the `Flag` function to support `vRiskScoreWeight` which are weights to apply to each flag value. It also adds new contributor guidelines and standardized issue templates.
 
 # gsm.core v1.1.4
 

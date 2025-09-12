@@ -109,12 +109,16 @@ Flag <- function(
 
   ## Add weights if provided
   if (!is.null(vRiskScoreWeight)) {
-    ##make sure vFlag and vRiskScoreWeight are the same length
-    stop_if(cnd = length(vFlag) != length(vRiskScoreWeight),
-            message = "vFlag and vRiskScoreWeight must be the same length")
-    dfFlagWeights <- data.frame(Flag = c(vFlag, NA),
-                                Weight = c(vRiskScoreWeight, NA),
-                                WeightMax = max(vRiskScoreWeight, na.rm = TRUE))
+    ## make sure vFlag and vRiskScoreWeight are the same length
+    stop_if(
+      cnd = length(vFlag) != length(vRiskScoreWeight),
+      message = "vFlag and vRiskScoreWeight must be the same length"
+    )
+    dfFlagWeights <- data.frame(
+      Flag = c(vFlag, NA),
+      Weight = c(vRiskScoreWeight, NA),
+      WeightMax = max(vRiskScoreWeight, na.rm = TRUE)
+    )
     dfFlagged <- dfFlagged %>%
       left_join(dfFlagWeights, by = "Flag")
   }
