@@ -9,7 +9,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gsm.core</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +54,7 @@
 <span>  vThreshold <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  vFlag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  vFlagOrder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  vRiskScoreWeight <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nAccrualThreshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  strAccrualMetric <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -83,6 +84,10 @@
 <dd><p><code>numeric</code> Vector of ordered flag values. Output data.frame will be sorted based on flag column using the order provided. NULL (or values that don't match vFlag) will leave the data unsorted. Must have identical values to vFlag. Default is <code>c(2,-2,1,-1,0)</code> which puts largest z-score outliers first in the data set.</p></dd>
 
 
+<dt id="arg-vriskscoreweight">vRiskScoreWeight<a class="anchor" aria-label="anchor" href="#arg-vriskscoreweight"></a></dt>
+<dd><p><code>numeric</code> Vector of weights to apply to each flag value. If provided, the output data.frame will have an additional column <code>Weight</code> with the corresponding weight for each flag. Default: <code>NULL</code>.</p></dd>
+
+
 <dt id="arg-naccrualthreshold">nAccrualThreshold<a class="anchor" aria-label="anchor" href="#arg-naccrualthreshold"></a></dt>
 <dd><p><code>numeric</code> Specifies the minimum value required to return a <code>score</code> and calculate a <code>flag</code>. Default: NULL</p></dd>
 
@@ -101,7 +106,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jeremy Wildfire, George Wu, Spencer Childress, Laura Maxwell, Jacob Anderson, Jon Harmon, Zelos Zhu, Matt Roumaya, Anne Zheng, Devin Pastoor, Nathan Kosiba, Douglas Sanders, Li Ge, Zhongkai Wang, Colleen McLaughlin, Chelsea Dickens, Maya Gans.</p>
+  <p>Developed by Jeremy Wildfire, George Wu, Spencer Childress, Laura Maxwell, Zelos Zhu, Jon Harmon, Natalia Andriychuk, Matt Roumaya, Jacob Anderson, Anne Zheng, Devin Pastoor, Nathan Kosiba, Douglas Sanders, Li Ge, Zhongkai Wang, Colleen McLaughlin, Chelsea Dickens, Maya Gans.</p>
 </div>
 
 <div class="pkgdown-footer-right">
