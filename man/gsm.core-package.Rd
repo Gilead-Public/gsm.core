@@ -25,10 +25,11 @@ Authors:
   \item George Wu \email{george.wu@gilead.com}
   \item Spencer Childress \email{spencer.childress@gilead.com} (\href{https://orcid.org/0000-0001-6877-8511}{ORCID})
   \item Laura Maxwell \email{laura.maxwell@atorusresearch.com}
-  \item Jacob Anderson \email{jacob.anderson@atorusresearch.com}
-  \item Jon Harmon \email{jon.harmon@atorusresearch.com}
   \item Zelos Zhu \email{zelos.zhu@atorusresearch.com}
+  \item Jon Harmon \email{jon.harmon@atorusresearch.com}
+  \item Natalia Andriychuk \email{natalia.andriychuk@gilead.com}
   \item Matt Roumaya \email{matthewroumaya@gmail.com} (\href{https://orcid.org/0000-0002-8009-2771}{ORCID})
+  \item Jacob Anderson \email{jacob.anderson@atorusresearch.com}
   \item Anne Zheng \email{anne@a2-ai.com}
   \item Devin Pastoor \email{devin@a2-ai.com}
   \item Nathan Kosiba \email{Nathan.Kosiba@atorusresearch.com}
