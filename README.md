@@ -87,7 +87,7 @@ Since {gsm.core} is designed for use in a [GCP](https://en.wikipedia.org/wiki/Go
 - **Qualification Workflow** - All assessments have been Qualified as described in the Qualification Workflow article. A Qualification Report article is generated and attached to each release. 
 - **Unit Tests** - Unit tests are written for all core functions.
 - **Workflow Tests** - Additional unit tests confirm that core workflows behave as expected.
-- **Contributor Guidelines** - Detailed contributor guidelines including step-by-step processes for code development and releases are provided as a vignette.
+- **Contributor Guidelines** - Detailed contributor guidelines including step-by-step processes for code development and releases are provided in `CONTRIBUTING.md` and visible in the sidebar of the website.
 - **Data Model** - Article providing detailed descriptions of the data model.
 - **Code Examples** - The Cookbook article provides a series of simple examples, and all functions include examples as part of Roxygen documentation. 
 - **Code Review** - Code review is conducted using GitHub Pull Requests (PRs), and a log of all PRs is included in the Qualification Report article.

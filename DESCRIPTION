@@ -7,11 +7,12 @@ Authors@R: c(
     person("Spencer", "Childress", , "spencer.childress@gilead.com", role = "aut",
            comment = c(ORCID = "0000-0001-6877-8511")),
     person("Laura", "Maxwell", , "laura.maxwell@atorusresearch.com", role = "aut"),
-    person("Jacob", "Anderson", , "jacob.anderson@atorusresearch.com", role = "aut"),
-    person("Jon", "Harmon", , "jon.harmon@atorusresearch.com", role = "aut"),
     person("Zelos", "Zhu", , "zelos.zhu@atorusresearch.com", role = "aut"),
+    person("Jon", "Harmon", , "jon.harmon@atorusresearch.com", role = "aut"),
+    person("Natalia", "Andriychuk", , "natalia.andriychuk@gilead.com", role = "aut"),
     person("Matt", "Roumaya", , "matthewroumaya@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0002-8009-2771")),
+    person("Jacob", "Anderson", , "jacob.anderson@atorusresearch.com", role = "aut"),
     person("Anne", "Zheng", , "anne@a2-ai.com", role = "aut"),
     person("Devin", "Pastoor", , "devin@a2-ai.com", role = "aut"),
     person("Nathan", "Kosiba", , "Nathan.Kosiba@atorusresearch.com", role = "aut"),
@@ -70,4 +71,4 @@ Language: en-US
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
