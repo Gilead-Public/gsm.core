@@ -1,3 +1,7 @@
+devtools::install('../gsm.mapping')
+devtools::install('../gsm.core')
+devtools::install('../gsm.kri')
+
 library(gsm.core)
 library(gsm.mapping)
 library(gsm.datasim)
@@ -60,22 +64,22 @@ lReporting_site <- list()
 lReporting_country <- list()
 
 lReporting_site$Reporting_Results <- all_reportingResults %>%
-  filter(stringr::str_detect(MetricID, "Analysis_kri"))
+  filter(GroupLevel=="Site")
 lReporting_site$Reporting_Groups <- all_reportingGroups %>%
   filter(GroupLevel %in% c("Study","Site"))
 lReporting_site$Reporting_Bounds <-  all_reportingBounds %>%
   filter(stringr::str_detect(MetricID, "Analysis_kri"))
 lReporting_site$Reporting_Metrics <- all_reportingMetrics %>%
-  filter(stringr::str_detect(MetricID, "Analysis_kri"))
+  filter(GroupLevel=="Site")
 
 lReporting_country$Reporting_Results <- all_reportingResults %>%
-  filter(stringr::str_detect(MetricID, "Analysis_cou"))
+  filter(GroupLevel=="Country")
 lReporting_country$Reporting_Groups <- all_reportingGroups %>%
   filter(GroupLevel%in% c("Study","Country"))
 lReporting_country$Reporting_Bounds <- all_reportingBounds %>%
   filter(stringr::str_detect(MetricID, "Analysis_cou"))
 lReporting_country$Reporting_Metrics <- all_reportingMetrics %>%
-  filter(stringr::str_detect(MetricID, "Analysis_cou"))
+  filter(GroupLevel=="Country")
 
 ## test out the data on a report
 # wf_report_site <- MakeWorkflowList(strNames = "report_kri_site", strPackage = "gsm.kri")
