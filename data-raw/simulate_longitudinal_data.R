@@ -1,6 +1,6 @@
-devtools::install('../gsm.mapping')
-devtools::install('../gsm.core')
-devtools::install('../gsm.kri')
+pak::pak('Gilead-BioStats/gsm.mapping@dev')
+pak::pak('Gilead-BioStats/gsm.core@dev')
+pak::pak('Gilead-BioStats/gsm.kri@dev')
 
 library(gsm.core)
 library(gsm.mapping)
