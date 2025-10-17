@@ -29,7 +29,7 @@ table from the provided data frame for SQL processing.
 The SQL query should include the placeholder \verb{FROM df} to indicate where the primary data source (\code{df}) should be referenced.
 }
 \examples{
-\dontshow{if (rlang::is_installed(c("DBI", "dbplyr", "duckdb"))) withAutoprint(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("DBI", "dbplyr", "duckdb"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 df <- data.frame(
   Name = c("John", "Jane", "Bob"),
   Age = c(25, 30, 35),

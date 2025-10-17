@@ -39,7 +39,7 @@ using a "log" link. Site-level residuals are calculated using
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("broom")) withAutoprint(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("broom")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 dfTransformed <- Transform_Rate(analyticsInput)
 
 dfAnalyzed <- Analyze_Poisson(dfTransformed)

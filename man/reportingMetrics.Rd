@@ -5,7 +5,7 @@
 \alias{reportingMetrics}
 \title{reportingMetrics Dataset}
 \format{
-A data frame with 13 rows and 16 columns:
+A data frame with 14 rows and 17 columns:
 \describe{
 \item{MetricID}{unique metric identifier}
 \item{GroupLevel}{level of grouping variable}
@@ -17,6 +17,7 @@ A data frame with 13 rows and 16 columns:
 \item{Score}{type of score reported}
 \item{Type}{statistical outcome type}
 \item{Threshold}{thresholds to be used for bounds and flags}
+\item{RiskScoreWeight}{weight assigned to the risk score}
 \item{AccrualThreshold}{minimum numerator required to return a score and calculate a flag}
 \item{AccrualMetric}{metric used to apply threshold to}
 \item{ID}{ID}
