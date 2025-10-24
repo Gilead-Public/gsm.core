@@ -130,7 +130,108 @@ GitHub Actions run automatically on all Pull Requests to `dev` and `main` to cat
 * **Qualification Reports** – Built and attached to releases for traceability. *Only run on merges to `main`.*
 * **Release** - Builds and attaches tarball to releases
 
-👉 Contributors don’t typically need to configure anything—just push code and the checks will run.
+👉 Contributors don't typically need to configure anything—just push code and the checks will run.
+
+---
+
+# Examples
+
+GSM packages should include examples that demonstrate core package functionality and comply with the following guidelines:
+
+## File Structure and Naming
+
+* Store `{type}_{example}.Rmd` source files in `/inst/examples`
+* Output `{type}_{example}.html` files to `/inst/examples/output`
+* Output filename must match source filename exactly (including capitalization)
+
+## Example Types
+
+There are two types of examples:
+
+### Cookbook Files
+Educational/tutorial style that shows code, output, and explanations:
+
+```r
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = TRUE,
+  warning = TRUE,
+  results = 'markup',
+  comment = "#>"
+)
+```
+
+YAML front matter should include:
+```yaml
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
+    self_contained: true
+    theme: cosmo
+```
+
+### Example Files
+Demo outputs that suppress all code and console output, showing only final widgets/reports:
+
+```r
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  results = 'hide'
+)
+```
+
+Set `results = 'asis'` only for chunks that output widgets.
+
+YAML front matter should include:
+```yaml
+output:
+  html_document:
+    toc: false  # Or true if needed
+    self_contained: true
+    theme: cosmo
+```
+
+## Required YAML Headers
+
+All examples should include:
+
+```yaml
+---
+title: "Descriptive Title"
+date: "`r format(Sys.time(), '%Y-%m-%d %H:%M:%S %Z')`"
+output:
+  html_document:
+    self_contained: true
+    theme: cosmo
+    # Additional options as needed
+---
+```
+
+## Rendering Examples
+
+Render with matching output filename:
+
+```r
+rmarkdown::render(
+  'inst/examples/Cookbook_Example1.Rmd',
+  output_file = 'Cookbook_Example1.html',
+  output_dir = 'inst/examples/output'
+)
+```
+
+## GitHub Actions for Examples
+
+Examples are automatically deployed via GitHub Actions:
+
+* **Push to `main`**: Syncs examples to `/examples` on gh-pages
+* **Push to `dev`**: Syncs examples to `/examples/dev` on gh-pages
+* **Pull Requests**: Syncs to `/examples/pr-{number}` and adds a comment showing new/updated files with timestamps
+
+These workflows are maintained in `gsm.utils` and deployed to all GSM packages.
 
 ---
 
