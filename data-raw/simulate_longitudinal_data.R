@@ -6,12 +6,13 @@ library(gsm.core)
 library(gsm.mapping)
 library(gsm.datasim)
 library(gsm.kri)
+library(gsm.qtl)
 library(dplyr)
 library(stringr)
 set.seed(1234)
 
 core_mappings <- c("AE", "COUNTRY", "DATACHG", "DATAENT", "ENROLL", "LB", "VISIT",
-                   "PD", "PK", "QUERY", "STUDY", "STUDCOMP", "SDRGCOMP", "SITE", "SUBJ")
+                   "PD", "PK", "QUERY", "STUDY", "STUDCOMP", "SDRGCOMP", "SITE", "SUBJ", "IE", "EXCLUSION")
 
 basic_sim <- gsm.datasim::generate_rawdata_for_single_study(
   SnapshotCount = 3,
@@ -32,24 +33,28 @@ basic_sim[[3]]$Raw_SITE$site_status <- "Active"
 analyzed <- list()
 reporting <- list()
 dates <- as.Date(c("2025-02-01", "2025-03-01", "2025-04-01"))
+
+mappings_wf <- gsm.core::MakeWorkflowList(strNames = core_mappings, strPath = "workflow/1_mappings", strPackage = "gsm.mapping")
+mappings_spec <- gsm.mapping::CombineSpecs(mappings_wf)
+metrics_wf <- c(
+  gsm.core::MakeWorkflowList(strPath = "workflow/2_metrics", strPackage = "gsm.kri"),
+  gsm.core::MakeWorkflowList(strPath = "workflow/2_metrics", strPackage = "gsm.qtl")
+)
+reporting_wf <- gsm.core::MakeWorkflowList(strPath = "workflow/3_reporting", strPackage = "gsm.reporting")
+
 for(snap in seq_along(basic_sim)){
   lSource <- basic_sim[[snap]]
 
-  mappings_wf <- gsm.core::MakeWorkflowList(strNames = core_mappings, strPath = "workflow/1_mappings", strPackage = "gsm.mapping")
-  mappings_spec <- gsm.mapping::CombineSpecs(mappings_wf)
   lRaw <- gsm.mapping::Ingest(lSource, mappings_spec)
 
   # Step 1 - Create Mapped Data Layer - filter, aggregate and join raw data to create mapped data layer
   mapped <- gsm.core::RunWorkflows(mappings_wf, lRaw)
 
   # Step 2 - Create Metrics - calculate metrics using mapped data
-  metrics_wf <- gsm.core::MakeWorkflowList(strPath = "workflow/2_metrics", strPackage = "gsm.kri")
   analyzed[[snap]] <- gsm.core::RunWorkflows(metrics_wf, mapped)
 
   # Step 3 - Create Reporting Layer - create reports using metrics data
-  reporting_wf <- gsm.core::MakeWorkflowList(strPath = "workflow/3_reporting", strPackage = "gsm.reporting")
-  reporting[[snap]] <- gsm.core::RunWorkflows(reporting_wf, c(mapped, list(lAnalyzed = analyzed[[snap]],
-                                                                           lWorkflows = metrics_wf)))
+  reporting[[snap]] <- gsm.core::RunWorkflows(reporting_wf, c(mapped, list(lAnalyzed = analyzed[[snap]], lWorkflows = metrics_wf)))
   reporting[[snap]]$Reporting_Results$SnapshotDate = dates[snap]
   reporting[[snap]]$Reporting_Bounds$SnapshotDate = dates[snap]
 }
