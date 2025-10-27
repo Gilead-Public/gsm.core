@@ -69,13 +69,13 @@ lReporting_site <- list()
 lReporting_country <- list()
 
 lReporting_site$Reporting_Results <- all_reportingResults %>%
-  filter(GroupLevel=="Site")
+  filter(GroupLevel %in% c("Study","Site"))
 lReporting_site$Reporting_Groups <- all_reportingGroups %>%
   filter(GroupLevel %in% c("Study","Site"))
 lReporting_site$Reporting_Bounds <-  all_reportingBounds %>%
   filter(stringr::str_detect(MetricID, "Analysis_kri"))
 lReporting_site$Reporting_Metrics <- all_reportingMetrics %>%
-  filter(GroupLevel=="Site")
+  filter(GroupLevel %in% c("Study","Site"))
 
 lReporting_country$Reporting_Results <- all_reportingResults %>%
   filter(GroupLevel=="Country")
