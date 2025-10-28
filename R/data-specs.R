@@ -69,6 +69,8 @@
 #'   \item{Priority}{Priority in workflow}
 #'   \item{AnalysisType}{analysis type}
 #'   \item{Flag}{thresholds to be used for vFlags argument}
+#'   \items{nNumDeviations}{Number of standard deviations to flag QTL}
+#'   \items{nPropRate}{Proposed threshold}
 #' }
 #' @source Generated from `reportingMetrics.csv` dataset in the `gsm.core` package.
 "reportingMetrics"
@@ -149,6 +151,8 @@
 #'   \item{Priority}{Priority in workflow}
 #'   \item{AnalysisType}{analysis type}
 #'   \item{Flag}{thresholds to be used for vFlags argument}
+#'   \items{nNumDeviations}{Number of standard deviations to flag QTL}
+#'   \items{nPropRate}{Proposed threshold}
 #' }
 #' @source Generated from `reportingMetrics_country.csv` dataset in the `gsm.core` package.
 "reportingMetrics_country"

@@ -24,6 +24,8 @@ A data frame with 13 rows and 19 columns:
 \item{Priority}{Priority in workflow}
 \item{AnalysisType}{analysis type}
 \item{Flag}{thresholds to be used for vFlags argument}
+\items{nNumDeviations}{Number of standard deviations to flag QTL}
+\items{nPropRate}{Proposed threshold}
 }
 }
 \source{
