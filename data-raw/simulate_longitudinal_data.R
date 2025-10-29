@@ -67,15 +67,16 @@ all_reportingMetrics <- reporting[[snap]]$Reporting_Metrics
 #save site and country data separately
 lReporting_site <- list()
 lReporting_country <- list()
+lReporting_study <- list()
 
 lReporting_site$Reporting_Results <- all_reportingResults %>%
-  filter(GroupLevel %in% c("Study","Site"))
+  filter(GroupLevel %in% c("Site"))
 lReporting_site$Reporting_Groups <- all_reportingGroups %>%
-  filter(GroupLevel %in% c("Study","Site"))
+  filter(GroupLevel %in% c("Study", "Site"))
 lReporting_site$Reporting_Bounds <-  all_reportingBounds %>%
   filter(stringr::str_detect(MetricID, "Analysis_kri"))
 lReporting_site$Reporting_Metrics <- all_reportingMetrics %>%
-  filter(GroupLevel %in% c("Study","Site"))
+  filter(GroupLevel %in% c("Site"))
 
 lReporting_country$Reporting_Results <- all_reportingResults %>%
   filter(GroupLevel=="Country")
@@ -85,6 +86,15 @@ lReporting_country$Reporting_Bounds <- all_reportingBounds %>%
   filter(stringr::str_detect(MetricID, "Analysis_cou"))
 lReporting_country$Reporting_Metrics <- all_reportingMetrics %>%
   filter(GroupLevel=="Country")
+
+lReporting_study$Reporting_Results <- all_reportingResults %>%
+  filter(GroupLevel=="Study")
+lReporting_study$Reporting_Groups <- all_reportingGroups %>%
+  filter(GroupLevel%in% c("Study"))
+lReporting_study$Reporting_Bounds <- all_reportingBounds %>%
+  filter(stringr::str_detect(MetricID, "Analysis_qtl"))
+lReporting_study$Reporting_Metrics <- all_reportingMetrics %>%
+  filter(GroupLevel=="Study")
 
 ## test out the data on a report
 # wf_report_site <- MakeWorkflowList(strNames = "report_kri_site", strPackage = "gsm.kri")
@@ -142,4 +152,18 @@ write.csv(file = "data-raw/reportingMetrics_country.csv",
           row.names = F)
 write.csv(file = "data-raw/reportingResults_country.csv",
           x = lReporting_country$Reporting_Results,
+          row.names = F)
+
+##study
+write.csv(file = "data-raw/reportingGroups_study.csv",
+          x = lReporting_study$Reporting_Groups,
+          row.names = F)
+write.csv(file = "data-raw/reportingBounds_study.csv",
+          x = lReporting_study$Reporting_Bounds,
+          row.names = F)
+write.csv(file = "data-raw/reportingMetrics_study.csv",
+          x = lReporting_study$Reporting_Metrics,
+          row.names = F)
+write.csv(file = "data-raw/reportingResults_study.csv",
+          x = lReporting_study$Reporting_Results,
           row.names = F)

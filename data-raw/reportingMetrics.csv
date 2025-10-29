@@ -13,5 +13,3 @@
 "Analysis","kri0012","Site","SF","Screen Failure Rate","Screen Failures","Screened Subjects","Normal Approximation","binary","Adjusted Z-Score","-3,-2,2,3",3,"Denominator",0,"-2,-1,0,1,2","0,0,0,8,16",NA,NA,"Analysis_kri0012"
 "Analysis","kri0013","Site","PK","PK Collection Compliance Rate","PK Samples Collected","PK Samples Expected","Identity","identity","PK Collection Compliance Rate","0.9,0.85",3,"Difference",0,"-2,-1,0",NA,NA,NA,"Analysis_kri0013"
 "Analysis","srs0001","Site","SRS","Site Risk Score","Weight","Maximum Weights","Identity","identity","Normalized Risk Score",NA,NA,NA,4,NA,NA,NA,NA,"Analysis_srs0001"
-"Analysis","qtl0001","Study","IE","Inclusion/Exclusion Violation Rate","Number of subjects ineligible","Number of subjects enrolled","Normal Approximation","binary","Adjusted Z-Score",NA,NA,NA,0,NA,NA,0.5,3,"Analysis_qtl0001"
-"Analysis","qtl0002","Study","SDSC","Study Discontinuation Rate","Subjects Discontinued - Study","Enrolled Subjects","Normal Approximation","binary","Adjusted Z-Score",NA,NA,NA,0,NA,NA,0.07,3,"Analysis_qtl0002"
