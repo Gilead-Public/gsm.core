@@ -1,3 +1,7 @@
+# gsm.core v1.1.6
+
+This patch release adds site risk score metric to `reportingResults` and updates documentation.
+
 # gsm.core v1.1.5
 
 This patch release enhances the `Flag` function to support `vRiskScoreWeight` which are weights to apply to each flag value. It also adds new contributor guidelines and standardized issue templates.
