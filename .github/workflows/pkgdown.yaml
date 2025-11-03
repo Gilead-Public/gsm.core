@@ -1,12 +1,15 @@
+# Deploy the pkgdown site (often a test version).
+
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
+  pull_request:
   workflow_dispatch:
 
-name: pkgdown-main
+name: pkgdown
 
 jobs:
-  pkgdown-main:
+  pkgdown:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -14,9 +17,13 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
+      - uses: actions/checkout@v5
+
+      - name: Set Development Mode Env Var
+        if: github.ref_name != 'main'
+        run: |
+          echo "Ref is '${{ github.ref_name }}', setting PKGDOWN_DEV_MODE=devel"
+          echo "PKGDOWN_DEV_MODE=devel" >> $GITHUB_ENV
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -69,8 +76,28 @@ jobs:
             strOutputFile = "report_kri_country.html"
           )
 
+      - name: Build site
+        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        shell: Rscript {0}
 
-      - name: Deploy pkgdown
+      - name: Deploy PR preview 🧪
+        if: github.event_name == 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          # Don't clean the whole branch, just the target folder
+          clean: false
+          branch: gh-pages
+          folder: docs
+          # Deploy to a subdirectory named after the PR number
+          target-folder: pr/${{ github.event.number }}
+
+      - name: Give PR site URL 🌐
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "🌐 URL: https://gilead-biostats.github.io/gsm.core/pr/${{ github.event.number }}/dev"
+
+      - name: Deploy pkgdown 📃
+        if: github.event_name != 'pull_request'
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
