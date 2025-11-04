@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gsm.core</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>reportingMetrics_country Dataset</h1>
-      <small class="dont-index">Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/dev/R/data-specs.R" class="external-link"><code>R/data-specs.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/main/R/data-specs.R" class="external-link"><code>R/data-specs.R</code></a></small>
       <div class="d-none name"><code>reportingMetrics_country.Rd</code></div>
     </div>
 
@@ -50,7 +50,7 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 13 rows and 16 columns:</p><dl><dt>MetricID</dt>
+    <p>A data frame with 13 rows and 17 columns:</p><dl><dt>MetricID</dt>
 <dd><p>unique metric identifier</p></dd>
 
 <dt>GroupLevel</dt>
@@ -79,6 +79,9 @@
 
 <dt>Threshold</dt>
 <dd><p>thresholds to be used for bounds and flags</p></dd>
+
+<dt>RiskScoreWeight</dt>
+<dd><p>weight assigned to the risk score</p></dd>
 
 <dt>AccrualThreshold</dt>
 <dd><p>minimum numerator required to return a score and calculate a flag</p></dd>
