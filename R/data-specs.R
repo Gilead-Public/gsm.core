@@ -62,6 +62,7 @@
 #'   \item{Score}{type of score reported}
 #'   \item{Type}{statistical outcome type}
 #'   \item{Threshold}{thresholds to be used for bounds and flags}
+#'   \item{RiskScoreWeight}{weight assigned to the risk score}
 #'   \item{AccrualThreshold}{minimum numerator required to return a score and calculate a flag}
 #'   \item{AccrualMetric}{metric used to apply threshold to}
 #'   \item{ID}{ID}
@@ -141,6 +142,7 @@
 #'   \item{Score}{type of score reported}
 #'   \item{Type}{statistical outcome type}
 #'   \item{Threshold}{thresholds to be used for bounds and flags}
+#'   \item{RiskScoreWeight}{weight assigned to the risk score}
 #'   \item{AccrualThreshold}{minimum numerator required to return a score and calculate a flag}
 #'   \item{AccrualMetric}{metric used to apply threshold to}
 #'   \item{ID}{ID}
