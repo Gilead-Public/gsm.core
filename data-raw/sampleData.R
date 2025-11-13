@@ -43,3 +43,24 @@ reportingResults_country$GroupID <- as.character(reportingResults_country$GroupI
 reportingResults_country$SnapshotDate <- as.Date(reportingResults_country$SnapshotDate)
 usethis::use_data(reportingResults_country, overwrite = TRUE, compress = "gzip")
 rm(reportingResults_country)
+
+
+## study data
+reportingGroups_study <- read.csv("data-raw/reportingGroups_study.csv")
+usethis::use_data(reportingGroups_study, overwrite = TRUE, compress = "gzip")
+rm(reportingGroups_study)
+
+reportingBounds_study <- read.csv("data-raw/reportingBounds_study.csv")
+reportingBounds_study$SnapshotDate <- as.Date(reportingBounds_study$SnapshotDate)
+usethis::use_data(reportingBounds_study, overwrite = TRUE, compress = "xz")
+rm(reportingBounds_study)
+
+reportingMetrics_study <- read.csv("data-raw/reportingMetrics_study.csv")
+usethis::use_data(reportingMetrics_study, overwrite = TRUE, compress = "gzip")
+rm(reportingMetrics_study)
+
+reportingResults_study <- read.csv("data-raw/reportingResults_study.csv")
+reportingResults_study$GroupID <- as.character(reportingResults_study$GroupID)
+reportingResults_study$SnapshotDate <- as.Date(reportingResults_study$SnapshotDate)
+usethis::use_data(reportingResults_study, overwrite = TRUE, compress = "gzip")
+rm(reportingResults_study)

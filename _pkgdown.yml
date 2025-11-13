@@ -80,5 +80,9 @@ reference:
       - reportingGroups_country
       - reportingMetrics_country
       - reportingResults_country
+      - reportingBounds_study
+      - reportingGroups_study
+      - reportingMetrics_study
+      - reportingResults_study
       - lSource
 
