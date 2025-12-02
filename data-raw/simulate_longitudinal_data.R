@@ -6,6 +6,7 @@ library(gsm.core)
 library(gsm.mapping)
 library(gsm.datasim)
 library(gsm.kri)
+library(gsm.reporting)
 library(gsm.qtl)
 library(dplyr)
 library(stringr)
@@ -51,7 +52,7 @@ for(snap in seq_along(basic_sim)){
   mapped <- gsm.core::RunWorkflows(mappings_wf, lRaw)
 
   # Step 2 - Create Metrics - calculate metrics using mapped data
-  analyzed[[snap]] <- gsm.core::RunWorkflows(metrics_wf, mapped)
+  analyzed[[snap]] <- gsm.core::RunWorkflows(metrics_wf, c(mapped, list(lWorkflows = metrics_wf)))
 
   # Step 3 - Create Reporting Layer - create reports using metrics data
   reporting[[snap]] <- gsm.core::RunWorkflows(reporting_wf, c(mapped, list(lAnalyzed = analyzed[[snap]], lWorkflows = metrics_wf)))
