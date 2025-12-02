@@ -5,7 +5,7 @@
 \alias{reportingResults_country}
 \title{reportingResults_country Dataset}
 \format{
-A data frame with 116 rows and 10 columns:
+A data frame with 125 rows and 10 columns:
 \describe{
 \item{GroupID}{grouping variable}
 \item{GroupLevel}{level of grouping variable}

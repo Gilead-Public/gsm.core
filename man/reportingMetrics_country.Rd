@@ -5,7 +5,7 @@
 \alias{reportingMetrics_country}
 \title{reportingMetrics_country Dataset}
 \format{
-A data frame with 13 rows and 19 columns:
+A data frame with 14 rows and 19 columns:
 \describe{
 \item{MetricID}{unique metric identifier}
 \item{GroupLevel}{level of grouping variable}
