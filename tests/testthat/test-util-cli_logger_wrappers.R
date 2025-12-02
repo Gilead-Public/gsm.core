@@ -2,7 +2,7 @@
 test_that("Use cli style messages via logger", {
   # Condense empty lines to stabilize snapshots between testthat versions.
   cleaner <- function(txt) {
-    txt <- stringr::str_trim(txt)
+    txt <- gsub("(^\\s+)|(\\s+$)", "", txt)
     txt[nzchar(txt)]
   }
 
