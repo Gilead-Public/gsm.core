@@ -136,6 +136,38 @@
 </ul>
 </div>
 <div class="section level1">
+<h1 id="getting-started-with-good-statistical-monitoring-faqs">Getting Started with Good Statistical Monitoring (FAQs)<a class="anchor" aria-label="anchor" href="#getting-started-with-good-statistical-monitoring-faqs"></a>
+</h1>
+<p><strong>How do I calculate a metric?</strong></p>
+<ul>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html">Step-by-Step Analysis Workflow Vignette</a> walks users through the mechanics of the functions that produce all of the analysis workflow output and provides a step-by-step process and data flow for creating metrics within a single study.</li>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html" class="external-link">Adverse Event KRI Cookbook Example</a> demonstrates how to customize and visualize metrics for a single study.</li>
+</ul>
+<p><strong>How do I evaluate a study?</strong></p>
+<ul>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.core/articles/DataModel.html">Data Model Vignette</a> explains the data pipeline used to calculate multiple metrics and generate study-level reports.</li>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html" class="external-link">Adverse Event Workflow Example</a> demonstrates how to create a configurable workflow using YAML to define the analysis pipeline.</li>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html" class="external-link">Reporting Workflow Example</a> demonstrates a complete workflow from raw data to KRI reports using standard metrics.</li>
+</ul>
+<p><strong>How do I customize my study?</strong></p>
+<ul>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html">gsm Extensions Vignette</a> describes how to extend {gsm.core} by creating new ‘modules’, including metrics, reports and shiny apps that can be run using the standard gsm pipeline.</li>
+</ul>
+<p><strong>What reports are available for my study?</strong></p>
+<ul>
+<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_site.html" class="external-link">Site KRI Report</a></li>
+<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_country.html" class="external-link">Country KRI Report</a></li>
+<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html" class="external-link">Eligibility Report</a></li>
+<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html" class="external-link">Cross-Study Site Risk Score Report</a></li>
+</ul>
+</div>
+<div class="section level1">
 <h1 id="quality-control">Quality Control<a class="anchor" aria-label="anchor" href="#quality-control"></a>
 </h1>
 <p>Since {gsm.core} is designed for use in a <a href="https://en.wikipedia.org/wiki/Good_clinical_practice" class="external-link">GCP</a> framework, we have conducted extensive quality control as part of our development process. In particular, we do the following:</p>

@@ -116,6 +116,54 @@ below:
 - [Country
   Report](https://gilead-biostats.github.io/gsm.core/report_kri_country.html)
 
+# Getting Started with Good Statistical Monitoring (FAQs)
+
+**How do I calculate a metric?**
+
+- [Step-by-Step Analysis Workflow
+  Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html)
+  walks users through the mechanics of the functions that produce all of
+  the analysis workflow output and provides a step-by-step process and
+  data flow for creating metrics within a single study.
+- [Adverse Event KRI Cookbook
+  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html)
+  demonstrates how to customize and visualize metrics for a single
+  study.
+
+**How do I evaluate a study?**
+
+- [Data Model
+  Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html)
+  explains the data pipeline used to calculate multiple metrics and
+  generate study-level reports.
+- [Adverse Event Workflow
+  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html)
+  demonstrates how to create a configurable workflow using YAML to
+  define the analysis pipeline.
+- [Reporting Workflow
+  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html)
+  demonstrates a complete workflow from raw data to KRI reports using
+  standard metrics.
+
+**How do I customize my study?**
+
+- [gsm Extensions
+  Vignette](https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html)
+  describes how to extend {gsm.core} by creating new ‘modules’,
+  including metrics, reports and shiny apps that can be run using the
+  standard gsm pipeline.
+
+**What reports are available for my study?**
+
+- [Site KRI
+  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_site.html)
+- [Country KRI
+  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_country.html)
+- [Eligibility
+  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html)
+- [Cross-Study Site Risk Score
+  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html)
+
 # Quality Control
 
 Since {gsm.core} is designed for use in a
