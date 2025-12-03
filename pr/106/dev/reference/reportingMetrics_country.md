@@ -10,7 +10,7 @@ reportingMetrics_country
 
 ## Format
 
-A data frame with 14 rows and 19 columns:
+A data frame with 14 rows and 20 columns:
 
 - MetricID:
 
@@ -79,6 +79,11 @@ A data frame with 14 rows and 19 columns:
 - Flag:
 
   thresholds to be used for vFlags argument
+
+- FlagCol:
+
+  Column used for
+  [`Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md)
 
 - nNumDeviations:
 
