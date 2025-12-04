@@ -1,4 +1,4 @@
-"Type","ID","GroupLevel","Abbreviation","Metric","Numerator","Denominator","Model","AnalysisType","Score","Threshold","AccrualThreshold","AccrualMetric","Priority","Flag","RiskScoreWeight","FlagCol","nPropRate","nNumDeviations","MetricID"
+"Type","ID","GroupLevel","Abbreviation","Metric","Numerator","Denominator","Model","AnalysisType","Score","Threshold","AccrualThreshold","AccrualMetric","Priority","Flag","RiskScoreWeight","ScoreCol","nPropRate","nNumDeviations","MetricID"
 "Analysis","cou0001","Country","AE","Adverse Event Rate","Adverse Events","Days on Study","Normal Approximation","rate","Adjusted Z-Score","-2,-1,2,3",30,"Denominator",0,NA,NA,NA,NA,NA,"Analysis_cou0001"
 "Analysis","cou0002","Country","SAE","Serious Adverse Event Rate","Serious Adverse Events","Days on Study","Normal Approximation","rate","Adjusted Z-Score","-2,-1,2,3",30,"Denominator",0,NA,NA,NA,NA,NA,"Analysis_cou0002"
 "Analysis","cou0003","Country","PD","Non-Important Protocol Deviation Rate","Non-Important Protocol Deviations","Days on Study","Normal Approximation","rate","Adjusted Z-Score","-3,-2,2,3",30,"Denominator",0,NA,NA,NA,NA,NA,"Analysis_cou0003"
