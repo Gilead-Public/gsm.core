@@ -10,7 +10,7 @@ reportingBounds
 
 ## Format
 
-A data frame with 33230 rows and 8 columns:
+A data frame with 31712 rows and 8 columns:
 
 - Threshold:
 

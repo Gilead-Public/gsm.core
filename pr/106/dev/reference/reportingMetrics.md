@@ -80,10 +80,10 @@ A data frame with 15 rows and 20 columns:
 
   thresholds to be used for vFlags argument
 
-- FlagCol:
+- ScoreCol:
 
   Column used for
-  [`Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md)
+  [`Analyze_Identity()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Identity.md)
 
 - nNumDeviations:
 
