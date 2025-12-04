@@ -69,7 +69,7 @@
 #'   \item{Priority}{Priority in workflow}
 #'   \item{AnalysisType}{analysis type}
 #'   \item{Flag}{thresholds to be used for vFlags argument}
-#'   \item{FlagCol}{Column used for `Flag()`}
+#'   \item{ScoreCol}{Column used for `Analyze_Identity()`}
 #'   \item{nNumDeviations}{Number of standard deviations to flag QTL}
 #'   \item{nPropRate}{Proposed threshold}
 #' }
@@ -152,7 +152,7 @@
 #'   \item{Priority}{Priority in workflow}
 #'   \item{AnalysisType}{analysis type}
 #'   \item{Flag}{thresholds to be used for vFlags argument}
-#'   \item{FlagCol}{Column used for `Flag()`}
+#'   \item{ScoreCol}{Column used for `Analyze_Identity()`}
 #'   \item{nNumDeviations}{Number of standard deviations to flag QTL}
 #'   \item{nPropRate}{Proposed threshold}
 #' }
@@ -234,7 +234,7 @@
 #'   \item{Priority}{Priority in workflow}
 #'   \item{AnalysisType}{analysis type}
 #'   \item{Flag}{thresholds to be used for vFlags argument}
-#'   \item{FlagCol}{Column used for `Flag()`}
+#'   \item{ScoreCol}{Column used for `Analyze_Identity()`}
 #'   \item{nNumDeviations}{Number of standard deviations to flag QTL}
 #'   \item{nPropRate}{Proposed threshold}
 #' }

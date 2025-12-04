@@ -24,7 +24,7 @@ A data frame with 14 rows and 20 columns:
 \item{Priority}{Priority in workflow}
 \item{AnalysisType}{analysis type}
 \item{Flag}{thresholds to be used for vFlags argument}
-\item{FlagCol}{Column used for \code{Flag()}}
+\item{ScoreCol}{Column used for \code{Analyze_Identity()}}
 \item{nNumDeviations}{Number of standard deviations to flag QTL}
 \item{nPropRate}{Proposed threshold}
 }
