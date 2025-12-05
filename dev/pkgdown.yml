@@ -2,12 +2,11 @@ pandoc: 3.1.11
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  articles/Cookbook: Cookbook.html
   articles/DataAnalysis: DataAnalysis.html
   articles/DataModel: DataModel.html
   articles/gsmExtensions: gsmExtensions.html
   KRIMethod: KRIMethod.html
-last_built: 2025-11-13T19:12Z
+last_built: 2025-12-05T15:36Z
 urls:
   reference: https://gilead-biostats.github.io/gsm.core/reference
   article: https://gilead-biostats.github.io/gsm.core/articles

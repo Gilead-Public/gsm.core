@@ -2,11 +2,6 @@
 
 ### Articles
 
-- [Cookbook](https://gilead-biostats.github.io/gsm.core/dev/articles/Cookbook.md):
-
-  Sample code showing how to use the Good Statistical Monitoring {gsm}
-  suite of packages using sample data from {gsm.core}.
-
 - [Step-by-Step Analysis
   Workflow](https://gilead-biostats.github.io/gsm.core/dev/articles/DataAnalysis.md):
 
