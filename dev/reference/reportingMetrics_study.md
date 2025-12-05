@@ -10,7 +10,7 @@ reportingMetrics_study
 
 ## Format
 
-A data frame with 2 rows and 19 columns:
+A data frame with 2 rows and 20 columns:
 
 - MetricID:
 
@@ -79,6 +79,11 @@ A data frame with 2 rows and 19 columns:
 - Flag:
 
   thresholds to be used for vFlags argument
+
+- ScoreCol:
+
+  Column used for
+  [`Analyze_Identity()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Identity.md)
 
 - nNumDeviations:
 
