@@ -78,30 +78,41 @@ Full reports for a sample trial run with [`{clindata}`](https://github.com/Gilea
 - [Site Report](https://gilead-biostats.github.io/gsm.core/report_kri_site.html)
 - [Country Report](https://gilead-biostats.github.io/gsm.core/report_kri_country.html)
 
-# Getting Started with Good Statistical Monitoring (FAQs)
+# Getting Started 
 
-**How do I calculate a metric?**
+Interested in using {gsm}? Key resources are provided in response to the FAQs below. 
 
-- [Step-by-Step Analysis Workflow Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html) walks users through the mechanics of the functions that produce all of the analysis workflow output and provides a step-by-step process and data flow for creating metrics within a single study.
-- [Adverse Event KRI Cookbook Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html) demonstrates how to customize and visualize metrics for a single study.
+## How do I calculate a metric?
 
-**How do I evaluate a study?**
+See the "Process Overview" section above and then check out these articles: 
+
+- [Step-by-Step Analysis Workflow Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html) walks users the step-by-step process for creating metrics (KRIs, QTLs, etc) in {gsm}.
+- [Adverse Event KRI Cookbook Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html) provides hands-on examples of how to customize KRI metrics related to Adverse events.
+
+## How do I evaluate a study?
+
+The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. See the articles below for details and examples. 
 
 - [Data Model Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html) explains the data pipeline used to calculate multiple metrics and generate study-level reports.
 - [Adverse Event Workflow Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html) demonstrates how to create a configurable workflow using YAML to define the analysis pipeline.
 - [Reporting Workflow Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html) demonstrates a complete workflow from raw data to KRI reports using standard metrics.
 
-**How do I customize my study?**
+## How do I customize my study?
+
+The {gsm} framework is designed to be highly modular and customizable. The sections above show examples of customized metrics and workflows. It's also straightfoward to add entire custom modules that add new mappings, metrics and reports. See the vignette below for details. 
 
 - [gsm Extensions Vignette](https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html) describes how to extend {gsm.core} by creating new ‘modules’, including metrics, reports and shiny apps that can be run using the standard gsm pipeline.
 
-**What reports are available for my study?**
+## What reports are available for my study?
+
+Here are links to sample reports that are available in the {gsm} family of pacakges. We're working on adding more all the time and will continue adding examples to this list as they are released. 
 
 - [Site KRI Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_site.html)
 - [Country KRI Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_country.html)
 - [Eligibility  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html)
 - [Cross-Study Site Risk Score Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html)
-
+- [QTL Report](https://gilead-biostats.github.io/gsm.qtl/report_qtl.html)
+- [Good Statistical Monitoring Shiny App](https://rinpharma.shinyapps.io/gsm-app/)
 
 # Quality Control
 
