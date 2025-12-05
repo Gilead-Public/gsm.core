@@ -35,13 +35,6 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-sample-reports" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Sample Reports</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-sample-reports">
-<li><a class="dropdown-item" href="report_kri_site.html">Site Report</a></li>
-    <li><a class="dropdown-item" href="report_kri_country.html">Country Report</a></li>
-  </ul>
-</li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
@@ -141,6 +134,57 @@
 <li><a href="https://gilead-biostats.github.io/gsm.core/report_kri_site.html">Site Report</a></li>
 <li><a href="https://gilead-biostats.github.io/gsm.core/report_kri_country.html">Country Report</a></li>
 </ul>
+</div>
+<div class="section level1">
+<h1 id="getting-started">Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
+</h1>
+<p>Interested in using {gsm}? Key resources are provided in response to the FAQs below.</p>
+<div class="section level2">
+<h2 id="how-do-i-calculate-a-metric">How do I calculate a metric?<a class="anchor" aria-label="anchor" href="#how-do-i-calculate-a-metric"></a>
+</h2>
+<p>See the “Process Overview” section above and then check out these articles:</p>
+<ul>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html">Step-by-Step Analysis Workflow Vignette</a> walks users the step-by-step process for creating metrics (KRIs, QTLs, etc) in {gsm}.</li>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html" class="external-link">Adverse Event KRI Cookbook Example</a> provides hands-on examples of how to customize KRI metrics related to Adverse events.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="how-do-i-evaluate-a-study">How do I evaluate a study?<a class="anchor" aria-label="anchor" href="#how-do-i-evaluate-a-study"></a>
+</h2>
+<p>The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. See the articles below for details and examples.</p>
+<ul>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.core/articles/DataModel.html">Data Model Vignette</a> explains the data pipeline used to calculate multiple metrics and generate study-level reports.</li>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html" class="external-link">Adverse Event Workflow Example</a> demonstrates how to create a configurable workflow using YAML to define the analysis pipeline.</li>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html" class="external-link">Reporting Workflow Example</a> demonstrates a complete workflow from raw data to KRI reports using standard metrics.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="how-do-i-customize-my-study">How do I customize my study?<a class="anchor" aria-label="anchor" href="#how-do-i-customize-my-study"></a>
+</h2>
+<p>The {gsm} framework is designed to be highly modular and customizable. The sections above show examples of customized metrics and workflows. It’s also straightfoward to add entire custom modules that add new mappings, metrics and reports. See the vignette below for details.</p>
+<ul>
+<li>
+<a href="https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html">gsm Extensions Vignette</a> describes how to extend {gsm.core} by creating new ‘modules’, including metrics, reports and shiny apps that can be run using the standard gsm pipeline.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="what-reports-are-available-for-my-study">What reports are available for my study?<a class="anchor" aria-label="anchor" href="#what-reports-are-available-for-my-study"></a>
+</h2>
+<p>Here are links to sample reports that are available in the {gsm} family of pacakges. We’re working on adding more all the time and will continue adding examples to this list as they are released.</p>
+<ul>
+<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_site.html" class="external-link">Site KRI Report</a></li>
+<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_country.html" class="external-link">Country KRI Report</a></li>
+<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html" class="external-link">Eligibility Report</a></li>
+<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html" class="external-link">Cross-Study Site Risk Score Report</a></li>
+<li><a href="https://gilead-biostats.github.io/gsm.qtl/report_qtl.html" class="external-link">QTL Report</a></li>
+<li><a href="https://rinpharma.shinyapps.io/gsm-app/" class="external-link">Good Statistical Monitoring Shiny App</a></li>
+</ul>
+</div>
 </div>
 <div class="section level1">
 <h1 id="quality-control">Quality Control<a class="anchor" aria-label="anchor" href="#quality-control"></a>
