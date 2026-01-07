@@ -1,0 +1,28 @@
+# Articles
+
+### Articles
+
+- [Step-by-Step Analysis
+  Workflow](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.md):
+
+  This vignette walks users through the mechanics of the functions that
+  produce all of the Analysis workflow output within the
+  [gsm.core](https://gilead-biostats.github.io/gsm.core) package.
+
+- [Data
+  Model](https://gilead-biostats.github.io/gsm.core/articles/DataModel.md):
+
+  A vignette detailing the data model used in the gsm pipeline.
+
+- [gsm
+  Extensions](https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.md):
+
+  This vignette describes how to extend {gsm.core} by creating new
+  ‘modules’, including metrics, reports and shiny apps that can be run
+  using the standard gsm pipeline.
+
+- [KRI
+  Method](https://gilead-biostats.github.io/gsm.core/articles/KRIMethod.md):
+
+  This vignette outlines the statistical methods used to evaluate Key
+  Risk Indicators (KRIs) in {gsm}.

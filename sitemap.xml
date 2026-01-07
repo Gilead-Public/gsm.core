@@ -2,7 +2,6 @@
 <url><loc>https://gilead-biostats.github.io/gsm.core/404.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/CONTRIBUTING.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/LICENSE.html</loc></url>
-<url><loc>https://gilead-biostats.github.io/gsm.core/articles/Cookbook.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/articles/DataModel.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/articles/KRIMethod.html</loc></url>
@@ -44,15 +43,17 @@
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/pipe.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingBounds.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingBounds_country.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingBounds_study.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingGroups.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingGroups_country.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingGroups_study.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingMetrics.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingMetrics_country.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingMetrics_study.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingResults.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingResults_country.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/reportingResults_study.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/shared-params.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/stop_if.html</loc></url>
-<url><loc>https://gilead-biostats.github.io/gsm.core/report_kri_country.html</loc></url>
-<url><loc>https://gilead-biostats.github.io/gsm.core/report_kri_site.html</loc></url>
 </urlset>
 
