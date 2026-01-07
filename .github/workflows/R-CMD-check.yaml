@@ -29,13 +29,10 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - name: Install XQuartz
-        run: |
-          if command -v brew >/dev/null 2>&1; then
-            brew install --cask xquartz
-          else
-            echo "Homebrew is not installed. Skipping XQuartz install."
-          fi
+      - name: Install XQuartz (macOS only)
+        if: runner.os == 'macOS'
+        run: brew install --cask xquartz
+
       - uses: actions/checkout@v5
 
       - uses: r-lib/actions/setup-pandoc@v2
