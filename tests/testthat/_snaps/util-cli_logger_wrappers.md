@@ -3,7 +3,6 @@
     Code
       LogMessage(level = "info", message = "cli style info", cli_detail = "h1")
     Message
-      
       -- cli style info --------------------------------------------------------------
 
 ---
@@ -11,17 +10,14 @@
     Code
       LogMessage(level = "info", message = "cli style info", cli_detail = "h2")
     Message
-      
       -- cli style info --
-      
 
 ---
 
     Code
       LogMessage(level = "info", message = "cli style info", cli_detail = "h3")
     Message
-      
-      -- cli style info 
+      -- cli style info
 
 ---
 

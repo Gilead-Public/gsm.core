@@ -5,7 +5,7 @@
 \alias{reportingMetrics_country}
 \title{reportingMetrics_country Dataset}
 \format{
-A data frame with 13 rows and 17 columns:
+A data frame with 14 rows and 20 columns:
 \describe{
 \item{MetricID}{unique metric identifier}
 \item{GroupLevel}{level of grouping variable}
@@ -24,6 +24,9 @@ A data frame with 13 rows and 17 columns:
 \item{Priority}{Priority in workflow}
 \item{AnalysisType}{analysis type}
 \item{Flag}{thresholds to be used for vFlags argument}
+\item{ScoreCol}{Column used for \code{Analyze_Identity()}}
+\item{nNumDeviations}{Number of standard deviations to flag QTL}
+\item{nPropRate}{Proposed threshold}
 }
 }
 \source{

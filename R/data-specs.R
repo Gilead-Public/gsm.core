@@ -69,6 +69,9 @@
 #'   \item{Priority}{Priority in workflow}
 #'   \item{AnalysisType}{analysis type}
 #'   \item{Flag}{thresholds to be used for vFlags argument}
+#'   \item{ScoreCol}{Column used for `Analyze_Identity()`}
+#'   \item{nNumDeviations}{Number of standard deviations to flag QTL}
+#'   \item{nPropRate}{Proposed threshold}
 #' }
 #' @source Generated from `reportingMetrics.csv` dataset in the `gsm.core` package.
 "reportingMetrics"
@@ -149,6 +152,9 @@
 #'   \item{Priority}{Priority in workflow}
 #'   \item{AnalysisType}{analysis type}
 #'   \item{Flag}{thresholds to be used for vFlags argument}
+#'   \item{ScoreCol}{Column used for `Analyze_Identity()`}
+#'   \item{nNumDeviations}{Number of standard deviations to flag QTL}
+#'   \item{nPropRate}{Proposed threshold}
 #' }
 #' @source Generated from `reportingMetrics_country.csv` dataset in the `gsm.core` package.
 "reportingMetrics_country"
@@ -191,6 +197,87 @@
 #' @source Generated from `reportingResults_country.csv` dataset in the `gsm.core` package.
 "reportingResults_country"
 
+#' reportingGroups_study Dataset
+#'
+#'  `r lifecycle::badge("stable")`
+#'
+#' @format `r df_dim_desc(reportingGroups_study)`
+#' \describe{
+#'   \item{GroupID}{grouping variable}
+#'   \item{GroupLevel}{level of grouping variable}
+#'   \item{Param}{Parameter of interest for the group}
+#'   \item{Value}{Value of specified Param}
+#' }
+#' @source Generated from `reportingGroups_study.csv` dataset in the `gsm.core` package.
+"reportingGroups_study"
+
+#' reportingMetrics_study Dataset
+#'
+#'  `r lifecycle::badge("stable")`
+#'
+#' @format `r df_dim_desc(reportingMetrics_study)`
+#' \describe{
+#'   \item{MetricID}{unique metric identifier}
+#'   \item{GroupLevel}{level of grouping variable}
+#'   \item{Abbreviation}{abbreviation for the metric}
+#'   \item{Metric}{name of the metric}
+#'   \item{Numerator}{data source for the numerator}
+#'   \item{Denominator}{data source for the denominator}
+#'   \item{Model}{model used to calculate metric}
+#'   \item{Score}{type of score reported}
+#'   \item{Type}{statistical outcome type}
+#'   \item{Threshold}{thresholds to be used for bounds and flags}
+#'   \item{RiskScoreWeight}{weight assigned to the risk score}
+#'   \item{AccrualThreshold}{minimum numerator required to return a score and calculate a flag}
+#'   \item{AccrualMetric}{metric used to apply threshold to}
+#'   \item{ID}{ID}
+#'   \item{Priority}{Priority in workflow}
+#'   \item{AnalysisType}{analysis type}
+#'   \item{Flag}{thresholds to be used for vFlags argument}
+#'   \item{ScoreCol}{Column used for `Analyze_Identity()`}
+#'   \item{nNumDeviations}{Number of standard deviations to flag QTL}
+#'   \item{nPropRate}{Proposed threshold}
+#' }
+#' @source Generated from `reportingMetrics_study.csv` dataset in the `gsm.core` package.
+"reportingMetrics_study"
+
+#' reportingBounds_study Dataset
+#'
+#'  `r lifecycle::badge("stable")`
+#'
+#' @format `r df_dim_desc(reportingBounds_study)`
+#' \describe{
+#'   \item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
+#'   \item{Denominator}{calculated denominator value}
+#'   \item{LogDenominator}{calculated log denominator value}
+#'   \item{Numerator}{calculated numerator value}
+#'   \item{Metric}{calculated rate/metric value}
+#'   \item{MetricID}{unique metric identifier}
+#'   \item{StudyID}{unique study identifier}
+#'   \item{SnapshotDate}{date of the snapshot}
+#' }
+#' @source Generated from `reportingBounds_study.csv` dataset in the `gsm.core` package.
+"reportingBounds_study"
+
+#' reportingResults_study Dataset
+#'
+#'  `r lifecycle::badge("stable")`
+#'
+#' @format `r df_dim_desc(reportingResults_study)`
+#' \describe{
+#'   \item{GroupID}{grouping variable}
+#'   \item{GroupLevel}{level of grouping variable}
+#'   \item{Numerator}{number of flags in group}
+#'   \item{Denominator}{total subjects in group}
+#'   \item{Metric}{calculated rate/metric value}
+#'   \item{Score}{statistical score}
+#'   \item{Flag}{ordinal flag to be applied}
+#'   \item{MetricID}{unique metric identifier}
+#'   \item{StudyID}{unique study identifier}
+#'   \item{SnapshotDate}{date of the snapshot}
+#' }
+#' @source Generated from `reportingResults_study.csv` dataset in the `gsm.core` package.
+"reportingResults_study"
 
 #' lSource Dataset
 #'

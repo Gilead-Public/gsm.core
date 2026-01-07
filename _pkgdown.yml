@@ -11,19 +11,11 @@ navbar:
     left: [articles, Reports, reference, news]
     right: [search, github]
   components:
-    Reports:
-      text: Sample Reports
-      menu:
-        - text: Site Report
-          href: report_kri_site.html
-        - text: Country Report
-          href: report_kri_country.html
 
 
 articles:
   - title: Articles
     contents:
-      - articles/Cookbook
       - articles/DataAnalysis
       - articles/DataModel
       - articles/gsmExtensions
@@ -80,5 +72,9 @@ reference:
       - reportingGroups_country
       - reportingMetrics_country
       - reportingResults_country
+      - reportingBounds_study
+      - reportingGroups_study
+      - reportingMetrics_study
+      - reportingResults_study
       - lSource
 
