@@ -1,3 +1,8 @@
+# gsm.core v1.1.7
+
+This patch release adds the IE domain to the `lSource` .rda object used across example reports and workflows in other `gsm` ecosystem packages, introducing study-level QTL metrics and associated reporting datasets,
+as well as minor documentation updates and standardization of the github actions used in CI/CD.
+
 # gsm.core v1.1.6
 
 This patch release adds site risk score metric to `reportingResults` and updates documentation.
