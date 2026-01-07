@@ -6,7 +6,7 @@ articles:
   articles/DataModel: DataModel.html
   articles/gsmExtensions: gsmExtensions.html
   KRIMethod: KRIMethod.html
-last_built: 2026-01-07T14:39Z
+last_built: 2026-01-07T14:47Z
 urls:
   reference: https://gilead-biostats.github.io/gsm.core/reference
   article: https://gilead-biostats.github.io/gsm.core/articles
