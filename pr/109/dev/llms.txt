@@ -159,7 +159,7 @@ articles below for details and examples.
 
 The {gsm} framework is designed to be highly modular and customizable.
 The sections above show examples of customized metrics and workflows.
-It’s also straightfoward to add entire custom modules that add new
+It’s also straightforward to add entire custom modules that add new
 mappings, metrics and reports. See the vignette below for details.
 
 - [gsm Extensions
@@ -171,7 +171,7 @@ mappings, metrics and reports. See the vignette below for details.
 ## What reports are available for my study?
 
 Here are links to sample reports that are available in the {gsm} family
-of pacakges. We’re working on adding more all the time and will continue
+of packages. We’re working on adding more all the time and will continue
 adding examples to this list as they are released.
 
 - [Site KRI
