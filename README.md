@@ -99,17 +99,17 @@ The {gsm} workflow process allows creation of reusable pipelines for study (or e
 
 ## How do I customize my study?
 
-The {gsm} framework is designed to be highly modular and customizable. The sections above show examples of customized metrics and workflows. It's also straightfoward to add entire custom modules that add new mappings, metrics and reports. See the vignette below for details. 
+The {gsm} framework is designed to be highly modular and customizable. The sections above show examples of customized metrics and workflows. It's also straightforward to add entire custom modules that add new mappings, metrics and reports. See the vignette below for details. 
 
 - [gsm Extensions Vignette](https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html) describes how to extend {gsm.core} by creating new ‘modules’, including metrics, reports and shiny apps that can be run using the standard gsm pipeline.
 
 ## What reports are available for my study?
 
-Here are links to sample reports that are available in the {gsm} family of pacakges. We're working on adding more all the time and will continue adding examples to this list as they are released. 
+Here are links to sample reports that are available in the {gsm} family of packages. We're working on adding more all the time and will continue adding examples to this list as they are released. 
 
 - [Site KRI Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_site.html)
 - [Country KRI Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_country.html)
-- [Eligibility  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html)
+- [Eligibility Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html)
 - [Cross-Study Site Risk Score Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html)
 - [QTL Report](https://gilead-biostats.github.io/gsm.qtl/report_qtl.html)
 - [Good Statistical Monitoring Shiny App](https://rinpharma.shinyapps.io/gsm-app/)
