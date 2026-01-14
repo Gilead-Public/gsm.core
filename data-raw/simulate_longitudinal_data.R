@@ -1,4 +1,4 @@
-pak::pak('Gilead-BioStats/gsm.mapping@dev')
+pak::pak('Gilead-BioStats/gsm.mapping@fix-91')
 pak::pak('Gilead-BioStats/gsm.core@dev')
 pak::pak('Gilead-BioStats/gsm.kri@dev')
 
