@@ -1,6 +1,3 @@
-library(gsm.mapping)
-library(gsm.reporting)
-
 set.seed(123)
 
 ## Declare all the data
@@ -55,20 +52,22 @@ lData_missing_values <- map(lData, function(df) {
       )
     )
 })
+#
+# ## custom kris path instead of inst/workflow
+# GetYamlPathCustomMetrics <- function() {
+#   test_path("qual_workflows/2_metrics_custom")
+# }
+#
+# ## default kri path
+# GetDefaultKRIPath <- function() {
+#   test_path("qual_workflows/2_metrics")
+# }
 
-## custom kris path instead of inst/workflow
-GetYamlPathCustomMetrics <- function() {
-  test_path("qual_workflows/2_metrics_custom")
-}
-
-## default kri path
-GetDefaultKRIPath <- function() {
-  test_path("qual_workflows/2_metrics")
-}
-
+domains <- gsub(names(lData), pattern = "Raw_", replacement = "")
 ## Get Mapped data
 mappings_wf <- MakeWorkflowList(
-  strPath = test_path("qual_workflows/1_mappings")
+  strNames = domains,
+  strPackage = "gsm.mapping"
 )
 
 ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)

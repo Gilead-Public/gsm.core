@@ -1,7 +1,7 @@
 ## Test Setup
 kri_workflows <- flatten(MakeWorkflowList(
   strNames = "kri0001",
-  GetDefaultKRIPath()
+  strPackage = "gsm.kri"
 ))
 
 outputs <- map_vec(kri_workflows$steps, ~ .x$output)
@@ -17,7 +17,7 @@ testthat::test_that("Qual: Given raw participant-level data, a properly specifie
   # test output stucture
   expect_true(is.vector(test$vThreshold))
   expect_true(all(map_lgl(
-    test[outputs[str_detect(outputs, pattern = "Analysis_")]],
+    test[outputs[stringr::str_detect(outputs, pattern = "Analysis_")]],
     is.data.frame
   )))
   expect_equal(nrow(test$Analysis_Flagged), expected_rows)
