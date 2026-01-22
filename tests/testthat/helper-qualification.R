@@ -1,5 +1,5 @@
 suppressPackageStartupMessages({
-  library(gsm.kri)
+  library(gsm.core)
   library(dplyr)
   library(purrr)
   library(tidyr)
