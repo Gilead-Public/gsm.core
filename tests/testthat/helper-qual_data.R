@@ -6,7 +6,7 @@ lSource <- gsm.core::lSource
 # Step 0 - Data Ingestion - standardize tables/columns names
 lData <- list(
   Raw_SUBJ = lSource$Raw_SUBJ,
-  Raw_AE = lSource$Raw_AE,
+  Raw_AE = lSource$Raw_AE
 )
 
 ## Data with missing values (15% NA's)
