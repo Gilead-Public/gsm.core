@@ -57,17 +57,17 @@ lData_missing_values <- map(lData, function(df) {
 GetYamlPathCustomMetrics <- function() {
   test_path("qual_workflows/2_metrics_custom")
 }
-#
-# ## default kri path
-# GetDefaultKRIPath <- function() {
-#   test_path("qual_workflows/2_metrics")
-# }
+
+## default kri path
+GetDefaultKRIPath <- function() {
+  test_path("qual_workflows/2_metrics")
+}
 
 domains <- gsub(names(lData), pattern = "Raw_", replacement = "")
 ## Get Mapped data
 mappings_wf <- MakeWorkflowList(
   strNames = domains,
-  strPackage = "gsm.mapping"
+  test_path("qual_workflows/1_mappings")
 )
 
 ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)

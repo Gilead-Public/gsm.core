@@ -1,11 +1,9 @@
-requireNamespace("gsm.kri", quietly = TRUE)
-
 testthat::test_that("Qual: Given raw participant-level data with missingness,
                     a properly specified Workflow for a KRI creates summarized and flagged data (#159)", {
   TestAtLogLevel("WARN")
   kri_workflows <- flatten(MakeWorkflowList(
     strNames = "kri0001",
-    strPackage = "gsm.kri"
+    GetDefaultKRIPath()
   ))
   mapped_data_missing_values <- get_data(kri_workflows, lData_missing_values)
 
