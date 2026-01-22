@@ -2,7 +2,7 @@
 kri_workflows <- c(
   MakeWorkflowList(
     strNames = c("kri0001", "cou0001"),
-    strPath = etYamlPathMetrics()
+    strPath = GetYamlPathMetrics()
   ),
   MakeWorkflowList(
     "kri0001_custom",
