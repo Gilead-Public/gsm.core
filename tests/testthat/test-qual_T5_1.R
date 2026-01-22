@@ -1,11 +1,13 @@
 # Test Setup -------------------------------------------------------
+requireNamespace("gsm.kri", quietly = TRUE)
+
 ae_workflow_custom <- flatten(MakeWorkflowList(
   "kri0001_custom",
   GetYamlPathCustomMetrics()
 ))
 ae_workflow_default <- flatten(MakeWorkflowList(
-  "kri0001",
-  GetDefaultKRIPath()
+  strNames = "kri0001",
+  strPackage = "gsm.kri"
 ))
 
 # define Data ------------------------------------------------------

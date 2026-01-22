@@ -1,8 +1,10 @@
 ## Test Setup
+requireNamespace("gsm.kri", quietly = TRUE)
+
 kri_workflows <- c(
   MakeWorkflowList(
-    c("kri0001", "cou0001"),
-    GetDefaultKRIPath()
+    strNames = c("kri0001", "cou0001"),
+    strPackage = "gsm.kri"
   ),
   MakeWorkflowList(
     "kri0001_custom",

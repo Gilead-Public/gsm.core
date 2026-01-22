@@ -53,6 +53,7 @@ Imports:
 Suggests:
     broom,
     covr,
+    gsm.kri,
     gt,
     knitr,
     lamW,
@@ -61,6 +62,8 @@ Suggests:
     styler,
     testthat,
     usethis
+Remotes:
+    gsm.kri=Gilead-BioStats/gsm.kri@main
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

@@ -1,4 +1,6 @@
 ## Test Setup
+requireNamespace("gsm.kri", quietly = TRUE)
+
 kri_workflows <- flatten(MakeWorkflowList(
   strNames = "kri0001",
   strPackage = "gsm.kri"
