@@ -58,6 +58,7 @@ Suggests:
     lamW,
     rmarkdown,
     roxygen2,
+    stringr,
     styler,
     testthat,
     usethis

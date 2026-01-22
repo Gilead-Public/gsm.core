@@ -1,4 +1,5 @@
 ## Test Setup
+library(stringr)
 kri_workflows <- flatten(MakeWorkflowList(
   strNames = "kri0001",
   GetDefaultKRIPath()
