@@ -61,7 +61,8 @@ Suggests:
     stringr,
     styler,
     testthat,
-    usethis
+    usethis,
+    withr
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
