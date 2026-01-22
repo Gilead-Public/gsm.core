@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 #' Get the cache directory for workflow files
 #' @return character path to cache directory
 get_workflow_cache_dir <- function() {
-  cache_dir <- file.path(testthat::test_path(), "workflow_cache")
+  cache_dir <- file.path(testthat::test_path(), "cached_workflows")
   if (!dir.exists(cache_dir)) {
     dir.create(cache_dir, recursive = TRUE)
   }
@@ -362,20 +362,12 @@ get_cached_workflow_path <- function(
   return(cache_dir)
 }
 
-#' Get path to local custom metrics workflows
-#' Custom metrics are generated in this repo and should not be pulled from remote
-#' @return character path to local custom metrics workflows
-GetYamlPathCustomMetrics <- function() {
-  # Custom metrics are local to this repository
-  test_path("qual_workflows/2_metrics_custom")
-}
-
 #' Get cached mapping workflows from gsm.mapping
 #' @param force_update logical whether to force refresh cache
 #' @param branch character git branch to pull from (default: "main")
 #' @param file_patterns character vector of regex patterns to match files (e.g., c("^AE\\.ya?ml$", "^SUBJ\\.ya?ml$"))
 #' @return character path to mapping workflows
-GetYamlPathMappings <- function(force_update = FALSE, branch = "main", file_patterns = NULL) {
+GetYamlPathMappings <- function(force_update = FALSE, branch = "main", file_patterns = "^AE|SUBJ") {
   tryCatch({
     get_cached_workflow_path(
       package = "gsm.mapping",
@@ -395,7 +387,7 @@ GetYamlPathMappings <- function(force_update = FALSE, branch = "main", file_patt
 #' @param branch character git branch to pull from (default: "main")
 #' @param file_patterns character vector of regex patterns to match files (e.g., c("^kri000[1-3]\\.ya?ml$", "^kri0001b\\.ya?ml$"))
 #' @return character path to standard metrics workflows
-GetYamlPathStandardMetrics <- function(force_update = FALSE, branch = "main", file_patterns = NULL) {
+GetYamlPathMetrics <- function(force_update = FALSE, branch = "main", file_patterns = "kri000[12]|cou000[12]") {
   tryCatch({
     get_cached_workflow_path(
       package = "gsm.kri",
@@ -410,163 +402,6 @@ GetYamlPathStandardMetrics <- function(force_update = FALSE, branch = "main", fi
   })
 }
 
-#' Configure standard metrics source (not custom metrics)
-#' Custom metrics are always local. This configures where standard metrics come from.
-#' @param source character where to get standard metrics from:
-#'   - "dev_branch": pull from dev branch of gsm.kri/2_metrics
-#'   - "standard": pull from main branch of gsm.kri/2_metrics
-#'   - "local": use local qual_workflows/2_metrics
-#' @param force_update logical whether to force refresh cache
-#' @param file_patterns character vector of specific files to download
-#' @return character path to standard metrics workflows
-configure_standard_metrics_source <- function(source = c("standard", "dev_branch", "local"), force_update = FALSE, file_patterns = NULL) {
-  source <- match.arg(source)
-
-  switch(source,
-    "dev_branch" = {
-      GetYamlPathStandardMetrics(
-        force_update = force_update,
-        branch = "dev",
-        file_patterns = file_patterns
-      )
-    },
-    "standard" = {
-      GetYamlPathStandardMetrics(
-        force_update = force_update,
-        branch = "main",
-        file_patterns = file_patterns
-      )
-    },
-    "local" = {
-      test_path("qual_workflows/2_metrics")
-    }
-  )
-}
-
-#' Check if workflow cache needs updating
-#' @param max_age_hours numeric maximum age of cache in hours (default: 24)
-#' @return logical whether cache should be updated
-workflow_cache_needs_update <- function(max_age_hours = 24) {
-  cache_dir <- get_workflow_cache_dir()
-  if (!dir.exists(cache_dir)) {
-    return(TRUE)
-  }
-
-  cache_info <- file.info(cache_dir)
-  age_hours <- as.numeric(Sys.time() - cache_info$mtime, units = "hours")
-  return(age_hours > max_age_hours)
-}
-
-#' Refresh workflow cache for all packages
-#' @param packages character vector of packages to refresh (default: both gsm packages)  
-#' @param force_update logical whether to force update regardless of changes (default: FALSE)
-#' @return logical indicating success
-refresh_workflow_cache <- function(packages = c("gsm.kri", "gsm.mapping"), force_update = FALSE) {
-  success <- TRUE
-
-  # Define standard subdirectories to check for each package
-  package_subdirs <- list(
-    "gsm.kri" = c("2_metrics"),
-    "gsm.mapping" = c("1_mappings")
-  )
-
-  for (pkg in packages) {
-    message(sprintf("Checking for updates to %s workflows...", pkg))
-    
-    subdirs <- package_subdirs[[pkg]]
-    if (is.null(subdirs)) {
-      warning(sprintf("Unknown package: %s", pkg))
-      success <- FALSE
-      next
-    }
-    
-    for (subdir in subdirs) {
-      tryCatch({
-        message(sprintf("  Checking %s/%s...", pkg, subdir))
-        
-        # Check if cache directory exists first
-        repo_map <- list("gsm.kri" = "Gilead-BioStats/gsm.kri", "gsm.mapping" = "Gilead-BioStats/gsm.mapping")
-        repo <- repo_map[[pkg]]
-        repo_name <- gsub(".*/", "", repo)
-        cache_dir_name <- sprintf("%s_main_%s", repo_name, subdir)
-        cache_path <- file.path(get_workflow_cache_dir(), cache_dir_name)
-        
-        if (!dir.exists(cache_path)) {
-          message(sprintf("    No existing cache found for %s/%s - skipping", pkg, subdir))
-          next
-        }
-        
-        # Get list of currently cached files
-        cached_files <- list.files(cache_path, pattern = "\\.ya?ml$", full.names = FALSE)
-        if (length(cached_files) == 0) {
-          message(sprintf("    No YAML files in cache for %s/%s - skipping", pkg, subdir))
-          next
-        }
-        
-        message(sprintf("    Found %d cached files to check", length(cached_files)))
-        
-        # Create regex patterns that match only the existing cached files
-        existing_file_patterns <- paste0("^", gsub("\\.", "\\\\.", cached_files), "$")
-        
-        # Check cache against remote API for existing files only
-        updated_cache_path <- get_cached_workflow_path(
-          package = pkg, 
-          workflow_subdir = subdir,
-          force_update = force_update,
-          file_patterns = existing_file_patterns  # Only check existing files
-        )
-        
-        # Report results
-        metadata_file <- get_cache_metadata_file(updated_cache_path)
-        if (file.exists(metadata_file)) {
-          metadata <- readRDS(metadata_file)
-          file_count <- nrow(metadata)
-          message(sprintf("    %d files checked/updated for %s/%s", file_count, pkg, subdir))
-        } else {
-          message(sprintf("    Cache updated for %s/%s", pkg, subdir))
-        }
-        
-      }, error = function(e) {
-        warning(sprintf("Failed to update workflow cache for %s/%s: %s", pkg, subdir, e$message))
-        success <- FALSE
-      })
-    }
-  }
-
-  return(success)
-}
-
-#' Get specific workflow files using predefined patterns
-#' @param workflow_type character type of workflow ("metrics" or "mappings")
-#' @param pattern_name character name of predefined pattern or custom vector
-#' @param force_update logical whether to force refresh cache
-#' @param branch character git branch to pull from
-#' @return character path to cached workflows
-get_specific_workflows <- function(
-  workflow_type = c("metrics", "mappings"),
-  file_patterns = NULL,
-  force_update = FALSE,
-  branch = "main"
-) {
-
-  workflow_type <- match.arg(workflow_type)
-
-
-  # Get the appropriate workflows
-  if (workflow_type == "metrics") {
-    GetYamlPathStandardMetrics(
-      force_update = force_update,
-      branch = branch,
-      file_patterns = file_patterns
-    )
-  } else {
-    GetYamlPathMappings(
-      force_update = force_update,
-      branch = branch,
-      file_patterns = file_patterns
-    )
-  }
-}
 
 #' Clear workflow cache
 #' @return logical indicating success

@@ -24,9 +24,9 @@ spec:
     firstdosedate:
       type: Date
     timeontreatment:
-      type: integer
+      type: numeric
     agerep:
-      type: integer
+      type: character
     sex:
       type: character
     race:

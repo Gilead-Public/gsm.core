@@ -2,7 +2,7 @@
 library(stringr)
 kri_workflows <- flatten(MakeWorkflowList(
   strNames = "kri0001",
-  GetDefaultKRIPath()
+  GetYamlPathMetrics()
 ))
 
 outputs <- map_vec(kri_workflows$steps, ~ .x$output)

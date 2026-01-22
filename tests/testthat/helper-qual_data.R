@@ -28,42 +28,15 @@ GetYamlPathCustomMetrics <- function() {
   test_path("qual_workflows/2_metrics_custom")
 }
 
+## Get cached matrics workflows from gsm.kri
+GetYamlPathMetrics(file_patterns = "kri000[12]|cou000[12]")
+
 ## Get cached mapping workflows from gsm.mapping
-GetYamlPathMetrics <- function(force_update = FALSE) {
-  tryCatch({
-    get_cached_workflow_path(
-      package = "gsm.kri",
-      workflow_subdir = "2_metrics",
-      force_update = force_update,
-      file_patterns = "kri000[12]|cou000[12]"
-    )
-  }, error = function(e) {
-    warning("Using local workflow files: ", e$message)
-    test_path("qual_workflows/2_metrics")
-  })
-}
-
-#run function to update metric yamls if needed
-GetYamlPathMetrics()
-
-## Get only necessary cached mapping workflows from gsm.mapping
-GetYamlPathMappings <- function(force_update = FALSE) {
-  tryCatch({
-    get_cached_workflow_path(
-      package = "gsm.mapping",
-      workflow_subdir = "1_mappings",
-      force_update = force_update,
-      file_patterns = "^AE|SUBJ"
-    )
-  }, error = function(e) {
-    warning("Using local workflow files: ", e$message)
-    test_path("qual_workflows/1_mappings")
-  })
-}
+GetYamlPathMappings(file_patterns = "^AE|SUBJ")
 
 ## Get Mapped data - now using cached remote files when available
 mappings_wf <- MakeWorkflowList(
-  GetYamlPathMappings()
+  strPath = GetYamlPathMappings(file_patterns = "^AE|SUBJ")
 )
 
 ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)

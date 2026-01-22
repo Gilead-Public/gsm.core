@@ -1,7 +1,7 @@
 ## Test Setup
 kri_workflows <- flatten(MakeWorkflowList(
   "kri0001_custom",
-  GetYamlPathCustomMetrics()
+  strPath = GetYamlPathCustomMetrics()
 ))
 outputs <- map_vec(kri_workflows$steps, ~ .x$output)
 

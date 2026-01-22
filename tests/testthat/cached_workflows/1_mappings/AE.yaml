@@ -20,7 +20,7 @@ spec:
     mdrsoc_nsv:
       type: character
     aetoxgr:
-      type: integer
+      type: character
     aeongo:
       type: character
     aerel:

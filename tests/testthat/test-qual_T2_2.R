@@ -3,7 +3,7 @@ testthat::test_that("Qual: Given raw participant-level data with missingness,
   TestAtLogLevel("WARN")
   kri_workflows <- flatten(MakeWorkflowList(
     strNames = "kri0001",
-    GetDefaultKRIPath()
+    strPath = GetYamlPathMetrics()
   ))
   mapped_data_missing_values <- get_data(kri_workflows, lData_missing_values)
 
