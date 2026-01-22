@@ -54,6 +54,7 @@ Suggests:
     broom,
     covr,
     gt,
+    jsonlite,
     knitr,
     lamW,
     rmarkdown,

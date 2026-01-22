@@ -22,21 +22,48 @@ lData_missing_values <- map(lData, function(df) {
     )
 })
 #
-## custom kris path instead of inst/workflow
+## custom metrics path - these are local to this repository
 GetYamlPathCustomMetrics <- function() {
+  # Custom metrics are generated locally and should not be pulled from remote
   test_path("qual_workflows/2_metrics_custom")
 }
 
-## default kri path
-GetDefaultKRIPath <- function() {
-  test_path("qual_workflows/2_metrics")
+## Get cached mapping workflows from gsm.mapping
+GetYamlPathMetrics <- function(force_update = FALSE) {
+  tryCatch({
+    get_cached_workflow_path(
+      package = "gsm.kri",
+      workflow_subdir = "2_metrics",
+      force_update = force_update,
+      file_patterns = "kri000[12]|cou000[12]"
+    )
+  }, error = function(e) {
+    warning("Using local workflow files: ", e$message)
+    test_path("qual_workflows/2_metrics")
+  })
 }
 
-domains <- gsub(names(lData), pattern = "Raw_", replacement = "")
-## Get Mapped data
+#run function to update metric yamls if needed
+GetYamlPathMetrics()
+
+## Get only necessary cached mapping workflows from gsm.mapping
+GetYamlPathMappings <- function(force_update = FALSE) {
+  tryCatch({
+    get_cached_workflow_path(
+      package = "gsm.mapping",
+      workflow_subdir = "1_mappings",
+      force_update = force_update,
+      file_patterns = "^AE|SUBJ"
+    )
+  }, error = function(e) {
+    warning("Using local workflow files: ", e$message)
+    test_path("qual_workflows/1_mappings")
+  })
+}
+
+## Get Mapped data - now using cached remote files when available
 mappings_wf <- MakeWorkflowList(
-  strNames = domains,
-  test_path("qual_workflows/1_mappings")
+  GetYamlPathMappings()
 )
 
 ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)
