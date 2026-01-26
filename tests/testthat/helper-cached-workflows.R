@@ -81,24 +81,24 @@ files_need_update <- function(cache_path, remote_metadata) {
 #' Download workflow files from a GitHub repository
 #' @param repo character repository in format "owner/repo"
 #' @param branch character branch name (default: "main")
-#' @param workflow_path character path within repo to workflow directory
+#' @param strPath character path within repo to workflow directory
 #' @param force_update logical whether to force update even if files exist
-#' @param file_patterns character vector of regex patterns to match files (e.g., c("^kri000[1-3]", "AE\\.ya?ml$"))
+#' @param strNames character vector of regex patterns to match files (e.g., c("^kri000[1-3]", "AE\\.ya?ml$"))
 #'   If NULL, downloads all YAML files
 #' @return character path to cached workflow directory
 download_workflow_files <- function(
   repo,
   branch = "main",
-  workflow_path = "inst/workflow",
+  strPath = "inst/workflow",
   force_update = FALSE,
-  file_patterns = NULL
+  strNames = NULL
 ) {
 
   cache_dir <- get_workflow_cache_dir()
 
   # Create simple cache directory name based on repo, branch, and workflow path
   repo_name <- gsub(".*/", "", repo)  # Extract just the repo name
-  workflow_name <- gsub(".*/", "", workflow_path)  # Extract just the workflow subdirectory
+  workflow_name <- gsub(".*/", "", strPath)  # Extract just the workflow subdirectory
   repo_cache_dir <- file.path(cache_dir, workflow_name)
 
   # Create cache directory if it doesn't exist
@@ -113,8 +113,8 @@ download_workflow_files <- function(
       remote_metadata <- get_remote_file_metadata(
         repo = repo,
         branch = branch,
-        path = workflow_path,
-        file_patterns = file_patterns
+        path = strPath,
+        strNames = strNames
       )
 
       # Check which files need updating
@@ -129,9 +129,9 @@ download_workflow_files <- function(
       download_github_directory(
         repo = repo,
         branch = branch,
-        path = workflow_path,
+        path = strPath,
         dest_dir = repo_cache_dir,
-        file_patterns = file_patterns,
+        strNames = strNames,
         remote_metadata = remote_metadata,
         files_to_update = files_to_update
       )
@@ -161,9 +161,9 @@ download_workflow_files <- function(
     remote_metadata <- download_github_directory(
       repo = repo,
       branch = branch,
-      path = workflow_path,
+      path = strPath,
       dest_dir = repo_cache_dir,
-      file_patterns = file_patterns
+      strNames = strNames
     )
 
     # Save metadata about downloaded files
@@ -182,9 +182,9 @@ download_workflow_files <- function(
 #' @param repo character repository in format "owner/repo"
 #' @param branch character branch name
 #' @param path character path within repo
-#' @param file_patterns character vector of regex patterns to filter files (e.g., c("^kri0001", "AE\\.ya?ml$"))
+#' @param strNames character vector of regex patterns to filter files (e.g., c("^kri0001", "AE\\.ya?ml$"))
 #' @return data.frame with file metadata (name, sha, download_url, etc.)
-get_remote_file_metadata <- function(repo, branch, path, file_patterns = NULL) {
+get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
 
   # GitHub API URL for directory contents
   api_url <- sprintf(
@@ -206,10 +206,10 @@ get_remote_file_metadata <- function(repo, branch, path, file_patterns = NULL) {
   # Filter for YAML files and apply regex pattern matching
   yaml_files <- response[response$type == "file" & grepl("\\.ya?ml$", response$name), ]
 
-  if (!is.null(file_patterns) && nrow(yaml_files) > 0) {
+  if (!is.null(strNames) && nrow(yaml_files) > 0) {
     # Filter files based on regex patterns
     matches <- rep(FALSE, nrow(yaml_files))
-    for (pattern in file_patterns) {
+    for (pattern in strNames) {
       pattern_matches <- grepl(pattern, yaml_files$name, ignore.case = TRUE)
       matches <- matches | pattern_matches
     }
@@ -224,16 +224,16 @@ get_remote_file_metadata <- function(repo, branch, path, file_patterns = NULL) {
 #' @param branch character branch name
 #' @param path character path within repo to download
 #' @param dest_dir character destination directory
-#' @param file_patterns character vector of regex patterns to match files (e.g., c("^kri000[1-3]", "^AE\\.ya?ml$"))
+#' @param strNames character vector of regex patterns to match files (e.g., c("^kri000[1-3]", "^AE\\.ya?ml$"))
 #'   If NULL, downloads all YAML files
 #' @param remote_metadata data.frame with remote file metadata (optional, will fetch if not provided)
 #' @param files_to_update logical vector indicating which files to update (optional)
 #' @return data.frame with metadata of processed files
-download_github_directory <- function(repo, branch, path, dest_dir, file_patterns = NULL, remote_metadata = NULL, files_to_update = NULL) {
+download_github_directory <- function(repo, branch, path, dest_dir, strNames = NULL, remote_metadata = NULL, files_to_update = NULL) {
 
   # Get remote metadata if not provided
   if (is.null(remote_metadata)) {
-    remote_metadata <- get_remote_file_metadata(repo, branch, path, file_patterns)
+    remote_metadata <- get_remote_file_metadata(repo, branch, path, strNames)
   }
 
   # If files_to_update not specified, update all files
@@ -281,7 +281,7 @@ download_github_directory <- function(repo, branch, path, dest_dir, file_pattern
           branch = branch,
           path = subdir$path,
           dest_dir = subdir_path,
-          file_patterns = file_patterns
+          strNames = strNames
         )
 
         # Combine metadata
@@ -312,19 +312,19 @@ download_file_from_github <- function(download_url, dest_file) {
 }
 
 #' Get cached workflow path, downloading if necessary
-#' @param package character package name ("gsm.kri" or "gsm.mapping")
+#' @param strPackage character package name ("gsm.kri" or "gsm.mapping")
 #' @param workflow_subdir character subdirectory within workflow (e.g., "2_metrics", "2_metrics_custom")
 #' @param branch character git branch to pull from (default: "main")
 #' @param force_update logical whether to force refresh cache
-#' @param file_patterns character vector of specific files to download (e.g., c("kri0001.yaml", "AE.yaml"))
+#' @param strNames character vector of specific files to download (e.g., c("kri0001.yaml", "AE.yaml"))
 #'   If NULL, downloads all YAML files
 #' @return character path to workflow directory
 get_cached_workflows <- function(
-  package = c("gsm.kri", "gsm.mapping"),
+  strPackage = c("gsm.kri", "gsm.mapping"),
   workflow_subdir = NULL,
   branch = "main",
   force_update = FALSE,
-  file_patterns = NULL
+  strNames = NULL
 ) {
 
   package <- match.arg(package)
@@ -341,18 +341,18 @@ get_cached_workflows <- function(
   }
 
   # Determine the workflow path within the repo
-  workflow_path <- "inst/workflow"
+  strPath <- "inst/workflow"
   if (!is.null(workflow_subdir)) {
-    workflow_path <- file.path(workflow_path, workflow_subdir)
+    strPath <- file.path(strPath, workflow_subdir)
   }
 
   # Download workflow files
   cache_dir <- download_workflow_files(
     repo = repo,
     branch = branch,
-    workflow_path = workflow_path,
+    strPath = strPath,
     force_update = force_update,
-    file_patterns = file_patterns
+    strNames = strNames
   )
 
   if (is.null(cache_dir)) {
@@ -363,14 +363,12 @@ get_cached_workflows <- function(
 }
 
 #' Get path to mapping workflows
-#' @param file_patterns character vector of regex patterns to match files (e.g., c("^AE\\.ya?ml$", "^SUBJ\\.ya?ml$"))
 #' @return character path to mapping workflows
 GetYamlPathMappings <- function() {
   test_path("cached_workflows/1_mappings")
 }
 
 #' Get path to standard KRI metrics
-#' @param file_patterns character vector of regex patterns to match files (e.g., c("^kri000[1-3]\\.ya?ml$", "^kri0001b\\.ya?ml$"))
 #' @return character path to standard metrics workflows
 GetYamlPathMetrics <- function() {
   test_path("cached_workflows/2_metrics")
