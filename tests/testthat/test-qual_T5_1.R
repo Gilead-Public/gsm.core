@@ -49,7 +49,7 @@ hardcode_flag_default <- test_default$Analysis_Flagged %>%
 outputs <- map_vec(ae_workflow_custom$steps, ~ .x$output)
 
 ## Test Code -------------------------------------------------------
-testthat::test_that("Qual: Given appropriate raw participant-level data, flag values can be correctly assigned to records that meet flagging criteria, including custom thresholding (#159)", {
+testthat::test_that("Qual: Given appropriate raw participant-level data, flag values can be correctly assigned to records that meet flagging criteria, including custom thresholding (#116)", {
   # Custom vThreshold
   expect_true(all(outputs %in% names(test_custom)))
   expect_true(is.vector(test_custom[["vThreshold"]]))

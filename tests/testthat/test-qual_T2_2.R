@@ -1,5 +1,5 @@
 testthat::test_that("Qual: Given raw participant-level data with missingness,
-                    a properly specified Workflow for a KRI creates summarized and flagged data (#159)", {
+                    a properly specified Workflow for a KRI creates summarized and flagged data (#116)", {
   TestAtLogLevel("WARN")
   kri_workflows <- flatten(MakeWorkflowList(
     strNames = "kri0001",

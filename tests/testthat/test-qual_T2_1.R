@@ -8,7 +8,7 @@ kri_workflows <- flatten(MakeWorkflowList(
 outputs <- map_vec(kri_workflows$steps, ~ .x$output)
 
 ## Test Code
-testthat::test_that("Qual: Given raw participant-level data, a properly specified Workflow for a KRI creates summarized and flagged data (#159)", {
+testthat::test_that("Qual: Given raw participant-level data, a properly specified Workflow for a KRI creates summarized and flagged data (#116)", {
   TestAtLogLevel("WARN")
   test <- robust_runworkflow(kri_workflows, mapped_data)
   expected_rows <- length(na.omit(unique(test$Mapped_SUBJ[[

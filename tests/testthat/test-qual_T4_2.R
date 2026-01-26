@@ -11,7 +11,7 @@ kri_custom <- MakeWorkflowList(
 outputs <- map(kri_workflows, ~ map_vec(.x$steps, ~ .x$output))
 
 ## Test Code -------------------------------------------------------
-testthat::test_that("Qual: Given appropriate metadata (i.e. vThresholds), bounds are properly applied to generate flags (#159)", {
+testthat::test_that("Qual: Given appropriate metadata (i.e. vThresholds), bounds are properly applied to generate flags (#116)", {
   TestAtLogLevel("WARN")
   # default ---------------------------------
   test <- map(kri_workflows, ~ robust_runworkflow(.x, mapped_data))
