@@ -319,7 +319,7 @@ download_file_from_github <- function(download_url, dest_file) {
 #' @param file_patterns character vector of specific files to download (e.g., c("kri0001.yaml", "AE.yaml"))
 #'   If NULL, downloads all YAML files
 #' @return character path to workflow directory
-get_cached_workflow_path <- function(
+get_cached_workflows <- function(
   package = c("gsm.kri", "gsm.mapping"),
   workflow_subdir = NULL,
   branch = "main",
@@ -362,44 +362,18 @@ get_cached_workflow_path <- function(
   return(cache_dir)
 }
 
-#' Get cached mapping workflows from gsm.mapping
-#' @param force_update logical whether to force refresh cache
-#' @param branch character git branch to pull from (default: "main")
+#' Get path to mapping workflows
 #' @param file_patterns character vector of regex patterns to match files (e.g., c("^AE\\.ya?ml$", "^SUBJ\\.ya?ml$"))
 #' @return character path to mapping workflows
-GetYamlPathMappings <- function(force_update = FALSE, branch = "main", file_patterns = "^AE|SUBJ") {
-  tryCatch({
-    get_cached_workflow_path(
-      package = "gsm.mapping",
-      workflow_subdir = "1_mappings",
-      branch = branch,
-      force_update = force_update,
-      file_patterns = file_patterns
-    )
-  }, error = function(e) {
-    warning("Using local workflow files: ", e$message)
-    test_path("qual_workflows/1_mappings")
-  })
+GetYamlPathMappings <- function() {
+  test_path("cached_workflows/1_mappings")
 }
 
-#' Get standard KRI metrics from gsm.kri
-#' @param force_update logical whether to force refresh cache
-#' @param branch character git branch to pull from (default: "main")
+#' Get path to standard KRI metrics
 #' @param file_patterns character vector of regex patterns to match files (e.g., c("^kri000[1-3]\\.ya?ml$", "^kri0001b\\.ya?ml$"))
 #' @return character path to standard metrics workflows
-GetYamlPathMetrics <- function(force_update = FALSE, branch = "main", file_patterns = "kri000[12]|cou000[12]") {
-  tryCatch({
-    get_cached_workflow_path(
-      package = "gsm.kri",
-      workflow_subdir = "2_metrics",
-      branch = branch,
-      force_update = force_update,
-      file_patterns = file_patterns
-    )
-  }, error = function(e) {
-    warning("Using local workflow files: ", e$message)
-    test_path("qual_workflows/2_metrics")
-  })
+GetYamlPathMetrics <- function() {
+  test_path("cached_workflows/2_metrics")
 }
 
 

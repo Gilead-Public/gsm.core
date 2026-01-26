@@ -29,14 +29,24 @@ GetYamlPathCustomMetrics <- function() {
 }
 
 ## Get cached matrics workflows from gsm.kri
-GetYamlPathMetrics(file_patterns = "kri000[12]|cou000[12]")
+get_cached_workflows(
+  package = "gsm.kri",
+  workflow_subdir = "2_metrics",
+  branch = "main",
+  force_update = FALSE,
+  file_patterns = "kri000[12]|cou000[12]")
 
 ## Get cached mapping workflows from gsm.mapping
-GetYamlPathMappings(file_patterns = "^AE|SUBJ")
+get_cached_workflows(
+    package = "gsm.mapping",
+    workflow_subdir = "1_mappings",
+    branch = "main",
+    force_update = FALSE,
+    file_patterns = "^AE|SUBJ")
 
-## Get Mapped data - now using cached remote files when available
+## Get Mapped data - now using local files
 mappings_wf <- MakeWorkflowList(
-  strPath = GetYamlPathMappings(file_patterns = "^AE|SUBJ")
+  strPath = GetYamlPathMappings()
 )
 
 ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)
