@@ -327,7 +327,7 @@ get_cached_workflows <- function(
   strNames = NULL
 ) {
 
-  package <- match.arg(package)
+  strPackage <- match.arg(strPackage)
 
   # Repository mapping
   repo_map <- list(
@@ -335,9 +335,9 @@ get_cached_workflows <- function(
     "gsm.mapping" = "Gilead-BioStats/gsm.mapping"
   )
 
-  repo <- repo_map[[package]]
+  repo <- repo_map[[strPackage]]
   if (is.null(repo)) {
-    stop(sprintf("Unknown package: %s", package))
+    stop(sprintf("Unknown package: %s", strPackage))
   }
 
   # Determine the workflow path within the repo
@@ -356,7 +356,7 @@ get_cached_workflows <- function(
   )
 
   if (is.null(cache_dir)) {
-    stop(sprintf("Failed to cache workflows for %s", package))
+    stop(sprintf("Failed to cache workflows for %s", strPackage))
   }
 
   return(cache_dir)
