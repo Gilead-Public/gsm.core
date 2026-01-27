@@ -228,7 +228,11 @@ get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
     json_text <- readLines(api_url, warn = FALSE)
     response_list <- yaml::yaml.load(paste(json_text, collapse = ""))
     # Convert to tibble using tidyr
-    response_data <- tibble::enframe(response_list, name = NULL) |> tidyr::unnest_wider(value)
+    if (is.list(response_list) && !is.data.frame(response_list)) {
+      response_data <- tibble::enframe(response_list, name = NULL) |> tidyr::unnest_wider(value)
+    } else {
+      response_data <- response_list
+    }
     response_data
   }, error = function(e) {
     stop(sprintf("Failed to access GitHub API for %s: %s", repo, e$message))
@@ -381,7 +385,18 @@ get_cached_workflows <- function(
   )
 
   if (is.null(cache_dir)) {
-    stop(sprintf("Failed to cache workflows for %s. No cache available and download failed. Check network connectivity.", strPackage))
+    # Check if there's any existing cache we can fall back to even if it's stale
+    cache_base_dir <- get_workflow_cache_dir()
+    repo_name <- gsub(".*/", "", repo)
+    workflow_name <- gsub(".*/", "", strPath)
+    potential_cache_dir <- file.path(cache_base_dir, workflow_name)
+    
+    if (dir.exists(potential_cache_dir) && length(list.files(potential_cache_dir, pattern = "\\.ya?ml$")) > 0) {
+      warning(sprintf("Download failed for %s, but found existing cache. Using cached files from %s", strPackage, potential_cache_dir))
+      return(potential_cache_dir)
+    }
+    
+    stop(sprintf("Failed to cache workflows for %s. No cache available and download failed. Check network connectivity. You may need to run with internet access to download workflows initially.", strPackage))
   }
 
   return(cache_dir)

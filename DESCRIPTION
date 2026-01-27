@@ -61,6 +61,7 @@ Suggests:
     stringr,
     styler,
     testthat,
+    tibble,
     usethis,
     withr
 VignetteBuilder: 
