@@ -1,17 +1,37 @@
 # Cache management for YAML workflows from gsm.kri and gsm.mapping packages
 # This helps avoid circular dependencies by downloading workflow files instead of depending on packages
+# Uses tools::R_user_dir("gsm") for persistent cross-session caching
 
 # Load required packages for cache management
 suppressPackageStartupMessages({
-  if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    warning("jsonlite package not available - workflow caching will not work")
+  if (!requireNamespace("yaml", quietly = TRUE)) {
+    warning("yaml package not available - workflow caching will not work")
   }
 })
 
 #' Get the cache directory for workflow files
 #' @return character path to cache directory
 get_workflow_cache_dir <- function() {
-  cache_dir <- file.path(testthat::test_path(), "cached_workflows")
+  # Try R's standard user cache directory for persistent storage
+  tryCatch({
+    cache_dir <- file.path(tools::R_user_dir("gsm", "cache"), "workflows")
+    if (!dir.exists(cache_dir)) {
+      dir.create(cache_dir, recursive = TRUE)
+    }
+    
+    # Test if we can write to this directory
+    test_file <- file.path(cache_dir, "test_write.tmp")
+    writeLines("test", test_file)
+    if (file.exists(test_file)) {
+      unlink(test_file)
+      return(cache_dir)
+    }
+  }, error = function(e) {
+    warning(sprintf("Failed to use R_user_dir cache directory: %s", e$message))
+  })
+  
+  # Fallback to temp directory if R_user_dir fails
+  cache_dir <- file.path(tempdir(), "gsm_workflows_cache")
   if (!dir.exists(cache_dir)) {
     dir.create(cache_dir, recursive = TRUE)
   }
@@ -142,11 +162,11 @@ download_workflow_files <- function(
       return(repo_cache_dir)
 
     }, error = function(e) {
-      warning(sprintf("Failed to check for updates from %s: %s. Using existing cache.", repo, e$message))
+      warning(sprintf("Failed to check for updates from %s: %s. Using existing cache if available.", repo, e$message))
       if (dir.exists(repo_cache_dir) && length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0) {
         return(repo_cache_dir)
       }
-      # If no cache exists, fall through to full download
+      # If no cache exists, try full download once, but if it fails, provide informative error
     })
   }
 
@@ -173,7 +193,17 @@ download_workflow_files <- function(
 
     return(repo_cache_dir)
   }, error = function(e) {
-    warning(sprintf("Failed to download workflows from %s: %s", repo, e$message))
+    error_msg <- sprintf("Failed to download workflows from %s to %s: %s", repo, repo_cache_dir, e$message)
+    
+    # Check if there's any existing cache we can fall back to
+    if (dir.exists(repo_cache_dir) && length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0) {
+      warning(paste(error_msg, "Using existing cached files."))
+      return(repo_cache_dir)
+    }
+    
+    # If no cache exists and download failed, provide helpful error message
+    warning(error_msg)
+    warning("Consider working offline with local workflow files or check network connectivity.")
     return(NULL)
   })
 }
@@ -194,13 +224,20 @@ get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
 
   # Get directory listing
   response <- tryCatch({
-    jsonlite::fromJSON(api_url)
+    # Download JSON response as text and parse with jsonlite
+    json_text <- readLines(api_url, warn = FALSE)
+    response_data <- jsonlite::fromJSON(paste(json_text, collapse = ""))
+    response_data
   }, error = function(e) {
     stop(sprintf("Failed to access GitHub API for %s: %s", repo, e$message))
   })
 
   if (!is.data.frame(response)) {
-    stop(sprintf("Unexpected response from GitHub API for %s", repo))
+    if (is.list(response)) {
+      response <- do.call(rbind.data.frame, response)
+    } else {
+      stop(sprintf("Unexpected response from GitHub API for %s", repo))
+    }
   }
 
   # Filter for YAML files and apply regex pattern matching
@@ -236,6 +273,11 @@ download_github_directory <- function(repo, branch, path, dest_dir, strNames = N
     remote_metadata <- get_remote_file_metadata(repo, branch, path, strNames)
   }
 
+  if (nrow(remote_metadata) == 0) {
+    warning("No files found in remote metadata")
+    return(data.frame())
+  }
+
   # If files_to_update not specified, update all files
   if (is.null(files_to_update)) {
     files_to_update <- rep(TRUE, nrow(remote_metadata))
@@ -245,7 +287,7 @@ download_github_directory <- function(repo, branch, path, dest_dir, strNames = N
   for (i in seq_len(nrow(remote_metadata))) {
     if (files_to_update[i]) {
       file_info <- remote_metadata[i, ]
-
+      
       download_file_from_github(
         file_info$download_url,
         file.path(dest_dir, file_info$name)
@@ -253,44 +295,7 @@ download_github_directory <- function(repo, branch, path, dest_dir, strNames = N
     }
   }
 
-  # Process subdirectories recursively if needed
-  # Get full directory listing for subdirectories
-  api_url <- sprintf(
-    "https://api.github.com/repos/%s/contents/%s?ref=%s",
-    repo, path, branch
-  )
-
-  full_response <- tryCatch({
-    jsonlite::fromJSON(api_url)
-  }, error = function(e) {
-    return(data.frame())  # Return empty df on error
-  })
-
-  if (is.data.frame(full_response)) {
-    subdirs <- full_response[full_response$type == "dir", ]
-
-    if (nrow(subdirs) > 0) {
-      for (i in seq_len(nrow(subdirs))) {
-        subdir <- subdirs[i, ]
-        subdir_path <- file.path(dest_dir, subdir$name)
-        dir.create(subdir_path, recursive = TRUE, showWarnings = FALSE)
-
-        # Recursively process subdirectories
-        subdir_metadata <- download_github_directory(
-          repo = repo,
-          branch = branch,
-          path = subdir$path,
-          dest_dir = subdir_path,
-          strNames = strNames
-        )
-
-        # Combine metadata
-        if (is.data.frame(subdir_metadata) && nrow(subdir_metadata) > 0) {
-          remote_metadata <- rbind(remote_metadata, subdir_metadata)
-        }
-      }
-    }
-  }
+  # Skip subdirectory processing for workflow directories since we want specific files only
 
   return(remote_metadata)
 }
@@ -318,13 +323,17 @@ download_file_from_github <- function(download_url, dest_file) {
 #' @param force_update logical whether to force refresh cache
 #' @param strNames character vector of specific files to download (e.g., c("kri0001.yaml", "AE.yaml"))
 #'   If NULL, downloads all YAML files
-#' @return character path to workflow directory
+#' @param offline logical whether to skip remote download and use only cached files (default: FALSE)
+#' @param skip_if_unavailable logical whether to return NULL instead of erroring when workflows unavailable (default: FALSE)
+#' @return character path to workflow directory, or NULL if skip_if_unavailable=TRUE and workflows not available
 get_cached_workflows <- function(
   strPackage = c("gsm.kri", "gsm.mapping"),
   workflow_subdir = NULL,
   branch = "main",
   force_update = FALSE,
-  strNames = NULL
+  strNames = NULL,
+  offline = FALSE,
+  skip_if_unavailable = FALSE
 ) {
 
   strPackage <- match.arg(strPackage)
@@ -346,6 +355,20 @@ get_cached_workflows <- function(
     strPath <- file.path(strPath, workflow_subdir)
   }
 
+  # If offline mode, skip download and check cache only
+  if (offline) {
+    cache_dir <- get_workflow_cache_dir()
+    repo_name <- gsub(".*/", "", repo)
+    workflow_name <- gsub(".*/", "", strPath)
+    repo_cache_dir <- file.path(cache_dir, workflow_name)
+    
+    if (dir.exists(repo_cache_dir) && length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0) {
+      return(repo_cache_dir)
+    } else {
+      stop(sprintf("No cached workflows found for %s. Try running without offline=TRUE to download.", strPackage))
+    }
+  }
+
   # Download workflow files
   cache_dir <- download_workflow_files(
     repo = repo,
@@ -356,7 +379,7 @@ get_cached_workflows <- function(
   )
 
   if (is.null(cache_dir)) {
-    stop(sprintf("Failed to cache workflows for %s", strPackage))
+    stop(sprintf("Failed to cache workflows for %s. No cache available and download failed. Check network connectivity.", strPackage))
   }
 
   return(cache_dir)
@@ -365,13 +388,13 @@ get_cached_workflows <- function(
 #' Get path to mapping workflows
 #' @return character path to mapping workflows
 GetYamlPathMappings <- function() {
-  test_path("cached_workflows/1_mappings")
+  file.path(get_workflow_cache_dir(), "1_mappings")
 }
 
 #' Get path to standard KRI metrics
 #' @return character path to standard metrics workflows
 GetYamlPathMetrics <- function() {
-  test_path("cached_workflows/2_metrics")
+  file.path(get_workflow_cache_dir(), "2_metrics")
 }
 
 

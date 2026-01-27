@@ -29,20 +29,37 @@ GetYamlPathCustomMetrics <- function() {
 }
 
 ## Get cached matrics workflows from gsm.kri
-get_cached_workflows(
+metrics_workflow_path <- get_cached_workflows(
   strPackage = "gsm.kri",
   workflow_subdir = "2_metrics",
   branch = "main",
   force_update = FALSE,
-  strNames = "kri000[12]|cou000[12]")
+  strNames = c("kri000[12]", "cou000[12]"))
 
 ## Get cached mapping workflows from gsm.mapping
-get_cached_workflows(
+mappings_workflow_path <- get_cached_workflows(
     strPackage = "gsm.mapping",
     workflow_subdir = "1_mappings",
     branch = "main",
     force_update = FALSE,
-    strNames = "^AE|SUBJ")
+    strNames = c("^AE", "^SUBJ"))
+
+## Helper functions to get workflow paths with fallbacks
+GetYamlPathMetrics <- function() {
+  if (!is.null(metrics_workflow_path)) {
+    return(metrics_workflow_path)
+  } else {
+    stop("No metrics workflows available. Check network connectivity.")
+  }
+}
+
+GetYamlPathMappings <- function() {
+  if (!is.null(mappings_workflow_path)) {
+    return(mappings_workflow_path)
+  } else {
+    stop("No mapping workflows available. Check network connectivity.")
+  }
+}
 
 ## Get Mapped data - now using local files
 mappings_wf <- MakeWorkflowList(
