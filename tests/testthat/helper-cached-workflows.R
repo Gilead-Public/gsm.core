@@ -224,9 +224,11 @@ get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
 
   # Get directory listing
   response <- tryCatch({
-    # Download JSON response as text and parse with jsonlite
+    # Download JSON response as text and parse with yaml
     json_text <- readLines(api_url, warn = FALSE)
-    response_data <- jsonlite::fromJSON(paste(json_text, collapse = ""))
+    response_list <- yaml::yaml.load(paste(json_text, collapse = ""))
+    # Convert to tibble using tidyr
+    response_data <- tibble::enframe(response_list, name = NULL) |> tidyr::unnest_wider(value)
     response_data
   }, error = function(e) {
     stop(sprintf("Failed to access GitHub API for %s: %s", repo, e$message))
