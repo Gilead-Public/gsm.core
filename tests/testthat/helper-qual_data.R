@@ -1,17 +1,13 @@
 set.seed(123)
 
-## Declare all the data
+# Source data setup
 lSource <- gsm.core::lSource
-
-# Step 0 - Data Ingestion - standardize tables/columns names
 lData <- list(
   Raw_SUBJ = lSource$Raw_SUBJ,
   Raw_AE = lSource$Raw_AE
 )
 
-## Data with missing values (15% NA's)
-
-## ONLY USED IN T2_2
+# Data with missing values (15% NA's) - used in T2_2
 lData_missing_values <- map(lData, function(df) {
   df %>%
     mutate(
@@ -21,14 +17,12 @@ lData_missing_values <- map(lData, function(df) {
       )
     )
 })
-#
-## custom metrics path - these are local to this repository
+# Custom metrics path - local repository only
 GetYamlPathCustomMetrics <- function() {
-  # Custom metrics are generated locally and should not be pulled from remote
   test_path("qual_workflows/2_metrics_custom")
 }
 
-## Get cached matrics workflows from gsm.kri
+# Get cached workflows from remote repositories
 metrics_workflow_path <- get_cached_workflows(
   strPackage = "gsm.kri",
   workflow_subdir = "2_metrics",
@@ -36,7 +30,6 @@ metrics_workflow_path <- get_cached_workflows(
   force_update = FALSE,
   strNames = c("kri000[12]", "cou000[12]"))
 
-## Get cached mapping workflows from gsm.mapping
 mappings_workflow_path <- get_cached_workflows(
     strPackage = "gsm.mapping",
     workflow_subdir = "1_mappings",
@@ -44,7 +37,7 @@ mappings_workflow_path <- get_cached_workflows(
     force_update = FALSE,
     strNames = c("^AE", "^SUBJ"))
 
-## Helper functions to get workflow paths with fallbacks
+# Workflow path helper functions
 GetYamlPathMetrics <- function() {
   if (!is.null(metrics_workflow_path)) {
     return(metrics_workflow_path)
@@ -61,12 +54,10 @@ GetYamlPathMappings <- function() {
   }
 }
 
-## Helper functions for caching processed data
+# Data caching functions
 get_data_cache_dir <- function() {
   cache_dir <- file.path(tools::R_user_dir("gsm", "cache"), "processed_data")
-  if (!dir.exists(cache_dir)) {
-    dir.create(cache_dir, recursive = TRUE)
-  }
+  if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
   return(cache_dir)
 }
 
@@ -83,7 +74,6 @@ get_cached_mapped_data <- function(force_refresh = FALSE) {
       newest_workflow <- max(file.mtime(workflow_files))
       cache_time <- file.mtime(cache_file)
       
-      # Use cache if it's newer than the workflow files
       if (cache_time > newest_workflow) {
         message("Using cached mapped data.")
         return(readRDS(cache_file))
@@ -93,9 +83,7 @@ get_cached_mapped_data <- function(force_refresh = FALSE) {
   
   # Generate fresh data
   message("Updating cached mapped data...")
-  mappings_wf <- MakeWorkflowList(
-    strPath = GetYamlPathMappings()
-  )
+  mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
   
   ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)
   gsm.core::SetLogger(log4r::logger(
@@ -108,7 +96,6 @@ get_cached_mapped_data <- function(force_refresh = FALSE) {
     appenders = ConsoleAppender
   ))
   
-  # Save to cache
   saveRDS(mapped_data, cache_file)
   message("Cached mapped data updated successfully.")
   return(mapped_data)
@@ -119,7 +106,6 @@ get_cached_mapping_output <- function(force_refresh = FALSE) {
   cache_file <- file.path(cache_dir, "mapping_output.rds")
   
   if (!force_refresh && file.exists(cache_file)) {
-    # Check if workflows have been updated since cache was created
     workflow_dir <- GetYamlPathMappings()
     workflow_files <- list.files(workflow_dir, pattern = "\\.ya?ml$", full.names = TRUE)
     
@@ -127,7 +113,6 @@ get_cached_mapping_output <- function(force_refresh = FALSE) {
       newest_workflow <- max(file.mtime(workflow_files))
       cache_time <- file.mtime(cache_file)
       
-      # Use cache if it's newer than the workflow files
       if (cache_time > newest_workflow) {
         message("Using cached mapping output.")
         return(readRDS(cache_file))
@@ -137,30 +122,22 @@ get_cached_mapping_output <- function(force_refresh = FALSE) {
   
   # Generate fresh data
   message("Updating cached mapping output...")
-  mappings_wf <- MakeWorkflowList(
-    strPath = GetYamlPathMappings()
-  )
-  
+  mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
   mapping_output <- map(mappings_wf, ~ .x$steps[[1]]$output) %>% unlist()
   
-  # Save to cache
   saveRDS(mapping_output, cache_file)
   message("Cached mapping output updated successfully.")
   return(mapping_output)
 }
 
-## Get Mapped data - now using cached version
+# Get processed data using cached versions
 mapped_data <- get_cached_mapped_data()
-
 mapping_output <- get_cached_mapping_output()
 
-## Create mappings_wf for compatibility with existing tests
-mappings_wf <- MakeWorkflowList(
-  strPath = GetYamlPathMappings()
-)
+# Create mappings_wf for compatibility
+mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
 
-# Robust version of Runworkflow no config that will always run even with errors,
-# and can be specified for specific steps in workflow to run
+# Robust workflow runner that handles errors gracefully
 robust_runworkflow <- function(
   lWorkflow,
   lData,
@@ -168,30 +145,13 @@ robust_runworkflow <- function(
   bReturnResult = TRUE,
   bKeepInputData = TRUE
 ) {
-  # Create a unique identifier for the workflow
   uid <- paste0(lWorkflow$meta$Type, "_", lWorkflow$meta$ID)
-  # cli::cli_h1("Initializing `{uid}` Workflow")
-
-  # check that the workflow has steps
-  # if (length(lWorkflow$steps) == 0) {
-  #   cli::cli_alert("Workflow `{uid}` has no `steps` property.")
-  # }
-
-  # if (!"meta" %in% names(lWorkflow)) {
-  #   cli::cli_alert("Workflow `{uid}` has no `meta` property.")
-  # }
-
   lWorkflow$lData <- lData
 
-  # If the workflow has a spec, check that the data and spec are compatible
   if ("spec" %in% names(lWorkflow)) {
-    # cli::cli_h3("Checking data against spec")
     CheckSpec(lData, lWorkflow$spec)
   } else {
     lWorkflow$spec <- NULL
-    # cli::cli_h3(
-    #   "No spec found in workflow. Proceeding without checking data."
-    # )
   }
 
   if (length(steps) > 1) {
@@ -200,62 +160,32 @@ robust_runworkflow <- function(
     lWorkflow$steps <- list(lWorkflow$steps[[steps]])
   }
 
-  # Run through each steps in lWorkflow$workflow
-  stepCount <- 1
-  for (steps in lWorkflow$steps) {
-    # cli::cli_h2(paste0(
-    #   "Workflow steps ",
-    #   stepCount,
-    #   " of ",
-    #   length(lWorkflow$steps),
-    #   ": `",
-    #   steps$name,
-    #   "`"
-    # ))
-
+  # Run each step with error handling
+  for (step in lWorkflow$steps) {
     result0 <- purrr::safely(
       ~ gsm.core::RunStep(
-        lStep = steps,
+        lStep = step,
         lData = lWorkflow$lData,
         lMeta = lWorkflow$meta
       )
     )()
+    
     if (names(result0[!map_vec(result0, is.null)]) == "error") {
       cli::cli_alert_danger(paste0(
-        "Error:`",
-        result0$error$message,
-        "`:",
-        " error message stored as result"
+        "Error:`", result0$error$message, "`: error message stored as result"
       ))
       result1 <- result0$error$message
     } else {
       result1 <- result0$result
     }
 
-    lWorkflow$lData[[steps$output]] <- result1
+    lWorkflow$lData[[step$output]] <- result1
     lWorkflow$lResult <- result1
-
-    if (is.data.frame(result1)) {
-      # cli::cli_h3(
-      #   "{paste(dim(result1),collapse='x')} data.frame saved as `lData${steps$output}`."
-      # )
-    } else {
-      # cli::cli_h3(
-      #   "{typeof(result1)} of length {length(result1)} saved as `lData${steps$output}`."
-      # )
-    }
-
-    stepCount <- stepCount + 1
   }
-
-  # Return the result of the last step (the default) or the full workflow
 
   if (!bKeepInputData) {
     outputs <- lWorkflow$steps %>% purrr::map_chr(~ .x$output)
     lWorkflow$lData <- lWorkflow$lData[outputs]
-    # cli::cli_alert_info("Returning workflow outputs: {names(lWorkflow$lData)}")
-  } else {
-    # cli::cli_alert_info("Returning workflow inputs and outputs: {names(lWorkflow$lData)}")
   }
 
   if (bReturnResult) {
@@ -265,18 +195,18 @@ robust_runworkflow <- function(
   }
 }
 
-# get only the relevant data for a workflow to speed up mapping
-# Just a fancy wrapper for robust_runworkflow
+# Get relevant data for a workflow - wrapper for robust_runworkflow
 get_data <- function(lWorkflow, data) {
-  if ("spec" %in% names(lWorkflow)) {
-    lWorkflow <- list(lWorkflow)
-  }
-  maps_needed_index <- map(lWorkflow, ~ names(.x$spec)) %>%
-    unlist() %>%
+  if ("spec" %in% names(lWorkflow)) lWorkflow <- list(lWorkflow)
+  
+  maps_needed_index <- map(lWorkflow, ~ names(.x$spec)) %>% 
+    unlist() %>% 
     unique()
+  
   maps_needed <- names(mapping_output[which(
     mapping_output %in% maps_needed_index
   )])
+  
   mapped_needed_data <- RunWorkflows(mappings_wf[maps_needed], data)
   return(mapped_needed_data)
 }
