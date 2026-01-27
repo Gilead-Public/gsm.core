@@ -154,6 +154,11 @@ mapped_data <- get_cached_mapped_data()
 
 mapping_output <- get_cached_mapping_output()
 
+## Create mappings_wf for compatibility with existing tests
+mappings_wf <- MakeWorkflowList(
+  strPath = GetYamlPathMappings()
+)
+
 # Robust version of Runworkflow no config that will always run even with errors,
 # and can be specified for specific steps in workflow to run
 robust_runworkflow <- function(
