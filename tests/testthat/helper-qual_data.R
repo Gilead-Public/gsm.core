@@ -61,23 +61,98 @@ GetYamlPathMappings <- function() {
   }
 }
 
-## Get Mapped data - now using local files
-mappings_wf <- MakeWorkflowList(
-  strPath = GetYamlPathMappings()
-)
+## Helper functions for caching processed data
+get_data_cache_dir <- function() {
+  cache_dir <- file.path(tools::R_user_dir("gsm", "cache"), "processed_data")
+  if (!dir.exists(cache_dir)) {
+    dir.create(cache_dir, recursive = TRUE)
+  }
+  return(cache_dir)
+}
 
-ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)
-gsm.core::SetLogger(log4r::logger(
-  threshold = "WARN",
-  appenders = ConsoleAppender
-))
-mapped_data <- RunWorkflows(mappings_wf, lData)
-gsm.core::SetLogger(log4r::logger(
-  "DEBUG",
-  appenders = ConsoleAppender
-))
+get_cached_mapped_data <- function(force_refresh = FALSE) {
+  cache_dir <- get_data_cache_dir()
+  cache_file <- file.path(cache_dir, "mapped_data.rds")
+  
+  if (!force_refresh && file.exists(cache_file)) {
+    # Check if workflows have been updated since cache was created
+    workflow_dir <- GetYamlPathMappings()
+    workflow_files <- list.files(workflow_dir, pattern = "\\.ya?ml$", full.names = TRUE)
+    
+    if (length(workflow_files) > 0) {
+      newest_workflow <- max(file.mtime(workflow_files))
+      cache_time <- file.mtime(cache_file)
+      
+      # Use cache if it's newer than the workflow files
+      if (cache_time > newest_workflow) {
+        message("Using cached mapped data.")
+        return(readRDS(cache_file))
+      }
+    }
+  }
+  
+  # Generate fresh data
+  message("Updating cached mapped data...")
+  mappings_wf <- MakeWorkflowList(
+    strPath = GetYamlPathMappings()
+  )
+  
+  ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)
+  gsm.core::SetLogger(log4r::logger(
+    threshold = "WARN",
+    appenders = ConsoleAppender
+  ))
+  mapped_data <- RunWorkflows(mappings_wf, lData)
+  gsm.core::SetLogger(log4r::logger(
+    "DEBUG",
+    appenders = ConsoleAppender
+  ))
+  
+  # Save to cache
+  saveRDS(mapped_data, cache_file)
+  message("Cached mapped data updated successfully.")
+  return(mapped_data)
+}
 
-mapping_output <- map(mappings_wf, ~ .x$steps[[1]]$output) %>% unlist()
+get_cached_mapping_output <- function(force_refresh = FALSE) {
+  cache_dir <- get_data_cache_dir()
+  cache_file <- file.path(cache_dir, "mapping_output.rds")
+  
+  if (!force_refresh && file.exists(cache_file)) {
+    # Check if workflows have been updated since cache was created
+    workflow_dir <- GetYamlPathMappings()
+    workflow_files <- list.files(workflow_dir, pattern = "\\.ya?ml$", full.names = TRUE)
+    
+    if (length(workflow_files) > 0) {
+      newest_workflow <- max(file.mtime(workflow_files))
+      cache_time <- file.mtime(cache_file)
+      
+      # Use cache if it's newer than the workflow files
+      if (cache_time > newest_workflow) {
+        message("Using cached mapping output.")
+        return(readRDS(cache_file))
+      }
+    }
+  }
+  
+  # Generate fresh data
+  message("Updating cached mapping output...")
+  mappings_wf <- MakeWorkflowList(
+    strPath = GetYamlPathMappings()
+  )
+  
+  mapping_output <- map(mappings_wf, ~ .x$steps[[1]]$output) %>% unlist()
+  
+  # Save to cache
+  saveRDS(mapping_output, cache_file)
+  message("Cached mapping output updated successfully.")
+  return(mapping_output)
+}
+
+## Get Mapped data - now using cached version
+mapped_data <- get_cached_mapped_data()
+
+mapping_output <- get_cached_mapping_output()
 
 # Robust version of Runworkflow no config that will always run even with errors,
 # and can be specified for specific steps in workflow to run
