@@ -58,9 +58,12 @@ Suggests:
     lamW,
     rmarkdown,
     roxygen2,
+    stringr,
     styler,
     testthat,
-    usethis
+    tibble,
+    usethis,
+    withr
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
