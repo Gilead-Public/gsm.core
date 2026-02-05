@@ -230,17 +230,18 @@ components:
 - **Package Checks** - Standard R package checks must pass before PRs
   are merged.
 
-## Qualification Report Framework
+## Qualification Framework
 
-The [`{qcthat}`](https://gilead-biostats.github.io/qcthat/index.html)
-package provides a structured qualification process that:
+{gsm.core} utilizes
+[`{qcthat}`](https://gilead-biostats.github.io/qcthat/index.html)
+package that provides a structured qualification process by:
 
-- Links package requirements (documented as GitHub issues) to
+- Linking package requirements (documented as GitHub issues) to
   qualification and unit tests
-- Generates automated qualification reports showing requirement coverage
-  and test results
-- Documents the computing environment for full traceability
-- Integrates with release workflows via GitHub Actions
+- Generating automated qualification reports showing requirement
+  coverage and test results for every PR and release.
+- Documenting the computing environment for full traceability
+- Integrating with GitHub Actions workflows
 
 This comprehensive approach ensures all requirements are properly tested
 and verified before each release.
