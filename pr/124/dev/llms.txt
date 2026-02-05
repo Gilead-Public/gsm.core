@@ -192,64 +192,62 @@ adding examples to this list as they are released.
 Since {gsm.core} is designed for use in a
 [GCP](https://en.wikipedia.org/wiki/Good_clinical_practice) framework,
 we have conducted extensive quality control as part of our development
-process. In particular, we rely on several key components to maintain a
-consistent and rigorous quality‑control process:
+process. Our quality‑control framework includes the following
+components:
 
-- **Unit Tests** - Unit tests are written for all core functions.
-- **Workflow/Qualification Tests** - Additional unit tests confirm that
-  core workflows behave as expected. Qualification testing ensures that
-  core functions execute as expected on a system-wide scale.
-  Qualification includes executing various functional, performance, and
-  usability testing. Qualification tests are designed to provide
-  developers with a repeatable process that is easy to update and
-  document.
-- **Code Examples** - The Cookbook articles mentioned above provides a
-  series of simple examples, and all functions include examples as part
-  of roxygen2 documentation.
-- **Code Review** - Code review is conducted using GitHub Pull Requests
-  (PRs). The code is reviewed and approved by QC programmer.
-- **Function Documentation** - Detailed documentation for each function
-  is maintained with roxygen2.
-- **Package Checks** - Standard package checks are run using GitHub
-  Actions and must be passing before PRs are merged.
-- **Data Specifications** - Machine-readable data specifications are
-  maintained for all KRIs. Specifications are automatically added to
-  relevant function documentation.
-- **Continuous Integration** - Continuous integration is provided via
-  GitHub Actions. The full list of GitHub Actions utilized can be found
-  in the [GitHub Actions
+## Testing & Qualification
+
+- **Unit Tests** - Written for all core functions to verify individual
+  component behavior.
+- **Workflow/Qualification Tests** - System-wide functional,
+  performance, and usability testing confirming that core workflows
+  execute as expected.
+- **Regression Testing** - Extensive QC and testing performed before
+  each release to prevent regressions.
+- **Code Examples** - Cookbook articles and roxygen2 examples
+  demonstrate proper function usage.
+
+## Documentation & Specifications
+
+- **Function Documentation** - Comprehensive roxygen2 documentation
+  maintained for all functions.
+- **Data Specifications** - Machine-readable specifications for all
+  KRIs, automatically integrated into function documentation.
+- **Contributor Guidelines** - Step-by-step processes for code
+  development and releases provided in `CONTRIBUTING.md` and required to
+  be followed for contributons.
+
+## Development Practices
+
+- **Code Review** - All changes reviewed and approved via GitHub Pull
+  Requests by QC programmers.
+- **Continuous Integration** - Automated workflows via GitHub Actions.
+  Full list of GitHub Actions utilized can be found in the [GitHub
+  Actions
   Workflows](https://gilead-biostats.github.io/gsm.utils/index.html#github-actions-workflows)
-  section of the gsm.utils package
-- **Regression Testing** - Extensive QC and testing is done before each
-  release.
+  section of the
+  [gsm.utils](https://gilead-biostats.github.io/gsm.utils) package.
+- **Package Checks** - Standard R package checks must pass before PRs
+  are merged.
 
-# Qualification Workflow
+## Qualification Report Framework
 
-All quality control checks decsribed above come together into one
-qualification workflow supported by the
-[`{qcthat}`](https://gilead-biostats.github.io/qcthat/index.html)
-package. The `{qcthat}` process provides a structured way to ensure that
-all requirements for an R package (documented as GitHub issues) are
-properly tested and verified before a package is released. It does so by
-compiling the results of all qualification and unit tests that have been
-written for the package and comparing them against full set of
-documented requirements (associated GitHub issues). This creates a clear
-map showing which requirements have evidence supporting their completion
-and which still need attention. The process can be run automatically as
-part of the release workflow via GitHub Actions, generating a
-qualification report that that clearly links requirements, tests, and
-outcomes. The report also includes a detailed summary of the computing
-environment used to execute both tests and report generation, adding
-further traceability. Together, these elements provide a consistent and
-transparent quality‑control framework.
+The [`{qcthat}`](https://gilead-biostats.github.io/qcthat/index.html)
+package provides a structured qualification process that:
+
+- Links package requirements (documented as GitHub issues) to
+  qualification and unit tests
+- Generates automated qualification reports showing requirement coverage
+  and test results
+- Documents the computing environment for full traceability
+- Integrates with release workflows via GitHub Actions
+
+This comprehensive approach ensures all requirements are properly tested
+and verified before each release.
 
 Additional detail, including links to functional documentation and
 vignettes, is available in the [package
 website](https://gilead-biostats.github.io/gsm.core/).
-
-Refer to our **Contributor Guidelines** that includes step-by-step
-processes for code development and releases are provided in
-`CONTRIBUTING.md` and visible in the sidebar of the website.
 
 # Package index
 
