@@ -215,7 +215,7 @@ components:
   KRIs, automatically integrated into function documentation.
 - **Contributor Guidelines** - Step-by-step processes for code
   development and releases provided in `CONTRIBUTING.md` and required to
-  be followed for contributons.
+  be followed for contributions.
 
 ## Development Practices
 
