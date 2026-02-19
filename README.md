@@ -24,7 +24,7 @@ The `{gsm.core}` package is a successor package to [`{gsm}`](https://github.com/
 The `{gsm.core}` package lays the framework to perform risk assessments primarily focused on detecting differences in quality at the site-level. "High quality" is defined as the absence of errors that matter. We interpret this as focusing on detecting potential issues related to critical data or process across the major risk categories of safety, efficacy, disposition, treatment, and general quality, where each category consists of one or more risk assessment(s). Each risk assessment will analyze the data to flag sites with potential issues and provide a visualization to help the user understand the issue. Some relevant references are provided below.
 
 -   Centralized Statistical Monitoring: [1](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7308734/), [2](https://pubmed.ncbi.nlm.nih.gov/38796099/)
--   EMA/FDA Guidance on Risk Based Management: [1](https://www.fda.gov/media/121479/download), [2](https://www.fda.gov/media/116754/download), [3](https://www.fda.gov/media/157718/download), [4](https://www.ema.europa.eu/en/documents/scientific-guideline/reflection-paper-risk-based-quality-management-clinical-trials_en.pdf)
+-   EMA/FDA Guidance on Risk Based Management: [1](https://www.fda.gov/media/121479/download), [2](https://www.fda.gov/media/116754/download), [3](https://www.ema.europa.eu/en/documents/scientific-guideline/reflection-paper-risk-based-quality-management-clinical-trials_en.pdf)
 -   Risk Based Quality Management: [1](https://www.lexjansen.com/phuse-us/2024/ar/PAP_AR04.pdf), [2](http://www.transceleratebiopharmainc.com/wp-content/uploads/2017/09/Risk-Based-Quality-Managment.pdf), [3](https://pubmed.ncbi.nlm.nih.gov/38722529/)
 -   Related tools: [1](https://cluepoints.com/)
 
@@ -84,7 +84,7 @@ The {gsm} workflow process allows creation of reusable pipelines for study (or e
 
 -   [Data Model Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html) explains the data pipeline used to calculate multiple metrics and generate study-level reports.
 -   [Adverse Event Workflow Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html) demonstrates how to create a configurable workflow using YAML to define the analysis pipeline.
--   [Reporting Workflow Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html) demonstrates a complete workflow from raw data to KRI reports using standard metrics.
+-   [Reporting Workflow Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_ReportingWorkflow.html) demonstrates a complete workflow from raw data to KRI reports using standard metrics.
 
 ## How do I customize my study?
 
@@ -133,7 +133,7 @@ Since {gsm.core} is designed for use in a [GCP](https://en.wikipedia.org/wiki/Go
 -   Linking package requirements (documented as GitHub issues) to qualification and unit tests
 -   Generating automated qualification reports showing requirement coverage and test results for every PR and release.
 -   Documenting the computing environment for full traceability
--   Integrating with  GitHub Actions workflows
+-   Integrating with GitHub Actions workflows
 
 This comprehensive approach ensures all requirements are properly tested and verified before each release.
 
