@@ -49,8 +49,7 @@ understand the issue. Some relevant references are provided below.
 - EMA/FDA Guidance on Risk Based Management:
   [1](https://www.fda.gov/media/121479/download),
   [2](https://www.fda.gov/media/116754/download),
-  [3](https://www.fda.gov/media/157718/download),
-  [4](https://www.ema.europa.eu/en/documents/scientific-guideline/reflection-paper-risk-based-quality-management-clinical-trials_en.pdf)
+  [3](https://www.ema.europa.eu/en/documents/scientific-guideline/reflection-paper-risk-based-quality-management-clinical-trials_en.pdf)
 - Risk Based Quality Management:
   [1](https://www.lexjansen.com/phuse-us/2024/ar/PAP_AR04.pdf),
   [2](http://www.transceleratebiopharmainc.com/wp-content/uploads/2017/09/Risk-Based-Quality-Managment.pdf),
@@ -151,7 +150,7 @@ articles below for details and examples.
   demonstrates how to create a configurable workflow using YAML to
   define the analysis pipeline.
 - [Reporting Workflow
-  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html)
+  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_ReportingWorkflow.html)
   demonstrates a complete workflow from raw data to KRI reports using
   standard metrics.
 
