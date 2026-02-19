@@ -49,8 +49,7 @@ understand the issue. Some relevant references are provided below.
 - EMA/FDA Guidance on Risk Based Management:
   [1](https://www.fda.gov/media/121479/download),
   [2](https://www.fda.gov/media/116754/download),
-  [3](https://www.fda.gov/media/157718/download),
-  [4](https://www.ema.europa.eu/en/documents/scientific-guideline/reflection-paper-risk-based-quality-management-clinical-trials_en.pdf)
+  [3](https://www.ema.europa.eu/en/documents/scientific-guideline/reflection-paper-risk-based-quality-management-clinical-trials_en.pdf)
 - Risk Based Quality Management:
   [1](https://www.lexjansen.com/phuse-us/2024/ar/PAP_AR04.pdf),
   [2](http://www.transceleratebiopharmainc.com/wp-content/uploads/2017/09/Risk-Based-Quality-Managment.pdf),
@@ -112,9 +111,9 @@ Full reports for a sample trial run with
 below:
 
 - [Site
-  Report](https://gilead-biostats.github.io/gsm.core/report_kri_site.html)
+  Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_SiteReport.html)
 - [Country
-  Report](https://gilead-biostats.github.io/gsm.core/report_kri_country.html)
+  Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_CountryReport.html)
 
 # Getting Started
 
@@ -151,7 +150,7 @@ articles below for details and examples.
   demonstrates how to create a configurable workflow using YAML to
   define the analysis pipeline.
 - [Reporting Workflow
-  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html)
+  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_ReportingWorkflow.html)
   demonstrates a complete workflow from raw data to KRI reports using
   standard metrics.
 
@@ -175,15 +174,15 @@ of packages. We’re working on adding more all the time and will continue
 adding examples to this list as they are released.
 
 - [Site KRI
-  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_site.html)
+  Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_SiteReport.html)
 - [Country KRI
-  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/report_kri_country.html)
+  Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_CountryReport.html)
 - [Eligibility
   Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html)
 - [Cross-Study Site Risk Score
   Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html)
 - [QTL
-  Report](https://gilead-biostats.github.io/gsm.qtl/report_qtl.html)
+  Report](https://gilead-biostats.github.io/gsm.qtl/examples/Example_QTL.html)
 - [Good Statistical Monitoring Shiny
   App](https://rinpharma.shinyapps.io/gsm-app/)
 
@@ -192,38 +191,59 @@ adding examples to this list as they are released.
 Since {gsm.core} is designed for use in a
 [GCP](https://en.wikipedia.org/wiki/Good_clinical_practice) framework,
 we have conducted extensive quality control as part of our development
-process. In particular, we do the following:
+process. Our quality‑control framework includes the following
+components:
 
-- **Qualification Workflow** - All assessments have been Qualified as
-  described in the Qualification Workflow article. A Qualification
-  Report article is generated and attached to each release.
-- **Unit Tests** - Unit tests are written for all core functions.
-- **Workflow Tests** - Additional unit tests confirm that core workflows
-  behave as expected.
-- **Contributor Guidelines** - Detailed contributor guidelines including
-  step-by-step processes for code development and releases are provided
-  in `CONTRIBUTING.md` and visible in the sidebar of the website.
-- **Data Model** - Article providing detailed descriptions of the data
-  model.
-- **Code Examples** - The Cookbook article provides a series of simple
-  examples, and all functions include examples as part of Roxygen
-  documentation.
-- **Code Review** - Code review is conducted using GitHub Pull Requests
-  (PRs), and a log of all PRs is included in the Qualification Report
-  article.
-- **Function Documentation** - Detailed documentation for each function
-  is maintained with Roxygen.
-- **Package Checks** - Standard package checks are run using GitHub
-  Actions and must be passing before PRs are merged.
-- **Data Specifications** - Machine-readable data specifications are
-  maintained for all KRIs. Specifications are automatically added to
-  relevant function documentation.
-- **Continuous Integration** - Continuous integration is provided via
-  GitHub Actions.
-- **Regression Testing** - Extensive QC and testing is done before each
-  release.
-- **Code Formatting** - Code is formatted with {styler} before each
-  release.
+## Testing & Qualification
+
+- **Unit Tests** - Written for all core functions to verify individual
+  component behavior.
+- **Workflow/Qualification Tests** - System-wide functional,
+  performance, and usability testing confirming that core workflows
+  execute as expected.
+- **Regression Testing** - Extensive QC and testing performed before
+  each release to prevent regressions.
+- **Code Examples** - Cookbook articles and roxygen2 examples
+  demonstrate proper function usage.
+
+## Documentation & Specifications
+
+- **Function Documentation** - Comprehensive roxygen2 documentation
+  maintained for all functions.
+- **Data Specifications** - Machine-readable specifications for all
+  KRIs, automatically integrated into function documentation.
+- **Contributor Guidelines** - Step-by-step processes for code
+  development and releases provided in `CONTRIBUTING.md` and required to
+  be followed for contributions.
+
+## Development Practices
+
+- **Code Review** - All changes reviewed and approved via GitHub Pull
+  Requests by QC programmers.
+- **Continuous Integration** - Automated workflows via GitHub Actions.
+  Full list of GitHub Actions utilized can be found in the [GitHub
+  Actions
+  Workflows](https://gilead-biostats.github.io/gsm.utils/index.html#github-actions-workflows)
+  section of the
+  [gsm.utils](https://gilead-biostats.github.io/gsm.utils) package.
+- **Package Checks** - Standard R package checks must pass before PRs
+  are merged.
+
+## Qualification Framework
+
+{gsm.core} utilizes
+[`{qcthat}`](https://gilead-biostats.github.io/qcthat/index.html)
+package that provides a structured qualification process by:
+
+- Linking package requirements (documented as GitHub issues) to
+  qualification and unit tests
+- Generating automated qualification reports showing requirement
+  coverage and test results for every PR and release.
+- Documenting the computing environment for full traceability
+- Integrating with GitHub Actions workflows
+
+This comprehensive approach ensures all requirements are properly tested
+and verified before each release.
 
 Additional detail, including links to functional documentation and
 vignettes, is available in the [package
