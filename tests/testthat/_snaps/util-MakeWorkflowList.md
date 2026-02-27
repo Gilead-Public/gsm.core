@@ -52,7 +52,7 @@
       
       
 
-# invalid data returns list NULL elements
+# invalid data returns list NULL elements (#43)
 
     Code
       wf_list <- MakeWorkflowList(strNames = "kri8675309", strPath = test_path(
