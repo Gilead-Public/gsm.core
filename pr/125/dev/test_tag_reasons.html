@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.28">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Test–Issue Tag Reasoning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="test_tag_reasons_files/libs/clipboard/clipboard.min.js"></script>
+<script src="test_tag_reasons_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="test_tag_reasons_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="test_tag_reasons_files/libs/quarto-html/popper.min.js"></script>
+<script src="test_tag_reasons_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="test_tag_reasons_files/libs/quarto-html/anchor.min.js"></script>
+<link href="test_tag_reasons_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="test_tag_reasons_files/libs/quarto-html/quarto-syntax-highlighting-b719d3d4935f2b08311a76135e2bf442.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="test_tag_reasons_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="test_tag_reasons_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="test_tag_reasons_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Test–Issue Tag Reasoning</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This document records the reasoning behind each test–issue association added in this tagging pass. Tags were applied via <code>qcthat</code> commit-based matching (Steps 1–2), title matching (Step 3), and a manual bonus round targeting closed issues not yet covered by any test.</p>
+<p>Each section corresponds to a test file. The <strong>Reason</strong> column notes the match type and the logic used.</p>
+<hr>
+<section id="test-analyze_normalapprox.r" class="level2">
+<h2 class="anchored" data-anchor-id="test-analyze_normalapprox.r">test-Analyze_NormalApprox.R</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Issue</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rate output created as expected and has correct structure</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/21">#21</a></td>
+<td><strong>Bonus round.</strong> Issue #21 explicitly names <code>test-Analyze_NormalApprox.R</code> as one of the files with captured warnings. This test uses <code>quiet_Analyze_NormalApprox()</code>, a wrapper that suppresses expected messages/warnings — the direct implementation of the “capture warnings so real issues aren’t missed” fix described in #21. The <code>quiet_*</code> helper is the clearest signal in the file.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="test-analyze_normalapprox_predictbounds.r" class="level2">
+<h2 class="anchored" data-anchor-id="test-analyze_normalapprox_predictbounds.r">test-Analyze_NormalApprox_PredictBounds.R</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Issue</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Analyze_NormalApprox_PredictBounds processes data correctly</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/21">#21</a></td>
+<td><strong>Bonus round.</strong> Issue #21 explicitly names <code>test-Analyze_NormalApprox_PredictBounds.R</code>. This test uses <code>quiet_Analyze_NormalApprox_PredictBounds()</code>, the suppression wrapper that directly addresses the warning-capture concern in #21.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="test-qual_t5_2.r" class="level2">
+<h2 class="anchored" data-anchor-id="test-qual_t5_2.r">test-qual_T5_2.R</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Issue</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Qual: Given appropriate raw participant-level data, flag values are correctly assigned as NA for sites with low enrollment</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/77">#77</a></td>
+<td><strong>Bonus round.</strong> Issue #77 is “Add <code>RiskScoreWeight</code> info to <code>Analysis_Flagged</code> via the <code>Flag()</code> function.” The test calls <code>Flag(..., vRiskScoreWeight = c(32, 16, 0, 1, 2))</code> and then removes <code>Weight</code>/<code>WeightMax</code> columns for comparison — confirming these columns are expected to be present. The <code>vRiskScoreWeight</code> parameter usage is deliberate and tests the exact feature described in #77. Tag added alongside the pre-existing <code>#116</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="test-runquery.r" class="level2">
+<h2 class="anchored" data-anchor-id="test-runquery.r">test-RunQuery.R</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Issue</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RunQuery applies schema appropriately</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/22">#22</a></td>
+<td><strong>Commit match.</strong> Issue #22 is “Feature: DATETIME data type — support ‘timestamp’ format in RunQuery.” The test includes <code>Birthtime = list(type = "timestamp")</code> in <code>lColumnMapping</code> and asserts <code>class(result$Birthtime) == c("POSIXct", "POSIXt")</code> — directly testing timestamp parsing.</td>
+</tr>
+<tr class="even">
+<td>RunQuery applies schema appropriately</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/45">#45</a></td>
+<td><strong>Commit match.</strong> Issue #45 is “Feature: Support <code>logical</code> data type — map to BOOLEAN in duckdb.” The test includes <code>Tenured = list(type = "logical")</code> and asserts <code>class(result$Tenured) == "logical"</code> — directly testing logical type coercion.</td>
+</tr>
+<tr class="odd">
+<td>RunQuery applies incomplete schema appropriately</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/70">#70</a></td>
+<td><strong>Commit match.</strong> Issue #70 is “Update <code>RunQuery</code> to not set <code>character</code> type if not specified.” The test passes a <code>lColumnMapping</code> with one column that has no <code>type</code> field and asserts <code>class(result$emaN) == class(df$Name)</code> — verifying the original character type is preserved, not overridden with <code>character</code>.</td>
+</tr>
+<tr class="even">
+<td>RunQuery applies incomplete schema appropriately</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/71">#71</a></td>
+<td><strong>Commit match.</strong> Issue #71 is “Bugfix: <code>RunQuery()</code> coerces undefined columns to <code>character</code>.” Same test as above; #71 is the bug report underlying the #70 business requirement. Both describe the same behavioral fix tested here.</td>
+</tr>
+<tr class="odd">
+<td>RunQuery parses invalid date/times correctly</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/44">#44</a></td>
+<td><strong>Commit match.</strong> Issue #44 is “Bugfix: <code>RunQuery</code> throws an error on empty <code>Date</code> strings.” The test passes <code>Birthday = c("1990JAN01", "1987-02-30", "")</code> and <code>Birthtime = c(...)</code> with invalid/empty values and asserts <code>all(is.na(result$Birthday))</code> and <code>all(is.na(result$Birthtime))</code> — exactly the <code>NA</code> behavior expected by #44.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="test-runstep.r" class="level2">
+<h2 class="anchored" data-anchor-id="test-runstep.r">test-RunStep.R</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Issue</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Passes direct value vector parameters correctly</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/23">#23</a></td>
+<td><strong>Commit match.</strong> Issue #23 is “Bugfix: Message out of <code>RunStep</code> related to vector arguments should not be vectorized — one message should be emitted for a vector-type argument.” The test uses <code>suppressMessages(expect_message(..., "y is of length 3"))</code> to confirm exactly one message is emitted for a 3-element vector, verifying the bug fix.</td>
+</tr>
+<tr class="even">
+<td>RunStep will run a function with no parameters</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/31">#31</a></td>
+<td><strong>Commit match.</strong> Issue #31 is “Feature/Bug — allow no params in workflow steps. Functions that have all defaults or no parameters currently fail.” The test calls <code>RunStep(list(name = "getwd"), list(), list())</code> with no <code>params</code> key and asserts the result equals <code>getwd()</code> — directly testing the fix.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="test-util-checkspec.r" class="level2">
+<h2 class="anchored" data-anchor-id="test-util-checkspec.r">test-util-checkSpec.R</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Issue</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Validate column type works</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/22">#22</a></td>
+<td><strong>Commit match.</strong> Issue #22 adds support for <code>"timestamp"</code> as a recognized data type. The test spec includes <code>SnapshotDateTime = list(type = "timestamp")</code> and <code>expect_snapshot(CheckSpec(...))</code> to verify the spec check handles timestamp types correctly without error.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="test-util-makeworkflowlist.r" class="level2">
+<h2 class="anchored" data-anchor-id="test-util-makeworkflowlist.r">test-util-MakeWorkflowList.R</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Issue</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>invalid data returns list NULL elements</td>
+<td><a href="https://github.com/Gilead-BioStats/gsm.core/issues/43">#43</a></td>
+<td><strong>Bonus round.</strong> Issue #43 is “<code>MakeWorkflowList</code> doesn’t work with packages that aren’t installed.” The test explicitly calls <code>MakeWorkflowList(strPackage = "fake-pkg", ...)</code> and wraps it in <code>expect_error()</code>, verifying that a non-existent package now produces a clear error rather than a cryptic <code>strPath does not exist</code> message.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="skipped-issues" class="level2">
+<h2 class="anchored" data-anchor-id="skipped-issues">Skipped issues</h2>
+<p>The following closed issues were reviewed but no suitable test match was found:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Issue</th>
+<th>Title</th>
+<th>Reason skipped</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>#1</td>
+<td>QC: Update ReadME</td>
+<td>Documentation only</td>
+</tr>
+<tr class="even">
+<td>#2</td>
+<td>QC: Update vignettes</td>
+<td>Documentation only</td>
+</tr>
+<tr class="odd">
+<td>#7</td>
+<td>Feature: Add nMinNumerator to <code>Summarize()</code></td>
+<td>No test exercises <code>nMinNumerator</code>; <code>Summarize.R</code> shows <code>nMinDenominator</code> (deprecated) but not <code>nMinNumerator</code>.</td>
+</tr>
+<tr class="even">
+<td>#8</td>
+<td>Feature: Add PK data to <code>lSource</code></td>
+<td>Data file change only</td>
+</tr>
+<tr class="odd">
+<td>#13</td>
+<td>QC: Update package data with PK updates</td>
+<td>Data file change only</td>
+</tr>
+<tr class="even">
+<td>#19</td>
+<td>QC: Add unit test for new parameter <code>vColumns</code> to <code>Summarize</code></td>
+<td><code>vColumns</code> is not present in the current <code>Summarize()</code> signature; no test clearly maps to it.</td>
+</tr>
+<tr class="odd">
+<td>#24</td>
+<td>Bugfix: Fix outdated vignette features</td>
+<td>Vignette only</td>
+</tr>
+<tr class="even">
+<td>#25</td>
+<td>Business Requirement: CRAN release of gsm.core</td>
+<td>Too broad; no specific behavior tested</td>
+</tr>
+<tr class="odd">
+<td>#28</td>
+<td>Business Requirement: Update Accrual Thresholds</td>
+<td>YAML default changes; not tested in unit tests</td>
+</tr>
+<tr class="even">
+<td>#42</td>
+<td>Documentation: Update outdated links</td>
+<td>Documentation only</td>
+</tr>
+<tr class="odd">
+<td>#47</td>
+<td>QC: Add a new example incorporating the delta columns</td>
+<td>Example/documentation only</td>
+</tr>
+<tr class="even">
+<td>#50</td>
+<td>Feature: Update <code>lSource</code> to comply with <code>gsm.mapping@fix-72</code></td>
+<td>Data/example change only</td>
+</tr>
+<tr class="odd">
+<td>#56</td>
+<td>QC: update sample data</td>
+<td>Data update only</td>
+</tr>
+<tr class="even">
+<td>#64</td>
+<td>Bugfix: <code>STUDCOMP</code> data bug from datasim</td>
+<td>Data fix only</td>
+</tr>
+<tr class="odd">
+<td>#66</td>
+<td>Call <code>Ingest</code> from <code>RunWorkflow</code></td>
+<td>RunWorkflow tests test happy-path outputs; none target Ingest specifically</td>
+</tr>
+<tr class="even">
+<td>#67</td>
+<td>Add <code>tryCatch</code> to <code>RunWorkflows</code></td>
+<td>No test for error-handling / tryCatch behavior in RunWorkflow</td>
+</tr>
+<tr class="odd">
+<td>#77 (qual_T5_2)</td>
+<td>See above — <strong>tagged</strong></td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>#79</td>
+<td>Update Contributor Guidelines</td>
+<td>Documentation only</td>
+</tr>
+<tr class="odd">
+<td>#80</td>
+<td>Add workflow tarball to releases</td>
+<td>CI/CD only</td>
+</tr>
+<tr class="even">
+<td>#89</td>
+<td>Add site risk score metric to <code>reportingResults</code></td>
+<td>Issue body is sparse; no unit test found that specifically targets this metric</td>
+</tr>
+<tr class="odd">
+<td>#91</td>
+<td>Fix links to images in vignettes</td>
+<td>Documentation only</td>
+</tr>
+<tr class="even">
+<td>#96</td>
+<td>Add IE support in <code>.rda</code> files</td>
+<td>Data file only</td>
+</tr>
+<tr class="odd">
+<td>#101</td>
+<td>Refactor Examples</td>
+<td>Example/documentation only</td>
+</tr>
+<tr class="even">
+<td>#104</td>
+<td>Update Readme.md</td>
+<td>Documentation only</td>
+</tr>
+<tr class="odd">
+<td>#105</td>
+<td>Incorporate <code>IE</code> into standard site-based KRI</td>
+<td>No matching unit test found</td>
+</tr>
+<tr class="even">
+<td>#107</td>
+<td>Implement gsm.utils v0.2.0 workflows</td>
+<td>Workflow folder; no package code tested</td>
+</tr>
+<tr class="odd">
+<td>#112</td>
+<td>Update Quality Control section of Readme</td>
+<td>Documentation only</td>
+</tr>
+<tr class="even">
+<td>#118</td>
+<td>Migrate qualification documentation</td>
+<td>Documentation only</td>
+</tr>
+<tr class="odd">
+<td>#119</td>
+<td>Update r-releaser workflow</td>
+<td>CI/CD only</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
