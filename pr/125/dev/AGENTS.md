@@ -11,10 +11,9 @@
 
 Load skills from @.github/skills when the user triggers them.
 
-| Trigger               | Path                                           |
-|-----------------------|------------------------------------------------|
-| tag tests with issues | @.github/skills/tag-tests-with-issues/SKILL.md |
-| document functions    | @.github/skills/document/SKILL.md              |
+| Trigger            | Path                              |
+|--------------------|-----------------------------------|
+| document functions | @.github/skills/document/SKILL.md |
 
 ## Testing
 
