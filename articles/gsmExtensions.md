@@ -93,8 +93,7 @@ Additional `meta` header required fields for **Modules**:
   typically a page on the pkgdown site (ending with “/{ModuleID}.html”),
   or a sample app deployed on [shinyapps.io](https://shinyapps.io).
 
-Additional `meta` header required fields for
-[gsm.kri](https://github.com/Gilead-BioStats/gsm.kri) **metrics**:
+Additional `meta` header required fields for `{gsm.kri}` **metrics**:
 
 - `GroupLevel`: The level at which the metric is calculated. Common
   values: `Site`, `Country`.
@@ -450,15 +449,14 @@ requires multiple steps to produce the desired mapped data.
 
 The metrics directory contains all of the workflows that perform
 analysis steps, converting mapped data into metrics that are displayed
-in a report. In the case of
-[gsm.kri](https://github.com/Gilead-BioStats/gsm.kri), these metrics are
-the 12 Key Risk Indicators, calculated at both the site- and
-country-level, that are discussed in the Data Analysis Step-by-Step
-article. Each yaml in this file produces a list of analysis data tables
-that capture the formatted input table, the transformed table, the
-flagged table, and the summary table. In general, these yamls should at
-least provide a summary table that contains statistics about the metric
-at the specified level of aggregation.
+in a report. In the case of `{gsm.kri}`, these metrics are the 12 Key
+Risk Indicators, calculated at both the site- and country-level, that
+are discussed in the Data Analysis Step-by-Step article. Each yaml in
+this file produces a list of analysis data tables that capture the
+formatted input table, the transformed table, the flagged table, and the
+summary table. In general, these yamls should at least provide a summary
+table that contains statistics about the metric at the specified level
+of aggregation.
 
 Examples of these yamls can be found above in the `Module Configuration`
 section, as well as in the [Data Analysis
@@ -491,7 +489,7 @@ data tables required, and steps to produce it, so that
 can take this workflow and produce the module output.
 
 Below is an example of the module yaml workflow for the KRI Site Report
-in [gsm.kri](https://github.com/Gilead-BioStats/gsm.kri)
+in `{gsm.kri}`
 
     meta:
       Type: Report 

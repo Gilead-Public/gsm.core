@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gsm.core</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -187,7 +187,7 @@ reports, this is typically a page on the pkgdown site (ending with
 “/{ModuleID}.html”), or a sample app deployed on <a href="https://shinyapps.io" class="external-link">shinyapps.io</a>.</li>
 </ul>
 <p>Additional <code>meta</code> header required fields for
-<a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a> <strong>metrics</strong>:</p>
+<code>{gsm.kri}</code> <strong>metrics</strong>:</p>
 <ul>
 <li>
 <code>GroupLevel</code>: The level at which the metric is
@@ -478,14 +478,14 @@ in the following two functions</p>
 <span>    <span class="va">params</span><span class="op">:</span></span>
 <span>      <span class="va">df</span><span class="op">:</span> <span class="va">Reporting_Metrics</span></span>
 <span>      <span class="va">strQuery</span><span class="op">:</span> <span class="st">"SELECT * FROM df WHERE GroupLevel == 'Site'"</span></span>
-<span>  <span class="op">-</span> <span class="va">name</span><span class="op">:</span> <span class="fu">gsm.kri</span><span class="fu">::</span><span class="va"><a href="https://gilead-biostats.github.io/gsm.kri/reference/MakeCharts.html" class="external-link">MakeCharts</a></span></span>
+<span>  <span class="op">-</span> <span class="va">name</span><span class="op">:</span> <span class="fu">gsm.kri</span><span class="fu">::</span><span class="va">MakeCharts</span></span>
 <span>    <span class="va">output</span><span class="op">:</span> <span class="va">lCharts_Site</span></span>
 <span>    <span class="va">params</span><span class="op">:</span></span>
 <span>      <span class="va">dfResults</span><span class="op">:</span> <span class="va">Reporting_Results_Site</span></span>
 <span>      <span class="va">dfGroups</span><span class="op">:</span> <span class="va">Reporting_Groups</span></span>
 <span>      <span class="va">dfBounds</span><span class="op">:</span> <span class="va">Reporting_Bounds</span></span>
 <span>      <span class="va">dfMetrics</span><span class="op">:</span> <span class="va">Reporting_Metrics_Site</span></span>
-<span>  <span class="op">-</span> <span class="va">name</span><span class="op">:</span> <span class="fu">gsm.kri</span><span class="fu">::</span><span class="va"><a href="https://gilead-biostats.github.io/gsm.kri/reference/Report_KRI.html" class="external-link">Report_KRI</a></span></span>
+<span>  <span class="op">-</span> <span class="va">name</span><span class="op">:</span> <span class="fu">gsm.kri</span><span class="fu">::</span><span class="va">Report_KRI</span></span>
 <span>    <span class="va">output</span><span class="op">:</span> <span class="va">lReport</span> </span>
 <span>    <span class="va">params</span><span class="op">:</span></span>
 <span>      <span class="va">lCharts</span><span class="op">:</span> <span class="va">lCharts_Site</span></span>
@@ -587,7 +587,7 @@ steps:
 </h4>
 <p>The metrics directory contains all of the workflows that perform
 analysis steps, converting mapped data into metrics that are displayed
-in a report. In the case of <a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a>, these metrics are
+in a report. In the case of <code>{gsm.kri}</code>, these metrics are
 the 12 Key Risk Indicators, calculated at both the site- and
 country-level, that are discussed in the Data Analysis Step-by-Step
 article. Each yaml in this file produces a list of analysis data tables
@@ -628,7 +628,7 @@ with the data tables required, and steps to produce it, so that
 <code><a href="../reference/RunWorkflow.html">gsm.core::RunWorkflow()</a></code> can take this workflow and produce
 the module output.</p>
 <p>Below is an example of the module yaml workflow for the KRI Site
-Report in <a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link">gsm.kri</a></p>
+Report in <code>{gsm.kri}</code></p>
 <pre><code>meta:
   Type: Report 
   ID: report_kri_site
