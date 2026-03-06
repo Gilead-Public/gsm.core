@@ -105,7 +105,7 @@ course of treatment per site, i.e., a rate.
 
 ``` r
 dfTransformed <- Transform_Rate(dfInput)
-#> Warning: 3 values of [ GroupID ] with a [ Denominator ] value of 0
+#> Warning: 5 values of [ GroupID ] with a [ Denominator ] value of 0
 #> removed.
 ```
 
