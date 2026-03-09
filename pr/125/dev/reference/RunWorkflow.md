@@ -119,12 +119,12 @@ lMappedData <- RunWorkflows(
 #> 
 #> ── Calling `gsm.core::RunQuery` 
 #> Creating a new temporary DuckDB connection.
-#> ✔ SQL Query complete: 764 rows returned.
+#> ✔ SQL Query complete: 769 rows returned.
 #> Disconnected from temporary DuckDB connection.
 #> 
-#> ── 764x15 data.frame saved as `lData$Mapped_SUBJ`. 
+#> ── 769x15 data.frame saved as `lData$Mapped_SUBJ`. 
 #> 
-#> ── Returning results from final step: 764x15 data.frame`. ──
+#> ── Returning results from final step: 769x15 data.frame`. ──
 #> 
 #> ── Completed `Mapped_SUBJ` Workflow ────────────────────────────────────────────
 
@@ -172,7 +172,7 @@ lMetricOutput <- RunWorkflow(
 #> 
 #> ── Calling `gsm.core::Input_Rate` 
 #> 
-#> ── 764x6 data.frame saved as `lData$Analysis_Input`. 
+#> ── 769x6 data.frame saved as `lData$Analysis_Input`. 
 #> 
 #> ── Workflow Step 3 of 7: `gsm.core::Transform_Rate` ──
 #> 
@@ -181,7 +181,7 @@ lMetricOutput <- RunWorkflow(
 #> 
 #> ── Calling `gsm.core::Transform_Rate` 
 #> 
-#> ── 145x5 data.frame saved as `lData$Analysis_Transformed`. 
+#> ── 143x5 data.frame saved as `lData$Analysis_Transformed`. 
 #> 
 #> ── Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox` ──
 #> 
@@ -193,7 +193,7 @@ lMetricOutput <- RunWorkflow(
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
 #> 
-#> ── 145x8 data.frame saved as `lData$Analysis_Analyzed`. 
+#> ── 143x8 data.frame saved as `lData$Analysis_Analyzed`. 
 #> 
 #> ── Workflow Step 5 of 7: `gsm.core::Flag` ──
 #> 
@@ -204,11 +204,11 @@ lMetricOutput <- RunWorkflow(
 #> ✔ strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.
 #> 
 #> ── Calling `gsm.core::Flag` 
-#> ℹ 20 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X2161, 0X4254, 0X7523, 0X5899, 0X5739, 0X7589, 0X6637, 0X2787, 0X2761, 0X8327, 0X8098, 0X7324, 0X7269, 0X6783, 0X5115, 0X3338, 0X2106, 0X3636, 0X5606, 0X9404
+#> ℹ 24 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X1419, 0X5582, 0X4328, 0X326, 0X5797, 0X9574, 0X9277, 0X4214, 0X1333, 0X1767, 0X2788, 0X7845, 0X8513, 0X5433, 0X1169, 0X7384, 0X3493, 0X4699, 0X4697, 0X9269, 0X3606, 0X4034, 0X9832, 0X2006
 #> These group(s) will not have KRI score and flag summarized.
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
 #> 
-#> ── 145x9 data.frame saved as `lData$Analysis_Flagged`. 
+#> ── 143x9 data.frame saved as `lData$Analysis_Flagged`. 
 #> 
 #> ── Workflow Step 6 of 7: `gsm.core::Summarize` ──
 #> 
@@ -217,7 +217,7 @@ lMetricOutput <- RunWorkflow(
 #> 
 #> ── Calling `gsm.core::Summarize` 
 #> 
-#> ── 145x7 data.frame saved as `lData$Analysis_Summary`. 
+#> ── 143x7 data.frame saved as `lData$Analysis_Summary`. 
 #> 
 #> ── Workflow Step 7 of 7: `list` ──
 #> 
