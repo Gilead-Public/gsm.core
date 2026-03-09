@@ -50,16 +50,14 @@ file). Examples of these methods can be found in the
 
 ## Analysis Data
 
-In [gsm.kri](https://github.com/Gilead-BioStats/gsm.kri) analysis data
-is used to capture key metrics associated with the conduct of a clinical
-trial. As described in the
-[gsm.kri](https://github.com/Gilead-BioStats/gsm.kri) readme, 12
-standard Key Risk Indicator (KRI) metrics are included in the package
-along with automated workflows that allow them to be run for all sites
-or countries in a study. Examples of KRIs include the rate of adverse
-events or amount of missing data at a site or across sites. Defining and
-deploying KRIs during continually monitor risks to the integrity of the
-trial and take corrective actions accordingly.
+In `{gsm.kri}` analysis data is used to capture key metrics associated
+with the conduct of a clinical trial. As described in the `{gsm.kri}`
+readme, 12 standard Key Risk Indicator (KRI) metrics are included in the
+package along with automated workflows that allow them to be run for all
+sites or countries in a study. Examples of KRIs include the rate of
+adverse events or amount of missing data at a site or across sites.
+Defining and deploying KRIs during continually monitor risks to the
+integrity of the trial and take corrective actions accordingly.
 
 ![](data_analysis.png)
 
@@ -129,7 +127,7 @@ A rigid Reporting Data framework is provided in `{gsm.reporting}` to
 allow for standardized reporting, visualization and meta-analysis that
 compare risk profiles across timepoints, and even across multiple
 studies. The Reporting Data sets used in `{gsm.reporting}` and
-[gsm.kri](https://github.com/Gilead-BioStats/gsm.kri) are:
+`{gsm.kri}` are:
 
 1.  `Reporting_Results`: Summary data; Standardized subset of the
     flagged data. This summary data has the same structure for all
@@ -397,9 +395,9 @@ to define functions and parameters across multiple studies.
 The `lWorkflow` object is a named list of metadata and steps defining
 how each assessment should be run. By default,
 [`gsm.core::MakeWorkflowList()`](https://gilead-biostats.github.io/gsm.core/dev/reference/MakeWorkflowList.md)
-imports YAML specifications from `workflow/2_metrics` in
-[gsm.kri](https://github.com/Gilead-BioStats/gsm.kri). Each item in
-`lWorkflow` expects the following parameters in the `steps` section:
+imports YAML specifications from `workflow/2_metrics` in `{gsm.kri}`.
+Each item in `lWorkflow` expects the following parameters in the `steps`
+section:
 
 - `workflow`: Array defining one or more functions to be executed as
   part of the workflow for a given assessment

@@ -105,7 +105,7 @@ course of treatment per site, i.e., a rate.
 
 ``` r
 dfTransformed <- Transform_Rate(dfInput)
-#> Warning: 2 values of [ GroupID ] with a [ Denominator ] value of 0
+#> Warning: 5 values of [ GroupID ] with a [ Denominator ] value of 0
 #> removed.
 ```
 
@@ -302,9 +302,7 @@ of the most commonly called upon functions.
 #### What Statistical Models Are Available For Each Assessment?
 
 - By default, all yaml workflow assessments specified in the
-  `inst/workflow/` directory of the
-  [gsm.kri](https://github.com/Gilead-BioStats/gsm.kri) package use the
-  [normal
+  `inst/workflow/` directory of the `{gsm.kri}` package use the [normal
   approximation](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-normal-approximation-method)
   method.
 - Optionally, other statistical methods include:

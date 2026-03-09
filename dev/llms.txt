@@ -60,11 +60,10 @@ understand the issue. Some relevant references are provided below.
 
 The [gsm.core](https://gilead-biostats.github.io/gsm.core) package is
 the foundation of a data pipeline for RBM using R. The package, along
-with `{gsm.mapping}`,
-[gsm.kri](https://github.com/Gilead-BioStats/gsm.kri) and
-`{gsm.reporting}` provides a framework that allows users to **assess**
-and **visualize** site-level risk in clinical trial data. The packages
-currently provide assessments for the following domains:
+with `{gsm.mapping}`, `{gsm.kri}` and `{gsm.reporting}` provides a
+framework that allows users to **assess** and **visualize** site-level
+risk in clinical trial data. The packages currently provide assessments
+for the following domains:
 
 1.  Adverse Event Reporting Rate
 2.  Serious Adverse Event Reporting Rate
