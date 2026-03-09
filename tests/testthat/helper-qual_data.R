@@ -64,27 +64,27 @@ get_data_cache_dir <- function() {
 get_cached_mapped_data <- function(force_refresh = FALSE) {
   cache_dir <- get_data_cache_dir()
   cache_file <- file.path(cache_dir, "mapped_data.rds")
-  
+
   if (!force_refresh && file.exists(cache_file)) {
     # Check if workflows have been updated since cache was created
     workflow_dir <- GetYamlPathMappings()
     workflow_files <- list.files(workflow_dir, pattern = "\\.ya?ml$", full.names = TRUE)
-    
+
     if (length(workflow_files) > 0) {
       newest_workflow <- max(file.mtime(workflow_files))
       cache_time <- file.mtime(cache_file)
-      
+
       if (cache_time > newest_workflow) {
         message("Using cached mapped data.")
         return(readRDS(cache_file))
       }
     }
   }
-  
+
   # Generate fresh data
   message("Updating cached mapped data...")
   mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
-  
+
   ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)
   gsm.core::SetLogger(log4r::logger(
     threshold = "WARN",
@@ -95,7 +95,7 @@ get_cached_mapped_data <- function(force_refresh = FALSE) {
     "DEBUG",
     appenders = ConsoleAppender
   ))
-  
+
   saveRDS(mapped_data, cache_file)
   message("Cached mapped data updated successfully.")
   return(mapped_data)
@@ -104,27 +104,27 @@ get_cached_mapped_data <- function(force_refresh = FALSE) {
 get_cached_mapping_output <- function(force_refresh = FALSE) {
   cache_dir <- get_data_cache_dir()
   cache_file <- file.path(cache_dir, "mapping_output.rds")
-  
+
   if (!force_refresh && file.exists(cache_file)) {
     workflow_dir <- GetYamlPathMappings()
     workflow_files <- list.files(workflow_dir, pattern = "\\.ya?ml$", full.names = TRUE)
-    
+
     if (length(workflow_files) > 0) {
       newest_workflow <- max(file.mtime(workflow_files))
       cache_time <- file.mtime(cache_file)
-      
+
       if (cache_time > newest_workflow) {
         message("Using cached mapping output.")
         return(readRDS(cache_file))
       }
     }
   }
-  
+
   # Generate fresh data
   message("Updating cached mapping output...")
   mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
   mapping_output <- map(mappings_wf, ~ .x$steps[[1]]$output) %>% unlist()
-  
+
   saveRDS(mapping_output, cache_file)
   message("Cached mapping output updated successfully.")
   return(mapping_output)
@@ -169,7 +169,7 @@ robust_runworkflow <- function(
         lMeta = lWorkflow$meta
       )
     )()
-    
+
     if (names(result0[!map_vec(result0, is.null)]) == "error") {
       cli::cli_alert_danger(paste0(
         "Error:`", result0$error$message, "`: error message stored as result"
@@ -198,16 +198,22 @@ robust_runworkflow <- function(
 # Get relevant data for a workflow - wrapper for robust_runworkflow
 get_data <- function(lWorkflow, data) {
   if ("spec" %in% names(lWorkflow)) lWorkflow <- list(lWorkflow)
-  
-  maps_needed_index <- map(lWorkflow, ~ names(.x$spec)) %>% 
-    unlist() %>% 
+
+  maps_needed_index <- map(lWorkflow, ~ names(.x$spec)) %>%
+    unlist() %>%
     unique()
-  
+
   maps_needed <- names(mapping_output[which(
     mapping_output %in% maps_needed_index
   )])
-  
-  mapped_needed_data <- RunWorkflows(mappings_wf[maps_needed], data)
+
+  # This code temporarily deals with column mismatches in gsm.core vs
+  # gsm.mapping and should be removed when all packages are released.
+  suppressWarnings(
+    {
+      mapped_needed_data <- RunWorkflows(mappings_wf[maps_needed], data)
+    }
+  )
   return(mapped_needed_data)
 }
 
