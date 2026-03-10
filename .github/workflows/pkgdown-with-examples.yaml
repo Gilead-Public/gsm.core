@@ -36,7 +36,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, local::., Gilead-BioStats/gsm.utils
+          extra-packages: any::pkgdown, any::quarto, local::., Gilead-BioStats/gsm.utils
           needs: website
 
       - name: Generate examples menu
