@@ -73,7 +73,7 @@ jobs:
                 "      <dt><a href=\"../extra/slides/IntroGsmSlides.html\" target=\"_blank\">Introduction Slides</a></dt>",
                 "      <dd><p>Introductory slide deck for {gsm.core}.</p></dd>"
               )
-              lines <- sub("</dl>", paste0(paste(insert, collapse = "\\n"), "\\n      </dl>"), lines, fixed = TRUE)
+              lines <- sub("</dl>", paste0(paste(insert, collapse = "\n"), "\n      </dl>"), lines, fixed = TRUE)
               writeLines(lines, articles_index)
             }
           }
