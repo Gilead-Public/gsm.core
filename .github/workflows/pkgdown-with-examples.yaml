@@ -58,12 +58,14 @@ jobs:
       - name: Publish slides into docs
         shell: Rscript {0}
         run: |
-          dir.create("docs/extra/slides", recursive = TRUE, showWarnings = FALSE)
+          site_root <- if (nzchar(Sys.getenv("PKGDOWN_DEV_MODE"))) "docs/dev" else "docs"
+          slides_dir <- file.path(site_root, "extra/slides")
+          dir.create(slides_dir, recursive = TRUE, showWarnings = FALSE)
           slide_assets <- list.files("pkgdown/extra/slides", full.names = TRUE, no.. = TRUE)
           if (length(slide_assets)) {
-            file.copy(slide_assets, "docs/extra/slides", recursive = TRUE, overwrite = TRUE)
+            file.copy(slide_assets, slides_dir, recursive = TRUE, overwrite = TRUE)
           }
-          articles_index <- "docs/articles/index.html"
+          articles_index <- file.path(site_root, "articles/index.html")
           if (file.exists(articles_index)) {
             lines <- readLines(articles_index, warn = FALSE)
             if (!any(grepl("../extra/slides/IntroGsmSlides.html", lines, fixed = TRUE))) {
