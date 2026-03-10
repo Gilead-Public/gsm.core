@@ -8,15 +8,16 @@ template:
 
 navbar:
   structure:
-    left: [articles, Reports, reference, news]
+    left: [intro, articles, Reports, reference, news]
     right: [search, github]
   components:
-
+    intro:
+      text: Intro Slides
+      href: extra/slides/IntroGsmSlides.html
 
 articles:
   - title: Articles
     contents:
-      - articles/IntroGsmSlides
       - articles/DataAnalysis
       - articles/DataModel
       - articles/gsmExtensions

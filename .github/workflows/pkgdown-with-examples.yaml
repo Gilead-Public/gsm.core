@@ -44,6 +44,15 @@ jobs:
         run: |
           gsm.utils::add_pkgdown_examples(pkgdown_yml = "_pkgdown.yml")
 
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render Intro Slides
+        run: |
+          mkdir -p pkgdown/extra/slides
+          quarto render inst/slides/IntroGsmSlides.qmd --output-dir ../../pkgdown/extra/slides
+          cp inst/slides/*.css inst/slides/*.html inst/slides/*.png pkgdown/extra/slides/ 2>/dev/null || true
+
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
