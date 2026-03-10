@@ -2,9 +2,6 @@
 
 ### Articles
 
-- [Intro to {gsm}: Good Statistical Monitoring for Clinical
-  Trials](https://gilead-biostats.github.io/gsm.core/dev/articles/IntroGsmSlides.md):
-
 - [Step-by-Step Analysis
   Workflow](https://gilead-biostats.github.io/gsm.core/dev/articles/DataAnalysis.md):
 
