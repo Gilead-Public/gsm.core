@@ -1,6 +1,6 @@
 pak::pak('Gilead-BioStats/gsm.mapping@dev')
 pak::pak('Gilead-BioStats/gsm.core@dev')
-pak::pak('Gilead-BioStats/gsm.kri@dev')
+pak::pak('Gilead-BioStats/gsm.kri@fix-193')
 
 library(gsm.core)
 library(gsm.mapping)
@@ -12,7 +12,7 @@ library(dplyr)
 library(stringr)
 set.seed(1234)
 
-core_mappings <- c("AE", "COUNTRY", "DATACHG", "DATAENT", "ENROLL", "LB", "VISIT",
+core_mappings <- c("AE", "COUNTRY", "DATACHG", "DATAENT", "ENROLL", "LB", "VISIT", "Death", "OverallResponse",
                    "PD", "PK", "QUERY", "STUDY", "STUDCOMP", "SDRGCOMP", "SITE", "SUBJ", "IE", "EXCLUSION")
 
 basic_sim <- gsm.datasim::generate_rawdata_for_single_study(
