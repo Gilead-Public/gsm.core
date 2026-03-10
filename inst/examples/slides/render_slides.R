@@ -1,4 +1,4 @@
-source_dir <- "inst/slides"
+source_dir <- "inst/examples/slides"
 dest_dir <- "pkgdown/extra/slides"
 
 dir.create(dest_dir, recursive = TRUE, showWarnings = FALSE)

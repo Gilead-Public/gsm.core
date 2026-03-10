@@ -49,7 +49,7 @@ jobs:
 
       - name: Render Intro Slides
         shell: Rscript {0}
-        run: source("inst/slides/render_slides.R")
+        run: source("inst/examples/slides/render_slides.R")
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
@@ -67,13 +67,11 @@ jobs:
           if (file.exists(articles_index)) {
             lines <- readLines(articles_index, warn = FALSE)
             if (!any(grepl("../extra/slides/IntroGsmSlides.html", lines, fixed = TRUE))) {
-              marker <- "      </dd></dl></div>"
               insert <- c(
-                "        </dd><dt><a href=\"../extra/slides/IntroGsmSlides.html\" target=\"_blank\">Introduction Slides</a></dt>",
-                "        <dd><p>Introductory slide deck for {gsm.core}.</p>",
-                marker
+                "      <dt><a href=\"../extra/slides/IntroGsmSlides.html\" target=\"_blank\">Introduction Slides</a></dt>",
+                "      <dd><p>Introductory slide deck for {gsm.core}.</p></dd>"
               )
-              lines <- sub(marker, paste(insert, collapse = "\\n"), lines, fixed = TRUE)
+              lines <- sub("</dl>", paste0(paste(insert, collapse = "\\n"), "\\n      </dl>"), lines, fixed = TRUE)
               writeLines(lines, articles_index)
             }
           }
