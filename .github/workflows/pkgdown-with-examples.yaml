@@ -48,14 +48,35 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Render Intro Slides
-        run: |
-          mkdir -p pkgdown/extra/slides
-          quarto render inst/slides/IntroGsmSlides.qmd --output-dir ../../pkgdown/extra/slides
-          cp inst/slides/*.css inst/slides/*.html inst/slides/*.png pkgdown/extra/slides/ 2>/dev/null || true
+        shell: Rscript {0}
+        run: source("inst/slides/render_slides.R")
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
+
+      - name: Publish slides into docs
+        shell: Rscript {0}
+        run: |
+          dir.create("docs/extra/slides", recursive = TRUE, showWarnings = FALSE)
+          slide_assets <- list.files("pkgdown/extra/slides", full.names = TRUE, no.. = TRUE)
+          if (length(slide_assets)) {
+            file.copy(slide_assets, "docs/extra/slides", recursive = TRUE, overwrite = TRUE)
+          }
+          articles_index <- "docs/articles/index.html"
+          if (file.exists(articles_index)) {
+            lines <- readLines(articles_index, warn = FALSE)
+            if (!any(grepl("../extra/slides/IntroGsmSlides.html", lines, fixed = TRUE))) {
+              marker <- "      </dd></dl></div>"
+              insert <- c(
+                "        </dd><dt><a href=\"../extra/slides/IntroGsmSlides.html\" target=\"_blank\">Introduction Slides</a></dt>",
+                "        <dd><p>Introductory slide deck for {gsm.core}.</p>",
+                marker
+              )
+              lines <- sub(marker, paste(insert, collapse = "\\n"), lines, fixed = TRUE)
+              writeLines(lines, articles_index)
+            }
+          }
 
       - name: Deploy PR preview 🧪
         if: github.event_name == 'pull_request'
