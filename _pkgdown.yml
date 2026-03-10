@@ -16,6 +16,7 @@ navbar:
 articles:
   - title: Articles
     contents:
+      - articles/IntroGsmSlides
       - articles/DataAnalysis
       - articles/DataModel
       - articles/gsmExtensions
