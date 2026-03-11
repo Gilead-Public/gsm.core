@@ -1,6 +1,6 @@
 pak::pak('Gilead-BioStats/gsm.mapping@dev')
 pak::pak('Gilead-BioStats/gsm.core@dev')
-pak::pak('Gilead-BioStats/gsm.kri@fix-193')
+pak::pak('Gilead-BioStats/gsm.kri@dev')
 
 library(gsm.core)
 library(gsm.mapping)
