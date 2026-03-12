@@ -17,3 +17,4 @@
 ^inst/README\.md$
 ^\.positai$
 ^AGENTS\.md$
+^\.claude$
