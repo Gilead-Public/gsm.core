@@ -12,7 +12,7 @@ library(dplyr)
 library(stringr)
 set.seed(1234)
 
-core_mappings <- c("AE", "COUNTRY", "DATACHG", "DATAENT", "ENROLL", "LB", "VISIT", "Death", "OverallResponse",
+core_mappings <- c("AE", "COUNTRY", "DATACHG", "DATAENT", "ENROLL", "LB", "VISIT", "Death", "OverallResponse", "Randomization",
                    "PD", "PK", "QUERY", "STUDY", "STUDCOMP", "SDRGCOMP", "SITE", "SUBJ", "IE", "EXCLUSION")
 
 basic_sim <- gsm.datasim::generate_rawdata_for_single_study(
