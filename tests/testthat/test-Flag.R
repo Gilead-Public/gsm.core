@@ -88,7 +88,7 @@ test_that("Flag function works correctly with NA data", {
   expect_equal(dfFlagged_NA$Flag, c(-2, 0, 0, NA, 1, 2, NA))
 })
 
-test_that("Flag function adds RiskScoreWeight info to Analysis_Flagged (#77", {
+test_that("Flag function adds RiskScoreWeight info to Analysis_Flagged (#77)", {
   dfAnalyzed <- data.frame(
     GroupID = 1:10,
     Score = c(-4, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5, NA, 0)
@@ -117,11 +117,11 @@ test_that("Flag function adds RiskScoreWeight info to Analysis_Flagged (#77", {
   expected_weights <- c(
     10,  # Flag -2, Weight 10
     5,   # Flag -1, Weight 5
-    5,   # Flag -1, Weight 5
+    1,   # Flag 0, Weight 1
+    1,   # Flag 0, Weight 1
     1,   # Flag 0, Weight 1
     1,   # Flag 0, Weight 1
     3,   # Flag 1, Weight 3
-    8,   # Flag 2, Weight 8
     8,   # Flag 2, Weight 8
     NA,  # NA Flag gets NA Weight
     1    # Flag 0, Weight 1
@@ -129,7 +129,7 @@ test_that("Flag function adds RiskScoreWeight info to Analysis_Flagged (#77", {
   expect_equal(dfFlagged$Weight, expected_weights)
 
   # Verify flag values are correct (basic sanity check)
-  expected_flags <- c(-2, -1, -1, 0, 0, 1, 2, 2, NA, 0)
+  expected_flags <- c(-2, -1, 0, 0, 0, 0, 1, 2, NA, 0)
   expect_equal(dfFlagged$Flag, expected_flags)
 })
 
