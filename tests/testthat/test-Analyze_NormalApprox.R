@@ -20,7 +20,7 @@ test_that("binary output created as expected and has correct structure", {
   expect_equal(unique(binary$GroupID), c("166", "86", "76"))
 })
 
-test_that("rate output created as expected and has correct structure", {
+test_that("rate output created as expected and has correct structure (#21)", {
   dfTransformed <- Transform_Rate(analyticsInput)
 
   rate <- quiet_Analyze_NormalApprox(dfTransformed, strType = "rate")

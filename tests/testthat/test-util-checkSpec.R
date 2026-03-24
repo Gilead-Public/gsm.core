@@ -88,7 +88,7 @@ test_that("Multiple missing columns are correctly reported", {
   expect_snapshot(CheckSpec(lData, lSpec))
 })
 
-test_that("Validate column type works", {
+test_that("Validate column type works (#22)", {
   lData <- list(reporting_results = gsm.core::reportingResults)
   lData$reporting_results$SnapshotDateTime <- paste0(lData$reporting_results$SnapshotDate, "T01:01:01") %>%
     as.POSIXct(format = "%Y-%m-%dT%H:%M:%S")

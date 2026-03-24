@@ -54,8 +54,11 @@ test_that("Passes direct value parameters correctly", {
   expect_equal(result$y, "100")
 })
 
-test_that("Passes direct value vector parameters correctly", {
-  lStep <- list(name = "dummy_function", params = list(x = "meta1", y = c(1, 2, 3)))
+test_that("Passes direct value vector parameters correctly (#23)", {
+  lStep <- list(
+    name = "dummy_function",
+    params = list(x = "meta1", y = c(1, 2, 3))
+  )
   lMeta <- list(meta1 = 200)
 
   suppressMessages(expect_message(
@@ -107,7 +110,7 @@ test_that("RunStep will run a function without a namespace", {
   expect_equal(result, head(Theoph))
 })
 
-test_that("RunStep will run a function with no parameters", {
+test_that("RunStep will run a function with no parameters (#31)", {
   wd_path <- getwd()
 
   lStep <- list(name = "getwd")

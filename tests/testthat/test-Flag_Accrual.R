@@ -1,4 +1,4 @@
-test_that("Function correctly applies accrual threshold", {
+test_that("Function correctly applies accrual threshold (#7, #28)", {
   dfFlagged <- data.frame(
     GroupID = c(1:7),
     Score = c(-3.5, -2.5, -1.5, 0, 1.5, 2.5, 3.5),
