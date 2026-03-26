@@ -141,12 +141,12 @@ mapped <- RunWorkflows(wf_mapping, lRaw)
 #> 
 #> ── Calling `gsm.core::RunQuery` 
 #> Creating a new temporary DuckDB connection.
-#> ✔ SQL Query complete: 769 rows returned.
+#> ✔ SQL Query complete: 760 rows returned.
 #> Disconnected from temporary DuckDB connection.
 #> 
-#> ── 769x15 data.frame saved as `lData$Mapped_SUBJ`. 
+#> ── 760x15 data.frame saved as `lData$Mapped_SUBJ`. 
 #> 
-#> ── Returning results from final step: 769x15 data.frame`. ──
+#> ── Returning results from final step: 760x15 data.frame`. ──
 #> 
 #> ── Completed `Mapped_SUBJ` Workflow ────────────────────────────────────────────
 ae_step <- RunStep(lStep = lStep, lData = lMapped, lMeta = lMeta)
