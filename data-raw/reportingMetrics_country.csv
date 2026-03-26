@@ -13,3 +13,4 @@
 "Analysis","cou0012","Country","SF","Screen Failure Rate","Screen Failures","Screened Subjects","Normal Approximation","binary","Adjusted Z-Score","-3,-2,2,3",3,"Denominator",0,NA,NA,NA,NA,NA,"Analysis_cou0012"
 "Analysis","cou0013","Country","PK","PK Collection Compliance Rate","PK Samples Collected","PK Samples Expected","Identity","identity","PK Collection Compliance Rate","0.9,0.85",3,"Difference",0,"-2,-1,0",NA,NA,NA,NA,"Analysis_cou0013"
 "Analysis","cou0014","Country","IE","Ineligibility","Number of subjects ineligible","Number of subjects enrolled","Identity (Numerator)","identity","Ineligible Participants","1.5, 2.5",3,"Denominator",0,"0,1,2","Numerator","0,8,16",NA,NA,"Analysis_cou0014"
+"Analysis","cou0015","Country","DTH90","Death Rate in First 90 Days","Deaths in First 90 Days","Subjects","Identity","identity","Numerator","1,2",1,"Denominator",0,"0,1,2",NA,"0,4,8",NA,NA,"Analysis_cou0015"
