@@ -143,9 +143,9 @@ GitHub Actions run automatically on Pull Requests and other repository events to
   - Updates UAT status for closed issues
   - Enforces test failure policies
 * **Pkgdown with Examples** [`pkgdown-with-examples.yaml`](.github/workflows/pkgdown-with-examples.yaml) – Builds and deploys package documentation:
-  - **Push to `main`**: Deploys to `/examples` on gh-pages
-  - **Push to `dev`**: Deploys to `/examples/dev` on gh-pages  
-  - **Pull Requests**: Deploys to `/examples/pr-{number}` for preview
+  - **Push to `main`**: Deploys the main site to the root of `gh-pages` (e.g., `/`)
+  - **Push to `dev`**: Deploys the development site to `/dev` on `gh-pages`  
+  - **Pull Requests**: Deploys preview sites under `/pr/<number>/dev` on `gh-pages`
 * **Pkgdown Cleanup** [`pkgdown-cleanup.yaml`](.github/workflows/pkgdown-cleanup.yaml) – Automatically removes PR preview directories when PRs are closed.
 
 ### Release Management
