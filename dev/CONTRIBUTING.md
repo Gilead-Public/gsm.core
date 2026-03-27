@@ -184,18 +184,104 @@ styler::style_dir("tests", recursive = TRUE, transformers = double_indent_style)
 
 ## Continuous Integration
 
-GitHub Actions run automatically on all Pull Requests to `dev` and
-`main` to catch issues early:
+GitHub Actions run automatically on Pull Requests and other repository
+events to ensure code quality and provide automated workflows. The
+following workflows are configured:
 
-- **R CMD check** – Confirms the package builds and passes tests on
-  multiple platforms (Linux, macOS, Windows).
-- **Pkgdown** – Generates `pkgdown` docs.
-- **Qualification Reports** – Built and attached to releases for
-  traceability. *Only run on merges to `main`.*
-- **Release** - Builds and attaches tarball to releases
+### Core Testing and Quality Assurance
 
-👉 Contributors don’t typically need to configure anything—just push
-code and the checks will run.
+- **R CMD Check (Dev)**
+  [`R-CMD-check-dev.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/R-CMD-check-dev.yaml)
+  – Runs for PRs to `dev` branch on Ubuntu (latest and R 4.1.3) to catch
+  basic package issues.
+- **R CMD Check (Main)**
+  [`R-CMD-check.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/R-CMD-check.yaml)
+  – Comprehensive testing for PRs to `main` branch across multiple
+  platforms:
+  - **Linux**: Ubuntu (latest R and 4.1.3)
+  - **macOS**: macOS-latest (release R)
+  - **Windows**: Windows-latest (release R)
+- **Test Coverage**
+  [`test-coverage.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/test-coverage.yaml)
+  – Analyzes code coverage on pushes to `main`/`dev` and PRs, helping
+  maintain high test coverage standards.
+
+### Quality Control and Documentation
+
+- **qcthat Quality Control**
+  [`qcthat.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/qcthat.yaml)
+  – Comprehensive quality control workflow that:
+  - Manages User Acceptance Testing (UAT) processes
+  - Generates Issue-Test Matrix for tracking test coverage against
+    issues
+  - Creates and attaches qualification reports to PRs and releases
+  - Updates UAT status for closed issues
+  - Enforces test failure policies
+- **Pkgdown with Examples**
+  [`pkgdown-with-examples.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/pkgdown-with-examples.yaml)
+  – Builds and deploys package documentation:
+  - **Push to `main`**: Deploys the main site to the root of `gh-pages`
+    (e.g., `/`)
+  - **Push to `dev`**: Deploys the development site to `/dev` on
+    `gh-pages`  
+  - **Pull Requests**: Deploys preview sites under `/pr/<number>/dev` on
+    `gh-pages`
+- **Pkgdown Cleanup**
+  [`pkgdown-cleanup.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/pkgdown-cleanup.yaml)
+  – Automatically removes PR preview directories when PRs are closed.
+
+### Release Management
+
+- **Release** \[`r-releaser.yaml`\] – Handles the release process:
+  - Triggered on GitHub release creation or manual dispatch
+  - Builds package tarball and attaches to release
+  - Ensures proper release artifact management
+
+### Workflow Configuration
+
+Most workflows are generated and maintained through
+[`gsm.utils`](https://github.com/Gilead-BioStats/gsm.utils) to ensure
+consistency across all GSM packages. The one exception to this is
+`qcthat.yaml` which is maintained in the
+[`qcthat`](https://github.com/Gilead-BioStats/qcthat) package. Key
+features:
+
+- **Automatic triggers**: Workflows run on relevant events (PRs, pushes,
+  releases)
+- **Multi-platform support**: Testing across Linux, macOS, and Windows
+- **Version matrix**: Testing against current and legacy R versions
+- **Quality gates**: Enforced testing, coverage, and qualification
+  requirements
+
+👉 Contributors don’t need to configure workflows—just push code and the
+checks will run automatically. All workflows must pass before PRs can be
+merged.
+
+------------------------------------------------------------------------
+
+# Examples
+
+GSM packages should include examples that demonstrate core package
+functionality and comply with the following guidelines:
+
+## File Structure and Naming
+
+- Store `{type}_{example}.Rmd` source files in `/inst/examples`
+- Output `{type}_{example}.html` files to `/inst/examples/output`
+- Output filename must match source filename exactly (including
+  capitalization)
+
+## GitHub Actions for Examples
+
+Examples are automatically deployed via GitHub Actions:
+
+- **Push to `main`**: Syncs examples to `/examples` on gh-pages
+- **Push to `dev`**: Syncs examples to `/examples/dev` on gh-pages
+- **Pull Requests**: Syncs to `/examples/pr-{number}` and adds a comment
+  showing new/updated files with timestamps
+
+These workflows are maintained in `gsm.utils` and deployed to all GSM
+packages.
 
 ------------------------------------------------------------------------
 

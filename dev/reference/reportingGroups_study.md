@@ -10,7 +10,7 @@ reportingGroups_study
 
 ## Format
 
-A data frame with 22 rows and 4 columns:
+A data frame with 23 rows and 4 columns:
 
 - GroupID:
 
