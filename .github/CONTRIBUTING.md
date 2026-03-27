@@ -127,26 +127,26 @@ GitHub Actions run automatically on Pull Requests and other repository events to
 
 ### Core Testing and Quality Assurance
 
-* **R CMD Check (Dev)** [`R-CMD-check-dev.yaml`] – Runs for PRs to `dev` branch on Ubuntu (latest and R 4.1.3) to catch basic package issues.
-* **R CMD Check (Main)** [`R-CMD-check.yaml`] – Comprehensive testing for PRs to `main` branch across multiple platforms:
+* **R CMD Check (Dev)** [`R-CMD-check-dev.yaml`](.github/workflows/R-CMD-check-dev.yaml) – Runs for PRs to `dev` branch on Ubuntu (latest and R 4.1.3) to catch basic package issues.
+* **R CMD Check (Main)** [`R-CMD-check.yaml`](.github/workflows/R-CMD-check.yaml) – Comprehensive testing for PRs to `main` branch across multiple platforms:
   - **Linux**: Ubuntu (latest R and 4.1.3)
   - **macOS**: macOS-latest (release R)
   - **Windows**: Windows-latest (release R)
-* **Test Coverage** [`test-coverage.yaml`] – Analyzes code coverage on pushes to `main`/`dev` and PRs, helping maintain high test coverage standards.
+* **Test Coverage** [`test-coverage.yaml`](.github/workflows/test-coverage.yaml) – Analyzes code coverage on pushes to `main`/`dev` and PRs, helping maintain high test coverage standards.
 
 ### Quality Control and Documentation
 
-* **qcthat Quality Control** [`qcthat.yaml`] – Comprehensive quality control workflow that:
+* **qcthat Quality Control** [`qcthat.yaml`](.github/workflows/qcthat.yaml) – Comprehensive quality control workflow that:
   - Manages User Acceptance Testing (UAT) processes
   - Generates Issue-Test Matrix for tracking test coverage against issues
   - Creates and attaches qualification reports to PRs and releases
   - Updates UAT status for closed issues
   - Enforces test failure policies
-* **Pkgdown with Examples** [`pkgdown-with-examples.yaml`] – Builds and deploys package documentation:
+* **Pkgdown with Examples** [`pkgdown-with-examples.yaml`](.github/workflows/pkgdown-with-examples.yaml) – Builds and deploys package documentation:
   - **Push to `main`**: Deploys to `/examples` on gh-pages
   - **Push to `dev`**: Deploys to `/examples/dev` on gh-pages  
   - **Pull Requests**: Deploys to `/examples/pr-{number}` for preview
-* **Pkgdown Cleanup** [`pkgdown-cleanup.yaml`] – Automatically removes PR preview directories when PRs are closed.
+* **Pkgdown Cleanup** [`pkgdown-cleanup.yaml`](.github/workflows/pkgdown-cleanup.yaml) – Automatically removes PR preview directories when PRs are closed.
 
 ### Release Management
 
