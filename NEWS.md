@@ -1,6 +1,12 @@
-#gsm.core v1.2.0
+# gsm.core v1.2.0
 
-This minor release
+This minor release expands the qualification / workflow test suite, refreshes packaged example datasets, and updates release/CI/docs scaffolding.
+
+Changes:
+
+- Add qualification helpers + multiple new qualification tests and custom YAML workflows under tests/testthat/.
+- Refresh packaged data objects (data/*.rda) and their docs/snapshots to match regenerated CSV sources.
+- Bump package version to 1.2.0 and update release tooling/docs/CI configuration.
 
 # gsm.core v1.1.8
 
