@@ -6,7 +6,7 @@ ae_workflow_custom <- flatten(MakeWorkflowList(
 ae_workflow_default <- flatten(MakeWorkflowList(
   strNames = "kri0001",
   strPath = GetYamlPathMetrics()
-  ))
+))
 
 # define Data ------------------------------------------------------
 TestAtLogLevel("WARN")

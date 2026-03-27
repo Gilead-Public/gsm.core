@@ -1,3 +1,7 @@
+#gsm.core v1.2.0
+
+This minor release
+
 # gsm.core v1.1.8
 
 This patch release adds the `db_lock_dt` to `Raw_STUDY` in the `lSource` dataset, implementing updates from gsm.datasim v1.1.3 and gsm.mapping v1.1.2

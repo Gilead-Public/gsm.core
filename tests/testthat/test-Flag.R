@@ -115,16 +115,16 @@ test_that("Flag function adds RiskScoreWeight info to Analysis_Flagged (#77)", {
 
   # Verify weights are correctly mapped to flag values
   expected_weights <- c(
-    10,  # Flag -2, Weight 10
-    5,   # Flag -1, Weight 5
-    1,   # Flag 0, Weight 1
-    1,   # Flag 0, Weight 1
-    1,   # Flag 0, Weight 1
-    1,   # Flag 0, Weight 1
-    3,   # Flag 1, Weight 3
-    8,   # Flag 2, Weight 8
-    NA,  # NA Flag gets NA Weight
-    1    # Flag 0, Weight 1
+    10, # Flag -2, Weight 10
+    5, # Flag -1, Weight 5
+    1, # Flag 0, Weight 1
+    1, # Flag 0, Weight 1
+    1, # Flag 0, Weight 1
+    1, # Flag 0, Weight 1
+    3, # Flag 1, Weight 3
+    8, # Flag 2, Weight 8
+    NA, # NA Flag gets NA Weight
+    1 # Flag 0, Weight 1
   )
   expect_equal(dfFlagged$Weight, expected_weights)
 

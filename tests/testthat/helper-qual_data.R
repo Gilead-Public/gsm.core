@@ -28,14 +28,16 @@ metrics_workflow_path <- get_cached_workflows(
   workflow_subdir = "2_metrics",
   branch = "main",
   force_update = FALSE,
-  strNames = c("kri000[12]", "cou000[12]"))
+  strNames = c("kri000[12]", "cou000[12]")
+)
 
 mappings_workflow_path <- get_cached_workflows(
-    strPackage = "gsm.mapping",
-    workflow_subdir = "1_mappings",
-    branch = "main",
-    force_update = FALSE,
-    strNames = c("^AE", "^SUBJ"))
+  strPackage = "gsm.mapping",
+  workflow_subdir = "1_mappings",
+  branch = "main",
+  force_update = FALSE,
+  strNames = c("^AE", "^SUBJ")
+)
 
 # Workflow path helper functions
 GetYamlPathMetrics <- function() {
@@ -209,11 +211,8 @@ get_data <- function(lWorkflow, data) {
 
   # This code temporarily deals with column mismatches in gsm.core vs
   # gsm.mapping and should be removed when all packages are released.
-  suppressWarnings(
-    {
-      mapped_needed_data <- RunWorkflows(mappings_wf[maps_needed], data)
-    }
-  )
+  suppressWarnings({
+    mapped_needed_data <- RunWorkflows(mappings_wf[maps_needed], data)
+  })
   return(mapped_needed_data)
 }
-
