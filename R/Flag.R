@@ -70,15 +70,18 @@ Flag <- function(
   dfFlagged <- dfAnalyzed
 
   # generate flag values for dfAnalyzed[strColumn] based on vThresold and vFlag
-  dfFlagged$Flag <- cut(
-    dfFlagged[[strColumn]],
-    breaks = c(-Inf, vThreshold, Inf),
-    labels = vFlag,
-    right = FALSE,
-    include.lowest = TRUE
-  ) %>%
-    as.character() %>%
-    as.numeric() # Parse from factor to numeric
+  # Negative scores use right-closed intervals so a value exactly at a negative
+  # threshold falls in the more extreme (lower) bucket. Non-negative scores use
+  # left-closed intervals so a value exactly at a positive threshold falls in the
+  # more extreme (higher) bucket.
+  breaks <- c(-Inf, vThreshold, Inf)
+  col_vals <- dfFlagged[[strColumn]]
+  flag_idx <- ifelse(
+    col_vals < 0,
+    as.integer(cut(col_vals, breaks, right = TRUE, include.lowest = TRUE)),
+    as.integer(cut(col_vals, breaks, right = FALSE, include.lowest = TRUE))
+  )
+  dfFlagged$Flag <- vFlag[flag_idx]
 
   # filter to site with enough observations via AccrualThreshold and AccrualMetric
   if (!is.null(nAccrualThreshold) && !is.null(strAccrualMetric)) {
