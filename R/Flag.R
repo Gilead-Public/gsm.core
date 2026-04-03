@@ -69,7 +69,7 @@ Flag <- function(
 
   dfFlagged <- dfAnalyzed
 
-  # generate flag values for dfAnalyzed[strColumn] based on vThresold and vFlag
+  # generate flag values for dfAnalyzed[strColumn] based on vThreshold and vFlag
   # Negative scores use right-closed intervals so a value exactly at a negative
   # threshold falls in the more extreme (lower) bucket. Non-negative scores use
   # left-closed intervals so a value exactly at a positive threshold falls in the
