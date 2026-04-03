@@ -133,7 +133,7 @@ test_that("Flag function adds RiskScoreWeight info to Analysis_Flagged (#77)", {
   expect_equal(dfFlagged$Flag, expected_flags)
 })
 
-test_that("errors working as expected", {
+test_that("errors working as expected (#135)", {
   dfAnalyzed <- data.frame(
     GroupID = 1:12,
     Score = c(-4, -3.1, -3, -2.9, -2.1, -2, -1.9, 0, 2, 2.9, 3, 3.1)
@@ -158,4 +158,25 @@ test_that("errors working as expected", {
     Flag(dfAnalyzed, vRiskScoreWeight = c(1, 2, 3)),
     "vFlag and vRiskScoreWeight must be the same length"
   )
+})
+
+test_that("Flag correctly handles exact cut point values (include.lowest = TRUE) (#135)", {
+  # With right = FALSE, intervals are [lo, hi). A score exactly at a negative threshold
+  # falls in the left-closed interval starting at that threshold, so it receives a negative
+  # (non-zero) flag rather than NA. include.lowest = TRUE additionally ensures Inf maps to
+  # the highest flag instead of NA.
+  dfAnalyzed <- data.frame(
+    GroupID = 1:6,
+    Score = c(-Inf, -3, -2, 2, 3, Inf)
+  )
+
+  dfFlagged <- Flag(dfAnalyzed, vFlagOrder = NULL)
+
+  # -Inf: left endpoint of [-Inf, -3) → flag -2 (most negative)
+  # -3:   left endpoint of [-3, -2)   → flag -1 (negative, i.e. flagged, not NA)
+  # -2:   left endpoint of [-2,  2)   → flag  0
+  #  2:   left endpoint of [ 2,  3)   → flag  1
+  #  3:   left endpoint of [ 3, Inf)  → flag  2
+  # Inf:  include.lowest = TRUE closes [3, Inf] → flag  2 (not NA)
+  expect_equal(dfFlagged$Flag, c(-2, -1, 0, 1, 2, 2))
 })

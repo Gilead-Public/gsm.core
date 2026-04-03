@@ -74,7 +74,8 @@ Flag <- function(
     dfFlagged[[strColumn]],
     breaks = c(-Inf, vThreshold, Inf),
     labels = vFlag,
-    right = FALSE
+    right = FALSE,
+    include.lowest = TRUE
   ) %>%
     as.character() %>%
     as.numeric() # Parse from factor to numeric
