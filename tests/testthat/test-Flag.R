@@ -160,7 +160,7 @@ test_that("errors working as expected (#135)", {
   )
 })
 
-test_that("Flag correctly handles exact cut point values at negative and positive thresholds", {
+test_that("Flag correctly handles exact cut point values at negative and positive thresholds (#135)", {
   # Values exactly at a negative threshold fall in the more extreme (lower) bucket
   # because right-closed intervals are used for negative scores: (-Inf, t].
   # Values exactly at a positive threshold fall in the more extreme (higher) bucket
