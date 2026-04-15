@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">gsm.core</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,17 +145,91 @@
 <hr></div>
 <div class="section level2">
 <h2 id="continuous-integration">Continuous Integration<a class="anchor" aria-label="anchor" href="#continuous-integration"></a></h2>
-<p>GitHub Actions run automatically on all Pull Requests to <code>dev</code> and <code>main</code> to catch issues early:</p>
+<p>GitHub Actions run automatically on Pull Requests and other repository events to ensure code quality and provide automated workflows. The following workflows are configured:</p>
+<div class="section level3">
+<h3 id="core-testing-and-quality-assurance">Core Testing and Quality Assurance<a class="anchor" aria-label="anchor" href="#core-testing-and-quality-assurance"></a></h3>
 <ul><li>
-<strong>R CMD check</strong> – Confirms the package builds and passes tests on multiple platforms (Linux, macOS, Windows).</li>
+<strong>R CMD Check (Dev)</strong> <a href=".github/workflows/R-CMD-check-dev.yaml"><code>R-CMD-check-dev.yaml</code></a> – Runs for PRs to <code>dev</code> branch on Ubuntu (latest and R 4.1.3) to catch basic package issues.</li>
 <li>
-<strong>Pkgdown</strong> – Generates <code>pkgdown</code> docs.</li>
+<strong>R CMD Check (Main)</strong> <a href=".github/workflows/R-CMD-check.yaml"><code>R-CMD-check.yaml</code></a> – Comprehensive testing for PRs to <code>main</code> branch across multiple platforms:
+<ul><li>
+<strong>Linux</strong>: Ubuntu (latest R and 4.1.3)</li>
 <li>
-<strong>Qualification Reports</strong> – Built and attached to releases for traceability. <em>Only run on merges to <code>main</code>.</em>
+<strong>macOS</strong>: macOS-latest (release R)</li>
+<li>
+<strong>Windows</strong>: Windows-latest (release R)</li>
+</ul></li>
+<li>
+<strong>Test Coverage</strong> <a href=".github/workflows/test-coverage.yaml"><code>test-coverage.yaml</code></a> – Analyzes code coverage on pushes to <code>main</code>/<code>dev</code> and PRs, helping maintain high test coverage standards.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="quality-control-and-documentation">Quality Control and Documentation<a class="anchor" aria-label="anchor" href="#quality-control-and-documentation"></a></h3>
+<ul><li>
+<strong>qcthat Quality Control</strong> <a href=".github/workflows/qcthat.yaml"><code>qcthat.yaml</code></a> – Comprehensive quality control workflow that:
+<ul><li>Manages User Acceptance Testing (UAT) processes</li>
+<li>Generates Issue-Test Matrix for tracking test coverage against issues</li>
+<li>Creates and attaches qualification reports to PRs and releases</li>
+<li>Updates UAT status for closed issues</li>
+<li>Enforces test failure policies</li>
+</ul></li>
+<li>
+<strong>Pkgdown with Examples</strong> <a href=".github/workflows/pkgdown-with-examples.yaml"><code>pkgdown-with-examples.yaml</code></a> – Builds and deploys package documentation:
+<ul><li>
+<strong>Push to <code>main</code></strong>: Deploys the main site to the root of <code>gh-pages</code> (e.g., <code>/</code>)</li>
+<li>
+<strong>Push to <code>dev</code></strong>: Deploys the development site to <code>/dev</code> on <code>gh-pages</code><br></li>
+<li>
+<strong>Pull Requests</strong>: Deploys preview sites under <code>/pr/&lt;number&gt;/dev</code> on <code>gh-pages</code>
 </li>
+</ul></li>
 <li>
-<strong>Release</strong> - Builds and attaches tarball to releases</li>
-</ul><p>👉 Contributors don’t typically need to configure anything—just push code and the checks will run.</p>
+<strong>Pkgdown Cleanup</strong> <a href=".github/workflows/pkgdown-cleanup.yaml"><code>pkgdown-cleanup.yaml</code></a> – Automatically removes PR preview directories when PRs are closed.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="release-management">Release Management<a class="anchor" aria-label="anchor" href="#release-management"></a></h3>
+<ul><li>
+<strong>Release</strong> [<code>r-releaser.yaml</code>] – Handles the release process:
+<ul><li>Triggered on GitHub release creation or manual dispatch</li>
+<li>Builds package tarball and attaches to release</li>
+<li>Ensures proper release artifact management</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="workflow-configuration">Workflow Configuration<a class="anchor" aria-label="anchor" href="#workflow-configuration"></a></h3>
+<p>Most workflows are generated and maintained through <a href="https://github.com/Gilead-BioStats/gsm.utils" class="external-link"><code>gsm.utils</code></a> to ensure consistency across all GSM packages. The one exception to this is <code>qcthat.yaml</code> which is maintained in the <a href="https://github.com/Gilead-BioStats/qcthat" class="external-link"><code>qcthat</code></a> package. Key features:</p>
+<ul><li>
+<strong>Automatic triggers</strong>: Workflows run on relevant events (PRs, pushes, releases)</li>
+<li>
+<strong>Multi-platform support</strong>: Testing across Linux, macOS, and Windows</li>
+<li>
+<strong>Version matrix</strong>: Testing against current and legacy R versions</li>
+<li>
+<strong>Quality gates</strong>: Enforced testing, coverage, and qualification requirements</li>
+</ul><p>👉 Contributors don’t need to configure workflows—just push code and the checks will run automatically. All workflows must pass before PRs can be merged.</p>
+<hr></div>
+</div>
+</div>
+<div class="section level1">
+<h1 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h1>
+<p>GSM packages should include examples that demonstrate core package functionality and comply with the following guidelines:</p>
+<div class="section level2">
+<h2 id="file-structure-and-naming">File Structure and Naming<a class="anchor" aria-label="anchor" href="#file-structure-and-naming"></a></h2>
+<ul><li>Store <code>{type}_{example}.Rmd</code> source files in <code>/inst/examples</code>
+</li>
+<li>Output <code>{type}_{example}.html</code> files to <code>/inst/examples/output</code>
+</li>
+<li>Output filename must match source filename exactly (including capitalization)</li>
+</ul></div>
+<div class="section level2">
+<h2 id="github-actions-for-examples">GitHub Actions for Examples<a class="anchor" aria-label="anchor" href="#github-actions-for-examples"></a></h2>
+<p>Examples are automatically deployed via GitHub Actions:</p>
+<ul><li>
+<strong>Push to <code>main</code></strong>: Syncs examples to <code>/examples</code> on gh-pages</li>
+<li>
+<strong>Push to <code>dev</code></strong>: Syncs examples to <code>/examples/dev</code> on gh-pages</li>
+<li>
+<strong>Pull Requests</strong>: Syncs to <code>/examples/pr-{number}</code> and adds a comment showing new/updated files with timestamps</li>
+</ul><p>These workflows are maintained in <code>gsm.utils</code> and deployed to all GSM packages.</p>
 <hr></div>
 </div>
 <div class="section level1">
@@ -217,17 +291,17 @@
 <li>
 <strong>gsm.mapping</strong> – Builds on <code>gsm.core</code> to provide study-specific mappings.</li>
 <li>
-<strong>gsm.kri</strong> – Depends on <code>gsm.core</code> and <code>gsm.mapping</code>; provides core risk indicator functionality.</li>
+<strong>gsm.qtl</strong> – Depends on <code>gsm.core</code>.</li>
+<li>
+<strong>gsm.kri</strong> – Depends on <code>gsm.core</code>, <code>gsm.mapping</code> and <code>gsm.qtl</code>; provides core risk indicator functionality.</li>
 <li>
 <strong>gsm.reporting</strong> – Depends on <code>gsm.core</code> and <code>gsm.kri</code>; underpins all reporting templates.</li>
 <li>
 <strong>gsm.datasim</strong> – Depends on <code>gsm.core</code> and <code>gsm.mapping</code> for generating simulated study data.</li>
 <li>
-<strong>gsm.qtl</strong> – Depends on <code>gsm.core</code> and <code>gsm.kri</code>.</li>
-<li>
 <strong>gsm.endpoints</strong> – Uses <code>gsm.mapping</code> and <code>gsm.core</code>. Also extends <code>gsm.kri</code> and <code>gsm.reporting</code> for endpoint-specific analyses.</li>
 <li>
-<strong>grail</strong> – Suggests <code>gsm.core</code>, <code>gsm.mapping</code>, <code>gsm.kri</code> and <code>gsm.reporting</code>.</li>
+<strong>grail</strong> – Suggests <code>gsm.core</code>, <code>gsm.mapping</code>, <code>gsm.kri</code>, <code>gsm.qtl</code> and <code>gsm.reporting</code>.</li>
 <li>
 <strong>grail.ado</strong> - Depends on <code>grail</code> for passing data to ADO.</li>
 <li>

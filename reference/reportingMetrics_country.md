@@ -10,7 +10,7 @@ reportingMetrics_country
 
 ## Format
 
-A data frame with 14 rows and 20 columns:
+A data frame with 15 rows and 20 columns:
 
 - MetricID:
 
