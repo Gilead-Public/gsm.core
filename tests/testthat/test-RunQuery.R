@@ -80,7 +80,7 @@ test_that("RunQuery checks if all templated columns are found in lMapping", {
   )
 })
 
-test_that("RunQuery applies schema appropriately", {
+test_that("RunQuery applies schema appropriately (#22, #45)", {
   df <- data.frame(
     Name = c("John", "Jane", "Bob"),
     Age = c(25, 30, 35),
@@ -132,7 +132,7 @@ test_that("RunQuery applies schema appropriately", {
   expect_equal(class(result$Tenured), "logical")
 })
 
-test_that("RunQuery applies incomplete schema appropriately", {
+test_that("RunQuery applies incomplete schema appropriately (#70, #71)", {
   df <- data.frame(
     Name = c("John", "Jane", "Bob"),
     Age = c(25, 30, 35),
@@ -162,7 +162,7 @@ test_that("RunQuery applies incomplete schema appropriately", {
 })
 
 
-test_that("RunQuery parses invalid date/times correctly", {
+test_that("RunQuery parses invalid date/times correctly (#44)", {
   df <- data.frame(
     Name = c("John", "Jane", "Bob"),
     Birthday = c("1990JAN01", "1987-02-30", ""),

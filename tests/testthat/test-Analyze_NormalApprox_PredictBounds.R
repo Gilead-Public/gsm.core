@@ -45,7 +45,7 @@ test_that("Analyze_NormalApprox_PredictBounds handles missing vThreshold correct
   expect_equal(sort(unique(dfBounds$Threshold)), sort(c(-3, -2, 0, 2, 3)))
 })
 
-test_that("Analyze_NormalApprox_PredictBounds processes data correctly", {
+test_that("Analyze_NormalApprox_PredictBounds processes data correctly (#21)", {
   dfTransformed <- Transform_Rate(analyticsInput)
 
   dfBounds <- quiet_Analyze_NormalApprox_PredictBounds(dfTransformed)

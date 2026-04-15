@@ -33,7 +33,7 @@
       Not all specified columns in the spec are present in the data, missing columns are: df1$b
       Not all specified columns in the spec are present in the data, missing columns are: df2$y
 
-# Validate column type works
+# Validate column type works (#22)
 
     Code
       CheckSpec(lData, lSpec)
