@@ -1,6 +1,6 @@
 set.seed(123)
 
-# Source data setup
+# ---- Source data setup -------------------------------------------------------
 lSource <- gsm.core::lSource
 lData <- list(
   Raw_SUBJ = lSource$Raw_SUBJ,
@@ -8,55 +8,98 @@ lData <- list(
 )
 
 # Data with missing values (15% NA's) - used in T2_2
-lData_missing_values <- map(lData, function(df) {
+lData_missing_values <- purrr::map(lData, function(df) {
   df %>%
-    mutate(
-      across(
-        !contains("GroupID"),
-        ~ replace(., sample(row_number(), size = .15 * n()), NA)
+    dplyr::mutate(
+      dplyr::across(
+        !dplyr::contains("GroupID"),
+        ~ replace(., sample(dplyr::row_number(), size = .15 * dplyr::n()), NA)
       )
     )
 })
-# Custom metrics path - local repository only
+
+# ---- Workflow path helpers (local-first, remote-optional) --------------------
+
+# Custom metrics path - local repository only (already present in this repo)
 GetYamlPathCustomMetrics <- function() {
-  test_path("qual_workflows/2_metrics_custom")
+  testthat::test_path("qual_workflows/2_metrics_custom")
 }
 
-# Get cached workflows from remote repositories
-metrics_workflow_path <- get_cached_workflows(
-  strPackage = "gsm.kri",
-  workflow_subdir = "2_metrics",
-  branch = "main",
-  force_update = FALSE,
-  strNames = c("kri000[12]", "cou000[12]")
-)
+# Expected local copies of workflows (recommended for CI stability)
+GetYamlPathMetricsLocal <- function() {
+  testthat::test_path("qual_workflows/2_metrics")
+}
 
-mappings_workflow_path <- get_cached_workflows(
-  strPackage = "gsm.mapping",
-  workflow_subdir = "1_mappings",
-  branch = "main",
-  force_update = FALSE,
-  strNames = c("^AE", "^SUBJ")
-)
+GetYamlPathMappingsLocal <- function() {
+  testthat::test_path("qual_workflows/1_mappings")
+}
 
-# Workflow path helper functions
+.dir_has_yaml <- function(path) {
+  isTRUE(dir.exists(path)) &&
+    length(list.files(path, pattern = "\\.ya?ml$", full.names = TRUE)) > 0
+}
+
+# Try to obtain cached workflows from remote repositories.
+# IMPORTANT: never hard-fail during helper sourcing; return NULL on error.
+.try_get_cached_workflows <- function(...) {
+  tryCatch(
+    get_cached_workflows(...),
+    error = function(e) {
+      msg <- conditionMessage(e)
+      message("NOTE: get_cached_workflows() failed; proceeding without remote workflows. Details: ", msg)
+      NULL
+    }
+  )
+}
+
+# Resolve workflow directories:
+# 1) Prefer local vendored workflows under tests/testthat/qual_workflows
+# 2) Otherwise attempt to use cached/remote workflows (may be blocked in CI)
+metrics_workflow_path <- NULL
+mappings_workflow_path <- NULL
+
+if (.dir_has_yaml(GetYamlPathMetricsLocal())) {
+  metrics_workflow_path <- GetYamlPathMetricsLocal()
+} else {
+  metrics_workflow_path <- .try_get_cached_workflows(
+    strPackage = "gsm.kri",
+    workflow_subdir = "2_metrics",
+    branch = "main",
+    force_update = FALSE,
+    strNames = c("kri000[12]", "cou000[12]")
+  )
+}
+
+if (.dir_has_yaml(GetYamlPathMappingsLocal())) {
+  mappings_workflow_path <- GetYamlPathMappingsLocal()
+} else {
+  mappings_workflow_path <- .try_get_cached_workflows(
+    strPackage = "gsm.mapping",
+    workflow_subdir = "1_mappings",
+    branch = "main",
+    force_update = FALSE,
+    strNames = c("^AE", "^SUBJ")
+  )
+}
+
+# Public helpers used by tests.
+# If workflows cannot be resolved, skip tests that rely on them rather than failing.
 GetYamlPathMetrics <- function() {
   if (!is.null(metrics_workflow_path)) {
     return(metrics_workflow_path)
-  } else {
-    stop("No metrics workflows available. Check network connectivity.")
   }
+  testthat::skip("Metrics workflows unavailable (no local copy and cannot download/cache in this environment).")
 }
 
 GetYamlPathMappings <- function() {
   if (!is.null(mappings_workflow_path)) {
     return(mappings_workflow_path)
-  } else {
-    stop("No mapping workflows available. Check network connectivity.")
   }
+  testthat::skip("Mapping workflows unavailable (no local copy and cannot download/cache in this environment).")
 }
 
-# Data caching functions
+# ---- Data caching functions --------------------------------------------------
+
 get_data_cache_dir <- function() {
   cache_dir <- file.path(tools::R_user_dir("gsm", "cache"), "processed_data")
   if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
@@ -125,21 +168,28 @@ get_cached_mapping_output <- function(force_refresh = FALSE) {
   # Generate fresh data
   message("Updating cached mapping output...")
   mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
-  mapping_output <- map(mappings_wf, ~ .x$steps[[1]]$output) %>% unlist()
+  mapping_output <- purrr::map(mappings_wf, ~ .x$steps[[1]]$output) %>% unlist()
 
   saveRDS(mapping_output, cache_file)
   message("Cached mapping output updated successfully.")
   return(mapping_output)
 }
 
-# Get processed data using cached versions
-mapped_data <- get_cached_mapped_data()
-mapping_output <- get_cached_mapping_output()
+# ---- Lazily-initialized globals ---------------------------------------------
+# Do not hard-fail at helper source time if workflows are unavailable.
+# If workflows are missing, dependent tests will be skipped via GetYamlPathMappings()/Metrics().
+mapped_data <- NULL
+mapping_output <- NULL
+mappings_wf <- NULL
 
-# Create mappings_wf for compatibility
-mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
+if (!is.null(mappings_workflow_path)) {
+  mapped_data <- get_cached_mapped_data()
+  mapping_output <- get_cached_mapping_output()
+  mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
+}
 
-# Robust workflow runner that handles errors gracefully
+# ---- Robust workflow runner that handles errors gracefully -------------------
+
 robust_runworkflow <- function(
   lWorkflow,
   lData,
@@ -172,7 +222,7 @@ robust_runworkflow <- function(
       )
     )()
 
-    if (names(result0[!map_vec(result0, is.null)]) == "error") {
+    if (names(result0[!purrr::map_vec(result0, is.null)]) == "error") {
       cli::cli_alert_danger(paste0(
         "Error:`", result0$error$message, "`: error message stored as result"
       ))
@@ -197,13 +247,19 @@ robust_runworkflow <- function(
   }
 }
 
-# Get relevant data for a workflow - wrapper for robust_runworkflow
+# ---- Get relevant data for a workflow ---------------------------------------
+# Wrapper for robust_runworkflow
 get_data <- function(lWorkflow, data) {
   if ("spec" %in% names(lWorkflow)) lWorkflow <- list(lWorkflow)
 
-  maps_needed_index <- map(lWorkflow, ~ names(.x$spec)) %>%
+  maps_needed_index <- purrr::map(lWorkflow, ~ names(.x$spec)) %>%
     unlist() %>%
     unique()
+
+  # If mapping_output isn't available, skip gracefully.
+  if (is.null(mapping_output)) {
+    testthat::skip("Mapping output unavailable because mapping workflows could not be resolved.")
+  }
 
   maps_needed <- names(mapping_output[which(
     mapping_output %in% maps_needed_index
