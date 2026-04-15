@@ -291,17 +291,17 @@
 <li>
 <strong>gsm.mapping</strong> – Builds on <code>gsm.core</code> to provide study-specific mappings.</li>
 <li>
-<strong>gsm.kri</strong> – Depends on <code>gsm.core</code> and <code>gsm.mapping</code>; provides core risk indicator functionality.</li>
+<strong>gsm.qtl</strong> – Depends on <code>gsm.core</code>.</li>
+<li>
+<strong>gsm.kri</strong> – Depends on <code>gsm.core</code>, <code>gsm.mapping</code> and <code>gsm.qtl</code>; provides core risk indicator functionality.</li>
 <li>
 <strong>gsm.reporting</strong> – Depends on <code>gsm.core</code> and <code>gsm.kri</code>; underpins all reporting templates.</li>
 <li>
 <strong>gsm.datasim</strong> – Depends on <code>gsm.core</code> and <code>gsm.mapping</code> for generating simulated study data.</li>
 <li>
-<strong>gsm.qtl</strong> – Depends on <code>gsm.core</code> and <code>gsm.kri</code>.</li>
-<li>
 <strong>gsm.endpoints</strong> – Uses <code>gsm.mapping</code> and <code>gsm.core</code>. Also extends <code>gsm.kri</code> and <code>gsm.reporting</code> for endpoint-specific analyses.</li>
 <li>
-<strong>grail</strong> – Suggests <code>gsm.core</code>, <code>gsm.mapping</code>, <code>gsm.kri</code> and <code>gsm.reporting</code>.</li>
+<strong>grail</strong> – Suggests <code>gsm.core</code>, <code>gsm.mapping</code>, <code>gsm.kri</code>, <code>gsm.qtl</code> and <code>gsm.reporting</code>.</li>
 <li>
 <strong>grail.ado</strong> - Depends on <code>grail</code> for passing data to ADO.</li>
 <li>
