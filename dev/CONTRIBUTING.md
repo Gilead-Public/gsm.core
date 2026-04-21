@@ -379,17 +379,17 @@ To prevent these issues, follow the release sequence below:
     packages.
 2.  **gsm.mapping** – Builds on `gsm.core` to provide study-specific
     mappings.
-3.  **gsm.kri** – Depends on `gsm.core` and `gsm.mapping`; provides core
-    risk indicator functionality.
-4.  **gsm.reporting** – Depends on `gsm.core` and `gsm.kri`; underpins
+3.  **gsm.qtl** – Depends on `gsm.core`.
+4.  **gsm.kri** – Depends on `gsm.core`, `gsm.mapping` and `gsm.qtl`;
+    provides core risk indicator functionality.
+5.  **gsm.reporting** – Depends on `gsm.core` and `gsm.kri`; underpins
     all reporting templates.
-5.  **gsm.datasim** – Depends on `gsm.core` and `gsm.mapping` for
+6.  **gsm.datasim** – Depends on `gsm.core` and `gsm.mapping` for
     generating simulated study data.
-6.  **gsm.qtl** – Depends on `gsm.core` and `gsm.kri`.
 7.  **gsm.endpoints** – Uses `gsm.mapping` and `gsm.core`. Also extends
     `gsm.kri` and `gsm.reporting` for endpoint-specific analyses.
-8.  **grail** – Suggests `gsm.core`, `gsm.mapping`, `gsm.kri` and
-    `gsm.reporting`.
+8.  **grail** – Suggests `gsm.core`, `gsm.mapping`, `gsm.kri`, `gsm.qtl`
+    and `gsm.reporting`.
 9.  **grail.ado** - Depends on `grail` for passing data to ADO.
 10. **gsm.rrm** - Suggests `grail` and `gsm.core`.
 11. **gsm.template** – Depends on `gsm.core`, `gsm.datasim` and
