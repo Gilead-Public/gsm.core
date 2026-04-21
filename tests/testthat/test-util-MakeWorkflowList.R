@@ -50,16 +50,15 @@ test_that("invalid data returns list NULL elements (#43)", {
     )
   )
 
-    ### bRecursive
-    wf_list <- MakeWorkflowList(
-      bRecursive = TRUE,
-      strPath = test_path("testdata"),
-      strNames = "kri0002"
-    )$kri0002
-    expect_true(is.list(wf_list))
-    expect_length(wf_list, 4)
-  }
-)
+  ### bRecursive
+  wf_list <- MakeWorkflowList(
+    bRecursive = TRUE,
+    strPath = test_path("testdata"),
+    strNames = "kri0002"
+  )$kri0002
+  expect_true(is.list(wf_list))
+  expect_length(wf_list, 4)
+})
 
 ################################################################################
 

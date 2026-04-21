@@ -6,7 +6,7 @@ test_that("Flag function works correctly with z-score data", {
 
   # unsorted
   dfFlagged <- Flag(dfAnalyzed, vFlagOrder = NULL)
-  expect_equal(dfFlagged$Flag, c(-2, -2, -1, -1, -1, 0, 0, 0, 1, 1, 2, 2))
+  expect_equal(dfFlagged$Flag, c(-2, -2, -2, -1, -1, -1, 0, 0, 1, 1, 2, 2))
 
   # sorted
   expect_message(
@@ -15,15 +15,15 @@ test_that("Flag function works correctly with z-score data", {
     },
     "Sorted dfFlagged using custom Flag order"
   )
-  expect_equal(dfFlagged$Flag, c(2, 2, -2, -2, 1, 1, -1, -1, -1, 0, 0, 0))
+  expect_equal(dfFlagged$Flag, c(2, 2, -2, -2, -2, 1, 1, -1, -1, -1, 0, 0))
 
   # Test with custom thresholds and flags
   dfFlagged <- Flag(dfAnalyzed, vThreshold = c(-2, 2), vFlag = c(-1, 0, 1), vFlagOrder = NULL)
-  expect_equal(dfFlagged$Flag, c(-1, -1, -1, -1, -1, 0, 0, 0, 1, 1, 1, 1))
+  expect_equal(dfFlagged$Flag, c(-1, -1, -1, -1, -1, -1, 0, 0, 1, 1, 1, 1))
 
   # Test Alias
   dfFlagged <- Flag_NormalApprox(dfAnalyzed, vFlagOrder = NULL)
-  expect_equal(dfFlagged$Flag, c(-2, -2, -1, -1, -1, 0, 0, 0, 1, 1, 2, 2))
+  expect_equal(dfFlagged$Flag, c(-2, -2, -2, -1, -1, -1, 0, 0, 1, 1, 2, 2))
 })
 
 test_that("Flag function works correctly with rate data", {
@@ -115,16 +115,16 @@ test_that("Flag function adds RiskScoreWeight info to Analysis_Flagged (#77)", {
 
   # Verify weights are correctly mapped to flag values
   expected_weights <- c(
-    10,  # Flag -2, Weight 10
-    5,   # Flag -1, Weight 5
-    1,   # Flag 0, Weight 1
-    1,   # Flag 0, Weight 1
-    1,   # Flag 0, Weight 1
-    1,   # Flag 0, Weight 1
-    3,   # Flag 1, Weight 3
-    8,   # Flag 2, Weight 8
-    NA,  # NA Flag gets NA Weight
-    1    # Flag 0, Weight 1
+    10, # Flag -2, Weight 10
+    5, # Flag -1, Weight 5
+    1, # Flag 0, Weight 1
+    1, # Flag 0, Weight 1
+    1, # Flag 0, Weight 1
+    1, # Flag 0, Weight 1
+    3, # Flag 1, Weight 3
+    8, # Flag 2, Weight 8
+    NA, # NA Flag gets NA Weight
+    1 # Flag 0, Weight 1
   )
   expect_equal(dfFlagged$Weight, expected_weights)
 
@@ -133,7 +133,7 @@ test_that("Flag function adds RiskScoreWeight info to Analysis_Flagged (#77)", {
   expect_equal(dfFlagged$Flag, expected_flags)
 })
 
-test_that("errors working as expected", {
+test_that("errors working as expected (#135)", {
   dfAnalyzed <- data.frame(
     GroupID = 1:12,
     Score = c(-4, -3.1, -3, -2.9, -2.1, -2, -1.9, 0, 2, 2.9, 3, 3.1)
@@ -158,4 +158,26 @@ test_that("errors working as expected", {
     Flag(dfAnalyzed, vRiskScoreWeight = c(1, 2, 3)),
     "vFlag and vRiskScoreWeight must be the same length"
   )
+})
+
+test_that("Flag correctly handles exact cut point values at negative and positive thresholds (#135)", {
+  # Values exactly at a negative threshold fall in the more extreme (lower) bucket
+  # because right-closed intervals are used for negative scores: (-Inf, t].
+  # Values exactly at a positive threshold fall in the more extreme (higher) bucket
+  # because left-closed intervals are used for non-negative scores: [t, Inf).
+  # include.lowest = TRUE ensures -Inf and Inf are also captured rather than returning NA.
+  dfAnalyzed <- data.frame(
+    GroupID = 1:6,
+    Score = c(-Inf, -3, -2, 2, 3, Inf)
+  )
+
+  dfFlagged <- Flag(dfAnalyzed, vFlagOrder = NULL)
+
+  # -Inf: in (-Inf, -3] → flag -2
+  # -3:   in (-Inf, -3] → flag -2 (AT threshold, right-closed → more extreme)
+  # -2:   in (-3,  -2] → flag -1 (AT threshold, right-closed → more extreme)
+  #  2:   in [ 2,   3) → flag  1 (AT threshold, left-closed  → more extreme)
+  #  3:   in [ 3, Inf] → flag  2 (AT threshold, left-closed  → more extreme)
+  # Inf:  in [ 3, Inf] → flag  2 (include.lowest = TRUE, not NA)
+  expect_equal(dfFlagged$Flag, c(-2, -2, -1, 1, 2, 2))
 })
