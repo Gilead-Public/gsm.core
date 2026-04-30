@@ -12,7 +12,9 @@ get_workflow_cache_dir <- function() {
   tryCatch(
     {
       cache_dir <- file.path(tools::R_user_dir("gsm", "cache"), "workflows")
-      if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+      if (!dir.exists(cache_dir)) {
+        dir.create(cache_dir, recursive = TRUE)
+      }
 
       # Test write permissions
       test_file <- file.path(cache_dir, "test_write.tmp")
@@ -23,13 +25,18 @@ get_workflow_cache_dir <- function() {
       }
     },
     error = function(e) {
-      warning(sprintf("Failed to use R_user_dir cache directory: %s", e$message))
+      warning(sprintf(
+        "Failed to use R_user_dir cache directory: %s",
+        e$message
+      ))
     }
   )
 
   # Fallback to temp directory
   cache_dir <- file.path(tempdir(), "gsm_workflows_cache")
-  if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+  if (!dir.exists(cache_dir)) {
+    dir.create(cache_dir, recursive = TRUE)
+  }
   return(cache_dir)
 }
 
@@ -117,8 +124,15 @@ download_workflow_files <- function(
         return(repo_cache_dir)
       },
       error = function(e) {
-        warning(sprintf("Failed to check for updates from %s: %s. Using existing cache if available.", repo, e$message))
-        if (dir.exists(repo_cache_dir) && length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0) {
+        warning(sprintf(
+          "Failed to check for updates from %s: %s. Using existing cache if available.",
+          repo,
+          e$message
+        ))
+        if (
+          dir.exists(repo_cache_dir) &&
+            length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0
+        ) {
           return(repo_cache_dir)
         }
         # If no cache exists, try full download once, but if it fails, provide informative error
@@ -151,17 +165,27 @@ download_workflow_files <- function(
       return(repo_cache_dir)
     },
     error = function(e) {
-      error_msg <- sprintf("Failed to download workflows from %s to %s: %s", repo, repo_cache_dir, e$message)
+      error_msg <- sprintf(
+        "Failed to download workflows from %s to %s: %s",
+        repo,
+        repo_cache_dir,
+        e$message
+      )
 
       # Check if there's any existing cache we can fall back to
-      if (dir.exists(repo_cache_dir) && length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0) {
+      if (
+        dir.exists(repo_cache_dir) &&
+          length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0
+      ) {
         warning(paste(error_msg, "Using existing cached files."))
         return(repo_cache_dir)
       }
 
       # If no cache exists and download failed, provide helpful error message
       warning(error_msg)
-      warning("Consider working offline with local workflow files or check network connectivity.")
+      warning(
+        "Consider working offline with local workflow files or check network connectivity."
+      )
       return(NULL)
     }
   )
@@ -172,7 +196,9 @@ get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
   # GitHub API URL for directory contents
   api_url <- sprintf(
     "https://api.github.com/repos/%s/contents/%s?ref=%s",
-    repo, path, branch
+    repo,
+    path,
+    branch
   )
 
   # Get directory listing
@@ -183,7 +209,8 @@ get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
       response_list <- yaml::yaml.load(paste(json_text, collapse = ""))
       # Convert to tibble using tidyr
       if (is.list(response_list) && !is.data.frame(response_list)) {
-        response_data <- tibble::enframe(response_list, name = NULL) |> tidyr::unnest_wider(value)
+        response_data <- tibble::enframe(response_list, name = NULL) |>
+          tidyr::unnest_wider(value)
       } else {
         response_data <- response_list
       }
@@ -203,7 +230,9 @@ get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
   }
 
   # Filter for YAML files and apply regex pattern matching
-  yaml_files <- response[response$type == "file" & grepl("\\.ya?ml$", response$name), ]
+  yaml_files <- response[
+    response$type == "file" & grepl("\\.ya?ml$", response$name),
+  ]
 
   if (!is.null(strNames) && nrow(yaml_files) > 0) {
     # Filter files based on regex patterns
@@ -219,7 +248,15 @@ get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
 }
 
 #' Download directory from GitHub repository
-download_github_directory <- function(repo, branch, path, dest_dir, strNames = NULL, remote_metadata = NULL, files_to_update = NULL) {
+download_github_directory <- function(
+  repo,
+  branch,
+  path,
+  dest_dir,
+  strNames = NULL,
+  remote_metadata = NULL,
+  files_to_update = NULL
+) {
   # Get remote metadata if not provided
   if (is.null(remote_metadata)) {
     remote_metadata <- get_remote_file_metadata(repo, branch, path, strNames)
@@ -300,10 +337,16 @@ get_cached_workflows <- function(
     workflow_name <- gsub(".*/", "", strPath)
     repo_cache_dir <- file.path(cache_dir, workflow_name)
 
-    if (dir.exists(repo_cache_dir) && length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0) {
+    if (
+      dir.exists(repo_cache_dir) &&
+        length(list.files(repo_cache_dir, pattern = "\\.ya?ml$")) > 0
+    ) {
       return(repo_cache_dir)
     } else {
-      stop(sprintf("No cached workflows found for %s. Try running without offline=TRUE to download.", strPackage))
+      stop(sprintf(
+        "No cached workflows found for %s. Try running without offline=TRUE to download.",
+        strPackage
+      ))
     }
   }
 
@@ -323,12 +366,22 @@ get_cached_workflows <- function(
     workflow_name <- gsub(".*/", "", strPath)
     potential_cache_dir <- file.path(cache_base_dir, workflow_name)
 
-    if (dir.exists(potential_cache_dir) && length(list.files(potential_cache_dir, pattern = "\\.ya?ml$")) > 0) {
-      warning(sprintf("Download failed for %s, but found existing cache. Using cached files from %s", strPackage, potential_cache_dir))
+    if (
+      dir.exists(potential_cache_dir) &&
+        length(list.files(potential_cache_dir, pattern = "\\.ya?ml$")) > 0
+    ) {
+      warning(sprintf(
+        "Download failed for %s, but found existing cache. Using cached files from %s",
+        strPackage,
+        potential_cache_dir
+      ))
       return(potential_cache_dir)
     }
 
-    stop(sprintf("Failed to cache workflows for %s. No cache available and download failed. Check network connectivity. You may need to run with internet access to download workflows initially.", strPackage))
+    stop(sprintf(
+      "Failed to cache workflows for %s. No cache available and download failed. Check network connectivity. You may need to run with internet access to download workflows initially.",
+      strPackage
+    ))
   }
 
   return(cache_dir)
