@@ -53,6 +53,7 @@ Imports:
 Suggests:
     broom,
     covr,
+    gh,
     gt,
     knitr,
     lamW,
@@ -67,7 +68,7 @@ Suggests:
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
-Config/testthat/parallel: true
+Config/testthat/parallel: false
 Config/Needs/website: DT, here, pkgdown, devtools
 Encoding: UTF-8
 Language: en-US
