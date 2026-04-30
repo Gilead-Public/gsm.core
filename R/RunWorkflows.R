@@ -1,12 +1,10 @@
 #' Convenience function to easily run multiple workflows
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("deprecated")`
 #'
-#' This function takes a list of workflows and a list of data as input.  It runs each workflow and returns the
-#' results as a named list where the names of the list correspond to the workflow ID ($meta$ID).
-#'
-#' Workflows are run in the order they are provided in the lWorkflows. The results from each workflow are passed as inputs (along with lData) for later workflows.
+#' `RunWorkflows()` has moved to `workr::RunWorkflows()`. This wrapper remains
+#' for backward compatibility in `{gsm.core}`.
 #'
 #' @param lWorkflows `list` A named list of metadata defining how the workflow should be run.
 #' @param lData `list` A named list of domain-level data frames.
@@ -31,30 +29,18 @@ RunWorkflows <- function(
   bReturnResult = TRUE,
   strResultNames = c("Type", "ID")
 ) {
-  LogMessage(
-    level = "info",
-    message = "Running {length(lWorkflows)} Workflows",
-    cli_detail = "h1"
+  lifecycle::deprecate_warn(
+    when = "1.3.0",
+    what = "gsm.core::RunWorkflows()",
+    with = "workr::RunWorkflows()"
   )
 
-  lResults <- list()
-  for (wf in lWorkflows) {
-    lResult <- RunWorkflow(
-      lWorkflow = wf,
-      lData = c(lResults, lData),
-      lConfig = lConfig,
-      bReturnResult = bReturnResult,
-      bKeepInputData = bKeepInputData
-    )
-
-    resultName <- strResultNames %>%
-      map(function(name) {
-        return(wf$meta[[name]])
-      }) %>%
-      paste0(collapse = "_")
-
-    lResults[[resultName]] <- lResult
-  }
-
-  return(lResults)
+  workr::RunWorkflows(
+    lWorkflows = lWorkflows,
+    lData = lData,
+    lConfig = lConfig,
+    bKeepInputData = bKeepInputData,
+    bReturnResult = bReturnResult,
+    strResultNames = strResultNames
+  )
 }

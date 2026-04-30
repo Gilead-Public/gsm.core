@@ -1,15 +1,15 @@
 suppressPackageStartupMessages(suppressWarnings(library(tcltk)))
 
 quiet_RunWorkflows <- function(...) {
-  suppressMessages({
-    RunWorkflows(...)
-  })
+  suppressWarnings(suppressMessages({
+    workr::RunWorkflows(...)
+  }))
 }
 
 quiet_RunWorkflow <- function(...) {
-  suppressMessages({
-    RunWorkflow(...)
-  })
+  suppressWarnings(suppressMessages({
+    workr::RunWorkflow(...)
+  }))
 }
 
 quiet_Analyze_NormalApprox <- function(...) {

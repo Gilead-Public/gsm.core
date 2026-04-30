@@ -40,7 +40,9 @@ is \code{TRUE}) or the full workflow object (if \code{bReturnResults} is \code{F
 \code{list} contains just lData if \code{bReturnData} is \code{TRUE}, otherwise returns the full \code{lWorkflow} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\code{RunWorkflow()} has moved to \code{workr::RunWorkflow()}. This wrapper remains
+for backward compatibility in \code{{gsm.core}}.
 
 Attempts to run a single assessment (\code{lWorkflow}) using shared data (\code{lData})
 and metadata (\code{lMapping}). Calls \code{RunStep} for each item in
@@ -48,7 +50,7 @@ and metadata (\code{lMapping}). Calls \code{RunStep} for each item in
 }
 \examples{
 # Generate mapped input data to metric workflow.
-lMappingWorkflows <- MakeWorkflowList(
+lMappingWorkflows <- workr::MakeWorkflowList(
   strNames = c("AE", "SUBJ"),
   strPath = "example_workflow/1_mappings",
   strPackage = "gsm.core",
@@ -59,18 +61,18 @@ lRawData <- list(
   Raw_AE = gsm.core::lSource$Raw_AE
 )
 
-lMappedData <- RunWorkflows(
+lMappedData <- workr::RunWorkflows(
   lMappingWorkflows,
   lRawData
 )
 
 # Run the metric workflow.
-lMetricWorkflow <- MakeWorkflowList(
+lMetricWorkflow <- workr::MakeWorkflowList(
   strPath = "example_workflow/2_metrics",
   strNames = c("kri0001", "kri0002"),
   strPackage = "gsm.core"
 )$kri0001
-lMetricOutput <- RunWorkflow(
+lMetricOutput <- workr::RunWorkflow(
   lMetricWorkflow,
   lMappedData
 )
