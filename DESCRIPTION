@@ -66,6 +66,8 @@ Suggests:
     tibble,
     usethis,
     withr
+Remotes:
+    workr=Gilead-BioStats/workr
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
