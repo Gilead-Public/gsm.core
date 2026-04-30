@@ -115,9 +115,7 @@ get_data_cache_dir <- function() {
   return(cache_dir)
 }
 
-running_on_ci <- isTRUE(as.logical(Sys.getenv("CI")))
-
-get_cached_mapped_data <- function(force_refresh = running_on_ci) {
+get_cached_mapped_data <- function(force_refresh = FALSE) {
   cache_dir <- get_data_cache_dir()
   cache_file <- file.path(cache_dir, "mapped_data.rds")
 
