@@ -1,3 +1,5 @@
+force(mapped_data)
+
 ## Test Setup
 kri_workflows <- flatten(MakeWorkflowList(
   "kri0001_custom",
