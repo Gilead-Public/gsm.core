@@ -46,7 +46,10 @@ GetYamlPathMappingsLocal <- function() {
     get_cached_workflows(...),
     error = function(e) {
       msg <- conditionMessage(e)
-      message("NOTE: get_cached_workflows() failed; proceeding without remote workflows. Details: ", msg)
+      message(
+        "NOTE: get_cached_workflows() failed; proceeding without remote workflows. Details: ",
+        msg
+      )
       NULL
     }
   )
@@ -88,21 +91,27 @@ GetYamlPathMetrics <- function() {
   if (!is.null(metrics_workflow_path)) {
     return(metrics_workflow_path)
   }
-  testthat::skip("Metrics workflows unavailable (no local copy and cannot download/cache in this environment).")
+  testthat::skip(
+    "Metrics workflows unavailable (no local copy and cannot download/cache in this environment)."
+  )
 }
 
 GetYamlPathMappings <- function() {
   if (!is.null(mappings_workflow_path)) {
     return(mappings_workflow_path)
   }
-  testthat::skip("Mapping workflows unavailable (no local copy and cannot download/cache in this environment).")
+  testthat::skip(
+    "Mapping workflows unavailable (no local copy and cannot download/cache in this environment)."
+  )
 }
 
 # ---- Data caching functions --------------------------------------------------
 
 get_data_cache_dir <- function() {
   cache_dir <- file.path(tools::R_user_dir("gsm", "cache"), "processed_data")
-  if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+  if (!dir.exists(cache_dir)) {
+    dir.create(cache_dir, recursive = TRUE)
+  }
   return(cache_dir)
 }
 
@@ -113,7 +122,11 @@ get_cached_mapped_data <- function(force_refresh = FALSE) {
   if (!force_refresh && file.exists(cache_file)) {
     # Check if workflows have been updated since cache was created
     workflow_dir <- GetYamlPathMappings()
-    workflow_files <- list.files(workflow_dir, pattern = "\\.ya?ml$", full.names = TRUE)
+    workflow_files <- list.files(
+      workflow_dir,
+      pattern = "\\.ya?ml$",
+      full.names = TRUE
+    )
 
     if (length(workflow_files) > 0) {
       newest_workflow <- max(file.mtime(workflow_files))
@@ -152,7 +165,11 @@ get_cached_mapping_output <- function(force_refresh = FALSE) {
 
   if (!force_refresh && file.exists(cache_file)) {
     workflow_dir <- GetYamlPathMappings()
-    workflow_files <- list.files(workflow_dir, pattern = "\\.ya?ml$", full.names = TRUE)
+    workflow_files <- list.files(
+      workflow_dir,
+      pattern = "\\.ya?ml$",
+      full.names = TRUE
+    )
 
     if (length(workflow_files) > 0) {
       newest_workflow <- max(file.mtime(workflow_files))
@@ -224,7 +241,9 @@ robust_runworkflow <- function(
 
     if (names(result0[!purrr::map_vec(result0, is.null)]) == "error") {
       cli::cli_alert_danger(paste0(
-        "Error:`", result0$error$message, "`: error message stored as result"
+        "Error:`",
+        result0$error$message,
+        "`: error message stored as result"
       ))
       result1 <- result0$error$message
     } else {
@@ -250,7 +269,9 @@ robust_runworkflow <- function(
 # ---- Get relevant data for a workflow ---------------------------------------
 # Wrapper for robust_runworkflow
 get_data <- function(lWorkflow, data) {
-  if ("spec" %in% names(lWorkflow)) lWorkflow <- list(lWorkflow)
+  if ("spec" %in% names(lWorkflow)) {
+    lWorkflow <- list(lWorkflow)
+  }
 
   maps_needed_index <- purrr::map(lWorkflow, ~ names(.x$spec)) %>%
     unlist() %>%
@@ -258,7 +279,9 @@ get_data <- function(lWorkflow, data) {
 
   # If mapping_output isn't available, skip gracefully.
   if (is.null(mapping_output)) {
-    testthat::skip("Mapping output unavailable because mapping workflows could not be resolved.")
+    testthat::skip(
+      "Mapping output unavailable because mapping workflows could not be resolved."
+    )
   }
 
   maps_needed <- names(mapping_output[which(
