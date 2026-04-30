@@ -53,6 +53,7 @@ Imports:
 Suggests:
     broom,
     covr,
+    gh,
     gt,
     knitr,
     lamW,

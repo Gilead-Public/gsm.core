@@ -2,8 +2,8 @@
 # Uses persistent cache to avoid circular dependencies
 
 suppressPackageStartupMessages({
-  if (!requireNamespace("yaml", quietly = TRUE)) {
-    warning("yaml package not available - workflow caching will not work")
+  if (!requireNamespace("gh", quietly = TRUE)) {
+    warning("gh package not available - workflow caching will not work")
   }
 })
 
@@ -193,55 +193,39 @@ download_workflow_files <- function(
 
 #' Get remote file metadata without downloading files
 get_remote_file_metadata <- function(repo, branch, path, strNames = NULL) {
-  # GitHub API URL for directory contents
-  api_url <- sprintf(
-    "https://api.github.com/repos/%s/contents/%s?ref=%s",
-    repo,
-    path,
-    branch
-  )
-
-  # Get directory listing
   response <- tryCatch(
     {
-      # Download JSON response as text and parse with yaml
-      json_text <- readLines(api_url, warn = FALSE)
-      response_list <- yaml::yaml.load(paste(json_text, collapse = ""))
-      # Convert to tibble using tidyr
-      if (is.list(response_list) && !is.data.frame(response_list)) {
-        response_data <- tibble::enframe(response_list, name = NULL) |>
-          tidyr::unnest_wider(value)
-      } else {
-        response_data <- response_list
-      }
-      response_data
+      gh::gh(
+        "/repos/{repo}/contents/{path}",
+        repo = repo,
+        path = path,
+        ref = branch
+      )
     },
     error = function(e) {
       stop(sprintf("Failed to access GitHub API for %s: %s", repo, e$message))
     }
   )
 
-  if (!is.data.frame(response)) {
-    if (is.list(response)) {
-      response <- do.call(rbind.data.frame, response)
-    } else {
-      stop(sprintf("Unexpected response from GitHub API for %s", repo))
-    }
+  # Convert to tibble using tidyr. gh::gh returns a list natively.
+  if (is.list(response) && length(response) > 0) {
+    response_data <- tibble::enframe(response, name = NULL) |>
+      tidyr::unnest_wider(value)
+  } else {
+    return(data.frame())
   }
 
-  # Filter for YAML files and apply regex pattern matching
-  yaml_files <- response[
-    response$type == "file" & grepl("\\.ya?ml$", response$name),
+  # Filter for YAML files
+  yaml_files <- response_data[
+    response_data$type == "file" & grepl("\\.ya?ml$", response_data$name),
   ]
 
   if (!is.null(strNames) && nrow(yaml_files) > 0) {
-    # Filter files based on regex patterns
-    matches <- rep(FALSE, nrow(yaml_files))
-    for (pattern in strNames) {
-      pattern_matches <- grepl(pattern, yaml_files$name, ignore.case = TRUE)
-      matches <- matches | pattern_matches
-    }
-    yaml_files <- yaml_files[matches, ]
+    # Filter files based on combined regex patterns (simplifies the previous for-loop)
+    pattern <- paste(strNames, collapse = "|")
+    yaml_files <- yaml_files[
+      grepl(pattern, yaml_files$name, ignore.case = TRUE),
+    ]
   }
 
   return(yaml_files)
