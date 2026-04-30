@@ -108,6 +108,7 @@ The following column is considered optional:
 ## Examples
 
 ``` r
+
 dfTransformed <- Transform_Rate(analyticsInput)
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed)
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal

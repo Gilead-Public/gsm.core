@@ -61,63 +61,65 @@ Science* 52, no. 5 (2018): 560-571.
 
 Consider the problem of monitoring KRIs with binary outcomes, such as
 protocol deviation or discontinuation from the study, across multiple
-sites in a clinical trial. Assume that there are $m$ sites with $n_{i}$
-patients at the $i$ th site, $i = 1,2,\ldots,m$. Denote the total number
-of patients in the study by $n = \sum_{i = 1}^{m}n_{i}$. Let $X_{ij}$
-signify the outcome of interest for the $j$ th patient at the $i$ th
-site, where $X_{ij} = 1$ indicates that an event has occurred and
-indicates that an event has not occurred. Finally, let $p_{i}$ denote
-the site-level proportion at the $i$ th site. Monitoring tools focus on
-testing the null hypothesis of consistency of the true site-level
-proportion across multiple sites. Specifically, the null hypothesis
-states that the site-level proportion of the binary outcome is constant
-across the sites, that is, $H_{0}:p_{1} = \ldots = p_{m} = p$, where $p$
-is the common proportion. This common proportion can be estimated as
-$\widehat{p} = \frac{1}{n}\sum_{i = 1}^{m}\sum_{j = 1}^{n_{i}}X_{ij}$.
+sites in a clinical trial. Assume that there are $`m`$ sites with
+$`n_i`$ patients at the $`i`$ th site, $`i = 1, 2, \dots, m`$. Denote
+the total number of patients in the study by $`n=\sum_{i=1}^m n_i`$. Let
+$`X_{ij}`$ signify the outcome of interest for the $`j`$ th patient at
+the $`i`$ th site, where $`X_{ij}=1`$ indicates that an event has
+occurred and indicates that an event has not occurred. Finally, let
+$`p_i`$ denote the site-level proportion at the $`i`$ th site.
+Monitoring tools focus on testing the null hypothesis of consistency of
+the true site-level proportion across multiple sites. Specifically, the
+null hypothesis states that the site-level proportion of the binary
+outcome is constant across the sites, that is,
+$`H_0: p_1 = \dots = p_m = p`$, where $`p`$ is the common proportion.
+This common proportion can be estimated as
+$`\hat{p} = \frac{1}{n}\sum_{i=1}^m\sum_{j=1}^{n_i}X_{ij}`$.
 
 The control limits are computed using confidence limits based on an
 asymptotic normal approximation. A 95% confidence interval is obtained
-if the significance level $\alpha = 0.05$. Let
-$X_{i} = \sum_{j = 1}^{n_{i}}X_{ij}$ represent the total number of
-events that occur and let ${\widehat{p}}_{i} = X_{i}/n_{i}$ denote the
-estimated event rate at the $i$ th site. The asymptotic $100(1–\alpha)$
-confidence interval for $p_{i}$ is given by
-$${\widehat{p}}_{i} - z_{1 - \alpha/2}\sqrt{\frac{{\widehat{p}}_{i}\left( 1 - {\widehat{p}}_{i} \right)}{n_{i}}} \leq p_{i} \leq {\widehat{p}}_{i} + z_{1 - \alpha/2}\sqrt{\frac{{\widehat{p}}_{i}\left( 1 - {\widehat{p}}_{i} \right)}{n_{i}}}$$
-where $z_{1 - \alpha/2}$ is the upper percentile of the standard normal
+if the significance level $`\alpha=0.05`$. Let
+$`X_i=\sum_{j=1}^{n_i}X_{ij}`$ represent the total number of events that
+occur and let $`\hat{p}_i=X_i/n_i`$ denote the estimated event rate at
+the $`i`$ th site. The asymptotic $`100(1 – \alpha)%`$ confidence
+interval for $`p_i`$ is given by
+``` math
+\hat{p}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{p}_i(1-\hat{p}_i)}{n_i}} \leq p_i \leq \hat{p}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{p}_i(1-\hat{p}_i)}{n_i}}
+```
+where $`z_{1-\alpha/2}`$ is the upper percentile of the standard normal
 distribution. To construct the control limits for the observed event
 rate at this site, the estimated event rate is forced to be equal to the
-overall event rate ${\widehat{p}}_{i}$. This means that the lower (l)
-and upper (u) asymptotic control limits for the $i$ th site are defined
-as
-$l_{i} = \widehat{p} - z_{1 - \alpha/2}\sqrt{\frac{\widehat{p}\left( 1 - \widehat{p} \right)}{n_{i}}}$
-and
-$u_{i} = \widehat{p} + z_{1 - \alpha/2}\sqrt{\frac{\widehat{p}\left( 1 - \widehat{p} \right)}{n_{i}}}$,
+overall event rate $`\hat{p}_i`$. This means that the lower (l) and
+upper (u) asymptotic control limits for the $`i`$ th site are defined as
+$`l_i=\hat{p}-z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}`$ and
+$`u_i=\hat{p}+z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}`$,
 respectively. Asymptotic control limits may not be reliable in smaller
 clinical trials, so exact limits for an event rate may be preferable.
 
 ##### Rate
 
-Assume that the distribution of number of events up to time $T$ is
-Poisson with mean $\lambda t$, where $\lambda$ is the event rate for a
-given unit of time. For the $i$ th site with
-$X_{i} = \sum_{j = 1}^{N_{i}}X_{ij}$ events and
-$T_{i} = \sum_{j = 1}^{N_{i}}t_{ij}$ exposure, define the
-exposure-adjusted incidence rate (EAIR) as
-${\widehat{\lambda}}_{i} = \frac{X_{i}}{T_{i}}$. For all sites, define
-$X = \sum_{i = 1}^{m}X_{i}$ and $T = \sum_{i = 1}^{m}t_{i}$ with
-$\widehat{\lambda} = \frac{X}{T}$. Under a normal approximation,
-$100(1–a)$ confidence interval for the $i$ th site is
-$${\widehat{\lambda}}_{i} - z_{1 - \alpha/2}\sqrt{\frac{{\widehat{\lambda}}_{i}}{T_{i}}} \leq p_{i} \leq {\widehat{\lambda}}_{i} + z_{1 - \alpha/2}\sqrt{\frac{{\widehat{\lambda}}_{i}}{T_{i}}}$$.
-For these funnel plots accounting for exposure, the x-axis representing
-the site sample size ($n$) in the above examples is replaced by the
-total exposure time $T$. To develop a funnel plot, fix
-${\widehat{\lambda}}_{i} = \widehat{\lambda}$, and vary $T$ from
-$min\left( T_{i} \right)$ to $max\left( T_{i} \right)$ to compute the
-control limits. As an area of future research, the work of Chan and Wang
-(2009) may suggest methods appropriate for computing an exact confidence
-interval for the EAIR. Finally, similar methods can be applied for a
-count-type endpoint $X_{ij}$, where tij would denote the time on study
-for the $j$ th patient at the $i$ th site.
+Assume that the distribution of number of events up to time $`T`$ is
+Poisson with mean $`\lambda t`$, where $`\lambda`$ is the event rate for
+a given unit of time. For the $`i`$ th site with
+$`X_i=\sum_{j=1}^{N_i}X_{ij}`$ events and $`T_i=\sum_{j=1}^{N_i}t_{ij}`$
+exposure, define the exposure-adjusted incidence rate (EAIR) as
+$`\hat{\lambda}_i=\frac{X_i}{T_i}`$. For all sites, define
+$`X=\sum_{i=1}^{m}X_{i}`$ and $`T=\sum_{i=1}^{m}t_{i}`$ with
+$`\hat{\lambda}=\frac{X}{T}`$. Under a normal approximation,
+$`100(1 – a)%`$ confidence interval for the $`i`$ th site is
+``` math
+\hat{\lambda}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}} \leq p_i \leq \hat{\lambda}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}}
+```
+. For these funnel plots accounting for exposure, the x-axis
+representing the site sample size ($`n`$) in the above examples is
+replaced by the total exposure time $`T`$. To develop a funnel plot, fix
+$`\hat{\lambda}_i=\hat{\lambda}`$, and vary $`T`$ from $`min(T_i)`$ to
+$`max(T_i)`$ to compute the control limits. As an area of future
+research, the work of Chan and Wang (2009) may suggest methods
+appropriate for computing an exact confidence interval for the EAIR.
+Finally, similar methods can be applied for a count-type endpoint
+$`X_{ij}`$, where tij would denote the time on study for the $`j`$ th
+patient at the $`i`$ th site.
 
 #### KRI Metric and Z-score
 
@@ -125,16 +127,15 @@ The KRI metric along with a KRI score are created for each site to
 measure the level of observed risk to data quality and patient safety in
 a clinical trial. For scoring purposes, Z-scores from the normal
 approximation are calculated and defined as such:
-$z_{i} = \frac{y_{i} - \theta_{0}}{\sqrt{V\left( Y|\theta_{0} \right)}}$
-for site $i$, where $y_{i}$ is the KRI metric calculated for site $i$,
-$\theta_{0}$ is the overall mean, $\sqrt{V\left( Y|\theta_{0} \right)}$
-is the measurement of variance.
+$`z_i=\frac{y_i-\theta_0}{\sqrt{V(Y|\theta_0)}}`$ for site $`i`$, where
+$`y_i`$ is the KRI metric calculated for site $`i`$, $`\theta_0`$ is the
+overall mean, $`\sqrt{V(Y|\theta_0)}`$ is the measurement of variance.
 
 For binary outcome,
-$\sqrt{V\left( Y|\theta_{0} \right)} = \sqrt{\frac{\widehat{p}\left( 1 - \widehat{p} \right)}{n_{i}}}$.
+$`\sqrt{V(Y|\theta_0)}=\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}`$.
 
 For rate outcome,
-$\sqrt{V\left( Y|\theta_{0} \right)} = \sqrt{\frac{\widehat{\lambda}}{T_{i}}}$.
+$`\sqrt{V(Y|\theta_0)}=\sqrt{\frac{\hat{\lambda}}{T_i}}`$.
 
 #### Over-dispersion adjustment
 
@@ -149,17 +150,16 @@ A way of handling this issue is to allow over-dispersion in the normal
 approximation. A multiplicative over-dispersion adjustment was
 implemented in our approach.
 
-Suppose a sample of $m$ units are to be **in-control**, the
-over-dispersion factor $\phi$ can be estimated as the mean squared
-z-scores, i.e., $\widehat{\phi} = \frac{1}{m}\sum_{i = 1}^{m}z_{i}^{2}$.
-For binary outcome, the over-dispersion adjusted variance is
-$V\prime\left( Y_{i}|\phi,p \right) = \phi\frac{p(1 - p)}{n_{i}}$. For
-rate outcome, the over-dispersion adjusted variance is
-$V\prime\left( Y_{i}|\phi,\lambda \right) = \phi\frac{\lambda}{T_{i}}$.
-Therefore, after the over-dispersion adjustment, the adjusted z-scores
-for site $i$ are
-$z_{i} = \frac{{\widehat{p}}_{i} - \widehat{p}}{\sqrt{\widehat{\phi}\frac{\widehat{p}\left( 1 - \widehat{p} \right)}{n_{i}}}}$,
-$z_{i} = \frac{{\widehat{\lambda}}_{i} - \widehat{\lambda}}{\sqrt{\widehat{\phi}\frac{\widehat{\lambda}}{T_{i}}}}$,
+Suppose a sample of $`m`$ units are to be **in-control**, the
+over-dispersion factor $`\phi`$ can be estimated as the mean squared
+z-scores, i.e., $`\hat\phi = \frac{1}{m}\sum_{i=1}^m z_i^2`$. For binary
+outcome, the over-dispersion adjusted variance is
+$`V'(Y_i|\phi, p)=\phi\frac{{p}(1-p)}{n_i}`$. For rate outcome, the
+over-dispersion adjusted variance is
+$`V'(Y_i|\phi, \lambda)=\phi\frac{\lambda}{T_i}`$. Therefore, after the
+over-dispersion adjustment, the adjusted z-scores for site $`i`$ are
+$`z_i = \frac{\hat{p}_i - \hat{p}}{\sqrt{\hat\phi \frac{{\hat{p}}(1-\hat{p})}{n_i}}}`$,
+$`z_i = \frac{\hat{\lambda}_i - \hat{\lambda}}{\sqrt{\hat\phi \frac{\hat\lambda}{T_i}}}`$,
 respectively.
 
 Reference: Spiegelhalter, David J. **Funnel plots for comparing
@@ -178,7 +178,7 @@ outliers using the thresholds discussed below.
 
 #### Threshold
 
-By default, sites with adjusted z-score exceeding $\pm 2$ or $\pm 3$
+By default, sites with adjusted z-score exceeding $`\pm 2`$ or $`\pm 3`$
 from the normal approximation analysis are flagged as amber or red,
 respectively. The thresholds are set at common choices corresponding to
 95.6% and 99.7% of the data around the mean in a standard normal
@@ -241,24 +241,26 @@ level was set at a common choice.
 
 #### Methods
 
-For example, in a $2 \times 2$ contingency table comparing a particular
-site to all other sites combined, the two rows displaying the binary
-outcome are considered repeated Bernoulli random samples with same
-probability $p = 0.5$ of success or failure under the null. Given a
-$2 \times 2$ contingency table,
+For example, in a $`2 \times 2`$ contingency table comparing a
+particular site to all other sites combined, the two rows displaying the
+binary outcome are considered repeated Bernoulli random samples with
+same probability $`p=0.5`$ of success or failure under the null. Given a
+$`2 \times 2`$ contingency table,
 
 | Site1 | RestSites |
 |-------|-----------|
 | a     | c         |
 | b     | d         |
 
-Fisher (1922) showed that conditional on the margins of the table, $a$
-is distributed as a hypergeometric distribution with $a + c$ draws from
-a population with $a + b$ successes and $c + d$ failures. Let
-$n = a + b + c + d$, the probability of obtaining such set of values is
-given by:
+Fisher (1922) showed that conditional on the margins of the table, $`a`$
+is distributed as a hypergeometric distribution with $`a+c`$ draws from
+a population with $`a+b`$ successes and $`c+d`$ failures. Let
+$`n=a+b+c+d`$, the probability of obtaining such set of values is given
+by:
 
-$$p = \frac{\left( \frac{a + b}{a} \right)\left( \frac{c + d}{c} \right)}{\left( \frac{n}{a + c} \right)} = \frac{\left( \frac{a + b}{b} \right)\left( \frac{c + d}{d} \right)}{\left( \frac{n}{b + d} \right)} = \frac{(a + b)!(c + d)!(a + c)!(b + d)!}{a!b!c!d!n!}.$$
+``` math
+p=\frac{{{a+b} \choose a} {{c+d} \choose c}}{{n \choose {a+c}}}=\frac{{{a+b} \choose b} {{c+d} \choose d}}{{n \choose {b+d}}}=\frac{(a+b)!(c+d)!(a+c)!(b+d)!}{a! b! c! d! n!}.
+```
 
 #### Estimate and Score
 
@@ -269,9 +271,10 @@ in [gsm.core](https://gilead-biostats.github.io/gsm.core) utilizes
 generate an estimate of odds ratio as well as p-value using the Fisher’s
 exact test with site-level count data. For each site, Fisher’s exact
 test is conducted by comparing to all other sites combined in a
-$2 \times 2$ contingency table. The p-values are then used as a scoring
-metric in [gsm.core](https://gilead-biostats.github.io/gsm.core) to flag
-possible outliers using the thresholds discussed below. The default in
+$`2 \times 2`$ contingency table. The p-values are then used as a
+scoring metric in [gsm.core](https://gilead-biostats.github.io/gsm.core)
+to flag possible outliers using the thresholds discussed below. The
+default in
 [`stats::fisher.test()`](https://rdrr.io/r/stats/fisher.test.html) uses
 two-sided test (equivalent to testing the null: OR=1) and not to compute
 p-values by Monte Carlo simulation unless `simulate.p.value = TRUE` is
@@ -340,10 +343,13 @@ For the rate outcome KRIs, an optional method in
 [gsm.core](https://gilead-biostats.github.io/gsm.core) is implemented
 with Poisson regression.
 
-The Poisson distribution is often used to model count data. If $Y$ is
+The Poisson distribution is often used to model count data. If $`Y`$ is
 the number of counts following Poisson distribution, the probability
-mass function is given by $$f(y) = \frac{\mu^{y}e^{- \mu}}{y!}$$ where
-$\mu$ is the average number of counts and $E(Y) = Var(Y) = \mu$.
+mass function is given by
+``` math
+f(y)=\frac{\mu^ye^{-\mu}}{y!}
+```
+where $`\mu`$ is the average number of counts and $`E(Y)=Var(Y)=\mu`$.
 
 #### Methods
 
@@ -355,15 +361,16 @@ residuals are calculated using `resid` from
 [`stats::predict.glm`](https://rdrr.io/r/stats/predict.glm.html) via
 [`broom::augment`](https://generics.r-lib.org/reference/augment.html).
 
-Let $Y_{1},...,Y_{N}$ be independent random variables with
-$Y_{i} \sim Poisson\left( \mu_{i} \right)$ denoting the number of events
-observed from $n_{i}$ for the $i$th observation following Poisson
-distribution. Then
-$E\left( Y_{i} \right) = \mu_{i} = n_{i}e^{x_{i}\beta}$. Thus,the
-log-linear generalized linear model (Poisson regression) is
-$$\log\mu_{i} = \log n_{i} + x_{i}\beta\quad Y_{i} \sim Poisson\left( \mu_{i} \right)$$
+Let $`Y_1, ..., Y_N`$ be independent random variables with
+$`Y_i \sim Poisson(\mu_i)`$ denoting the number of events observed from
+$`n_i`$ for the $`i`$th observation following Poisson distribution. Then
+$`E(Y_i)=\mu_i=n_ie^{x_i\beta}`$. Thus,the log-linear generalized linear
+model (Poisson regression) is
+``` math
+\log{\mu_i}=\log{n_i}+x_i\beta \quad Y_i \sim Poisson(\mu_i)
+```
 
-where $\log n_{i}$ is an offset term.
+where $`\log{n_i}`$ is an offset term.
 
 #### Estimate and Score
 
@@ -378,14 +385,15 @@ outliers using the thresholds discussed below.
 
 #### Threshold
 
-By default, sites with deviance residuals exceeding $\pm 5$ or $\pm 7$
-from the Poisson analysis are flagged as amber or red, respectively. The
-thresholds are set based on empirical approach, where we use the
-distribution of the deviance residuals to find the best separation of
-the data to identify sites at risk. The default thresholds are set at
-empirical values based on pilot studies’ data. However, they are fully
-configurable in the package and can be customized and specified in the
-[gsm.core](https://gilead-biostats.github.io/gsm.core) functions.
+By default, sites with deviance residuals exceeding $`\pm 5`$ or
+$`\pm 7`$ from the Poisson analysis are flagged as amber or red,
+respectively. The thresholds are set based on empirical approach, where
+we use the distribution of the deviance residuals to find the best
+separation of the data to identify sites at risk. The default thresholds
+are set at empirical values based on pilot studies’ data. However, they
+are fully configurable in the package and can be customized and
+specified in the [gsm.core](https://gilead-biostats.github.io/gsm.core)
+functions.
 
 #### Special Situations
 
@@ -398,17 +406,17 @@ configurable in the package and can be customized and specified in the
 
 #### Poisson regression assumptions
 
-1.  **Independence** The responses $y_{i}$ are independent of each
+1.  **Independence** The responses $`y_i`$ are independent of each
     other.
 
-2.  **Count data** The responses $y_{i}$ are non-negative integer
+2.  **Count data** The responses $`y_i`$ are non-negative integer
     (counts).
 
-3.  **Poisson response** Each $Y_{i}$ follows the Poisson distribution
-    as noted above with mean and variance equal to $\mu_{i}$.
+3.  **Poisson response** Each $`Y_i`$ follows the Poisson distribution
+    as noted above with mean and variance equal to $`\mu_i`$.
 
-4.  **Linearity** $\log\mu_{i} = \log n_{i} + x_{i}\beta$ where $x_{i}$
-    are independent predictors.
+4.  **Linearity** $`\log{\mu_i}=\log{n_i}+x_i\beta`$ where $`x_i`$ are
+    independent predictors.
 
 #### Assumption checks, constraints and model diagnosis
 
@@ -421,7 +429,7 @@ configurable in the package and can be customized and specified in the
     the assumption of mean=variance is violated, oftentimes we observe
     variance\>mean. This is called overdispersion. In this case,
     negative binomial distribution provides an alternative where
-    $Var\left( Y_{i} \right) = \phi E\left( Y_{i} \right)$.
+    $`Var(Y_i)=\phi E(Y_i)`$.
 
 3.  Diagnosis: Goodness of fit test (chi-squared) and deviance
     residuals. Residuals vs fitted plot. Q-Q plot.
