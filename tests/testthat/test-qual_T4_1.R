@@ -1,5 +1,3 @@
-cli::cli_inform("mapped_data contents: {names(mapped_data)}")
-
 ## Test Setup
 kri_workflows <- flatten(MakeWorkflowList(
   "kri0001_custom",
