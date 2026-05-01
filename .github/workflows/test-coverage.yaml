@@ -15,6 +15,6 @@ concurrency:
   cancel-in-progress: true
 jobs:
   call-test-coverage-core:
-    uses: Gilead-BioStats/gsm.utils/.github/workflows/test-coverage-core.yaml@fix-97-configure_tokens
+    uses: Gilead-BioStats/gsm.utils/.github/workflows/test-coverage-core.yaml@actions-v1
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
