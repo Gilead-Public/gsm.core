@@ -1,6 +1,20 @@
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/Gilead-BioStats/gsm.core/workflows/R-CMD-check-main/badge.svg)](https://github.com/Gilead-BioStats/gsm.core/actions)
+<div class="pkgdown-release">
+
+[![R-CMD-check](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml/badge.svg?branch=main)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml)
+[![pkgdown-all](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml/badge.svg?branch=main)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml)
+
+</div>
+
+<div class="pkgdown-devel">
+
+[![R-CMD-check](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml)
+[![pkgdown-all](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml)
+
+</div>
 
 <!-- badges: end -->
 
@@ -18,6 +32,27 @@ The `{gsm.core}` package is a successor package to [`{gsm}`](https://github.com/
 2.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping): A package that provides workflows to apply the necessary data transformation from raw/source datasets to appropriate domains.
 3.  [**`{gsm.kri}`**](https://github.com/Gilead-BioStats/gsm.kri): A package that provides workflows to generate metrics and functionality to visualize and report on these metrics.
 4.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting): A package that provides workflows to generate the reporting data model needed to generate reports.
+
+## Installation
+
+You can install the latest release of gsm.core from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("Gilead-BioStats/gsm.core@*release")
+```
+
+<div class="pkgdown-devel">
+
+You can install the development version of gsm.core from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("Gilead-BioStats/gsm.core")
+```
+
+</div>
 
 # Background
 
