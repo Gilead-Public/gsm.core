@@ -67,9 +67,9 @@ Suggests:
     withr
 VignetteBuilder: 
     knitr
+Config/Needs/website: DT, here, pkgdown, devtools
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Config/Needs/website: DT, here, pkgdown, devtools
 Encoding: UTF-8
 Language: en-US
 LazyData: true
