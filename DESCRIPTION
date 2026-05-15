@@ -1,6 +1,6 @@
 Package: gsm.core
 Title: Good Statistical Monitoring
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: c(
     person("Jeremy", "Wildfire", , "jwildfire@gmail.com", role = c("aut", "cre")),
     person("George", "Wu", , "george.wu@gilead.com", role = "aut"),
@@ -53,6 +53,7 @@ Imports:
 Suggests:
     broom,
     covr,
+    gh,
     gt,
     knitr,
     lamW,
@@ -66,9 +67,9 @@ Suggests:
     withr
 VignetteBuilder: 
     knitr
-Config/testthat/edition: 3
-Config/testthat/parallel: true
 Config/Needs/website: DT, here, pkgdown, devtools
+Config/testthat/edition: 3
+Config/testthat/parallel: false
 Encoding: UTF-8
 Language: en-US
 LazyData: true
