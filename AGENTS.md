@@ -29,6 +29,7 @@ Goal: 100% file-level coverage. After editing a file, verify (excluding
 `R/gsm.reporting-package.R`):
 
 ``` r
+
 covr_res <- devtools:::test_coverage_active_file("R/FileName.R")
 which(purrr::map_int(covr_res, "value") == 0)
 ```

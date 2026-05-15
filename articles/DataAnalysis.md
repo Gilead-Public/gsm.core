@@ -68,6 +68,7 @@ is “Sum”, the function takes the sum of the values in the specified
 column (`strNumeratorCol` or `strDenominatorCol`).
 
 ``` r
+
 dfInput <- Input_Rate(
               dfSubjects = gsm.core::lSource$Raw_SUBJ,
               dfNumerator = gsm.core::lSource$Raw_AE,
@@ -104,6 +105,7 @@ since the default metric for AEs is the number of AEs reported over the
 course of treatment per site, i.e., a rate.
 
 ``` r
+
 dfTransformed <- Transform_Rate(dfInput)
 #> Warning: 2 values of [ GroupID ] with a [ Denominator ] value of 0
 #> removed.
@@ -133,6 +135,7 @@ model for AE data, so the analysis pipeline automatically runs
 [`Analyze_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_NormalApprox.md).
 
 ``` r
+
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed)
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
@@ -167,6 +170,7 @@ analysis results data with flagging incorporated based on a
 pre-specified statistical threshold to highlight possible outliers.
 
 ``` r
+
 dfFlagged <- Flag(dfAnalyzed, vThreshold = c(-3, -2, 2, 3))
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
 ```
@@ -227,6 +231,7 @@ displayed first. The columns in `dfSummary` include:
   non-outlier.
 
 ``` r
+
 dfSummary <- Summarize(dfFlagged)
 ```
 

@@ -185,14 +185,14 @@ into the reporting data pipeline.
   `Transform_*()` functions.
 - Structure:
 
-| Table          | Column Name | Description                                 | Type      | Optional |
-|----------------|-------------|---------------------------------------------|-----------|----------|
-| Analysis_Input | SubjectID   | The subject ID                              | Character |          |
-| Analysis_Input | GroupID     | The group ID for the metric                 | Character |          |
-| Analysis_Input | GroupLevel  | The group type for the metric (e.g. “Site”) | Character |          |
-| Analysis_Input | Numerator   | The calculated numerator value              | Numeric   |          |
-| Analysis_Input | Denominator | The calculated denominator value            | Numeric   |          |
-| Analysis_Input | Metric      | The calculated rate/metric value            | Numeric   |          |
+| Table | Column Name | Description | Type | Optional |
+|----|----|----|----|----|
+| Analysis_Input | SubjectID | The subject ID | Character |  |
+| Analysis_Input | GroupID | The group ID for the metric | Character |  |
+| Analysis_Input | GroupLevel | The group type for the metric (e.g. “Site”) | Character |  |
+| Analysis_Input | Numerator | The calculated numerator value | Numeric |  |
+| Analysis_Input | Denominator | The calculated denominator value | Numeric |  |
+| Analysis_Input | Metric | The calculated rate/metric value | Numeric |  |
 
 #### `Analysis_Transformed`
 
@@ -204,13 +204,13 @@ into the reporting data pipeline.
   for an Assessment via the `Analyze_*()` functions.
 - Structure:
 
-| Table                | Column Name | Description                                 | Type      | Optional |
-|----------------------|-------------|---------------------------------------------|-----------|----------|
-| Analysis_Transformed | GroupID     | The group ID for the metric                 | Character |          |
-| Analysis_Transformed | GroupLevel  | The group type for the metric (e.g. “Site”) | Character |          |
-| Analysis_Transformed | Numerator   | The calculated numerator value              | Numeric   |          |
-| Analysis_Transformed | Denominator | The calculated denominator value            | Numeric   |          |
-| Analysis_Transformed | Metric      | The calculated rate/metric value            | Numeric   |          |
+| Table | Column Name | Description | Type | Optional |
+|----|----|----|----|----|
+| Analysis_Transformed | GroupID | The group ID for the metric | Character |  |
+| Analysis_Transformed | GroupLevel | The group type for the metric (e.g. “Site”) | Character |  |
+| Analysis_Transformed | Numerator | The calculated numerator value | Numeric |  |
+| Analysis_Transformed | Denominator | The calculated denominator value | Numeric |  |
+| Analysis_Transformed | Metric | The calculated rate/metric value | Numeric |  |
 
 #### `Analysis_Analyzed`
 
@@ -224,17 +224,17 @@ into the reporting data pipeline.
   test on the metric provided.
 - Structure:
 
-| Table             | Column Name     | Description                                 | Type      | Optional |
-|-------------------|-----------------|---------------------------------------------|-----------|----------|
-| Analysis_Analyzed | GroupID         | The group ID for the metric                 | Character |          |
-| Analysis_Analyzed | GroupLevel      | The group type for the metric (e.g. “Site”) | Character |          |
-| Analysis_Analyzed | Numerator       | The calculated numerator value              | Numeric   |          |
-| Analysis_Analyzed | Denominator     | The calculated denominator value            | Numeric   |          |
-| Analysis_Analyzed | Metric          | The calculated rate/metric value            | Numeric   |          |
-| Analysis_Analyzed | Score           | The Statistical Score                       | Numeric   |          |
-| Analysis_Analyzed | Overall Metric  |                                             | Numeric   | \*       |
-| Analysis_Analyzed | Factor          |                                             | Numeric   | \*       |
-| Analysis_Analyzed | Predicted Count |                                             | Numeric   | \*       |
+| Table | Column Name | Description | Type | Optional |
+|----|----|----|----|----|
+| Analysis_Analyzed | GroupID | The group ID for the metric | Character |  |
+| Analysis_Analyzed | GroupLevel | The group type for the metric (e.g. “Site”) | Character |  |
+| Analysis_Analyzed | Numerator | The calculated numerator value | Numeric |  |
+| Analysis_Analyzed | Denominator | The calculated denominator value | Numeric |  |
+| Analysis_Analyzed | Metric | The calculated rate/metric value | Numeric |  |
+| Analysis_Analyzed | Score | The Statistical Score | Numeric |  |
+| Analysis_Analyzed | Overall Metric |  | Numeric | \* |
+| Analysis_Analyzed | Factor |  | Numeric | \* |
+| Analysis_Analyzed | Predicted Count |  | Numeric | \* |
 
 #### `Analysis_Flagged`
 
@@ -246,18 +246,18 @@ into the reporting data pipeline.
   and used for reporting.
 - Structure:
 
-| Table            | Column Name     | Description                                 | Type      | Optional |
-|------------------|-----------------|---------------------------------------------|-----------|----------|
-| Analysis_Flagged | GroupID         | The group ID for the metric                 | Character |          |
-| Analysis_Flagged | GroupLevel      | The group type for the metric (e.g. “Site”) | Character |          |
-| Analysis_Flagged | Numerator       | The calculated numerator value              | Numeric   |          |
-| Analysis_Flagged | Denominator     | The calculated denominator value            | Numeric   |          |
-| Analysis_Flagged | Metric          | The calculated rate/metric value            | Numeric   |          |
-| Analysis_Flagged | Score           | The Statistical Score                       | Numeric   |          |
-| Analysis_Flagged | Flag            | The ordinal Flag to be applied              | Numeric   |          |
-| Analysis_Flagged | Overall Metric  |                                             | Numeric   | \*       |
-| Analysis_Flagged | Factor          |                                             | Numeric   | \*       |
-| Analysis_Flagged | Predicted Count |                                             | Numeric   | \*       |
+| Table | Column Name | Description | Type | Optional |
+|----|----|----|----|----|
+| Analysis_Flagged | GroupID | The group ID for the metric | Character |  |
+| Analysis_Flagged | GroupLevel | The group type for the metric (e.g. “Site”) | Character |  |
+| Analysis_Flagged | Numerator | The calculated numerator value | Numeric |  |
+| Analysis_Flagged | Denominator | The calculated denominator value | Numeric |  |
+| Analysis_Flagged | Metric | The calculated rate/metric value | Numeric |  |
+| Analysis_Flagged | Score | The Statistical Score | Numeric |  |
+| Analysis_Flagged | Flag | The ordinal Flag to be applied | Numeric |  |
+| Analysis_Flagged | Overall Metric |  | Numeric | \* |
+| Analysis_Flagged | Factor |  | Numeric | \* |
+| Analysis_Flagged | Predicted Count |  | Numeric | \* |
 
 #### `Analysis_Summary`
 
@@ -267,13 +267,13 @@ into the reporting data pipeline.
 - Usage: Summarize KRI at the group level for reporting.
 - Structure:
 
-| Table            | Column Name | Description                                 | Type      | Optional |
-|------------------|-------------|---------------------------------------------|-----------|----------|
-| Analysis_Summary | GroupID     | The group ID for the metric                 | Character |          |
-| Analysis_Summary | GroupLevel  | The group type for the metric (e.g. “Site”) | Character |          |
-| Analysis_Summary | Numerator   | The calculated numerator value              | Numeric   |          |
-| Analysis_Summary | Denominator | The calculated denominator value            | Numeric   |          |
-| Analysis_Summary | Metric      | The calculated rate/metric value            | Numeric   |          |
+| Table | Column Name | Description | Type | Optional |
+|----|----|----|----|----|
+| Analysis_Summary | GroupID | The group ID for the metric | Character |  |
+| Analysis_Summary | GroupLevel | The group type for the metric (e.g. “Site”) | Character |  |
+| Analysis_Summary | Numerator | The calculated numerator value | Numeric |  |
+| Analysis_Summary | Denominator | The calculated denominator value | Numeric |  |
+| Analysis_Summary | Metric | The calculated rate/metric value | Numeric |  |
 
 ## Overview of Reporting data model
 
@@ -289,18 +289,18 @@ into the reporting data pipeline.
 - Usage: Summarize KRI at the group level for reporting.
 - Structure:
 
-| Table             | Column Name  | Description                                 | Type      | Optional |     |
-|-------------------|--------------|---------------------------------------------|-----------|----------|-----|
-| Reporting_Results | GroupID      | The group ID for the metric                 | Character |          |     |
-| Reporting_Results | GroupLevel   | The group type for the metric (e.g. “Site”) | Character |          |     |
-| Reporting_Results | Numerator    | The calculated numerator value              | Numeric   |          |     |
-| Reporting_Results | Denominator  | The calculated denominator value            | Numeric   |          |     |
-| Reporting_Results | Metric       | The calculated rate/metric value            | Numeric   |          |     |
-| Reporting_Results | Score        | The calculated metric score                 | Numeric   |          |     |
-| Reporting_Results | Flag         | The calculated flag                         | Numeric   |          |     |
-| Reporting_Results | MetricID     | The Metric ID                               | Character | \*       |     |
-| Reporting_Results | StudyID      | The Study ID                                | Character | \*       |     |
-| Reporting_Results | SnapshotDate | The Date of the snapshot                    | Date      | \*       |     |
+| Table | Column Name | Description | Type | Optional |  |
+|----|----|----|----|----|----|
+| Reporting_Results | GroupID | The group ID for the metric | Character |  |  |
+| Reporting_Results | GroupLevel | The group type for the metric (e.g. “Site”) | Character |  |  |
+| Reporting_Results | Numerator | The calculated numerator value | Numeric |  |  |
+| Reporting_Results | Denominator | The calculated denominator value | Numeric |  |  |
+| Reporting_Results | Metric | The calculated rate/metric value | Numeric |  |  |
+| Reporting_Results | Score | The calculated metric score | Numeric |  |  |
+| Reporting_Results | Flag | The calculated flag | Numeric |  |  |
+| Reporting_Results | MetricID | The Metric ID | Character | \* |  |
+| Reporting_Results | StudyID | The Study ID | Character | \* |  |
+| Reporting_Results | SnapshotDate | The Date of the snapshot | Date | \* |  |
 
 #### `Reporting_Bounds`
 
@@ -316,16 +316,16 @@ into the reporting data pipeline.
   values for reporting.
 - Structure:
 
-| Table            | Column Name    | Description                                                                    | Type      | Optional |     |
-|------------------|----------------|--------------------------------------------------------------------------------|-----------|----------|-----|
-| Reporting_Bounds | Threshold      | The number of standard deviations that the upper and lower bounds are based on | Numeric   |          |     |
-| Reporting_Bounds | Denominator    | The calculated denominator value                                               | Numeric   |          |     |
-| Reporting_Bounds | LogDenominator | The calculated log denominator value                                           | Numeric   |          |     |
-| Reporting_Bounds | Numerator      | The calculated numerator value                                                 | Numeric   |          |     |
-| Reporting_Bounds | Metric         | The calculated rate/metric value                                               | Numeric   |          |     |
-| Reporting_Bounds | MetricID       | The Metric ID                                                                  | Character |          |     |
-| Reporting_Bounds | StudyID        | The Study ID                                                                   | Character |          |     |
-| Reporting_Bounds | SnapshotDate   | The Date of the snapshot                                                       | Date      |          |     |
+| Table | Column Name | Description | Type | Optional |  |
+|----|----|----|----|----|----|
+| Reporting_Bounds | Threshold | The number of standard deviations that the upper and lower bounds are based on | Numeric |  |  |
+| Reporting_Bounds | Denominator | The calculated denominator value | Numeric |  |  |
+| Reporting_Bounds | LogDenominator | The calculated log denominator value | Numeric |  |  |
+| Reporting_Bounds | Numerator | The calculated numerator value | Numeric |  |  |
+| Reporting_Bounds | Metric | The calculated rate/metric value | Numeric |  |  |
+| Reporting_Bounds | MetricID | The Metric ID | Character |  |  |
+| Reporting_Bounds | StudyID | The Study ID | Character |  |  |
+| Reporting_Bounds | SnapshotDate | The Date of the snapshot | Date |  |  |
 
 #### `Reporting_Groups`
 
@@ -339,12 +339,12 @@ into the reporting data pipeline.
 - Structure: Long data frame, with certain `Param` required for given
   `GroupLevel`
 
-| Table            | Column     | Description                      | Type      | Optional |
-|------------------|------------|----------------------------------|-----------|----------|
-| Reporting_Groups | GroupID    | Unique Group ID                  | Character |          |
-| Reporting_Groups | GroupLevel | Group Level (e.g. Site, Country) | Character |          |
-| Reporting_Groups | Param      | Parameter Name (e.g. “Status”)   | Character |          |
-| Reporting_Groups | Value      | Parameter Value (e.g. “Active”)  | Character |          |
+| Table | Column | Description | Type | Optional |
+|----|----|----|----|----|
+| Reporting_Groups | GroupID | Unique Group ID | Character |  |
+| Reporting_Groups | GroupLevel | Group Level (e.g. Site, Country) | Character |  |
+| Reporting_Groups | Param | Parameter Name (e.g. “Status”) | Character |  |
+| Reporting_Groups | Value | Parameter Value (e.g. “Active”) | Character |  |
 
 Expected `Param` by `GroupLevel` for use in gsm reporting. User may add
 other Param values as needed.
@@ -373,17 +373,17 @@ other Param values as needed.
 - Usage: Metadata used for charts and tables
 - Structure:
 
-| Table             | Column Name  | Description                                 | Type      | Optional |     |
-|-------------------|--------------|---------------------------------------------|-----------|----------|-----|
-| Reporting_Metrics | File         | The YAML file for workflow                  | Character |          |     |
-| Reporting_Metrics | MetricID     | ID for the Metric                           | Character |          |     |
-| Reporting_Metrics | Group        | The group type for the metric (e.g. “Site”) | Character |          |     |
-| Reporting_Metrics | Abbreviation | Abbreviation for the metric                 | Character |          |     |
-| Reporting_Metrics | Metric       | Name of the metric                          | Character |          |     |
-| Reporting_Metrics | Numerator    | Data source for the Numerator               | Character |          |     |
-| Reporting_Metrics | Denominator  | Data source for the Denominator             | Character |          |     |
-| Reporting_Metrics | Model        | Model used to calculate metric              | Character |          |     |
-| Reporting_Metrics | Score        | Type of Score reported                      | Character |          |     |
+| Table | Column Name | Description | Type | Optional |  |
+|----|----|----|----|----|----|
+| Reporting_Metrics | File | The YAML file for workflow | Character |  |  |
+| Reporting_Metrics | MetricID | ID for the Metric | Character |  |  |
+| Reporting_Metrics | Group | The group type for the metric (e.g. “Site”) | Character |  |  |
+| Reporting_Metrics | Abbreviation | Abbreviation for the metric | Character |  |  |
+| Reporting_Metrics | Metric | Name of the metric | Character |  |  |
+| Reporting_Metrics | Numerator | Data source for the Numerator | Character |  |  |
+| Reporting_Metrics | Denominator | Data source for the Denominator | Character |  |  |
+| Reporting_Metrics | Model | Model used to calculate metric | Character |  |  |
+| Reporting_Metrics | Score | Type of Score reported | Character |  |  |
 
 ### Appendix 2 - Analysis Workflow Specifications
 

@@ -172,6 +172,7 @@ minor tweaks. Before each release, code is standardized with `styler` so
 formatting is consistent across the whole repo.
 
 ``` r
+
 double_indent_style <- styler::tidyverse_style()
 double_indent_style$indention$unindent_fun_dec <- NULL
 double_indent_style$indention$update_indention_ref_fun_dec <- NULL
