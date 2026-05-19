@@ -1,5 +1,9 @@
 # Good Statistical Monitoring `{gsm.core}` R package
 
+[![R-CMD-check](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml)
+[![pkgdown-all](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml)
+
 The [gsm.core](https://gilead-biostats.github.io/gsm.core) package
 provides the analytical foundation for a standardized Risk Based Quality
 Monitoring (RBQM) framework for clinical trials that pairs a flexible
@@ -29,6 +33,26 @@ been split out among 4 packages as follows:
 4.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting):
     A package that provides workflows to generate the reporting data
     model needed to generate reports.
+
+## Installation
+
+You can install the latest release of gsm.core from
+[GitHub](https://github.com/) with:
+
+``` r
+
+# install.packages("pak")
+pak::pak("Gilead-BioStats/gsm.core@*release")
+```
+
+You can install the development version of gsm.core from
+[GitHub](https://github.com/) with:
+
+``` r
+
+# install.packages("pak")
+pak::pak("Gilead-BioStats/gsm.core")
+```
 
 # Background
 

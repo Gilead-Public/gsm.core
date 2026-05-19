@@ -49,13 +49,13 @@ Source:
 Wildfire J, Wu G, Childress S, Maxwell L, Zhu Z, Harmon J, Andriychuk N,
 Roumaya M, Anderson J, Zheng A, Pastoor D, Kosiba N, Sanders D, Ge L,
 Wang Z, McLaughlin C, Dickens C, Gans M (2026). *gsm.core: Good
-Statistical Monitoring*. R package version 1.2.0,
+Statistical Monitoring*. R package version 1.2.1,
 <https://gilead-biostats.github.io/gsm.core>.
 
     @Manual{,
       title = {gsm.core: Good Statistical Monitoring},
       author = {Jeremy Wildfire and George Wu and Spencer Childress and Laura Maxwell and Zelos Zhu and Jon Harmon and Natalia Andriychuk and Matt Roumaya and Jacob Anderson and Anne Zheng and Devin Pastoor and Nathan Kosiba and Douglas Sanders and Li Ge and Zhongkai Wang and Colleen McLaughlin and Chelsea Dickens and Maya Gans},
       year = {2026},
-      note = {R package version 1.2.0},
+      note = {R package version 1.2.1},
       url = {https://gilead-biostats.github.io/gsm.core},
     }
