@@ -1,3 +1,7 @@
+# gsm.core v1.2.1
+
+This patch release updates the GitHub action workflows to align with the new federated action framework in `gsm.utils`
+
 # gsm.core v1.2.0
 
 This minor release expands the qualification / workflow test suite, refreshes packaged example datasets, and updates release/CI/docs scaffolding.
