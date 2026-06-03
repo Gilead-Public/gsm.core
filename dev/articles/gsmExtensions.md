@@ -62,6 +62,9 @@ the module. It must include the following fields:
   workflow file name, without extension.
 - `Description`: A one-line description of the module specified in the
   workflow.
+- `Active`: *optional* A boolean (`true`/`false`) indicating whether the
+  workflow is active. Workflows with `Active: false` are filtered out of
+  workflow lists. If missing or `true`, the workflow is included.
 - `Priority`: *optional* A number specifying the priority of the
   workflow within the directory, with lower numbers having higher
   priority, and running first. This is used when workflows within the
@@ -109,6 +112,12 @@ Additional `meta` header required fields for `{gsm.kri}` **metrics**:
   [`gsm.core::Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md).
 - `Flag`: *optional* The numeric values assigned to each flag. Used in
   [`gsm.core::Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md).
+- `GenerateRiskSignal`: *optional* A boolean (`true`/`false`) indicating
+  whether a risk signal should be generated when this metric produces a
+  flag. If missing or `true`, a risk signal is generated. Only
+  applicable to metric workflows. We use this flag in our internal
+  systems, and provide it for you to integrate metrics into your own
+  workflows.
 - `AccrualThreshold`: The minimum threshold needed to apply a flag.
 - `AccrualMetric`: The metric on which to apply the minimum threshold
   needed to apply a flag. Accepted values: `Denominator`, `Numerator`,

@@ -143,6 +143,12 @@ same as the workflow file name, without extension.</li>
 <code>Description</code>: A one-line description of the module
 specified in the workflow.</li>
 <li>
+<code>Active</code>: <em>optional</em> A boolean
+(<code>true</code>/<code>false</code>) indicating whether the workflow
+is active. Workflows with <code>Active: false</code> are filtered out of
+workflow lists. If missing or <code>true</code>, the workflow is
+included.</li>
+<li>
 <code>Priority</code>: <em>optional</em> A number specifying the
 priority of the workflow within the directory, with lower numbers having
 higher priority, and running first. This is used when workflows within
@@ -219,6 +225,13 @@ values: <code>Z-Score</code>, <code>Adjusted Z-Score</code>,
 <li>
 <code>Flag</code>: <em>optional</em> The numeric values assigned to
 each flag. Used in <code><a href="../reference/Flag.html">gsm.core::Flag()</a></code>.</li>
+<li>
+<code>GenerateRiskSignal</code>: <em>optional</em> A boolean
+(<code>true</code>/<code>false</code>) indicating whether a risk signal
+should be generated when this metric produces a flag. If missing or
+<code>true</code>, a risk signal is generated. Only applicable to metric
+workflows. We use this flag in our internal systems, and provide it for
+you to integrate metrics into your own workflows.</li>
 <li>
 <code>AccrualThreshold</code>: The minimum threshold needed to apply
 a flag.</li>
