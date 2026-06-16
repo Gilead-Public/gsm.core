@@ -6,7 +6,9 @@
 # lifecycle warning."
 
 test_that("extracted workflow-runtime functions emit lifecycle deprecation warnings (#149)", {
-  # Force lifecycle to warn on every call (defeat once-per-session rate limiting).
+  # Set lifecycle verbosity to "warning" so the deprecation signal is emitted on
+  # every call; by default lifecycle signals a given deprecation only once per
+  # session, which would otherwise make these assertions order-dependent.
   withr::local_options(lifecycle_verbosity = "warning")
 
   # Each shim calls lifecycle::deprecate_warn() as its first statement, before

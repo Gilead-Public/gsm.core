@@ -17,15 +17,16 @@ test_that("Handles lMeta and lData parameters correctly", {
   lData <- list(data1 = 100)
   lMeta <- list(meta1 = 200)
 
-  expect_message(
-    expect_message(
-      {
-        result <- workr::RunStep(lStep, lData, lMeta)
-      },
-      "Evaluating 2 parameter"
-    ),
-    "x = lMeta|y = lData|Calling"
-  )
+  msgs <- capture_messages({
+    result <- workr::RunStep(lStep, lData, lMeta)
+  })
+  # Assert each expected message individually rather than relying on regex
+  # alternation (which would pass on any single match).
+  expect_match(msgs, "Evaluating 2 parameter", all = FALSE)
+  expect_match(msgs, "x = lMeta", all = FALSE)
+  expect_match(msgs, "y = lData", all = FALSE)
+  expect_match(msgs, "Calling", all = FALSE)
+
   expect_equal(result$x, lMeta)
   expect_equal(result$y, lData)
 })

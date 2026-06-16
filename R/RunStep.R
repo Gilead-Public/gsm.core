@@ -34,7 +34,7 @@
 #' )
 #'
 #' mapped <- workr::RunWorkflows(wf_mapping, lRaw)
-#' ae_step <- workr::RunStep(lStep = lStep, lData = lMapped, lMeta = lMeta)
+#' ae_step <- workr::RunStep(lStep = lStep, lData = mapped, lMeta = lMeta)
 #'
 #' @return `list` containing the results of the `lStep$name` function call should contain `.$checks`
 #'   parameter with results from `is_mapping_vald` for each domain in `lStep$inputs`.

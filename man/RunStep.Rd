@@ -48,6 +48,6 @@ lRaw <- list(
 )
 
 mapped <- workr::RunWorkflows(wf_mapping, lRaw)
-ae_step <- workr::RunStep(lStep = lStep, lData = lMapped, lMeta = lMeta)
+ae_step <- workr::RunStep(lStep = lStep, lData = mapped, lMeta = lMeta)
 
 }
