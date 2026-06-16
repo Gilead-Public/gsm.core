@@ -92,7 +92,7 @@ mapped <- workr::RunWorkflows(wf_mapping, lRaw)
 #> [INFO] 760x15 data.frame saved as `lData$Mapped_SUBJ`.
 #> [INFO] Returning results from final step: 760x15 data.frame`.
 #> [INFO] Completed `Mapped_SUBJ` Workflow
-ae_step <- workr::RunStep(lStep = lStep, lData = lMapped, lMeta = lMeta)
+ae_step <- workr::RunStep(lStep = lStep, lData = mapped, lMeta = lMeta)
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::ParseThreshold`
 #> [INFO] strThreshold = Threshold: Passing lMeta$Threshold.
 #> [INFO] Calling `gsm.core::ParseThreshold`
