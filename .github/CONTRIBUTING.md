@@ -191,6 +191,71 @@ These workflows are maintained in `gsm.utils` and deployed to all GSM packages.
 
 ---
 
+# Workflow Contract for Ecosystem Packages
+
+GSM ecosystem packages (e.g. `gsm.mapping`, `gsm.kri`, `gsm.reporting`, `gsm.endpoints`) ship analysis pipelines as workflow YAMLs. A snapshot tool ([`workr`](https://github.com/Gilead-BioStats/workr)) aggregates these YAMLs across every package into a single reusable library bundle (published via `gismo.library`), which downstream study repositories execute with `workr::RunProject()`.
+
+Because the bundle is a flat merge of many packages' workflows, every contributing package must follow the same conventions. This section is the **canonical contract**. It lives here in `gsm.core` (a public repo) so that maintainers of both public and private ecosystem packages — and downstream consumers — can read it. Private repos such as `gismo.library` should link back to this section rather than redefining it.
+
+## 1. Where workflow YAMLs live
+
+Place workflow YAMLs under **`inst/workflow/`** (singular) in your package:
+
+```
+your.package/
+└── inst/
+    └── workflow/
+        ├── 1_mappings/
+        ├── 2_metrics/
+        └── 3_reporting/
+```
+
+* Use the **singular** `inst/workflow/`. This is the canonical location workr looks for. (Historically some packages used `inst/workflows`, plural; workr now also tolerates the plural form per [Gilead-BioStats/workr#45](https://github.com/Gilead-BioStats/workr/issues/45), but new and migrated packages must use the singular form so the layout stays consistent.)
+* Only place actual workflow YAMLs here. Do not store unrelated package data under `inst/workflow/`.
+
+## 2. The numbered-folder (phase) convention
+
+Workflows are grouped into numbered phase directories. The aggregator merges the same-numbered folders from every package into one phase, and `RunProject()` executes phases in numeric order. Use exactly these names:
+
+| Folder | Phase | Contents |
+|---|---|---|
+| `0_other` | — (not a runnable phase) | Config / spec documents (e.g. study windows, flag specs). **Not** workflow-shaped — no executable `steps`. |
+| `1_mappings` | Mappings | `Mapped_*` data-mapping workflows (one per domain). |
+| `2_metrics` | Metrics | Metric / analysis workflows (e.g. `kri####`, `cou####`). |
+| `3_reporting` | Reporting | Reporting workflows that consume metric results. |
+| `4_modules` | — (not a runnable phase) | App module specs consumed by `gsm.app`, not executed by `RunProject()`. |
+
+Notes:
+
+* `0_other` and `4_modules` are **not runnable phases** — they hold specs/config, not workflows with `steps`. A bare `RunProject("workflows")` over all subdirectories will choke on them, so consumers must restrict the runnable phases. Keep non-runnable content in these two folders only; never mix config documents into `1_mappings`/`2_metrics`/`3_reporting`.
+* Do not invent new top-level numbered folders without coordinating across the ecosystem (raise an issue first) — the aggregator and `RunProject()` rely on this fixed set.
+
+## 3. Naming rules
+
+* **One workflow per file.** The filename is the workflow's identity within its phase.
+* Name files after the workflow's `meta: ID` / output, matching the established pattern for the phase:
+  * `1_mappings/` — the domain name, matching the `Mapped_*` output (e.g. `AE.yaml` → `Mapped_AE`, `SUBJ.yaml` → `Mapped_SUBJ`).
+  * `2_metrics/` — the metric ID (e.g. `kri0001.yaml`, `cou0015.yaml`, `end0001.yaml`).
+  * `3_reporting/` — the report name (e.g. `Metrics.yaml`, `Results.yaml`).
+* Every workflow YAML must declare a `meta:` block with at least `Type`, `ID`, and `Description` (mappings additionally set `Priority`).
+* **Fully qualify step functions** with their package namespace (e.g. `gsm.kri::Analyze_NormalApprox`, not bare `Analyze_NormalApprox`). The aggregated bundle is run outside your package's namespace, so unprefixed functions will not resolve at runtime.
+* Filenames are case-sensitive in the bundle — keep capitalization consistent with the convention above.
+
+## 4. Collision policy
+
+The aggregator flattens every package's `inst/workflow/<phase>/` contents into a single `workflows/<phase>/` tree **with no per-package namespace**. Therefore:
+
+* **A filename must be unique across the entire ecosystem within its phase folder.** If two packages each ship `2_metrics/foo.yaml`, they collide.
+* Per [Gilead-BioStats/workr#46](https://github.com/Gilead-BioStats/workr/issues/46), the aggregator now detects duplicate destination paths and warns (or fails, configurably) naming both source repos — but a collision still means one package's workflow is at risk of being dropped. **Do not rely on the warning; choose non-colliding names up front.**
+* Prefer package-distinctive prefixes for metric/report IDs (e.g. `kri####` from `gsm.kri`, `cou####`, `end####` from `gsm.endpoints`) so names stay disjoint as the ecosystem grows.
+* Before adding a new workflow, check the other ecosystem packages (and the latest `gismo.library` snapshot) for an existing file of the same name in the same phase.
+
+## 5. Private-package considerations
+
+If your package is private (e.g. `gsm.endpoints`) and its workflows call functions from private packages at runtime, the rendered bundle is not runnable by a consumer without org-read access to those packages. Document any such access requirement alongside the workflow, and coordinate with the `gismo.library` maintainers so private-package workflows can be partitioned appropriately.
+
+---
+
 # Appendix 1 – Quick Reference
 
 ### Fix Branch Workflow
