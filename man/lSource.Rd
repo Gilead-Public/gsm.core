@@ -9,22 +9,27 @@ A data frame with  rows and  columns:
 \describe{
 \item{"Raw_AE"}{AE Source dataset}
 \item{"Raw_COUNTRY"}{Country Source dataset}
-\item{"Raw_DATACHG"}{DATACHG ource dataset}
+\item{"Raw_DATACHG"}{DATACHG Source dataset}
 \item{"Raw_DATAENT"}{DATAENT Source dataset}
+\item{"Raw_Death"}{Death Source dataset}
 \item{"Raw_ENROLL"}{Enroll Source dataset}
+\item{"Raw_IE"}{IE Source dataset}
 \item{"Raw_LB"}{Lab Source dataset}
+\item{"Raw_OverallResponse"}{Overall Response Source dataset}
 \item{"Raw_PD"}{Protocol Deviation Source dataset}
 \item{"Raw_PK"}{PK Source dataset}
 \item{"Raw_QUERY"}{Query Source dataset}
-\item{"Raw_STUDY"}{Study Source dataset}
-\item{"Raw_STUDCOMP"}{STUDCOMP Source dataset}
+\item{"Raw_Randomization"}{Randomization Source dataset}
 \item{"Raw_SDRGCOMP"}{SDRGCOMP Source dataset}
 \item{"Raw_SITE"}{SITE Source dataset}
+\item{"Raw_STUDY"}{Study Source dataset}
+\item{"Raw_STUDCOMP"}{STUDCOMP Source dataset}
 \item{"Raw_SUBJ"}{SUBJ Source dataset}
+\item{"Raw_VISIT"}{Visit Source dataset}
 }
 }
 \source{
-Generated from \code{data-raw/run-gsm.datasim.R}.
+Generated from \code{data-raw/simulate_longitudinal_data.R}.
 }
 \usage{
 lSource
