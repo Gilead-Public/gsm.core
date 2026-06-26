@@ -236,14 +236,9 @@ components:
 - **Data Specifications** - Machine-readable specifications for all
   KRIs, automatically integrated into function documentation.
 - **Contributor Guidelines** - Step-by-step processes for code
-  development and releases provided in `CONTRIBUTING.md` and required to
-  be followed for contributions.
-- **Workflow Contract** - Conventions ecosystem packages must follow
-  when shipping workflow YAMLs (location, numbered phases, naming, and
-  collision rules) are documented in the [Workflow Contract for
-  Ecosystem
-  Packages](https://gilead-biostats.github.io/gsm.core/dev/CONTRIBUTING.html#workflow-contract-for-ecosystem-packages)
-  section of `CONTRIBUTING.md`.
+  development, releases, and workflow YAML conventions are provided in
+  [CONTRIBUTING.md](https://gilead-biostats.github.io/gsm.core/dev/CONTRIBUTING.md)
+  and required to be followed for contributions.
 
 ## Development Practices
 
