@@ -1,7 +1,3 @@
-# gsm.core v1.2.2 (development version)
-
-- Document the workflow contract for ecosystem packages in `CONTRIBUTING.md` (workflow YAML location, numbered-phase convention, naming rules, and collision policy), with a pointer from the README (#145).
-
 # gsm.core v1.2.1
 
 This patch release updates the GitHub action workflows to align with the new federated action framework in `gsm.utils`
