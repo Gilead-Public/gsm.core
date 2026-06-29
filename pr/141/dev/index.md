@@ -24,9 +24,9 @@ been split out among 4 packages as follows:
 1.  **[gsm.core](https://gilead-biostats.github.io/gsm.core)**: A
     package containing the analytics functionality used to construct and
     evaluate metrics.
-2.  **[workr](https://gilead-biostats.github.io/workr)**: A package that
-    provides the workflow runtime used to execute YAML-defined steps and
-    workflows.
+2.  [**`{workr}`**](https://github.com/Gilead-BioStats/workr): A package
+    that provides the workflow runtime used to execute YAML-defined
+    steps and workflows.
 3.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping):
     A package that provides workflows to apply the necessary data
     transformation from raw/source datasets to appropriate domains.
