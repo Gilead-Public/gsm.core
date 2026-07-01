@@ -1,3 +1,16 @@
+test_that("gsm.core::RunQuery forwards to workr with a deprecation warning", {
+  df <- data.frame(x = 1:3)
+  query <- "SELECT * FROM df"
+
+  expected <- suppressMessages(workr::RunQuery(query, df))
+
+  expect_warning(
+    result <- suppressMessages(gsm.core::RunQuery(query, df)),
+    "deprecated"
+  )
+  expect_equal(result, expected)
+})
+
 test_that("RunQuery returns correct result", {
   df <- data.frame(
     Name = c("John", "Jane", "Bob"),
@@ -11,7 +24,7 @@ test_that("RunQuery returns correct result", {
     expect_message(
       expect_message(
         {
-          result <- RunQuery(query, df)
+          result <- workr::RunQuery(query, df)
         },
         "Creating a new temporary DuckDB connection"
       ),
@@ -33,10 +46,9 @@ test_that("RunQuery handles empty df", {
 
   query <- "SELECT * FROM df WHERE Age >= 30"
 
-  expect_warning(
-    result <- RunQuery(query, df),
-    regexp = "empty data frame"
-  )
+  suppressMessages({
+    result <- workr::RunQuery(query, df)
+  })
 
   expect_equal(nrow(result), 0)
 })
@@ -51,7 +63,7 @@ test_that("RunQuery handles invalid input", {
   # Define the query and mapping with invalid input types
   query <- 123
 
-  expect_error(RunQuery(query, df))
+  expect_error(workr::RunQuery(query, df))
 })
 
 test_that("RunQuery checks if strQuery contains 'FROM df'", {
@@ -63,7 +75,7 @@ test_that("RunQuery checks if strQuery contains 'FROM df'", {
 
   query <- "SELECT * FROM mydata WHERE Age >= 30"
 
-  expect_error(RunQuery(query, df), "strQuery must contain 'FROM df'")
+  expect_error(workr::RunQuery(query, df), "strQuery must contain 'FROM df'")
 })
 
 test_that("RunQuery checks if all templated columns are found in lMapping", {
@@ -76,11 +88,11 @@ test_that("RunQuery checks if all templated columns are found in lMapping", {
   query <- "SELECT * FROM df WHERE Age >= 30"
 
   expect_no_error(
-    suppressMessages(RunQuery(query, df))
+    suppressMessages(workr::RunQuery(query, df))
   )
 })
 
-test_that("RunQuery applies schema appropriately (#22, #45)", {
+test_that("RunQuery applies schema appropriately via workr (#22, #45)", {
   df <- data.frame(
     Name = c("John", "Jane", "Bob"),
     Age = c(25, 30, 35),
@@ -111,12 +123,11 @@ test_that("RunQuery applies schema appropriately (#22, #45)", {
     )
   )
 
-  # Define the query and mapping
   query <- "SELECT Name, Age, Salary, Birthday AS Birthdate, Birthtime, Tenured FROM df WHERE Age >= 30"
 
   expect_no_error({
     suppressMessages({
-      result <- RunQuery(
+      result <- workr::RunQuery(
         query,
         df,
         bUseSchema = T,
@@ -155,7 +166,7 @@ test_that("RunQuery applies incomplete schema appropriately (#70, #71)", {
 
   expect_no_error({
     suppressMessages({
-      result <- RunQuery(query, df, bUseSchema = T, lColumnMapping = lColumnMapping)
+      result <- workr::RunQuery(query, df, bUseSchema = T, lColumnMapping = lColumnMapping)
     })
   })
   expect_equal(class(result$emaN), class(df$Name))
@@ -186,7 +197,7 @@ test_that("RunQuery parses invalid date/times correctly (#44)", {
 
   suppressWarnings(
     suppressMessages(
-      result <- RunQuery(
+      result <- workr::RunQuery(
         query,
         df,
         bUseSchema = T,

@@ -1,5 +1,25 @@
-wf_mapping <- MakeWorkflowList(strPath = "testdata/mappings")
-workflows <- MakeWorkflowList(strPath = "testdata/metrics")
+test_that("gsm.core runtime wrappers warn and forward", {
+  wf_mapping <- workr::MakeWorkflowList(strPath = "testdata/mappings")
+  workflow <- workr::MakeWorkflowList(strPath = "testdata/metrics")[[1]]
+  lRaw <- list(
+    Raw_SUBJ = gsm.core::lSource$Raw_SUBJ,
+    Raw_AE = gsm.core::lSource$Raw_AE
+  )
+
+  mapped <- suppressMessages(workr::RunWorkflows(wf_mapping[1:2], lRaw))
+  expected <- suppressMessages(workr::RunWorkflow(workflow, mapped, bReturnResult = FALSE, bKeepInputData = FALSE))
+
+  expect_warning(gsm.core::MakeWorkflowList(strPath = "testdata/mappings"), "deprecated")
+  expect_warning(suppressMessages(gsm.core::RunWorkflows(wf_mapping[1:2], lRaw)), "deprecated")
+  expect_warning(
+    actual <- suppressMessages(gsm.core::RunWorkflow(workflow, mapped, bReturnResult = FALSE, bKeepInputData = FALSE)),
+    "deprecated"
+  )
+  expect_equal(actual, expected)
+})
+
+wf_mapping <- workr::MakeWorkflowList(strPath = "testdata/mappings")
+workflows <- workr::MakeWorkflowList(strPath = "testdata/metrics")
 
 # Don't run things we don't use.
 used_params <- purrr::map(workflows, ~ purrr::map(.x$steps, "params")) %>%

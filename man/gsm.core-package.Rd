@@ -6,7 +6,7 @@
 \alias{gsm.core-package}
 \title{gsm.core: Good Statistical Monitoring}
 \description{
-The Good Statistical Monitoring or 'gsm' suite of R packages provides a framework for statistical data monitoring. 'gsm.core' provides the analytics framework for constructing metrics, and the utility functions to run workflows.
+The Good Statistical Monitoring or 'gsm' suite of R packages provides a framework for statistical data monitoring. 'gsm.core' provides the analytics framework for constructing metrics, while workflow execution utilities are provided by the companion package 'workr'.
 }
 \seealso{
 Useful links:

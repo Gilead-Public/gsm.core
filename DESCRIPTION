@@ -27,8 +27,9 @@ Authors@R: c(
   )
 Description: The Good Statistical Monitoring or 'gsm' suite of R packages
     provides a framework for statistical data monitoring. 'gsm.core'
-    provides the analytics framework for constructing metrics, and the
-    utility functions to run workflows.
+    provides the analytics framework for constructing metrics, while
+    workflow execution utilities are provided by the companion package
+    'workr'.
 License: Apache License (>= 2)
 URL: https://gilead-biostats.github.io/gsm.core,
     https://github.com/Gilead-BioStats/gsm.core,
@@ -49,6 +50,7 @@ Imports:
     rlang (>= 0.4.11),
     stats,
     tidyr,
+    workr,
     yaml
 Suggests:
     broom,
@@ -65,6 +67,8 @@ Suggests:
     tibble,
     usethis,
     withr
+Remotes:
+    workr=Gilead-BioStats/workr
 VignetteBuilder: 
     knitr
 Config/Needs/website: DT, here, pkgdown, devtools

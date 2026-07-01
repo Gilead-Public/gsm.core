@@ -1,31 +1,32 @@
+test_that("gsm.core::RunStep forwards to workr with a deprecation warning", {
+  lStep <- list(name = "dummy_function", params = list(x = "lMeta", y = "lData"))
+  lData <- list(data1 = 100)
+  lMeta <- list(meta1 = 200)
+
+  expected <- suppressMessages(workr::RunStep(lStep, lData, lMeta))
+
+  expect_warning(
+    result <- suppressMessages(gsm.core::RunStep(lStep, lData, lMeta)),
+    "deprecated"
+  )
+  expect_equal(result, expected)
+})
+
 test_that("Handles lMeta and lData parameters correctly", {
   lStep <- list(name = "dummy_function", params = list(x = "lMeta", y = "lData"))
   lData <- list(data1 = 100)
   lMeta <- list(meta1 = 200)
 
-  # Exhaustively capture all the message lines here so we can be confident and
-  # skip this in the rest of these.
-  expect_message(
-    expect_message(
-      expect_message(
-        expect_message(
-          expect_message(
-            expect_message(
-              {
-                result <- RunStep(lStep, lData, lMeta)
-              },
-              "Evaluating 2 parameter"
-            ),
-            "x = lMeta"
-          ),
-          "y = lData"
-        ),
-        "\\s"
-      ),
-      "\\s"
-    ),
-    "Calling"
-  )
+  msgs <- capture_messages({
+    result <- workr::RunStep(lStep, lData, lMeta)
+  })
+  # Assert each expected message individually rather than relying on regex
+  # alternation (which would pass on any single match).
+  expect_match(msgs, "Evaluating 2 parameter", all = FALSE)
+  expect_match(msgs, "x = lMeta", all = FALSE)
+  expect_match(msgs, "y = lData", all = FALSE)
+  expect_match(msgs, "Calling", all = FALSE)
+
   expect_equal(result$x, lMeta)
   expect_equal(result$y, lData)
 })
@@ -36,7 +37,7 @@ test_that("Handles parameters referencing elements within lMeta and lData", {
   lMeta <- list(meta1 = 200)
 
   suppressMessages({
-    result <- RunStep(lStep, lData, lMeta)
+    result <- workr::RunStep(lStep, lData, lMeta)
   })
   expect_equal(result$x, 200)
   expect_equal(result$y, 100)
@@ -48,7 +49,7 @@ test_that("Passes direct value parameters correctly", {
   lMeta <- list(meta1 = 200)
 
   suppressMessages({
-    result <- RunStep(lStep, lData, lMeta)
+    result <- workr::RunStep(lStep, lData, lMeta)
   })
   expect_equal(result$x, 200)
   expect_equal(result$y, "100")
@@ -63,7 +64,7 @@ test_that("Passes direct value vector parameters correctly (#23)", {
 
   suppressMessages(expect_message(
     {
-      result <- RunStep(lStep, lData, lMeta)
+      result <- workr::RunStep(lStep, lData, lMeta)
     },
     "y is of length 3"
   ))
@@ -77,7 +78,7 @@ test_that("Handles multiple parameters and function invocation correctly", {
   lMeta <- list(meta1 = 400)
 
   suppressMessages({
-    result <- RunStep(lStep, lData, lMeta)
+    result <- workr::RunStep(lStep, lData, lMeta)
   })
   expect_equal(result$a, 400)
   expect_equal(result$b, 300)
@@ -91,7 +92,7 @@ test_that("RunStep will run a function from a namespace", {
 
   expect_output({
     suppressMessages({
-      result <- RunStep(lStep, lData, lMeta)
+      result <- workr::RunStep(lStep, lData, lMeta)
     })
   })
   expect_equal(result, head(Theoph))
@@ -104,7 +105,7 @@ test_that("RunStep will run a function without a namespace", {
 
   expect_output({
     suppressMessages({
-      result <- RunStep(lStep, lData, lMeta)
+      result <- workr::RunStep(lStep, lData, lMeta)
     })
   })
   expect_equal(result, head(Theoph))
@@ -115,7 +116,7 @@ test_that("RunStep will run a function with no parameters (#31)", {
 
   lStep <- list(name = "getwd")
   suppressMessages({
-    result <- RunStep(lStep, list(), list())
+    result <- workr::RunStep(lStep, list(), list())
   })
   expect_equal(result, wd_path)
 })

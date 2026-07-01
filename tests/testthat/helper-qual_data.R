@@ -141,14 +141,14 @@ get_cached_mapped_data <- function(force_refresh = FALSE) {
 
   # Generate fresh data
   message("Updating cached mapped data...")
-  mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
+  mappings_wf <- workr::MakeWorkflowList(strPath = GetYamlPathMappings())
 
   ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)
   gsm.core::SetLogger(log4r::logger(
     threshold = "WARN",
     appenders = ConsoleAppender
   ))
-  mapped_data <- RunWorkflows(mappings_wf, lData)
+  mapped_data <- workr::RunWorkflows(mappings_wf, lData)
   gsm.core::SetLogger(log4r::logger(
     "DEBUG",
     appenders = ConsoleAppender
@@ -184,7 +184,7 @@ get_cached_mapping_output <- function(force_refresh = FALSE) {
 
   # Generate fresh data
   message("Updating cached mapping output...")
-  mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
+  mappings_wf <- workr::MakeWorkflowList(strPath = GetYamlPathMappings())
   mapping_output <- purrr::map(mappings_wf, ~ .x$steps[[1]]$output) %>% unlist()
 
   saveRDS(mapping_output, cache_file)
@@ -200,9 +200,9 @@ mapping_output <- NULL
 mappings_wf <- NULL
 
 if (!is.null(mappings_workflow_path)) {
-  mapped_data <- get_cached_mapped_data()
-  mapping_output <- get_cached_mapping_output()
-  mappings_wf <- MakeWorkflowList(strPath = GetYamlPathMappings())
+  delayedAssign("mapped_data", get_cached_mapped_data())
+  delayedAssign("mapping_output", get_cached_mapping_output())
+  delayedAssign("mappings_wf", workr::MakeWorkflowList(strPath = GetYamlPathMappings()))
 }
 
 # ---- Robust workflow runner that handles errors gracefully -------------------
@@ -232,7 +232,7 @@ robust_runworkflow <- function(
   # Run each step with error handling
   for (step in lWorkflow$steps) {
     result0 <- purrr::safely(
-      ~ gsm.core::RunStep(
+      ~ workr::RunStep(
         lStep = step,
         lData = lWorkflow$lData,
         lMeta = lWorkflow$meta
@@ -291,7 +291,7 @@ get_data <- function(lWorkflow, data) {
   # This code temporarily deals with column mismatches in gsm.core vs
   # gsm.mapping and should be removed when all packages are released.
   suppressWarnings({
-    mapped_needed_data <- RunWorkflows(mappings_wf[maps_needed], data)
+    mapped_needed_data <- workr::RunWorkflows(mappings_wf[maps_needed], data)
   })
   return(mapped_needed_data)
 }
