@@ -1,7 +1,17 @@
+test_that("gsm.core::MakeWorkflowList forwards to workr with a deprecation warning", {
+  expected <- suppressMessages(workr::MakeWorkflowList(strPath = test_path("testdata/mappings")))
+
+  expect_warning(
+    result <- suppressMessages(gsm.core::MakeWorkflowList(strPath = test_path("testdata/mappings"))),
+    "deprecated"
+  )
+  expect_equal(result, expected)
+})
+
 ################################################################################
 
 test_that("output is generated as expected", {
-  wf_list <- MakeWorkflowList(strPath = test_path("testdata/mappings"))
+  wf_list <- workr::MakeWorkflowList(strPath = test_path("testdata/mappings"))
 
   expect_true(is.list(wf_list))
   expect_true(all(map_chr(wf_list, ~ class(.)) == "list"))
@@ -11,7 +21,7 @@ test_that("output is generated as expected", {
 ################################################################################
 
 test_that("Metadata is returned as expected", {
-  wf_list <- MakeWorkflowList(strPath = test_path("testdata/mappings"))
+  wf_list <- workr::MakeWorkflowList(strPath = test_path("testdata/mappings"))
   expect_snapshot(map(wf_list, ~ .x$steps))
 })
 
@@ -21,7 +31,7 @@ test_that("invalid data returns list NULL elements (#43)", {
   bRecursive <- TRUE
   ### strNames - testing strNames equal to random numeric array
   expect_snapshot(
-    wf_list <- MakeWorkflowList(
+    wf_list <- workr::MakeWorkflowList(
       strNames = "kri8675309",
       strPath = test_path("testdata"),
       bRecursive = bRecursive
@@ -33,7 +43,7 @@ test_that("invalid data returns list NULL elements (#43)", {
   ### strPath - testing strPath equal to non-existent/incorrect location of
   ### assessment YAML files
   expect_error(
-    MakeWorkflowList(
+    workr::MakeWorkflowList(
       strPath = "beyonce",
       strPackage = NULL,
       bRecursive = bRecursive
@@ -43,7 +53,7 @@ test_that("invalid data returns list NULL elements (#43)", {
   ### strPackage - testing strPackage equal to non-existent/incorrect package
   ### name
   expect_error(
-    MakeWorkflowList(
+    workr::MakeWorkflowList(
       strPath = test_path("testdata/mappings"),
       strPackage = "fake-pkg",
       bRecursive = bRecursive
@@ -51,7 +61,7 @@ test_that("invalid data returns list NULL elements (#43)", {
   )
 
   ### bRecursive
-  wf_list <- MakeWorkflowList(
+  wf_list <- workr::MakeWorkflowList(
     bRecursive = TRUE,
     strPath = test_path("testdata"),
     strNames = "kri0002"
@@ -63,7 +73,7 @@ test_that("invalid data returns list NULL elements (#43)", {
 ################################################################################
 
 test_that("output is created as expected", {
-  assessment_list <- MakeWorkflowList(strPath = test_path("testdata/mappings"))
+  assessment_list <- workr::MakeWorkflowList(strPath = test_path("testdata/mappings"))
 
   expect_snapshot(names(assessment_list))
   expect_type(assessment_list, "list")

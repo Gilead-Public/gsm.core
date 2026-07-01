@@ -28,10 +28,11 @@ This README provides a high-level overview of `{gsm.core}`; see the [package web
 
 The `{gsm.core}` package is a successor package to [`{gsm}`](https://github.com/Gilead-BioStats/gsm), which has been deprecated as of March 2025. The contents of `{gsm}` have been split out among 4 packages as follows:
 
-1.  **`{gsm.core}`**: A package containing the analytics functionality and utility functions to run workflows.
-2.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping): A package that provides workflows to apply the necessary data transformation from raw/source datasets to appropriate domains.
-3.  [**`{gsm.kri}`**](https://github.com/Gilead-BioStats/gsm.kri): A package that provides workflows to generate metrics and functionality to visualize and report on these metrics.
-4.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting): A package that provides workflows to generate the reporting data model needed to generate reports.
+1.  **`{gsm.core}`**: A package containing the analytics functionality used to construct and evaluate metrics.
+2.  [**`{workr}`**](https://github.com/Gilead-BioStats/workr): A package that provides the workflow runtime used to execute YAML-defined steps and workflows.
+3.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping): A package that provides workflows to apply the necessary data transformation from raw/source datasets to appropriate domains.
+4.  [**`{gsm.kri}`**](https://github.com/Gilead-BioStats/gsm.kri): A package that provides workflows to generate metrics and functionality to visualize and report on these metrics.
+5.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting): A package that provides workflows to generate the reporting data model needed to generate reports.
 
 ## Installation
 
@@ -115,7 +116,7 @@ See the "Process Overview" section above and then check out these articles:
 
 ## How do I evaluate a study?
 
-The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. See the articles below for details and examples.
+The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. Runtime execution is provided by `{workr}`, while `{gsm.core}` provides the analytical functions used inside those workflows. See the articles below for details and examples.
 
 -   [Data Model Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html) explains the data pipeline used to calculate multiple metrics and generate study-level reports.
 -   [Adverse Event Workflow Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html) demonstrates how to create a configurable workflow using YAML to define the analysis pipeline.

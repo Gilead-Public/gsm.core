@@ -20,13 +20,10 @@ Required if \code{bUseSchema} is \code{TRUE}.}
 \code{data.frame} containing the results of the SQL query.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-\code{RunQuery} executes a SQL query on a data frame or a DuckDB lazy table, allowing dynamic use of local or database-backed data.
-If a DuckDB connection is passed in as \code{df}, it operates on the existing connection. Otherwise, it creates a temporary DuckDB
-table from the provided data frame for SQL processing.
-
-The SQL query should include the placeholder \verb{FROM df} to indicate where the primary data source (\code{df}) should be referenced.
+\code{RunQuery()} has moved to \code{workr::RunQuery()}. This wrapper remains for
+backward compatibility in \code{{gsm.core}}.
 }
 \examples{
 \dontshow{if (rlang::is_installed(c("DBI", "dbplyr", "duckdb"))) withAutoprint(\{ # examplesIf}
@@ -37,6 +34,6 @@ df <- data.frame(
 )
 query <- "SELECT * FROM df WHERE AGE > 30"
 
-result <- RunQuery(query, df)
+result <- workr::RunQuery(query, df)
 \dontshow{\}) # examplesIf}
 }
