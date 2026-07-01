@@ -10,7 +10,7 @@ reportingResults_country
 
 ## Format
 
-A data frame with 415 rows and 10 columns:
+A data frame with 134 rows and 10 columns:
 
 - GroupID:
 

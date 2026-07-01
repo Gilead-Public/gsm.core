@@ -1,6 +1,8 @@
 # Run a workflow via it's YAML specification.
 
-**\[stable\]**
+**\[deprecated\]** `RunWorkflow()` has moved to
+[`workr::RunWorkflow()`](https://gilead-biostats.github.io/workr/reference/RunWorkflow.html).
+This wrapper remains for backward compatibility in `{gsm.core}`.
 
 Attempts to run a single assessment (`lWorkflow`) using shared data
 (`lData`) and metadata (`lMapping`). Calls `RunStep` for each item in
@@ -65,7 +67,7 @@ the full `lWorkflow` object.
 
 ``` r
 # Generate mapped input data to metric workflow.
-lMappingWorkflows <- MakeWorkflowList(
+lMappingWorkflows <- workr::MakeWorkflowList(
   strNames = c("AE", "SUBJ"),
   strPath = "example_workflow/1_mappings",
   strPackage = "gsm.core",
@@ -76,164 +78,105 @@ lRawData <- list(
   Raw_AE = gsm.core::lSource$Raw_AE
 )
 
-lMappedData <- RunWorkflows(
+lMappedData <- workr::RunWorkflows(
   lMappingWorkflows,
   lRawData
 )
-#> 
-#> ── Running 2 Workflows ─────────────────────────────────────────────────────────
-#> 
-#> ── Initializing `Mapped_AE` Workflow ───────────────────────────────────────────
-#> 
-#> ── Checking data against spec 
-#> → All 1 data.frame(s) in the spec are present in the data: Raw_AE
-#> → All specified columns in Raw_AE are in the expected format
-#> → All 2 specified column(s) in the spec are present in the data: Raw_AE$subjid, Raw_AE$aeser
-#> 
-#> ── Workflow Step 1 of 1: `=` ──
-#> 
-#> ── Evaluating 2 parameter(s) for `=` 
-#> ℹ lhs = Mapped_AE: No matching data found. Passing 'Mapped_AE' as a string.
-#> ✔ rhs = Raw_AE: Passing lData$Raw_AE.
-#> 
-#> ── Calling `=` 
-#> 
-#> ── 3000x11 data.frame saved as `lData$Mapped_AE`. 
-#> 
-#> ── Returning results from final step: 3000x11 data.frame`. ──
-#> 
-#> ── Completed `Mapped_AE` Workflow ──────────────────────────────────────────────
-#> 
-#> ── Initializing `Mapped_SUBJ` Workflow ─────────────────────────────────────────
-#> 
-#> ── Checking data against spec 
-#> → All 1 data.frame(s) in the spec are present in the data: Raw_SUBJ
-#> → All specified columns in Raw_SUBJ are in the expected format
-#> → All 7 specified column(s) in the spec are present in the data: Raw_SUBJ$studyid, Raw_SUBJ$invid, Raw_SUBJ$country, Raw_SUBJ$subjid, Raw_SUBJ$subject_nsv, Raw_SUBJ$enrollyn, Raw_SUBJ$timeonstudy
-#> 
-#> ── Workflow Step 1 of 1: `gsm.core::RunQuery` ──
-#> 
-#> ── Evaluating 2 parameter(s) for `gsm.core::RunQuery` 
-#> ✔ df = Raw_SUBJ: Passing lData$Raw_SUBJ.
-#> ℹ strQuery = SELECT * FROM df WHERE enrollyn == 'Y': No matching data found. Passing 'SELECT * FROM df WHERE enrollyn == 'Y'' as a string.
-#> 
-#> ── Calling `gsm.core::RunQuery` 
-#> Creating a new temporary DuckDB connection.
-#> ✔ SQL Query complete: 760 rows returned.
-#> Disconnected from temporary DuckDB connection.
-#> 
-#> ── 760x15 data.frame saved as `lData$Mapped_SUBJ`. 
-#> 
-#> ── Returning results from final step: 760x15 data.frame`. ──
-#> 
-#> ── Completed `Mapped_SUBJ` Workflow ────────────────────────────────────────────
+#> [INFO] Running 2 Workflows
+#> [INFO] Initializing `Mapped_AE` Workflow
+#> [INFO] Checking data against spec
+#> [INFO] Workflow Step 1 of 1: `=`
+#> [INFO] Evaluating 2 parameter(s) for `=`
+#> [INFO] lhs = Mapped_AE: No matching data found. Passing 'Mapped_AE' as a string.
+#> [INFO] rhs = Raw_AE: Passing lData$Raw_AE.
+#> [INFO] Calling `=`
+#> [INFO] 3000x11 data.frame saved as `lData$Mapped_AE`.
+#> [INFO] Returning results from final step: 3000x11 data.frame`.
+#> [INFO] Completed `Mapped_AE` Workflow
+#> [INFO] Initializing `Mapped_SUBJ` Workflow
+#> [INFO] Checking data against spec
+#> [INFO] Workflow Step 1 of 1: `gsm.core::RunQuery`
+#> [INFO] Evaluating 2 parameter(s) for `gsm.core::RunQuery`
+#> [INFO] df = Raw_SUBJ: Passing lData$Raw_SUBJ.
+#> [INFO] strQuery = SELECT * FROM df WHERE enrollyn == 'Y': No matching data found. Passing 'SELECT * FROM df WHERE enrollyn == 'Y'' as a string.
+#> [INFO] Calling `gsm.core::RunQuery`
+#> [INFO] Creating a new temporary DuckDB connection.
+#> [INFO] SQL Query complete: 760 rows returned.
+#> [INFO] Disconnected from temporary DuckDB connection.
+#> [INFO] 760x15 data.frame saved as `lData$Mapped_SUBJ`.
+#> [INFO] Returning results from final step: 760x15 data.frame`.
+#> [INFO] Completed `Mapped_SUBJ` Workflow
 
 # Run the metric workflow.
-lMetricWorkflow <- MakeWorkflowList(
+lMetricWorkflow <- workr::MakeWorkflowList(
   strPath = "example_workflow/2_metrics",
   strNames = c("kri0001", "kri0002"),
   strPackage = "gsm.core"
 )$kri0001
-lMetricOutput <- RunWorkflow(
+lMetricOutput <- workr::RunWorkflow(
   lMetricWorkflow,
   lMappedData
 )
-#> 
-#> ── Initializing `Analysis_kri0001` Workflow ────────────────────────────────────
-#> 
-#> ── Checking data against spec 
-#> → All 2 data.frame(s) in the spec are present in the data: Mapped_AE, Mapped_SUBJ
-#> → All specified columns in Mapped_AE are in the expected format
-#> → All specified columns in Mapped_SUBJ are in the expected format
-#> → All 4 specified column(s) in the spec are present in the data: Mapped_AE$subjid, Mapped_SUBJ$subjid, Mapped_SUBJ$invid, Mapped_SUBJ$timeonstudy
-#> 
-#> ── Workflow Step 1 of 7: `gsm.core::ParseThreshold` ──
-#> 
-#> ── Evaluating 1 parameter(s) for `gsm.core::ParseThreshold` 
-#> ✔ strThreshold = Threshold: Passing lMeta$Threshold.
-#> 
-#> ── Calling `gsm.core::ParseThreshold` 
+#> [INFO] Initializing `Analysis_kri0001` Workflow
+#> [INFO] Checking data against spec
+#> [INFO] Workflow Step 1 of 7: `gsm.core::ParseThreshold`
+#> [INFO] Evaluating 1 parameter(s) for `gsm.core::ParseThreshold`
+#> [INFO] strThreshold = Threshold: Passing lMeta$Threshold.
+#> [INFO] Calling `gsm.core::ParseThreshold`
 #> Parsed -2,-1,2,3 to numeric vector: -2, -1, 2, 3
-#> 
-#> ── double of length 4 saved as `lData$vThreshold`. 
-#> 
-#> ── Workflow Step 2 of 7: `gsm.core::Input_Rate` ──
-#> 
-#> ── Evaluating 9 parameter(s) for `gsm.core::Input_Rate` 
-#> ✔ dfSubjects = Mapped_SUBJ: Passing lData$Mapped_SUBJ.
-#> ✔ dfNumerator = Mapped_AE: Passing lData$Mapped_AE.
-#> ✔ dfDenominator = Mapped_SUBJ: Passing lData$Mapped_SUBJ.
-#> ℹ strSubjectCol = subjid: No matching data found. Passing 'subjid' as a string.
-#> ℹ strGroupCol = invid: No matching data found. Passing 'invid' as a string.
-#> ✔ strGroupLevel = GroupLevel: Passing lMeta$GroupLevel.
-#> ℹ strNumeratorMethod = Count: No matching data found. Passing 'Count' as a string.
-#> ℹ strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.
-#> ℹ strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.
-#> 
-#> ── Calling `gsm.core::Input_Rate` 
-#> 
-#> ── 760x6 data.frame saved as `lData$Analysis_Input`. 
-#> 
-#> ── Workflow Step 3 of 7: `gsm.core::Transform_Rate` ──
-#> 
-#> ── Evaluating 1 parameter(s) for `gsm.core::Transform_Rate` 
-#> ✔ dfInput = Analysis_Input: Passing lData$Analysis_Input.
-#> 
-#> ── Calling `gsm.core::Transform_Rate` 
-#> 
-#> ── 148x5 data.frame saved as `lData$Analysis_Transformed`. 
-#> 
-#> ── Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox` ──
-#> 
-#> ── Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox` 
-#> ✔ dfTransformed = Analysis_Transformed: Passing lData$Analysis_Transformed.
-#> ✔ strType = AnalysisType: Passing lMeta$AnalysisType.
-#> 
-#> ── Calling `gsm.core::Analyze_NormalApprox` 
+#> [INFO] double of length 4 saved as `lData$vThreshold`.
+#> [INFO] Workflow Step 2 of 7: `gsm.core::Input_Rate`
+#> [INFO] Evaluating 9 parameter(s) for `gsm.core::Input_Rate`
+#> [INFO] dfSubjects = Mapped_SUBJ: Passing lData$Mapped_SUBJ.
+#> [INFO] dfNumerator = Mapped_AE: Passing lData$Mapped_AE.
+#> [INFO] dfDenominator = Mapped_SUBJ: Passing lData$Mapped_SUBJ.
+#> [INFO] strSubjectCol = subjid: No matching data found. Passing 'subjid' as a string.
+#> [INFO] strGroupCol = invid: No matching data found. Passing 'invid' as a string.
+#> [INFO] strGroupLevel = GroupLevel: Passing lMeta$GroupLevel.
+#> [INFO] strNumeratorMethod = Count: No matching data found. Passing 'Count' as a string.
+#> [INFO] strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.
+#> [INFO] strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.
+#> [INFO] Calling `gsm.core::Input_Rate`
+#> [INFO] 760x6 data.frame saved as `lData$Analysis_Input`.
+#> [INFO] Workflow Step 3 of 7: `gsm.core::Transform_Rate`
+#> [INFO] Evaluating 1 parameter(s) for `gsm.core::Transform_Rate`
+#> [INFO] dfInput = Analysis_Input: Passing lData$Analysis_Input.
+#> [INFO] Calling `gsm.core::Transform_Rate`
+#> [INFO] 148x5 data.frame saved as `lData$Analysis_Transformed`.
+#> [INFO] Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox`
+#> [INFO] Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox`
+#> [INFO] dfTransformed = Analysis_Transformed: Passing lData$Analysis_Transformed.
+#> [INFO] strType = AnalysisType: Passing lMeta$AnalysisType.
+#> [INFO] Calling `gsm.core::Analyze_NormalApprox`
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
-#> 
-#> ── 148x8 data.frame saved as `lData$Analysis_Analyzed`. 
-#> 
-#> ── Workflow Step 5 of 7: `gsm.core::Flag` ──
-#> 
-#> ── Evaluating 4 parameter(s) for `gsm.core::Flag` 
-#> ✔ dfAnalyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.
-#> ✔ vThreshold = vThreshold: Passing lData$vThreshold.
-#> ✔ nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.
-#> ✔ strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.
-#> 
-#> ── Calling `gsm.core::Flag` 
+#> [INFO] 148x8 data.frame saved as `lData$Analysis_Analyzed`.
+#> [INFO] Workflow Step 5 of 7: `gsm.core::Flag`
+#> [INFO] Evaluating 4 parameter(s) for `gsm.core::Flag`
+#> [INFO] dfAnalyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.
+#> [INFO] vThreshold = vThreshold: Passing lData$vThreshold.
+#> [INFO] nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.
+#> [INFO] strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.
+#> [INFO] Calling `gsm.core::Flag`
 #> ℹ 27 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X1935, 0X1273, 0X5185, 0X3759, 0X8616, 0X2062, 0X4275, 0X8361, 0X7246, 0X4028, 0X4875, 0X8627, 0X7913, 0X4744, 0X9766, 0X4424, 0X9082, 0X6123, 0X6440, 0X4976, 0X4703, 0X2030, 0X5217, 0X1841, 0X4612, 0X7734, 0X6068
 #> These group(s) will not have KRI score and flag summarized.
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
-#> 
-#> ── 148x9 data.frame saved as `lData$Analysis_Flagged`. 
-#> 
-#> ── Workflow Step 6 of 7: `gsm.core::Summarize` ──
-#> 
-#> ── Evaluating 1 parameter(s) for `gsm.core::Summarize` 
-#> ✔ dfFlagged = Analysis_Flagged: Passing lData$Analysis_Flagged.
-#> 
-#> ── Calling `gsm.core::Summarize` 
-#> 
-#> ── 148x7 data.frame saved as `lData$Analysis_Summary`. 
-#> 
-#> ── Workflow Step 7 of 7: `list` ──
-#> 
-#> ── Evaluating 6 parameter(s) for `list` 
-#> ✔ ID = ID: Passing lMeta$ID.
-#> ✔ Analysis_Input = Analysis_Input: Passing lData$Analysis_Input.
-#> ✔ Analysis_Transformed = Analysis_Transformed: Passing lData$Analysis_Transformed.
-#> ✔ Analysis_Analyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.
-#> ✔ Analysis_Flagged = Analysis_Flagged: Passing lData$Analysis_Flagged.
-#> ✔ Analysis_Summary = Analysis_Summary: Passing lData$Analysis_Summary.
-#> 
-#> ── Calling `list` 
-#> 
-#> ── list of length 6 saved as `lData$lAnalysis`. 
-#> 
-#> ── Returning results from final step: list of length 6`. ──
-#> 
-#> ── Completed `Analysis_kri0001` Workflow ───────────────────────────────────────
+#> [INFO] 148x9 data.frame saved as `lData$Analysis_Flagged`.
+#> [INFO] Workflow Step 6 of 7: `gsm.core::Summarize`
+#> [INFO] Evaluating 1 parameter(s) for `gsm.core::Summarize`
+#> [INFO] dfFlagged = Analysis_Flagged: Passing lData$Analysis_Flagged.
+#> [INFO] Calling `gsm.core::Summarize`
+#> [INFO] 148x7 data.frame saved as `lData$Analysis_Summary`.
+#> [INFO] Workflow Step 7 of 7: `list`
+#> [INFO] Evaluating 6 parameter(s) for `list`
+#> [INFO] ID = ID: Passing lMeta$ID.
+#> [INFO] Analysis_Input = Analysis_Input: Passing lData$Analysis_Input.
+#> [INFO] Analysis_Transformed = Analysis_Transformed: Passing lData$Analysis_Transformed.
+#> [INFO] Analysis_Analyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.
+#> [INFO] Analysis_Flagged = Analysis_Flagged: Passing lData$Analysis_Flagged.
+#> [INFO] Analysis_Summary = Analysis_Summary: Passing lData$Analysis_Summary.
+#> [INFO] Calling `list`
+#> [INFO] list of length 6 saved as `lData$lAnalysis`.
+#> [INFO] Returning results from final step: list of length 6`.
+#> [INFO] Completed `Analysis_kri0001` Workflow
 ```

@@ -1,15 +1,10 @@
 # Run a SQL query on a data frame or DuckDB table
 
-**\[stable\]**
+**\[deprecated\]**
 
-`RunQuery` executes a SQL query on a data frame or a DuckDB lazy table,
-allowing dynamic use of local or database-backed data. If a DuckDB
-connection is passed in as `df`, it operates on the existing connection.
-Otherwise, it creates a temporary DuckDB table from the provided data
-frame for SQL processing.
-
-The SQL query should include the placeholder `FROM df` to indicate where
-the primary data source (`df`) should be referenced.
+`RunQuery()` has moved to
+[`workr::RunQuery()`](https://gilead-biostats.github.io/workr/reference/RunQuery.html).
+This wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage
 
@@ -52,8 +47,8 @@ df <- data.frame(
 )
 query <- "SELECT * FROM df WHERE AGE > 30"
 
-result <- RunQuery(query, df)
-#> Creating a new temporary DuckDB connection.
-#> ✔ SQL Query complete: 1 rows returned.
-#> Disconnected from temporary DuckDB connection.
+result <- workr::RunQuery(query, df)
+#> [INFO] Creating a new temporary DuckDB connection.
+#> [INFO] SQL Query complete: 1 rows returned.
+#> [INFO] Disconnected from temporary DuckDB connection.
 ```
