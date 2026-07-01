@@ -291,7 +291,8 @@ packages.
 GSM ecosystem packages (e.g. `gsm.mapping`, `gsm.kri`, `gsm.reporting`,
 `gsm.endpoints`) ship reusable analysis pipelines as workflow YAMLs.
 These workflows are collected with workflows from other packages and run
-by downstream study projects with `workr::RunProject()`.
+by downstream study projects with
+[`workr::RunProject()`](https://gilead-biostats.github.io/workr/reference/RunProject.html).
 
 Because workflows from multiple packages are collected into shared phase
 folders, every contributing package must follow the same conventions.

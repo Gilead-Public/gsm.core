@@ -22,15 +22,18 @@ which has been deprecated as of March 2025. The contents of `{gsm}` have
 been split out among 4 packages as follows:
 
 1.  **[gsm.core](https://gilead-biostats.github.io/gsm.core)**: A
-    package containing the analytics functionality and utility functions
-    to run workflows.
-2.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping):
+    package containing the analytics functionality used to construct and
+    evaluate metrics.
+2.  [**`{workr}`**](https://github.com/Gilead-BioStats/workr): A package
+    that provides the workflow runtime used to execute YAML-defined
+    steps and workflows.
+3.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping):
     A package that provides workflows to apply the necessary data
     transformation from raw/source datasets to appropriate domains.
-3.  [**`{gsm.kri}`**](https://github.com/Gilead-BioStats/gsm.kri): A
+4.  [**`{gsm.kri}`**](https://github.com/Gilead-BioStats/gsm.kri): A
     package that provides workflows to generate metrics and
     functionality to visualize and report on these metrics.
-4.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting):
+5.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting):
     A package that provides workflows to generate the reporting data
     model needed to generate reports.
 
@@ -161,8 +164,12 @@ articles:
 
 The {gsm} workflow process allows creation of reusable pipelines for
 study (or even cross-study) data snapshots including data mapping,
-calculation of multiple metrics and creation of reports. See the
-articles below for details and examples.
+calculation of multiple metrics and creation of reports. Runtime
+execution is provided by
+[workr](https://gilead-biostats.github.io/workr), while
+[gsm.core](https://gilead-biostats.github.io/gsm.core) provides the
+analytical functions used inside those workflows. See the articles below
+for details and examples.
 
 - [Data Model
   Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html)
@@ -238,7 +245,7 @@ components:
 - **Contributor Guidelines** - Step-by-step processes for code
   development, releases, and workflow YAML conventions are provided in
   [CONTRIBUTING.md](https://gilead-biostats.github.io/gsm.core/dev/CONTRIBUTING.md)
-  and required to be followed for contributions.
+  and must be followed for contributions.
 
 ## Development Practices
 

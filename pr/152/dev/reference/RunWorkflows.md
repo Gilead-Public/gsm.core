@@ -1,14 +1,10 @@
 # Convenience function to easily run multiple workflows
 
-**\[stable\]**
+**\[deprecated\]**
 
-This function takes a list of workflows and a list of data as input. It
-runs each workflow and returns the results as a named list where the
-names of the list correspond to the workflow ID (\$meta\$ID).
-
-Workflows are run in the order they are provided in the lWorkflows. The
-results from each workflow are passed as inputs (along with lData) for
-later workflows.
+`RunWorkflows()` has moved to
+[`workr::RunWorkflows()`](https://gilead-biostats.github.io/workr/reference/RunWorkflows.html).
+This wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage
 

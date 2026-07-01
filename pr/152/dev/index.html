@@ -12,8 +12,8 @@
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
 <meta property="og:title" content="Good Statistical Monitoring">
-<meta name="description" content="The Good Statistical Monitoring or gsm suite of R packages provides a framework for statistical data monitoring. gsm.core provides the analytics framework for constructing metrics, and the utility functions to run workflows.">
-<meta property="og:description" content="The Good Statistical Monitoring or gsm suite of R packages provides a framework for statistical data monitoring. gsm.core provides the analytics framework for constructing metrics, and the utility functions to run workflows.">
+<meta name="description" content="The Good Statistical Monitoring or gsm suite of R packages provides a framework for statistical data monitoring. gsm.core provides the analytics framework for constructing metrics, while workflow execution utilities are provided by the companion package workr.">
+<meta property="og:description" content="The Good Statistical Monitoring or gsm suite of R packages provides a framework for statistical data monitoring. gsm.core provides the analytics framework for constructing metrics, while workflow execution utilities are provided by the companion package workr.">
 <meta name="robots" content="noindex">
 <link href="pkgdown/extra.css" rel="stylesheet">
 </head>
@@ -65,7 +65,9 @@
 <p>The <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> package is a successor package to <a href="https://github.com/Gilead-BioStats/gsm" class="external-link"><code>{gsm}</code></a>, which has been deprecated as of March 2025. The contents of <code>{gsm}</code> have been split out among 4 packages as follows:</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong><a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a></strong>: A package containing the analytics functionality and utility functions to run workflows.</li>
+<strong><a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a></strong>: A package containing the analytics functionality used to construct and evaluate metrics.</li>
+<li>
+<a href="https://github.com/Gilead-BioStats/workr" class="external-link"><strong><code>{workr}</code></strong></a>: A package that provides the workflow runtime used to execute YAML-defined steps and workflows.</li>
 <li>
 <a href="https://github.com/Gilead-BioStats/gsm.mapping" class="external-link"><strong><code>{gsm.mapping}</code></strong></a>: A package that provides workflows to apply the necessary data transformation from raw/source datasets to appropriate domains.</li>
 <li>
@@ -169,7 +171,7 @@
 <div class="section level2">
 <h2 id="how-do-i-evaluate-a-study">How do I evaluate a study?<a class="anchor" aria-label="anchor" href="#how-do-i-evaluate-a-study"></a>
 </h2>
-<p>The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. See the articles below for details and examples.</p>
+<p>The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. Runtime execution is provided by <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a>, while <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> provides the analytical functions used inside those workflows. See the articles below for details and examples.</p>
 <ul>
 <li>
 <a href="https://gilead-biostats.github.io/gsm.core/articles/DataModel.html">Data Model Vignette</a> explains the data pipeline used to calculate multiple metrics and generate study-level reports.</li>
@@ -229,7 +231,7 @@
 <li>
 <strong>Data Specifications</strong> - Machine-readable specifications for all KRIs, automatically integrated into function documentation.</li>
 <li>
-<strong>Contributor Guidelines</strong> - Step-by-step processes for code development, releases, and workflow YAML conventions are provided in <a href="CONTRIBUTING.html">CONTRIBUTING.md</a> and required to be followed for contributions.</li>
+<strong>Contributor Guidelines</strong> - Step-by-step processes for code development, releases, and workflow YAML conventions are provided in <a href="CONTRIBUTING.html">CONTRIBUTING.md</a> and must be followed for contributions.</li>
 </ul>
 </div>
 <div class="section level2">
