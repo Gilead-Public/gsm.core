@@ -154,7 +154,7 @@ Since {gsm.core} is designed for use in a [GCP](https://en.wikipedia.org/wiki/Go
 
 -   **Function Documentation** - Comprehensive roxygen2 documentation maintained for all functions.
 -   **Data Specifications** - Machine-readable specifications for all KRIs, automatically integrated into function documentation.
--   **Contributor Guidelines** - Step-by-step processes for code development and releases provided in `CONTRIBUTING.md` and required to be followed for contributions.
+-   **Contributor Guidelines** - Step-by-step processes for code development, releases, and workflow YAML conventions are provided in [CONTRIBUTING.md](.github/CONTRIBUTING.md) and must be followed for contributions.
 
 ## Development Practices
 
