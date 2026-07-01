@@ -2,8 +2,8 @@
 
 The Good Statistical Monitoring or 'gsm' suite of R packages provides a
 framework for statistical data monitoring. 'gsm.core' provides the
-analytics framework for constructing metrics, and the utility functions
-to run workflows.
+analytics framework for constructing metrics, while workflow execution
+utilities are provided by the companion package 'workr'.
 
 ## See also
 

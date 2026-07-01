@@ -1086,7 +1086,7 @@ reporting. User may add other Param values as needed.</p>
 <code>gsm.reporting::MakeMetric()</code>
 </li>
 <li>Inputs: <code>lWorkflows</code> - metadata for the corresponding
-kri(s) made with <code><a href="../reference/MakeWorkflowList.html">gsm.core::MakeWorkflowList()</a></code>
+kri(s) made with <code><a href="https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html" class="external-link">workr::MakeWorkflowList()</a></code>
 </li>
 <li>Workflow used to create table: <code>3_reporting/Metrics.yaml</code>
 in <code>{gsm.reporting}</code>
@@ -1192,13 +1192,13 @@ in <code>{gsm.reporting}</code>
 <h3 id="appendix-2---analysis-workflow-specifications">Appendix 2 - Analysis Workflow Specifications<a class="anchor" aria-label="anchor" href="#appendix-2---analysis-workflow-specifications"></a>
 </h3>
 <p>Assessment workflow metadata objects are passed to the
-<code>lWorkflow</code> parameter in <code><a href="../reference/RunWorkflow.html">RunWorkflow()</a></code> to define
-functions and parameters across multiple studies.</p>
+<code>lWorkflow</code> parameter in <code><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code> to
+define functions and parameters across multiple studies.</p>
 <p>The <code>lWorkflow</code> object is a named list of metadata and
 steps defining how each assessment should be run. By default,
-<code><a href="../reference/MakeWorkflowList.html">gsm.core::MakeWorkflowList()</a></code> imports YAML specifications
-from <code>workflow/2_metrics</code> in <code>{gsm.kri}</code>. Each
-item in <code>lWorkflow</code> expects the following parameters in the
+<code><a href="https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html" class="external-link">workr::MakeWorkflowList()</a></code> imports YAML specifications from
+<code>workflow/2_metrics</code> in <code>{gsm.kri}</code>. Each item in
+<code>lWorkflow</code> expects the following parameters in the
 <code>steps</code> section:</p>
 <ul>
 <li>

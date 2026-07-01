@@ -1,9 +1,10 @@
 # Load workflows from a package/directory.
 
-**\[stable\]**
+**\[deprecated\]**
 
-`MakeWorkflowList()` is a utility function that creates a list of
-workflows for use in KRI pipelines.
+`MakeWorkflowList()` has moved to
+[`workr::MakeWorkflowList()`](https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html).
+This wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage
 
@@ -51,7 +52,7 @@ MakeWorkflowList(
 
 ``` r
 # get specific workflow files
-workflow <- MakeWorkflowList(
+workflow <- workr::MakeWorkflowList(
   strPath = "example_workflow/1_mappings",
   strPackage = "gsm.core"
 )
