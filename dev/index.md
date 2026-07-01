@@ -243,8 +243,9 @@ components:
 - **Data Specifications** - Machine-readable specifications for all
   KRIs, automatically integrated into function documentation.
 - **Contributor Guidelines** - Step-by-step processes for code
-  development and releases provided in `CONTRIBUTING.md` and required to
-  be followed for contributions.
+  development, releases, and workflow YAML conventions are provided in
+  [CONTRIBUTING.md](https://gilead-biostats.github.io/gsm.core/dev/CONTRIBUTING.md)
+  and must be followed for contributions.
 
 ## Development Practices
 
