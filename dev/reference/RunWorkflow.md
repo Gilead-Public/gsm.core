@@ -101,10 +101,10 @@ lMappedData <- workr::RunWorkflows(
 #> [INFO] strQuery = SELECT * FROM df WHERE enrollyn == 'Y': No matching data found. Passing 'SELECT * FROM df WHERE enrollyn == 'Y'' as a string.
 #> [INFO] Calling `gsm.core::RunQuery`
 #> [INFO] Creating a new temporary DuckDB connection.
-#> [INFO] SQL Query complete: 760 rows returned.
+#> [INFO] SQL Query complete: 762 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
-#> [INFO] 760x15 data.frame saved as `lData$Mapped_SUBJ`.
-#> [INFO] Returning results from final step: 760x15 data.frame`.
+#> [INFO] 762x15 data.frame saved as `lData$Mapped_SUBJ`.
+#> [INFO] Returning results from final step: 762x15 data.frame`.
 #> [INFO] Completed `Mapped_SUBJ` Workflow
 
 # Run the metric workflow.
@@ -137,12 +137,12 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.
 #> [INFO] strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.
 #> [INFO] Calling `gsm.core::Input_Rate`
-#> [INFO] 760x6 data.frame saved as `lData$Analysis_Input`.
+#> [INFO] 762x6 data.frame saved as `lData$Analysis_Input`.
 #> [INFO] Workflow Step 3 of 7: `gsm.core::Transform_Rate`
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::Transform_Rate`
 #> [INFO] dfInput = Analysis_Input: Passing lData$Analysis_Input.
 #> [INFO] Calling `gsm.core::Transform_Rate`
-#> [INFO] 148x5 data.frame saved as `lData$Analysis_Transformed`.
+#> [INFO] 143x5 data.frame saved as `lData$Analysis_Transformed`.
 #> [INFO] Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox`
 #> [INFO] Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox`
 #> [INFO] dfTransformed = Analysis_Transformed: Passing lData$Analysis_Transformed.
@@ -150,7 +150,7 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] Calling `gsm.core::Analyze_NormalApprox`
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
-#> [INFO] 148x8 data.frame saved as `lData$Analysis_Analyzed`.
+#> [INFO] 143x8 data.frame saved as `lData$Analysis_Analyzed`.
 #> [INFO] Workflow Step 5 of 7: `gsm.core::Flag`
 #> [INFO] Evaluating 4 parameter(s) for `gsm.core::Flag`
 #> [INFO] dfAnalyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.
@@ -158,15 +158,15 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.
 #> [INFO] strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.
 #> [INFO] Calling `gsm.core::Flag`
-#> ℹ 27 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X1935, 0X1273, 0X5185, 0X3759, 0X8616, 0X2062, 0X4275, 0X8361, 0X7246, 0X4028, 0X4875, 0X8627, 0X7913, 0X4744, 0X9766, 0X4424, 0X9082, 0X6123, 0X6440, 0X4976, 0X4703, 0X2030, 0X5217, 0X1841, 0X4612, 0X7734, 0X6068
+#> ℹ 27 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X943, 0X5928, 0X2857, 0X3178, 0X993, 0X7789, 0X9361, 0X3066, 0X7440, 0X1670, 0X518, 0X3046, 0X3329, 0X8583, 0X3840, 0X1568, 0X1299, 0X1746, 0X9044, 0X7907, 0X9666, 0X7328, 0X7855, 0X9315, 0X3282, 0X8344, 0X6511
 #> These group(s) will not have KRI score and flag summarized.
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
-#> [INFO] 148x9 data.frame saved as `lData$Analysis_Flagged`.
+#> [INFO] 143x9 data.frame saved as `lData$Analysis_Flagged`.
 #> [INFO] Workflow Step 6 of 7: `gsm.core::Summarize`
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::Summarize`
 #> [INFO] dfFlagged = Analysis_Flagged: Passing lData$Analysis_Flagged.
 #> [INFO] Calling `gsm.core::Summarize`
-#> [INFO] 148x7 data.frame saved as `lData$Analysis_Summary`.
+#> [INFO] 143x7 data.frame saved as `lData$Analysis_Summary`.
 #> [INFO] Workflow Step 7 of 7: `list`
 #> [INFO] Evaluating 6 parameter(s) for `list`
 #> [INFO] ID = ID: Passing lMeta$ID.

@@ -10,7 +10,7 @@ reportingMetrics_study
 
 ## Format
 
-A data frame with 2 rows and 20 columns:
+A data frame with 2 rows and 22 columns:
 
 - MetricID:
 
@@ -92,6 +92,14 @@ A data frame with 2 rows and 20 columns:
 - nPropRate:
 
   Proposed threshold
+
+- Active:
+
+  logical flag indicating whether the metric is active
+
+- GenerateRiskSignal:
+
+  logical flag indicating whether to generate a risk signal
 
 ## Source
 

@@ -140,10 +140,10 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strQuery = SELECT * FROM df WHERE enrollyn == 'Y': No matching data found. Passing 'SELECT * FROM df WHERE enrollyn == 'Y'' as a string.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::RunQuery`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Creating a new temporary DuckDB connection.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] SQL Query complete: 760 rows returned.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] SQL Query complete: 762 rows returned.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Disconnected from temporary DuckDB connection.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 760x15 data.frame saved as `lData$Mapped_SUBJ`.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Returning results from final step: 760x15 data.frame`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 762x15 data.frame saved as `lData$Mapped_SUBJ`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Returning results from final step: 762x15 data.frame`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Completed `Mapped_SUBJ` Workflow</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run the metric workflow.</span></span></span>
@@ -176,12 +176,12 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Input_Rate`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 760x6 data.frame saved as `lData$Analysis_Input`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 762x6 data.frame saved as `lData$Analysis_Input`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 3 of 7: `gsm.core::Transform_Rate`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 1 parameter(s) for `gsm.core::Transform_Rate`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfInput = Analysis_Input: Passing lData$Analysis_Input.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Transform_Rate`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 148x5 data.frame saved as `lData$Analysis_Transformed`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 143x5 data.frame saved as `lData$Analysis_Transformed`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfTransformed = Analysis_Transformed: Passing lData$Analysis_Transformed.</span>
@@ -189,7 +189,7 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Analyze_NormalApprox`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `OverallMetric`, `Factor`, and `Score` columns created from normal</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> approximation.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 148x8 data.frame saved as `lData$Analysis_Analyzed`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 143x8 data.frame saved as `lData$Analysis_Analyzed`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 5 of 7: `gsm.core::Flag`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 4 parameter(s) for `gsm.core::Flag`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfAnalyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.</span>
@@ -197,15 +197,15 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Flag`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 27 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X1935, 0X1273, 0X5185, 0X3759, 0X8616, 0X2062, 0X4275, 0X8361, 0X7246, 0X4028, 0X4875, 0X8627, 0X7913, 0X4744, 0X9766, 0X4424, 0X9082, 0X6123, 0X6440, 0X4976, 0X4703, 0X2030, 0X5217, 0X1841, 0X4612, 0X7734, 0X6068</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 27 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X943, 0X5928, 0X2857, 0X3178, 0X993, 0X7789, 0X9361, 0X3066, 0X7440, 0X1670, 0X518, 0X3046, 0X3329, 0X8583, 0X3840, 0X1568, 0X1299, 0X1746, 0X9044, 0X7907, 0X9666, 0X7328, 0X7855, 0X9315, 0X3282, 0X8344, 0X6511</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> These group(s) will not have KRI score and flag summarized.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 148x9 data.frame saved as `lData$Analysis_Flagged`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 143x9 data.frame saved as `lData$Analysis_Flagged`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 6 of 7: `gsm.core::Summarize`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 1 parameter(s) for `gsm.core::Summarize`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfFlagged = Analysis_Flagged: Passing lData$Analysis_Flagged.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Summarize`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 148x7 data.frame saved as `lData$Analysis_Summary`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 143x7 data.frame saved as `lData$Analysis_Summary`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 7 of 7: `list`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 6 parameter(s) for `list`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] ID = ID: Passing lMeta$ID.</span>

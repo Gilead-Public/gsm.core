@@ -87,10 +87,10 @@ mapped <- workr::RunWorkflows(wf_mapping, lRaw)
 #> ℹ The deprecated feature was likely used in the workr package.
 #>   Please report the issue to the authors.
 #> [INFO] Creating a new temporary DuckDB connection.
-#> [INFO] SQL Query complete: 760 rows returned.
+#> [INFO] SQL Query complete: 762 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
-#> [INFO] 760x15 data.frame saved as `lData$Mapped_SUBJ`.
-#> [INFO] Returning results from final step: 760x15 data.frame`.
+#> [INFO] 762x15 data.frame saved as `lData$Mapped_SUBJ`.
+#> [INFO] Returning results from final step: 762x15 data.frame`.
 #> [INFO] Completed `Mapped_SUBJ` Workflow
 ae_step <- workr::RunStep(lStep = lStep, lData = mapped, lMeta = lMeta)
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::ParseThreshold`
