@@ -50,7 +50,7 @@ Imports:
     rlang (>= 0.4.11),
     stats,
     tidyr,
-    workr,
+    workr (>= 1.1.0),
     yaml
 Suggests:
     broom,
