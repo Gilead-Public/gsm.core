@@ -7,7 +7,6 @@ Changes:
 - Add `deathcls` column to the Death domain in the `lSource` dataset (#153).
 - Swap `workr` functions to the federated implementation and add deprecation shims, with an accompanying qualification test (#141, #149).
 - Document the workflow contract for ecosystem packages and mention new fields in the gsm extensions vignette (#145, #151).
-- Resolve an R CMD check warning and `qcthat` failures; README and documentation updates.
 
 # gsm.core v1.2.1
 
