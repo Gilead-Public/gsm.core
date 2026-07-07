@@ -2,26 +2,31 @@
 
 ## gsm.core v1.3.0
 
-This minor release swaps the internal `workr` functions over to the
-federated implementation (with deprecation shims for backward
-compatibility), documents the workflow contract for `gsm` ecosystem
-packages, and adds the `deathcls` column to the Death domain in
-`lSource`.
+This minor release moves the workflow runtime to the new
+[workr](https://gilead-biostats.github.io/workr) package and adds the
+`deathcls` column to the Death domain in `lSource`.
 
 Changes:
 
-- Add `deathcls` column to the Death domain in the `lSource` dataset
-  ([\#153](https://github.com/Gilead-BioStats/gsm.core/issues/153)).
-- Swap `workr` functions to the federated implementation and add
-  deprecation shims, with an accompanying qualification test
+- Workflow execution is now powered by
+  [workr](https://gilead-biostats.github.io/workr):
+  [`RunQuery()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunQuery.md),
+  [`RunStep()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunStep.md),
+  [`RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunWorkflow.md),
+  [`RunWorkflows()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunWorkflows.md),
+  and
+  [`MakeWorkflowList()`](https://gilead-biostats.github.io/gsm.core/dev/reference/MakeWorkflowList.md)
+  are backed by the shared, federated
+  [workr](https://gilead-biostats.github.io/workr) runtime. Existing
+  code continues to work unchanged through deprecation shims
   ([\#141](https://github.com/Gilead-BioStats/gsm.core/issues/141),
   [\#149](https://github.com/Gilead-BioStats/gsm.core/issues/149)).
-- Document the workflow contract for ecosystem packages and mention new
-  fields in the gsm extensions vignette
+- The Death domain in the `lSource` dataset now includes a `deathcls`
+  column
+  ([\#153](https://github.com/Gilead-BioStats/gsm.core/issues/153)).
+- Documented the workflow contract for `gsm` ecosystem packages
   ([\#145](https://github.com/Gilead-BioStats/gsm.core/issues/145),
   [\#151](https://github.com/Gilead-BioStats/gsm.core/issues/151)).
-- Resolve an R CMD check warning and `qcthat` failures; README and
-  documentation updates.
 
 ## gsm.core v1.2.1
 
