@@ -1,6 +1,6 @@
 Package: gsm.core
 Title: Good Statistical Monitoring
-Version: 1.2.1
+Version: 1.3.0
 Authors@R: c(
     person("Jeremy", "Wildfire", , "jwildfire@gmail.com", role = c("aut", "cre")),
     person("George", "Wu", , "george.wu@gilead.com", role = "aut"),
@@ -68,7 +68,7 @@ Suggests:
     usethis,
     withr
 Remotes:
-    workr=Gilead-BioStats/workr
+    workr=Gilead-BioStats/workr@rc-v1.1.0
 VignetteBuilder: 
     knitr
 Config/Needs/website: DT, here, pkgdown, devtools

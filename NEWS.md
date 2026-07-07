@@ -1,3 +1,14 @@
+# gsm.core v1.3.0
+
+This minor release swaps the internal `workr` functions over to the federated implementation (with deprecation shims for backward compatibility), documents the workflow contract for `gsm` ecosystem packages, and adds the `deathcls` column to the Death domain in `lSource`.
+
+Changes:
+
+- Add `deathcls` column to the Death domain in the `lSource` dataset (#153).
+- Swap `workr` functions to the federated implementation and add deprecation shims, with an accompanying qualification test (#141, #149).
+- Document the workflow contract for ecosystem packages and mention new fields in the gsm extensions vignette (#145, #151).
+- Resolve an R CMD check warning and `qcthat` failures; README and documentation updates.
+
 # gsm.core v1.2.1
 
 This patch release updates the GitHub action workflows to align with the new federated action framework in `gsm.utils`
