@@ -255,3 +255,7 @@
   font-size: 1.15em;
   text-align: center;
 }
+.reveal .slides section.constrain-images img {
+  max-height: 420px;
+  width: auto;
+}

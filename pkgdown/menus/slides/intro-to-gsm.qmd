@@ -261,7 +261,7 @@ SME reviews each risk signal and assigns actions in ADO.
 :::
 :::
 
-## <above>{gsm} Data Pipeline</above> Configurable Workflows
+## <above>{gsm} Data Pipeline</above> Configurable Workflows {.constrain-images}
 
 ::: {.columns}
 ::: {.column width="65%"}
