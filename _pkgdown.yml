@@ -1,25 +1,33 @@
 url: https://gilead-biostats.github.io/gsm.core
-
 template:
   bootstrap: 5
   bootswatch: yeti
   includes:
-    in_header: '<link href="pkgdown/extra.css" rel="stylesheet">'
-
+    in_header: <link href="pkgdown/extra.css" rel="stylesheet">
 navbar:
   structure:
-    left: [articles, Reports, reference, news]
-    right: [search, github]
+    left:
+    - articles
+    - Reports
+    - reference
+    - news
+    - slides
+    right:
+    - search
+    - github
   components:
-
-
+    slides:
+      text: Slides
+      menu:
+      - text: Intro to `gsm`
+        href: slides/intro-to-gsm.html
 articles:
-  - title: Articles
-    contents:
-      - articles/DataAnalysis
-      - articles/DataModel
-      - articles/gsmExtensions
-      - KRIMethod
+- title: Articles
+  contents:
+  - articles/DataAnalysis
+  - articles/DataModel
+  - articles/gsmExtensions
+  - KRIMethod
 reference:
   - title: Analyze
     desc: Conduct statistical analysis based on input data

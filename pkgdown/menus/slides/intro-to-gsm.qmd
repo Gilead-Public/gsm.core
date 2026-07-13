@@ -1,0 +1,230 @@
+---
+title: "Intro to `gsm`"
+index: 1
+execute:
+  eval: false
+  echo: false
+format:
+  revealjs:
+    theme: dark
+    footer: >
+      <a href="https://gilead-biostats.github.io/gsm.core">
+      gilead-biostats.github.io/gsm.core</a>
+    link-external-newwindow: true
+    transition: slide
+    incremental: false
+---
+
+# Introduction
+
+- `gsm` and `gismo` provide a GxP framework for clinical trial data pipelines supporting diverse business processes.
+- Well established for RBQM use cases.
+- Designed to work across multiple domains, including safety.
+- Highly configurable and extensible, with opportunities for AI integration.
+
+# Demo
+
+::: {.tocbox}
+1. <toc>Core gismo User Experience</toc>
+2. <toc>View Studies in Portfolio</toc>
+3. <toc>View Reports for a Study</toc>
+4. <toc>View Site Trends in a Report</toc>
+5. <toc>View Participant Trends in Deep Dive App</toc>
+6. <toc>Manage Risk Signals in Action Log</toc>
+:::
+
+## Core gismo User Experience
+
+- View Studies in Portfolio
+- View Reports for a Study
+- View Site Trends in a Report
+- View Participant Trends in Deep Dive App
+- Manage Risk Signals in Action Log
+
+## <above>Core gismo User Experience</above> View Studies in Portfolio {.full-image-slides}
+
+![](slide_images/demo1.png){fig-alt="View studies in portfolio"}
+
+## <above>Core gismo User Experience</above> View Reports for a Study {.full-image-slides}
+
+![](slide_images/demo2.png){fig-alt="View reports for a study"}
+
+## <above>Core gismo User Experience</above> View Site Trends in a Report {.full-image-slides}
+
+![](slide_images/demo3.png){fig-alt="View site trends in a report"}
+
+## <above>Core gismo User Experience</above> View Participant Trends in Deep Dive App {.full-image-slides}
+
+![](slide_images/demo4.png){fig-alt="View participant trends in deep dive app"}
+
+## <above>Core gismo User Experience</above> Manage Risk Signals in Action Log {.full-image-slides}
+
+![](slide_images/demo5.png){fig-alt="Manage risk signals in action log"}
+
+## Core Functionality
+
+::: {.columns}
+::: {.column width="58%"}
+
+### gsm Pipeline
+::: {.workflow-grid}
+::: {.workflow-card .role-automated}
+<strong>⚙️ Data Ingestion</strong><br>
+Clinical and operational inputs are loaded into the pipeline.
+:::
+
+::: {.workflow-card .role-automated}
+<strong>⚙️ Data Cleaning</strong><br>
+Data quality checks and harmonization are applied.
+:::
+
+::: {.workflow-card .role-automated}
+<strong>⚙️ Metric Calculation</strong><br>
+Configured metrics and thresholds are computed.
+:::
+
+::: {.workflow-card .role-automated}
+<strong>⚙️ Reporting / Application Layer</strong><br>
+Outputs are delivered through reports and applications.
+:::
+
+::: {.workflow-card .role-automated}
+<strong>⚙️ Risk Signal Business Logic</strong><br>
+Rules generate and manage risk signals.
+:::
+
+::: {.workflow-card .role-human}
+<strong>👩‍⚕️ Action Log Framework</strong><br>
+SME review and action assignment with traceability.
+:::
+:::
+:::
+
+::: {.column width="42%" font-size="0.4em"}
+
+::: {.callout-note .small appearance="simple"}
+
+### Key Features
+- Modular, configurable, and extensible framework
+- Scheduled snapshots
+- All layers are configurable by study and domain
+- Supports custom business logic (for example, auto-triage)
+- Platform agnostic with AI-in-the-loop opportunities
+:::
+
+:::
+:::
+
+
+## <above>RBQM Pipeline Example</above> Elevated SAE Rate KRI
+
+::: {.workflow-grid}
+::: {.workflow-card .role-automated}
+<strong>⚙️ Ingestion</strong><br>
+Clinical data lake (AE and participant domains) + operational data lake (site/study metadata).
+:::
+
+::: {.workflow-card .role-automated}
+<strong>⚙️ Data Cleaning</strong><br>
+Check anomalies, standardize participant populations between domains, and filter to serious SAEs.
+:::
+
+::: {.workflow-card .role-automated}
+<strong>⚙️ Metric Calculation</strong><br>
+Numerator = number of SAEs; denominator = months on study; metric = site-level SAE rate; score = Z-score; flag = red/amber/green.
+:::
+
+::: {.workflow-card .role-automated}
+<strong>⚙️ Report</strong><br>
+{gsm} kri report
+:::
+
+::: {.workflow-card .role-automated}
+<strong>⚙️ Risk Signal Business Logic</strong><br>
+Create site-level risk signals for red/amber flags, suppress repeat signals, and provide default actions.
+:::
+
+::: {.workflow-card .role-human}
+<strong>👩‍⚕️ Action Log</strong><br>
+SME reviews each risk signal and assigns actions in ADO.
+:::
+:::
+
+## <above>RBQM Pipeline Example</above> Multiple KRIs
+
+::: {.workflow-grid .workflow-multi-kri}
+::: {.workflow-row}
+::: {.workflow-card .role-automated}
+<strong>⚙️ Ingestion</strong>
+:::
+:::
+
+::: {.workflow-row .ten-up}
+::: {.workflow-card .role-automated}
+<strong>⚙️ AE Data Cleaning</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Protocol Dev.</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Enrollment</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Queries</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Labs</strong>
+:::
+:::
+
+::: {.workflow-row .ten-up}
+::: {.workflow-card .role-automated}
+<strong>⚙️ AE Rate</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ SAE Rate</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ PD Rate</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ IPD Rate</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Drop Out Rate</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Disc. Rate</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Query Rate</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Time To Query</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Lab Compliance</strong>
+:::
+::: {.workflow-card .role-automated}
+<strong>⚙️ Grade 4+ Rate</strong>
+:::
+:::
+
+::: {.workflow-row}
+::: {.workflow-card .role-automated}
+<strong>⚙️ Report</strong>
+:::
+:::
+
+::: {.workflow-row}
+::: {.workflow-card .role-automated}
+<strong>⚙️ Risk Signals</strong>
+:::
+:::
+
+::: {.workflow-row}
+::: {.workflow-card .role-human}
+<strong>👩‍⚕️ Action Log</strong>
+:::
+:::
+:::
