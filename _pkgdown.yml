@@ -19,7 +19,7 @@ navbar:
     slides:
       text: Slides
       menu:
-      - text: Intro to `gsm`
+      - text: 'Intro to {gsm}: Good Statistical Monitoring for Clinical Trials'
         href: slides/intro-to-gsm.html
 articles:
 - title: Articles
