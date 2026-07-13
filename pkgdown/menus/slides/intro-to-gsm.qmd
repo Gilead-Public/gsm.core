@@ -1,31 +1,39 @@
 ---
-title: "Intro to `gsm`"
+title: "Intro to {gsm}: Good Statistical Monitoring for Clinical Trials"
 index: 1
-execute:
-  eval: false
-  echo: false
 format:
   revealjs:
-    theme: dark
+    theme: black
+    css: IntroGsmSlides.css
+    include-after-body: theme-picker.html
     footer: >
       <a href="https://gilead-biostats.github.io/gsm.core">
       gilead-biostats.github.io/gsm.core</a>
     link-external-newwindow: true
-    transition: slide
-    incremental: false
+reference-location: document
 ---
 
-# Introduction
-
-- `gsm` and `gismo` provide a GxP framework for clinical trial data pipelines supporting diverse business processes.
-- Well established for RBQM use cases.
-- Designed to work across multiple domains, including safety.
-- Highly configurable and extensible, with opportunities for AI integration.
-
-# Demo
+# Contents
 
 ::: {.tocbox}
-1. <toc>Core gismo User Experience</toc>
+1. <toc>Overview</toc>
+2. <toc>Business Process</toc>
+3. <toc>Data Model</toc>
+4. <toc>Reports and Apps</toc>
+:::
+
+
+# Overview
+
+- `{gsm}` (Good Statistical Monitoring) is a qualified set of R packages that provides a GxP framework for central monitoring in clinical trials.
+- Designed to support a variety of business processes, from manually executed RBQM reporting to enterprise-wide monitoring platforms.
+- Highly configurable and extensible, with opportunities for AI integration.
+
+
+# Business Process
+
+::: {.tocbox}
+1. <toc>Core {gsm} Business Process</toc>
 2. <toc>View Studies in Portfolio</toc>
 3. <toc>View Reports for a Study</toc>
 4. <toc>View Site Trends in a Report</toc>
@@ -33,7 +41,7 @@ format:
 6. <toc>Manage Risk Signals in Action Log</toc>
 :::
 
-## Core gismo User Experience
+## Core {gsm} Business Process
 
 - View Studies in Portfolio
 - View Reports for a Study
@@ -41,32 +49,56 @@ format:
 - View Participant Trends in Deep Dive App
 - Manage Risk Signals in Action Log
 
-## <above>Core gismo User Experience</above> View Studies in Portfolio {.full-image-slides}
+## <above>Core {gsm} Business Process</above> View Studies in Portfolio {.full-image-slide}
 
 ![](slide_images/demo1.png){fig-alt="View studies in portfolio"}
 
-## <above>Core gismo User Experience</above> View Reports for a Study {.full-image-slides}
+## <above>Core {gsm} Business Process</above> View Reports for a Study {.full-image-slide}
 
 ![](slide_images/demo2.png){fig-alt="View reports for a study"}
 
-## <above>Core gismo User Experience</above> View Site Trends in a Report {.full-image-slides}
+## <above>Core {gsm} Business Process</above> View Site Trends in a Report {.full-image-slide}
 
 ![](slide_images/demo3.png){fig-alt="View site trends in a report"}
 
-## <above>Core gismo User Experience</above> View Participant Trends in Deep Dive App {.full-image-slides}
+## <above>Core {gsm} Business Process</above> View Participant Trends in Deep Dive App {.full-image-slide}
 
 ![](slide_images/demo4.png){fig-alt="View participant trends in deep dive app"}
 
-## <above>Core gismo User Experience</above> Manage Risk Signals in Action Log {.full-image-slides}
+## <above>Core {gsm} Business Process</above> Manage Risk Signals in Action Log {.full-image-slide}
 
 ![](slide_images/demo5.png){fig-alt="Manage risk signals in action log"}
 
-## Core Functionality
+
+# Package Framework and Data Model
+
+::: {.tocbox}
+1. <toc>Core {gsm} Packages</toc>
+2. <toc>Data Pipeline Overview</toc>
+3. <toc>Elevated SAE Rate KRI</toc>
+4. <toc>Multiple KRIs</toc>
+5. <toc>Configurable Workflows</toc>
+6. <toc>Detailed View</toc>
+:::
+
+
+## Core {gsm} Packages
+
+- [`gsm.core`](https://gilead-biostats.github.io/gsm.core/) — Core analytics workflow engine
+- [`gsm.mapping`](https://gilead-biostats.github.io/gsm.mapping/) — Study mapping configuration toolkit
+- [`gsm.kri`](https://gilead-biostats.github.io/gsm.kri/) — Key risk indicator reporting
+- [`gsm.reporting`](https://gilead-biostats.github.io/gsm.reporting/) — Modular report generation framework
+- [`gsm.qtl`](https://gilead-biostats.github.io/gsm.qtl/) — Query tolerance limit analytics
+- [`gsm.app`](https://gilead-biostats.github.io/gsm.app/) — Interactive monitoring applications layer
+
+
+## Data Pipeline Overview
 
 ::: {.columns}
 ::: {.column width="58%"}
 
-### gsm Pipeline
+### {gsm} Data Pipeline
+
 ::: {.workflow-grid}
 ::: {.workflow-card .role-automated}
 <strong>⚙️ Data Ingestion</strong><br>
@@ -105,6 +137,7 @@ SME review and action assignment with traceability.
 ::: {.callout-note .small appearance="simple"}
 
 ### Key Features
+
 - Modular, configurable, and extensible framework
 - Scheduled snapshots
 - All layers are configurable by study and domain
@@ -115,8 +148,7 @@ SME review and action assignment with traceability.
 :::
 :::
 
-
-## <above>RBQM Pipeline Example</above> Elevated SAE Rate KRI
+## <above>{gsm} Data Pipeline Example</above> Elevated SAE Rate KRI
 
 ::: {.workflow-grid}
 ::: {.workflow-card .role-automated}
@@ -136,7 +168,7 @@ Numerator = number of SAEs; denominator = months on study; metric = site-level S
 
 ::: {.workflow-card .role-automated}
 <strong>⚙️ Report</strong><br>
-{gsm} kri report
+{gsm} KRI report
 :::
 
 ::: {.workflow-card .role-automated}
@@ -150,7 +182,7 @@ SME reviews each risk signal and assigns actions in ADO.
 :::
 :::
 
-## <above>RBQM Pipeline Example</above> Multiple KRIs
+## <above>{gsm} Data Pipeline Example</above> Multiple KRIs
 
 ::: {.workflow-grid .workflow-multi-kri}
 ::: {.workflow-row}
@@ -228,3 +260,79 @@ SME reviews each risk signal and assigns actions in ADO.
 :::
 :::
 :::
+
+## <above>{gsm} Data Pipeline</above> Configurable Workflows
+
+::: {.columns}
+::: {.column width="65%"}
+![](slide_images/yaml1.png){fig-alt="Workflow yaml configuration example 1"}
+:::
+
+::: {.column width="35%"}
+![](slide_images/yaml2.png){fig-alt="Workflow yaml configuration example 2"}
+:::
+:::
+
+
+## <above>{gsm} Data Model</above> Detailed View {.full-image-slide}
+
+![](slide_images/data_model_detailed.png){fig-alt="Detailed {gsm} data model"}
+
+<p class="img-caption"><a href="https://gilead-biostats.github.io/gsm.core/articles/DataModel.html">Data model vignette</a></p>
+
+# Reports and Apps
+
+::: {.tocbox}
+1. <toc>Sample Report Links</toc>
+2. <toc>Cross-Study KRI Report</toc>
+3. <toc>Country KRI Report</toc>
+4. <toc>Eligibility Report</toc>
+5. <toc>Site KRI Report</toc>
+6. <toc>QTL Report</toc>
+7. <toc>{gsm} Deep Dive App</toc>
+:::
+
+
+## Sample Report Links
+- [Site KRI Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_SiteReport.html)
+- [Country KRI Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_CountryReport.html)
+- [Cross-Study KRI Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_CrossStudySRS.html)
+- [Eligibility Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_Eligibility.html)
+- [QTL Report](https://gilead-biostats.github.io/gsm.qtl/examples/Example_QTL.html)
+- [{gsm} Deep Dive App](https://rinpharma.shinyapps.io/gsm-app/)
+
+## Cross-Study KRI Report {.full-image-slide}
+
+![](slide_images/report-cross-study-kri-report.png){fig-alt="Cross-Study KRI Report screenshot"}
+
+<p class="img-caption"><a href="https://gilead-biostats.github.io/gsm.kri/examples/Example_CrossStudySRS.html">Open report</a></p>
+
+## Country KRI Report {.full-image-slide}
+
+![](slide_images/report-country-kri-report.png){fig-alt="Country KRI Report screenshot"}
+
+<p class="img-caption"><a href="https://gilead-biostats.github.io/gsm.kri/examples/Example_CountryReport.html">Open report</a></p>
+
+## Eligibility Report {.full-image-slide}
+
+![](slide_images/report-eligibility-report.png){fig-alt="Eligibility Report screenshot"}
+
+<p class="img-caption"><a href="https://gilead-biostats.github.io/gsm.kri/examples/Example_Eligibility.html">Open report</a></p>
+
+## Site KRI Report {.full-image-slide}
+
+![](slide_images/report-site-kri-report.png){fig-alt="Site KRI Report screenshot"}
+
+<p class="img-caption"><a href="https://gilead-biostats.github.io/gsm.kri/examples/Example_SiteReport.html">Open report</a></p>
+
+## QTL Report {.full-image-slide}
+
+![](slide_images/report-qtl-report.png){fig-alt="QTL Report screenshot"}
+
+<p class="img-caption"><a href="https://gilead-biostats.github.io/gsm.qtl/examples/Example_QTL.html">Open report</a></p>
+
+## {gsm} Deep Dive App {.full-image-slide}
+
+![](slide_images/report-gsm-deep-dive-app.png){fig-alt="{gsm} Deep Dive App screenshot"}
+
+<p class="img-caption"><a href="https://rinpharma.shinyapps.io/gsm-app/">Open app</a></p>
