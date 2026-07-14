@@ -1,6 +1,6 @@
 #' cli style console appender for gsm
 #'
-#' @param level warning level that maps to log4r
+#' @param level warning level
 #' @param ... should contain message and cli_detail
 #'
 #' @export
@@ -40,19 +40,20 @@ cli_fmt <- function(level, ...) {
 #'
 #' @export
 LogMessage <- function(level, message, cli_detail = NULL, .envir = parent.frame()) {
-  # Check if message is not already "glued" and apply glue if necessary
+  level <- toupper(level)
+
+  # Check threshold
+  if (.log_levels[[level]] < .log_levels[[GetLogLevel()]]) {
+    return(invisible(NULL))
+  }
+
+  # Glue-interpolate if needed
   if (!inherits(message, "glue")) {
     message <- glue::glue(message, .envir = .envir)
   }
 
-  # Pass the formatted message to the appropriate logging level
-  switch(toupper(level),
-    "DEBUG" = log4r::debug(logger = .le$logger, level = toupper(level), message = message),
-    "INFO" = log4r::info(logger = .le$logger, level = toupper(level), message = message, cli_detail = cli_detail),
-    "WARN" = log4r::warn(logger = .le$logger, level = toupper(level), message = message),
-    "ERROR" = log4r::error(logger = .le$logger, level = toupper(level), message = message),
-    "FATAL" = log4r::fatal(logger = .le$logger, level = toupper(level), message = message)
-  )
+  cli_fmt(level = level, message = message, cli_detail = cli_detail)
+  invisible(NULL)
 }
 
 #' Custom stop message

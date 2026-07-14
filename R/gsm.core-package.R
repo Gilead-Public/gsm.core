@@ -4,7 +4,6 @@
 ## usethis namespace: start
 
 #' @import dplyr
-#' @import log4r
 #' @import purrr
 #' @importFrom cli cli_abort
 #' @importFrom cli cli_alert

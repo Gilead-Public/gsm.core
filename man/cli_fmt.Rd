@@ -7,7 +7,7 @@
 cli_fmt(level, ...)
 }
 \arguments{
-\item{level}{warning level that maps to log4r}
+\item{level}{warning level}
 
 \item{...}{should contain message and cli_detail}
 }
