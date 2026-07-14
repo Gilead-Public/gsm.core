@@ -44,7 +44,7 @@ Imports:
     duckdb,
     glue,
     lifecycle,
-    log4r,
+    lifecycle,
     magrittr,
     purrr,
     rlang (>= 0.4.11),
@@ -68,8 +68,7 @@ Suggests:
     usethis,
     withr
 Remotes:
-    workr=Gilead-BioStats/workr@rc-v1.1.0,
-    log4r=r-lib/log4r
+    workr=Gilead-BioStats/workr@rc-v1.1.0
 VignetteBuilder: 
     knitr
 Config/Needs/website: DT, here, pkgdown, devtools
@@ -80,4 +79,4 @@ Language: en-US
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0

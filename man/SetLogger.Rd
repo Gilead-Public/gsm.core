@@ -2,13 +2,16 @@
 % Please edit documentation in R/util-logger.R
 \name{SetLogger}
 \alias{SetLogger}
-\title{set the default package logger}
+\title{Set the logging threshold level}
 \usage{
 SetLogger(logger)
 }
 \arguments{
-\item{logger}{a log4r logger}
+\item{logger}{A character string (one of "DEBUG", "INFO", "WARN", "ERROR",
+"FATAL") or a log4r logger object.}
 }
 \description{
-set the default package logger
+Controls which log messages are displayed. Messages below the threshold are
+suppressed. Can accept either a character log level (e.g. "DEBUG", "WARN")
+or a log4r logger object (for backward compatibility).
 }

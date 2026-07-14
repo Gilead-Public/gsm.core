@@ -1,6 +1,6 @@
 ## Test Setup
 library(stringr)
-kri_workflows <- flatten(MakeWorkflowList(
+kri_workflows <- flatten(workr::MakeWorkflowList(
   strNames = "kri0001",
   GetYamlPathMetrics()
 ))
