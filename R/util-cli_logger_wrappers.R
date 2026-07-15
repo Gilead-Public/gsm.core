@@ -52,7 +52,8 @@ LogMessage <- function(level, message, cli_detail = NULL, .envir = parent.frame(
     message <- glue::glue(message, .envir = .envir)
   }
 
-  cli_fmt(level = level, message = message, cli_detail = cli_detail)
+  appender <- GetLogAppender()
+  appender(level = level, message = message, cli_detail = cli_detail)
   invisible(NULL)
 }
 
