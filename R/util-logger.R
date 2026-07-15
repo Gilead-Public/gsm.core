@@ -1,7 +1,6 @@
 # Log level numeric mapping (higher = more severe)
 .log_levels <- c(
   "DEBUG" = 1L,
-
   "INFO" = 2L,
   "WARN" = 3L,
   "ERROR" = 4L,
@@ -25,8 +24,17 @@ SetLogger <- function(logger) {
     level_map <- c("DEBUG", "INFO", "WARN", "ERROR", "FATAL")
     idx <- match(logger$threshold, seq_along(level_map))
     level <- if (!is.na(idx)) level_map[idx] else "DEBUG"
+    # Extract appender if present
+    appender <- logger$appenders %||% logger$appender
+    if (!is.null(appender)) {
+      .le$appender <- if (is.list(appender)) appender[[1L]] else appender
+    }
   } else if (inherits(logger, "logger")) {
     level <- "DEBUG"
+    appender <- logger$appenders %||% logger$appender
+    if (!is.null(appender)) {
+      .le$appender <- if (is.list(appender)) appender[[1L]] else appender
+    }
   } else {
     level <- toupper(as.character(logger)[[1L]])
   }
@@ -47,4 +55,11 @@ SetLogger <- function(logger) {
 #' @export
 GetLogLevel <- function() {
   .le$log_level %||% "DEBUG"
+}
+
+#' Get the current log appender function
+#' @return A function used as the log appender. Defaults to [cli_fmt].
+#' @export
+GetLogAppender <- function() {
+  .le$appender %||% cli_fmt
 }

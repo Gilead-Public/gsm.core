@@ -48,6 +48,8 @@ reference:
   - contents:
      -  cli_fmt
      -  CheckSpec
+     -  GetLogAppender
+     -  GetLogLevel
      -  GetStrFunctionIfNamespaced
      -  LogMessage
      -  MakeWorkflowList
