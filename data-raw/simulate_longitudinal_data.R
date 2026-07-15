@@ -1,4 +1,9 @@
-pak::pak('Gilead-BioStats/gsm.mapping@dev')
+# TEMPORARY: pin the non-starter feature branches so this regeneration picks up
+# the IP non-starter generators (gsm.datasim#122) and the exposed columns /
+# Mapped_NonStarter derivation (gsm.mapping#139). Revert both back to @dev once
+# gsm.datasim#122 (PR #126) and gsm.mapping#139 (PR #141) merge.
+pak::pak('Gilead-BioStats/gsm.datasim@feature-122-nonstarter-generators')
+pak::pak('Gilead-BioStats/gsm.mapping@feature-139-nonstarter-mapping')
 pak::pak('Gilead-BioStats/gsm.core@dev')
 pak::pak('Gilead-BioStats/gsm.kri@dev')
 
