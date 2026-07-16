@@ -1,5 +1,7 @@
 # Changelog
 
+## gsm.core (development version)
+
 ## gsm.core v1.3.0
 
 This minor release moves the workflow runtime to the new

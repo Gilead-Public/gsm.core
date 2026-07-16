@@ -1,6 +1,8 @@
-# Custom logging function that wraps cli messaging
+# Log a message via the active appender
 
-Custom logging function that wraps cli messaging
+Emits a log message at the specified level, provided the level meets or
+exceeds the current log threshold. The message is glue-interpolated
+before being passed to the active appender.
 
 ## Usage
 
@@ -12,16 +14,24 @@ LogMessage(level, message, cli_detail = NULL, .envir = parent.frame())
 
 - level:
 
-  logger levels
+  Log level: `"INFO"`, `"WARN"`, `"ERROR"`, or `"FATAL"`.
+  Case-insensitive.
 
 - message:
 
-  message to display; may contain glue-style placeholders
+  Character string to display; may contain glue-style placeholders that
+  are evaluated in `.envir`.
 
 - cli_detail:
 
-  for cli style alerts the detail for info
+  For `level = "INFO"`, the cli style to use. Passed through to the
+  active appender.
 
 - .envir:
 
-  the environment for glue expressions
+  Environment in which to evaluate glue expressions. Defaults to the
+  caller's environment.
+
+## Value
+
+`NULL`, invisibly.

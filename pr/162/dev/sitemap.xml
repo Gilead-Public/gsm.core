@@ -32,6 +32,8 @@
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/RunStep.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/RunWorkflow.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/RunWorkflows.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/SetLogAppender.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/SetLogLevel.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/SetLogger.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/Summarize.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/Transform_Count.html</loc></url>
@@ -39,6 +41,7 @@
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/analyticsInput.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/analyticsSummary.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/cli_fmt.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/cli_fmt_inform.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/gsm.core-package.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/index.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/dev/reference/lSource.html</loc></url>
