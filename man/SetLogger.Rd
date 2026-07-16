@@ -2,16 +2,25 @@
 % Please edit documentation in R/util-logger.R
 \name{SetLogger}
 \alias{SetLogger}
+\alias{SetLogger.character}
+\alias{SetLogger.logger}
+\alias{SetLogger.default}
 \title{Set the logging threshold level}
 \usage{
 SetLogger(logger)
+
+\method{SetLogger}{character}(logger)
+
+\method{SetLogger}{logger}(logger)
+
+\method{SetLogger}{default}(logger)
 }
 \arguments{
-\item{logger}{A character string (one of "DEBUG", "INFO", "WARN", "ERROR",
-"FATAL") or a log4r logger object.}
+\item{logger}{A character string (one of \code{"DEBUG"}, \code{"INFO"}, \code{"WARN"},
+\code{"ERROR"}, \code{"FATAL"}) or a log4r logger object.}
 }
 \description{
 Controls which log messages are displayed. Messages below the threshold are
-suppressed. Can accept either a character log level (e.g. "DEBUG", "WARN")
-or a log4r logger object (for backward compatibility).
+suppressed. Accepts a character log level (e.g. \code{"DEBUG"}, \code{"WARN"}) or a
+log4r logger object (for backward compatibility).
 }
