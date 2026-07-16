@@ -36,7 +36,7 @@ jobs:
       mode: ${{ inputs.mode }}
       pr-number: ${{ inputs.pr-number }}
       pkgdown-dev-mode: ${{ inputs.pkgdown-dev-mode == true }}
-      utils-ref: 'dev'
+      utils-ref: '@dev'
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
       app-id: ${{ secrets.CM_BOT_APP_ID }}
