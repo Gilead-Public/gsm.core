@@ -59,6 +59,8 @@ reference:
      -  RunWorkflow
      -  RunWorkflows
      -  SetLogger
+     -  SetLogAppender
+     -  SetLogLevel
      -  stop_if
 
   - title: Sample Data

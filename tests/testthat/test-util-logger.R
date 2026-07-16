@@ -43,7 +43,72 @@ test_that("SetLogger falls back to as.character for other inputs (#159)", {
 })
 
 test_that("SetLogger errors on invalid level (#159)", {
-  expect_error(SetLogger("BANANA"), "must be a log level")
+  expect_error(SetLogger("BANANA"), "DEBUG")
+})
+
+test_that("SetLogLevel errors on invalid character level (#159)", {
+  expect_error(SetLogLevel("BANANA"), "DEBUG")
+})
+
+test_that("SetLogLevel.default errors on unsupported non-empty type (#159)", {
+  expect_error(SetLogLevel(list("INFO")), "character or numeric")
+})
+
+test_that("SetLogLevel sets the log level directly (#159)", {
+  old <- GetLogLevel()
+  withr::defer(SetLogLevel(old))
+
+  SetLogLevel("ERROR")
+  expect_equal(GetLogLevel(), "ERROR")
+
+  # case-insensitive
+  SetLogLevel("warn")
+  expect_equal(GetLogLevel(), "WARN")
+})
+
+test_that("SetLogLevel accepts a numeric level (#159)", {
+  old <- GetLogLevel()
+  withr::defer(SetLogLevel(old))
+
+  SetLogLevel(3L)
+  expect_equal(GetLogLevel(), "WARN")
+
+  # Unrecognized numeric falls back to DEBUG
+  SetLogLevel(99L)
+  expect_equal(GetLogLevel(), "DEBUG")
+})
+
+test_that("SetLogLevel defaults to DEBUG for NULL (via .default) (#159)", {
+  old <- GetLogLevel()
+  withr::defer(SetLogLevel(old))
+
+  SetLogLevel(NULL)
+  expect_equal(GetLogLevel(), "DEBUG")
+})
+
+test_that("SetLogLevel defaults to DEBUG for character() (via .character) (#159)", {
+  old <- GetLogLevel()
+  withr::defer(SetLogLevel(old))
+
+  SetLogLevel(character())
+  expect_equal(GetLogLevel(), "DEBUG")
+})
+
+test_that("SetLogAppender sets and GetLogAppender retrieves an appender (#159)", {
+  old_appender <- .le$appender
+  withr::defer(.le$appender <- old_appender)
+
+  my_appender <- function(level, ...) NULL
+  SetLogAppender(my_appender)
+  expect_identical(GetLogAppender(), my_appender)
+})
+
+test_that("SetLogAppender defaults to cli_fmt (#159)", {
+  old_appender <- .le$appender
+  withr::defer(.le$appender <- old_appender)
+
+  SetLogAppender()
+  expect_identical(GetLogAppender(), cli_fmt)
 })
 
 test_that("GetLogLevel returns DEBUG when unset (#159)", {
