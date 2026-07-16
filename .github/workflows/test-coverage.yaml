@@ -19,6 +19,8 @@ permissions:
 jobs:
   call-test-coverage-core:
     uses: Gilead-BioStats/gsm.utils/.github/workflows/test-coverage-core.yaml@fix-bash-runner
+    with:
+      utils-ref: '@main'
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
       app-id: ${{ secrets.CM_BOT_APP_ID }}
