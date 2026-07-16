@@ -1,3 +1,5 @@
+# gsm.core (development version)
+
 # gsm.core v1.3.0
 
 This minor release moves the workflow runtime to the new `{workr}` package and adds the `deathcls` column to the Death domain in `lSource`.
