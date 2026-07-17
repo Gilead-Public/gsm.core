@@ -74,7 +74,8 @@ the module. It must include the following fields:
 - `Details`: *optional* A more detailed description of the module
   specified in the workflow.
 - `Repo`: Package repo and version. Should be compatible with the `repo`
-  parameter in `remotes::install_github()`.
+  parameter in
+  [`remotes::install_github()`](https://remotes.r-lib.org/reference/install_github.html).
 - `Status`: The validation status of the reporting output. Valid values:
   - `Qualified`: Output has been qualified via our qualification process
     specified
