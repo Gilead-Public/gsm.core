@@ -28,10 +28,11 @@ This README provides a high-level overview of `{gsm.core}`; see the [package web
 
 The `{gsm.core}` package is a successor package to [`{gsm}`](https://github.com/Gilead-BioStats/gsm), which has been deprecated as of March 2025. The contents of `{gsm}` have been split out among 4 packages as follows:
 
-1.  **`{gsm.core}`**: A package containing the analytics functionality and utility functions to run workflows.
-2.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping): A package that provides workflows to apply the necessary data transformation from raw/source datasets to appropriate domains.
-3.  [**`{gsm.kri}`**](https://github.com/Gilead-BioStats/gsm.kri): A package that provides workflows to generate metrics and functionality to visualize and report on these metrics.
-4.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting): A package that provides workflows to generate the reporting data model needed to generate reports.
+1.  **`{gsm.core}`**: A package containing the analytics functionality used to construct and evaluate metrics.
+2.  [**`{workr}`**](https://github.com/Gilead-BioStats/workr): A package that provides the workflow runtime used to execute YAML-defined steps and workflows.
+3.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping): A package that provides workflows to apply the necessary data transformation from raw/source datasets to appropriate domains.
+4.  [**`{gsm.kri}`**](https://github.com/Gilead-BioStats/gsm.kri): A package that provides workflows to generate metrics and functionality to visualize and report on these metrics.
+5.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting): A package that provides workflows to generate the reporting data model needed to generate reports.
 
 ## Installation
 
@@ -79,6 +80,9 @@ The `{gsm.core}` package is the foundation of a data pipeline for RBM using R. T
 10. Outstanding Data Entry Rate
 11. Data Change Rate
 12. Screen Failure Rate
+13. PK Collection Compliance Rate
+14. Ineligibility
+15. Premature Death Rate
 
 All `{gsm.core}` assessments use a standardized 6 step data pipeline:
 
@@ -115,7 +119,7 @@ See the "Process Overview" section above and then check out these articles:
 
 ## How do I evaluate a study?
 
-The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. See the articles below for details and examples.
+The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. Runtime execution is provided by `{workr}`, while `{gsm.core}` provides the analytical functions used inside those workflows. See the articles below for details and examples.
 
 -   [Data Model Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html) explains the data pipeline used to calculate multiple metrics and generate study-level reports.
 -   [Adverse Event Workflow Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html) demonstrates how to create a configurable workflow using YAML to define the analysis pipeline.
@@ -153,7 +157,7 @@ Since {gsm.core} is designed for use in a [GCP](https://en.wikipedia.org/wiki/Go
 
 -   **Function Documentation** - Comprehensive roxygen2 documentation maintained for all functions.
 -   **Data Specifications** - Machine-readable specifications for all KRIs, automatically integrated into function documentation.
--   **Contributor Guidelines** - Step-by-step processes for code development and releases provided in `CONTRIBUTING.md` and required to be followed for contributions.
+-   **Contributor Guidelines** - Step-by-step processes for code development, releases, and workflow YAML conventions are provided in [CONTRIBUTING.md](.github/CONTRIBUTING.md) and must be followed for contributions.
 
 ## Development Practices
 

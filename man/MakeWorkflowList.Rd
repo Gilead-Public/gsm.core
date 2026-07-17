@@ -27,13 +27,14 @@ MakeWorkflowList(
 \code{list} A list of workflows with workflow and parameter metadata.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-\code{MakeWorkflowList()} is a utility function that creates a list of workflows for use in KRI pipelines.
+\code{MakeWorkflowList()} has moved to \code{workr::MakeWorkflowList()}. This wrapper
+remains for backward compatibility in \code{{gsm.core}}.
 }
 \examples{
 # get specific workflow files
-workflow <- MakeWorkflowList(
+workflow <- workr::MakeWorkflowList(
   strPath = "example_workflow/1_mappings",
   strPackage = "gsm.core"
 )

@@ -35,10 +35,8 @@ A named list of results from \code{RunWorkflow()}, where the names correspond to
 the workflow ID
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-This function takes a list of workflows and a list of data as input.  It runs each workflow and returns the
-results as a named list where the names of the list correspond to the workflow ID ($meta$ID).
-
-Workflows are run in the order they are provided in the lWorkflows. The results from each workflow are passed as inputs (along with lData) for later workflows.
+\code{RunWorkflows()} has moved to \code{workr::RunWorkflows()}. This wrapper remains
+for backward compatibility in \code{{gsm.core}}.
 }
