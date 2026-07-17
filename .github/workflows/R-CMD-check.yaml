@@ -1,5 +1,5 @@
 # name: R-CMD-check.yaml
-# version: 0.4.1
+# version: 0.4.2
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Description: R CMD check for PRs
 on:
@@ -52,6 +52,7 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
       - name: Set GITHUB_PAT
+        shell: bash
         run: echo "GITHUB_PAT=${{ steps.token.outputs.token }}" >> $GITHUB_ENV
       - name: Check package
         uses: gilead-biostats/gsm.utils/check-r-package@actions-v1
