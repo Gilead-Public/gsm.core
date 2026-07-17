@@ -68,7 +68,7 @@ Suggests:
     usethis,
     withr
 Remotes:
-    workr=Gilead-BioStats/workr@rc-v1.1.0,
+    workr=Gilead-BioStats/workr@main,
     log4r=r-lib/log4r
 VignetteBuilder: 
     knitr
