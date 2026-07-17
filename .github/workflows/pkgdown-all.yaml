@@ -29,7 +29,7 @@ permissions:
   pull-requests: write
 jobs:
   call-pkgdown-core:
-    uses: Gilead-BioStats/gsm.utils/.github/workflows/pkgdown-core.yaml@fix-bash-runner
+    uses: Gilead-BioStats/gsm.utils/.github/workflows/pkgdown-core.yaml@actions-v1
     with:
       # These inputs only actually matter for workflow_dispatch; otherwise
       # they're automatically determined.

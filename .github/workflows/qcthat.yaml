@@ -1,5 +1,5 @@
 # name: qcthat.yaml
-# version: 0.2.2
+# version: 0.2.1
 # Description: Generate qcthat quality control reports for pull requests and releases and manage user acceptance testing.
 on:
   pull_request:
@@ -17,7 +17,7 @@ on:
       tag:
         description: Release tag to which the report should be attached (leave blank for none).
       qcthat-ref:
-        description: A specific qcthat GitHub reference, such as a tag ("@v1.0.0"), branch ("@dev"), commit ("@480c247"), or pull request number ("#312") to use for reports and UAT management. Defaults to the "@*main".
+        description: A specific qcthat GitHub reference, such as a tag ("@v1.0.0"), branch ("@dev"), commit ("@480c247"), or pull request number ("#312") to use for reports and UAT management. Defaults to the latest release, "@*release".
       issue-number:
         description: The closed issue number to process to update user acceptance testing information.
 
@@ -40,7 +40,7 @@ jobs:
     if: >-
       (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'qcthat-uat')) ||
       github.event_name != 'issues'
-    uses: Gilead-BioStats/qcthat/.github/workflows/qcthat-core.yaml@shell-and-main
+    uses: Gilead-BioStats/qcthat/.github/workflows/qcthat-core.yaml@actions
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
       qcthat-app-id: ${{ secrets.CM_BOT_APP_ID }}

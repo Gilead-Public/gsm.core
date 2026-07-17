@@ -16,7 +16,7 @@ permissions:
   contents: write
 jobs:
   check-workflows:
-    uses: Gilead-BioStats/gsm.utils/.github/workflows/workflow-template-checker.yaml@fix-bash-runner
+    uses: Gilead-BioStats/gsm.utils/.github/workflows/workflow-template-checker.yaml@actions-v1
     with:
       default-branch: ${{ github.event.repository.default_branch }}
       pr-number: '${{ github.event.number }}'

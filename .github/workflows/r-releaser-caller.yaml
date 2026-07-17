@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   call-release-workflow:
-    uses: Gilead-BioStats/gsm.utils/.github/workflows/r-releaser.yaml@fix-bash-runner
+    uses: Gilead-BioStats/gsm.utils/.github/workflows/r-releaser.yaml@actions-v1
     with:
       tag: ${{ github.event.release.tag_name || inputs.tag }}
     secrets:
