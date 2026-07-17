@@ -22,19 +22,31 @@ A data frame with rows and columns:
 
 - "Raw_DATACHG":
 
-  DATACHG ource dataset
+  DATACHG Source dataset
 
 - "Raw_DATAENT":
 
   DATAENT Source dataset
 
+- "Raw_Death":
+
+  Death Source dataset
+
 - "Raw_ENROLL":
 
   Enroll Source dataset
 
+- "Raw_IE":
+
+  IE Source dataset
+
 - "Raw_LB":
 
   Lab Source dataset
+
+- "Raw_OverallResponse":
+
+  Overall Response Source dataset
 
 - "Raw_PD":
 
@@ -48,13 +60,9 @@ A data frame with rows and columns:
 
   Query Source dataset
 
-- "Raw_STUDY":
+- "Raw_Randomization":
 
-  Study Source dataset
-
-- "Raw_STUDCOMP":
-
-  STUDCOMP Source dataset
+  Randomization Source dataset
 
 - "Raw_SDRGCOMP":
 
@@ -64,10 +72,22 @@ A data frame with rows and columns:
 
   SITE Source dataset
 
+- "Raw_STUDY":
+
+  Study Source dataset
+
+- "Raw_STUDCOMP":
+
+  STUDCOMP Source dataset
+
 - "Raw_SUBJ":
 
   SUBJ Source dataset
 
+- "Raw_VISIT":
+
+  Visit Source dataset
+
 ## Source
 
-Generated from `data-raw/run-gsm.datasim.R`.
+Generated from `data-raw/simulate_longitudinal_data.R`.

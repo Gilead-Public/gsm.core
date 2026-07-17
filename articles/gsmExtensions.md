@@ -62,6 +62,9 @@ the module. It must include the following fields:
   workflow file name, without extension.
 - `Description`: A one-line description of the module specified in the
   workflow.
+- `Active`: *optional* A boolean (`true`/`false`) indicating whether the
+  workflow is active. Workflows with `Active: false` are filtered out of
+  workflow lists. If missing or `true`, the workflow is included.
 - `Priority`: *optional* A number specifying the priority of the
   workflow within the directory, with lower numbers having higher
   priority, and running first. This is used when workflows within the
@@ -71,7 +74,8 @@ the module. It must include the following fields:
 - `Details`: *optional* A more detailed description of the module
   specified in the workflow.
 - `Repo`: Package repo and version. Should be compatible with the `repo`
-  parameter in `remotes::install_github()`.
+  parameter in
+  [`remotes::install_github()`](https://remotes.r-lib.org/reference/install_github.html).
 - `Status`: The validation status of the reporting output. Valid values:
   - `Qualified`: Output has been qualified via our qualification process
     specified
@@ -109,6 +113,12 @@ Additional `meta` header required fields for `{gsm.kri}` **metrics**:
   [`gsm.core::Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md).
 - `Flag`: *optional* The numeric values assigned to each flag. Used in
   [`gsm.core::Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md).
+- `GenerateRiskSignal`: *optional* A boolean (`true`/`false`) indicating
+  whether a risk signal should be generated when this metric produces a
+  flag. If missing or `true`, a risk signal is generated. Only
+  applicable to metric workflows. We use this flag in our internal
+  systems, and provide it for you to integrate metrics into your own
+  workflows.
 - `AccrualThreshold`: The minimum threshold needed to apply a flag.
 - `AccrualMetric`: The metric on which to apply the minimum threshold
   needed to apply a flag. Accepted values: `Denominator`, `Numerator`,
@@ -236,40 +246,40 @@ final output. Each item in `steps` has the following properties:
   parameters are specific to the function that is being run. See below
   for more details on how to specify parameters for each function.
 
-**Note**: It is important to note that the default behavior of the
-[`gsm.core::RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflow.md)
+**Note**: It is important to note that the default behavior of
+[`workr::RunWorkflow()`](https://gilead-biostats.github.io/workr/reference/RunWorkflow.html)
 and
-[`gsm.core::RunWorkflows()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflows.md)
-functions is to return the *last* output in the steps section of the
-workflow. therefore, each yaml file- regardless of which directory it is
-in- should only produce one output, whether that be a data table, list,
-html output, deployed shiny app, or any other object needed to produce
-the module output.
+[`workr::RunWorkflows()`](https://gilead-biostats.github.io/workr/reference/RunWorkflows.html)
+is to return the *last* output in the steps section of the workflow.
+Therefore, each yaml file, regardless of which directory it is in,
+should only produce one output, whether that be a data table, list, html
+output, deployed shiny app, or any other object needed to produce the
+module output.
 
-The `steps` is the most complex part of the module configuration and
-will vary greatly depending on the module type and the specific
-requirements of the module. `gsm.core` provides several functions that
-allow for module yaml files to be run in a standard way. See
-`?gsm.core::RunWorkflow()` for more details.
+The `steps` section is the most complex part of the module configuration
+and will vary greatly depending on the module type and the specific
+requirements of the module.
+[workr](https://gilead-biostats.github.io/workr) provides the standard
+workflow-runtime functions used to execute module yaml files, while
+[gsm.core](https://gilead-biostats.github.io/gsm.core) provides many of
+the analytical functions that those steps call. See
+`?workr::RunWorkflow()` for more details.
 
 #### `steps[]$params` Specification
 
 After processing the YAML `meta` and `spec` sections,
-[`gsm.core::RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflow.md)
+[`workr::RunWorkflow()`](https://gilead-biostats.github.io/workr/reference/RunWorkflow.html)
 calls
-[`gsm.core::RunStep()`](https://gilead-biostats.github.io/gsm.core/reference/RunStep.md)
+[`workr::RunStep()`](https://gilead-biostats.github.io/workr/reference/RunStep.html)
 for each step in the `steps` section of the YAML. The `params` section
 of each step is passed to
-[`gsm.core::RunStep()`](https://gilead-biostats.github.io/gsm.core/reference/RunStep.md)
+[`workr::RunStep()`](https://gilead-biostats.github.io/workr/reference/RunStep.html)
 as a list of parameters along with a copy of the metadata header
 (`lMeta`) and any data (`lData`).
-[`gsm.core::RunStep()`](https://gilead-biostats.github.io/gsm.core/reference/RunStep.md)
+[`workr::RunStep()`](https://gilead-biostats.github.io/workr/reference/RunStep.html)
 then parses the list of `params` by passing data from `lMeta` and
-`lData` when appropriate - see
-[`?gsm.core::RunStep`](https://gilead-biostats.github.io/gsm.core/reference/RunStep.md)
-for a detailed of how parameter values are populated. Finally, the
-parsed parameters are passed to the function specified in the `name`
-field of the step.
+`lData` when appropriate. Finally, the parsed parameters are passed to
+the function specified in the `name` field of the step.
 
 #### `steps` examples
 
@@ -278,9 +288,9 @@ field of the step.
 In the example below, the steps to produce the AE analysis output is
 specified. Here, `Threshold`, `GroupLevel`, `Type`, `AccrualThreshold`
 and `AccrualMetric` are specified in the `meta` section of the workflow,
-and would be access via the `paramVal` process discussed above. As a
+and would be accessed via the `paramVal` process discussed above. As a
 default, the output of these steps as run with
-[`gsm.core::RunWorkflows()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflows.md)
+[`workr::RunWorkflows()`](https://gilead-biostats.github.io/workr/reference/RunWorkflows.html)
 would be a list of data tables, as specified in the final `list` step of
 the workflow.
 

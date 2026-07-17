@@ -51,17 +51,18 @@ Utility functions for use within the Data Model
 - [`LogMessage()`](https://gilead-biostats.github.io/gsm.core/reference/LogMessage.md)
   : Custom logging function that wraps cli messaging
 - [`MakeWorkflowList()`](https://gilead-biostats.github.io/gsm.core/reference/MakeWorkflowList.md)
-  **\[stable\]** : Load workflows from a package/directory.
+  **\[deprecated\]** : Load workflows from a package/directory.
 - [`ParseThreshold()`](https://gilead-biostats.github.io/gsm.core/reference/ParseThreshold.md)
   **\[stable\]** : Parse a string into a numeric vector
 - [`RunStep()`](https://gilead-biostats.github.io/gsm.core/reference/RunStep.md)
-  **\[stable\]** : Run a single step in a workflow.
+  **\[deprecated\]** : Run a single step in a workflow.
 - [`RunQuery()`](https://gilead-biostats.github.io/gsm.core/reference/RunQuery.md)
-  **\[stable\]** : Run a SQL query on a data frame or DuckDB table
+  **\[deprecated\]** : Run a SQL query on a data frame or DuckDB table
 - [`RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflow.md)
-  **\[stable\]** : Run a workflow via it's YAML specification.
+  **\[deprecated\]** : Run a workflow via it's YAML specification.
 - [`RunWorkflows()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflows.md)
-  **\[stable\]** : Convenience function to easily run multiple workflows
+  **\[deprecated\]** : Convenience function to easily run multiple
+  workflows
 - [`SetLogger()`](https://gilead-biostats.github.io/gsm.core/reference/SetLogger.md)
   : set the default package logger
 - [`stop_if()`](https://gilead-biostats.github.io/gsm.core/reference/stop_if.md)

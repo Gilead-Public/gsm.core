@@ -1,5 +1,33 @@
 # Changelog
 
+## gsm.core v1.3.0
+
+This minor release moves the workflow runtime to the new
+[workr](https://gilead-biostats.github.io/workr) package and adds the
+`deathcls` column to the Death domain in `lSource`.
+
+Changes:
+
+- Workflow execution is now powered by
+  [workr](https://gilead-biostats.github.io/workr):
+  [`RunQuery()`](https://gilead-biostats.github.io/gsm.core/reference/RunQuery.md),
+  [`RunStep()`](https://gilead-biostats.github.io/gsm.core/reference/RunStep.md),
+  [`RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflow.md),
+  [`RunWorkflows()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflows.md),
+  and
+  [`MakeWorkflowList()`](https://gilead-biostats.github.io/gsm.core/reference/MakeWorkflowList.md)
+  are backed by the shared, federated
+  [workr](https://gilead-biostats.github.io/workr) runtime. Existing
+  code continues to work unchanged through deprecation shims
+  ([\#141](https://github.com/Gilead-BioStats/gsm.core/issues/141),
+  [\#149](https://github.com/Gilead-BioStats/gsm.core/issues/149)).
+- The Death domain in the `lSource` dataset now includes a `deathcls`
+  column
+  ([\#153](https://github.com/Gilead-BioStats/gsm.core/issues/153)).
+- Documented the workflow contract for `gsm` ecosystem packages
+  ([\#145](https://github.com/Gilead-BioStats/gsm.core/issues/145),
+  [\#151](https://github.com/Gilead-BioStats/gsm.core/issues/151)).
+
 ## gsm.core v1.2.1
 
 This patch release updates the GitHub action workflows to align with the
