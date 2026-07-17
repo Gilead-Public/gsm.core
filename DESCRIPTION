@@ -68,7 +68,7 @@ Suggests:
     usethis,
     withr
 Remotes:
-    workr=Gilead-BioStats/workr@main
+    workr=Gilead-BioStats/workr@*release
 VignetteBuilder: 
     knitr
 Config/Needs/website: DT, here, pkgdown, devtools
