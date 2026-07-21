@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gsm.core</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.2.1</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,14 @@
       <small>Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/dev/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.3.0" id="gsmcore-v130">gsm.core v1.3.0<a class="anchor" aria-label="anchor" href="#gsmcore-v130"></a></h2>
+<p>This minor release moves the workflow runtime to the new <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a> package and adds the <code>deathcls</code> column to the Death domain in <code>lSource</code>.</p>
+<p>Changes:</p>
+<ul><li>Workflow execution is now powered by <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a>: <code><a href="../reference/RunQuery.html">RunQuery()</a></code>, <code><a href="../reference/RunStep.html">RunStep()</a></code>, <code><a href="../reference/RunWorkflow.html">RunWorkflow()</a></code>, <code><a href="../reference/RunWorkflows.html">RunWorkflows()</a></code>, and <code><a href="../reference/MakeWorkflowList.html">MakeWorkflowList()</a></code> are backed by the shared, federated <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a> runtime. Existing code continues to work unchanged through deprecation shims (<a href="https://github.com/Gilead-BioStats/gsm.core/issues/141" class="external-link">#141</a>, <a href="https://github.com/Gilead-BioStats/gsm.core/issues/149" class="external-link">#149</a>).</li>
+<li>The Death domain in the <code>lSource</code> dataset now includes a <code>deathcls</code> column (<a href="https://github.com/Gilead-BioStats/gsm.core/issues/153" class="external-link">#153</a>).</li>
+<li>Documented the workflow contract for <code>gsm</code> ecosystem packages (<a href="https://github.com/Gilead-BioStats/gsm.core/issues/145" class="external-link">#145</a>, <a href="https://github.com/Gilead-BioStats/gsm.core/issues/151" class="external-link">#151</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.1" id="gsmcore-v121">gsm.core v1.2.1<a class="anchor" aria-label="anchor" href="#gsmcore-v121"></a></h2>
 <p>This patch release updates the GitHub action workflows to align with the new federated action framework in <code>gsm.utils</code></p>
@@ -108,7 +116,7 @@ The package is designed to seamlessly integrate with other GSM modules (e.g., <c
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

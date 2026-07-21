@@ -104,6 +104,9 @@ for the following domains:
 10. Outstanding Data Entry Rate
 11. Data Change Rate
 12. Screen Failure Rate
+13. PK Collection Compliance Rate
+14. Ineligibility
+15. Premature Death Rate
 
 All [gsm.core](https://gilead-biostats.github.io/gsm.core) assessments
 use a standardized 6 step data pipeline:
