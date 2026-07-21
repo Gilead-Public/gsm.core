@@ -80,6 +80,9 @@ The `{gsm.core}` package is the foundation of a data pipeline for RBM using R. T
 10. Outstanding Data Entry Rate
 11. Data Change Rate
 12. Screen Failure Rate
+13. PK Collection Compliance Rate
+14. Ineligibility
+15. Premature Death Rate
 
 All `{gsm.core}` assessments use a standardized 6 step data pipeline:
 
