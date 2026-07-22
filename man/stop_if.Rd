@@ -2,15 +2,21 @@
 % Please edit documentation in R/util-cli_logger_wrappers.R
 \name{stop_if}
 \alias{stop_if}
-\title{Custom stop message}
+\title{Stop execution if a condition is true}
 \usage{
 stop_if(cnd, message)
 }
 \arguments{
-\item{cnd}{condition for stopping}
+\item{cnd}{Logical scalar. When \code{TRUE}, an error is raised.}
 
-\item{message}{message to display; may contain glue-style placeholders}
+\item{message}{Character string to display; may contain glue-style
+placeholders.}
+}
+\value{
+\code{NULL}, invisibly, if \code{cnd} is \code{FALSE}. Does not return if \code{cnd}
+is \code{TRUE}.
 }
 \description{
-Custom stop message
+A thin wrapper around \code{\link[=LogMessage]{LogMessage()}} that emits an \code{"ERROR"}-level message
+(triggering \code{cli::cli_abort()}) when \code{cnd} is \code{TRUE}.
 }

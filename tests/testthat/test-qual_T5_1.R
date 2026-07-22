@@ -1,9 +1,9 @@
 # Test Setup -------------------------------------------------------
-ae_workflow_custom <- flatten(MakeWorkflowList(
+ae_workflow_custom <- flatten(workr::MakeWorkflowList(
   "kri0001_custom",
   strPath = GetYamlPathCustomMetrics()
 ))
-ae_workflow_default <- flatten(MakeWorkflowList(
+ae_workflow_default <- flatten(workr::MakeWorkflowList(
   strNames = "kri0001",
   strPath = GetYamlPathMetrics()
 ))
