@@ -43,13 +43,17 @@ Create site-level summary, analyzed, and flagged data for an assessment
 Utility functions for use within the Data Model
 
 - [`cli_fmt()`](https://gilead-biostats.github.io/gsm.core/dev/reference/cli_fmt.md)
-  : cli style console appender for gsm
+  : cli-style console appender for gsm
 - [`CheckSpec()`](https://gilead-biostats.github.io/gsm.core/dev/reference/CheckSpec.md)
   **\[stable\]** : Check if the data and spec are compatible
+- [`GetLogAppender()`](https://gilead-biostats.github.io/gsm.core/dev/reference/GetLogAppender.md)
+  : Get the current log appender function
+- [`GetLogLevel()`](https://gilead-biostats.github.io/gsm.core/dev/reference/GetLogLevel.md)
+  : Get the current logging threshold level
 - [`GetStrFunctionIfNamespaced()`](https://gilead-biostats.github.io/gsm.core/dev/reference/GetStrFunctionIfNamespaced.md)
   **\[experimental\]** : GetFunctionIfNamespaced
 - [`LogMessage()`](https://gilead-biostats.github.io/gsm.core/dev/reference/LogMessage.md)
-  : Custom logging function that wraps cli messaging
+  : Log a message via the active appender
 - [`MakeWorkflowList()`](https://gilead-biostats.github.io/gsm.core/dev/reference/MakeWorkflowList.md)
   **\[deprecated\]** : Load workflows from a package/directory.
 - [`ParseThreshold()`](https://gilead-biostats.github.io/gsm.core/dev/reference/ParseThreshold.md)
@@ -64,9 +68,13 @@ Utility functions for use within the Data Model
   **\[deprecated\]** : Convenience function to easily run multiple
   workflows
 - [`SetLogger()`](https://gilead-biostats.github.io/gsm.core/dev/reference/SetLogger.md)
-  : set the default package logger
+  : Set the logging threshold level
+- [`SetLogAppender()`](https://gilead-biostats.github.io/gsm.core/dev/reference/SetLogAppender.md)
+  : Set the active log appender
+- [`SetLogLevel()`](https://gilead-biostats.github.io/gsm.core/dev/reference/SetLogLevel.md)
+  : Set the active log level
 - [`stop_if()`](https://gilead-biostats.github.io/gsm.core/dev/reference/stop_if.md)
-  : Custom stop message
+  : Stop execution if a condition is true
 
 ## Sample Data
 

@@ -10,7 +10,7 @@ reportingBounds_study
 
 ## Format
 
-A data frame with 90 rows and 8 columns:
+A data frame with 75 rows and 8 columns:
 
 - Threshold:
 
