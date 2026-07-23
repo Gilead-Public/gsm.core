@@ -29,64 +29,59 @@ articles:
   - articles/gsmExtensions
   - KRIMethod
 reference:
-  - title: Analyze
-    desc: Conduct statistical analysis based on input data
-  - contents:
-      - Analyze_NormalApprox
-      - Analyze_Identity
-      - Analyze_Fisher
-      - Analyze_Poisson
-      - Analyze_NormalApprox_PredictBounds
-      - Analyze_Poisson_PredictBounds
-
-  - title: Data Pipeline
-    desc: Create site-level summary, analyzed, and flagged data for an assessment
-  - contents:
-      - Input_Rate
-      - Transform_Count
-      - Transform_Rate
-      - Flag
-      - Flag_NormalApprox
-      - Flag_Poisson
-      - Summarize
-
-
-  - title: Utility
-    desc: Utility functions for use within the Data Model
-  - contents:
-     -  cli_fmt
-     -  CheckSpec
-     -  GetLogAppender
-     -  GetLogLevel
-     -  GetStrFunctionIfNamespaced
-     -  LogMessage
-     -  MakeWorkflowList
-     -  ParseThreshold
-     -  RunStep
-     -  RunQuery
-     -  RunWorkflow
-     -  RunWorkflows
-     -  SetLogger
-     -  SetLogAppender
-     -  SetLogLevel
-     -  stop_if
-
-  - title: Sample Data
-    desc: data used for examples and testing
-  - contents:
-      - analyticsInput
-      - analyticsSummary
-      - reportingBounds
-      - reportingGroups
-      - reportingMetrics
-      - reportingResults
-      - reportingBounds_country
-      - reportingGroups_country
-      - reportingMetrics_country
-      - reportingResults_country
-      - reportingBounds_study
-      - reportingGroups_study
-      - reportingMetrics_study
-      - reportingResults_study
-      - lSource
-
+- title: Analyze
+  desc: Conduct statistical analysis based on input data
+- contents:
+  - Analyze_NormalApprox
+  - Analyze_Identity
+  - Analyze_Fisher
+  - Analyze_Poisson
+  - Analyze_NormalApprox_PredictBounds
+  - Analyze_Poisson_PredictBounds
+- title: Data Pipeline
+  desc: Create site-level summary, analyzed, and flagged data for an assessment
+- contents:
+  - Input_Rate
+  - Transform_Count
+  - Transform_Rate
+  - Flag
+  - Flag_NormalApprox
+  - Flag_Poisson
+  - Summarize
+- title: Utility
+  desc: Utility functions for use within the Data Model
+- contents:
+  - cli_fmt
+  - CheckSpec
+  - GetLogAppender
+  - GetLogLevel
+  - GetStrFunctionIfNamespaced
+  - LogMessage
+  - MakeWorkflowList
+  - ParseThreshold
+  - RunStep
+  - RunQuery
+  - RunWorkflow
+  - RunWorkflows
+  - SetLogger
+  - SetLogAppender
+  - SetLogLevel
+  - stop_if
+- title: Sample Data
+  desc: data used for examples and testing
+- contents:
+  - analyticsInput
+  - analyticsSummary
+  - reportingBounds
+  - reportingGroups
+  - reportingMetrics
+  - reportingResults
+  - reportingBounds_country
+  - reportingGroups_country
+  - reportingMetrics_country
+  - reportingResults_country
+  - reportingBounds_study
+  - reportingGroups_study
+  - reportingMetrics_study
+  - reportingResults_study
+  - lSource
