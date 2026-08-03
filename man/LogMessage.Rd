@@ -2,19 +2,28 @@
 % Please edit documentation in R/util-cli_logger_wrappers.R
 \name{LogMessage}
 \alias{LogMessage}
-\title{Custom logging function that wraps cli messaging}
+\title{Log a message via the active appender}
 \usage{
 LogMessage(level, message, cli_detail = NULL, .envir = parent.frame())
 }
 \arguments{
-\item{level}{logger levels}
+\item{level}{Log level: \code{"INFO"}, \code{"WARN"}, \code{"ERROR"}, or \code{"FATAL"}.
+Case-insensitive.}
 
-\item{message}{message to display; may contain glue-style placeholders}
+\item{message}{Character string to display; may contain glue-style
+placeholders that are evaluated in \code{.envir}.}
 
-\item{cli_detail}{for cli style alerts the detail for info}
+\item{cli_detail}{For \code{level = "INFO"}, the cli style to use. Passed
+through to the active appender.}
 
-\item{.envir}{the environment for glue expressions}
+\item{.envir}{Environment in which to evaluate glue expressions. Defaults
+to the caller's environment.}
+}
+\value{
+\code{NULL}, invisibly.
 }
 \description{
-Custom logging function that wraps cli messaging
+Emits a log message at the specified level, provided the level meets or
+exceeds the current log threshold. The message is glue-interpolated before
+being passed to the active appender.
 }
