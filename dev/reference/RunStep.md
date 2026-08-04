@@ -3,8 +3,8 @@
 **\[deprecated\]**
 
 `RunStep()` has moved to
-[`workr::RunStep()`](https://gilead-biostats.github.io/workr/reference/RunStep.html).
-This wrapper remains for backward compatibility in `{gsm.core}`.
+[`workr::RunStep()`](https://rdrr.io/pkg/workr/man/RunStep.html). This
+wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage
 
@@ -87,6 +87,14 @@ mapped <- workr::RunWorkflows(wf_mapping, lRaw)
 #> ℹ The deprecated feature was likely used in the workr package.
 #>   Please report the issue to the authors.
 #> [INFO] Creating a new temporary DuckDB connection.
+#> duckdb keeps downloaded extensions and secrets in a temporary directory:
+#> ℹ /tmp/RtmpQsCMlm/duckdb
+#> This is removed when the R session ends.
+#> • Extensions are re-downloaded each session.
+#> • Secrets are lost.
+#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
+#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+#> ℹ See ?duckdb_storage for details and alternatives.
 #> [INFO] SQL Query complete: 762 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
 #> [INFO] 762x15 data.frame saved as `lData$Mapped_SUBJ`.

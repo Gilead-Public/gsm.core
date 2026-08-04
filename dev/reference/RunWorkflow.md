@@ -1,7 +1,7 @@
 # Run a workflow via it's YAML specification.
 
 **\[deprecated\]** `RunWorkflow()` has moved to
-[`workr::RunWorkflow()`](https://gilead-biostats.github.io/workr/reference/RunWorkflow.html).
+[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html).
 This wrapper remains for backward compatibility in `{gsm.core}`.
 
 Attempts to run a single assessment (`lWorkflow`) using shared data
@@ -101,6 +101,14 @@ lMappedData <- workr::RunWorkflows(
 #> [INFO] strQuery = SELECT * FROM df WHERE enrollyn == 'Y': No matching data found. Passing 'SELECT * FROM df WHERE enrollyn == 'Y'' as a string.
 #> [INFO] Calling `gsm.core::RunQuery`
 #> [INFO] Creating a new temporary DuckDB connection.
+#> duckdb keeps downloaded extensions and secrets in a temporary directory:
+#> ℹ /tmp/RtmpQsCMlm/duckdb
+#> This is removed when the R session ends.
+#> • Extensions are re-downloaded each session.
+#> • Secrets are lost.
+#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
+#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+#> ℹ See ?duckdb_storage for details and alternatives.
 #> [INFO] SQL Query complete: 762 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
 #> [INFO] 762x15 data.frame saved as `lData$Mapped_SUBJ`.

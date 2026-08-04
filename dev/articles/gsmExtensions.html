@@ -161,7 +161,7 @@ of the module specified in the workflow.</li>
 <li>
 <code>Repo</code>: Package repo and version. Should be compatible
 with the <code>repo</code> parameter in
-<code><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">remotes::install_github()</a></code>.</li>
+<code>remotes::install_github()</code>.</li>
 <li>
 <code>Status</code>: The validation status of the reporting output.
 Valid values:
@@ -378,8 +378,8 @@ See below for more details on how to specify parameters for each
 function.</li>
 </ul>
 <p><strong>Note</strong>: It is important to note that the default
-behavior of <code><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code> and
-<code><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflows.html" class="external-link">workr::RunWorkflows()</a></code> is to return the <em>last</em> output
+behavior of <code><a href="https://rdrr.io/pkg/workr/man/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code> and
+<code><a href="https://rdrr.io/pkg/workr/man/RunWorkflows.html" class="external-link">workr::RunWorkflows()</a></code> is to return the <em>last</em> output
 in the steps section of the workflow. Therefore, each yaml file,
 regardless of which directory it is in, should only produce one output,
 whether that be a data table, list, html output, deployed shiny app, or
@@ -396,12 +396,12 @@ details.</p>
 <code>steps[]$params</code> Specification<a class="anchor" aria-label="anchor" href="#stepsparams-specification"></a>
 </h4>
 <p>After processing the YAML <code>meta</code> and <code>spec</code>
-sections, <code><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code> calls
-<code><a href="https://gilead-biostats.github.io/workr/reference/RunStep.html" class="external-link">workr::RunStep()</a></code> for each step in the <code>steps</code>
+sections, <code><a href="https://rdrr.io/pkg/workr/man/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code> calls
+<code><a href="https://rdrr.io/pkg/workr/man/RunStep.html" class="external-link">workr::RunStep()</a></code> for each step in the <code>steps</code>
 section of the YAML. The <code>params</code> section of each step is
-passed to <code><a href="https://gilead-biostats.github.io/workr/reference/RunStep.html" class="external-link">workr::RunStep()</a></code> as a list of parameters along
+passed to <code><a href="https://rdrr.io/pkg/workr/man/RunStep.html" class="external-link">workr::RunStep()</a></code> as a list of parameters along
 with a copy of the metadata header (<code>lMeta</code>) and any data
-(<code>lData</code>). <code><a href="https://gilead-biostats.github.io/workr/reference/RunStep.html" class="external-link">workr::RunStep()</a></code> then parses the list
+(<code>lData</code>). <code><a href="https://rdrr.io/pkg/workr/man/RunStep.html" class="external-link">workr::RunStep()</a></code> then parses the list
 of <code>params</code> by passing data from <code>lMeta</code> and
 <code>lData</code> when appropriate. Finally, the parsed parameters are
 passed to the function specified in the <code>name</code> field of the
@@ -421,7 +421,7 @@ specified. Here, <code>Threshold</code>, <code>GroupLevel</code>,
 <code>AccrualMetric</code> are specified in the <code>meta</code>
 section of the workflow, and would be accessed via the
 <code>paramVal</code> process discussed above. As a default, the output
-of these steps as run with <code><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflows.html" class="external-link">workr::RunWorkflows()</a></code> would be a
+of these steps as run with <code><a href="https://rdrr.io/pkg/workr/man/RunWorkflows.html" class="external-link">workr::RunWorkflows()</a></code> would be a
 list of data tables, as specified in the final <code>list</code> step of
 the workflow.</p>
 <pre><code><span><span class="va">steps</span><span class="op">:</span></span>
