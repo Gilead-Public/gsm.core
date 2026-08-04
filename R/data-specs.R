@@ -72,6 +72,9 @@
 #'   \item{ScoreCol}{Column used for `Analyze_Identity()`}
 #'   \item{nNumDeviations}{Number of standard deviations to flag QTL}
 #'   \item{nPropRate}{Proposed threshold}
+#'   \item{Active}{logical flag indicating whether the metric is active}
+#'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
+#'   \item{WindowDays}{number of days in the metric's observation window}
 #' }
 #' @source Generated from `reportingMetrics.csv` dataset in the `gsm.core` package.
 "reportingMetrics"
@@ -157,6 +160,7 @@
 #'   \item{nPropRate}{Proposed threshold}
 #'   \item{Active}{logical flag indicating whether the metric is active}
 #'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
+#'   \item{WindowDays}{number of days in the metric's observation window}
 #' }
 #' @source Generated from `reportingMetrics_country.csv` dataset in the `gsm.core` package.
 "reportingMetrics_country"
@@ -241,6 +245,7 @@
 #'   \item{nPropRate}{Proposed threshold}
 #'   \item{Active}{logical flag indicating whether the metric is active}
 #'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
+#'   \item{WindowDays}{number of days in the metric's observation window}
 #' }
 #' @source Generated from `reportingMetrics_study.csv` dataset in the `gsm.core` package.
 "reportingMetrics_study"

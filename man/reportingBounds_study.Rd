@@ -5,7 +5,7 @@
 \alias{reportingBounds_study}
 \title{reportingBounds_study Dataset}
 \format{
-A data frame with 75 rows and 8 columns:
+A data frame with 90 rows and 8 columns:
 \describe{
 \item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
 \item{Denominator}{calculated denominator value}

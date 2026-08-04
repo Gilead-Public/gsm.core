@@ -1,11 +1,12 @@
 # TEMPORARY: pin the non-starter feature branches so this regeneration picks up
-# the IP non-starter generators (gsm.datasim#122) and the exposed columns /
-# Mapped_NonStarter derivation (gsm.mapping#139). Revert both back to @dev once
-# gsm.datasim#122 (PR #126) and gsm.mapping#139 (PR #141) merge.
+# the IP non-starter generators (gsm.datasim#122), the exposed columns /
+# Mapped_NonStarter derivation (gsm.mapping#139) and the kri0016/cou0016
+# workflows (gsm.kri#258). Revert all three back to @dev once gsm.datasim#122
+# (PR #126), gsm.mapping#139 (PR #141) and gsm.kri#258 (PR #260) merge.
 pak::pak('Gilead-BioStats/gsm.datasim@feature-122-nonstarter-generators')
 pak::pak('Gilead-BioStats/gsm.mapping@feature-139-nonstarter-mapping')
 pak::pak('Gilead-BioStats/gsm.core@dev')
-pak::pak('Gilead-BioStats/gsm.kri@dev')
+pak::pak('Gilead-BioStats/gsm.kri@feature-258-nonstarter-metrics')
 
 library(gsm.core)
 library(gsm.mapping)
@@ -40,7 +41,10 @@ analyzed <- list()
 reporting <- list()
 dates <- as.Date(c("2025-02-01", "2025-03-01", "2025-04-01"))
 
-mappings_wf <- gsm.core::MakeWorkflowList(strNames = core_mappings, strPath = "workflow/1_mappings", strPackage = "gsm.mapping")
+# Mapped_NonStarter is derived from other mapped frames rather than a raw
+# domain, so it joins the workflow list but not the raw-data generation above.
+mapping_workflows <- c(core_mappings, "NonStarter")
+mappings_wf <- gsm.core::MakeWorkflowList(strNames = mapping_workflows, strPath = "workflow/1_mappings", strPackage = "gsm.mapping")
 mappings_spec <- gsm.mapping::CombineSpecs(mappings_wf)
 metrics_wf <- c(
   gsm.core::MakeWorkflowList(strPath = "workflow/2_metrics", strPackage = "gsm.kri"),

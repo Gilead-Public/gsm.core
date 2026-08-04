@@ -5,7 +5,7 @@
 \alias{reportingMetrics}
 \title{reportingMetrics Dataset}
 \format{
-A data frame with 16 rows and 20 columns:
+A data frame with 17 rows and 23 columns:
 \describe{
 \item{MetricID}{unique metric identifier}
 \item{GroupLevel}{level of grouping variable}
@@ -27,6 +27,9 @@ A data frame with 16 rows and 20 columns:
 \item{ScoreCol}{Column used for \code{Analyze_Identity()}}
 \item{nNumDeviations}{Number of standard deviations to flag QTL}
 \item{nPropRate}{Proposed threshold}
+\item{Active}{logical flag indicating whether the metric is active}
+\item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
+\item{WindowDays}{number of days in the metric's observation window}
 }
 }
 \source{
