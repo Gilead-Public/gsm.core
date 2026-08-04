@@ -10,7 +10,7 @@ reportingGroups
 
 ## Format
 
-A data frame with 1669 rows and 4 columns:
+A data frame with 1665 rows and 4 columns:
 
 - GroupID:
 

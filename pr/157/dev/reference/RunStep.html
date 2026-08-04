@@ -40,7 +40,7 @@ backward compatibility in {gsm.core}."><meta name="robots" content="noindex"><li
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p>
-<p><code>RunStep()</code> has moved to <code><a href="https://gilead-biostats.github.io/workr/reference/RunStep.html" class="external-link">workr::RunStep()</a></code>. This wrapper remains for
+<p><code>RunStep()</code> has moved to <code><a href="https://rdrr.io/pkg/workr/man/RunStep.html" class="external-link">workr::RunStep()</a></code>. This wrapper remains for
 backward compatibility in <code>{gsm.core}</code>.</p>
     </div>
 
@@ -79,13 +79,13 @@ parameter with results from <code>is_mapping_vald</code> for each domain in <cod
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">wf_mapping</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html" class="external-link">MakeWorkflowList</a></span><span class="op">(</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">wf_mapping</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/workr/man/MakeWorkflowList.html" class="external-link">MakeWorkflowList</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  strNames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AE"</span>, <span class="st">"SUBJ"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  strPath <span class="op">=</span> <span class="st">"example_workflow/1_mappings"</span>,</span></span>
 <span class="r-in"><span>  strPackage <span class="op">=</span> <span class="st">"gsm.core"</span>,</span></span>
 <span class="r-in"><span>  bExact <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">lWorkflow</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html" class="external-link">MakeWorkflowList</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">lWorkflow</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/workr/man/MakeWorkflowList.html" class="external-link">MakeWorkflowList</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  strPath <span class="op">=</span> <span class="st">"example_workflow/2_metrics"</span>,</span></span>
 <span class="r-in"><span>  strNames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kri0001"</span>, <span class="st">"kri0002"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  strPackage <span class="op">=</span> <span class="st">"gsm.core"</span></span></span>
@@ -98,7 +98,7 @@ parameter with results from <code>is_mapping_vald</code> for each domain in <cod
 <span class="r-in"><span>  Raw_AE <span class="op">=</span> <span class="fu">gsm.core</span><span class="fu">::</span><span class="va"><a href="lSource.html">lSource</a></span><span class="op">$</span><span class="va">Raw_AE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">mapped</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflows.html" class="external-link">RunWorkflows</a></span><span class="op">(</span><span class="va">wf_mapping</span>, <span class="va">lRaw</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mapped</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/workr/man/RunWorkflows.html" class="external-link">RunWorkflows</a></span><span class="op">(</span><span class="va">wf_mapping</span>, <span class="va">lRaw</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Running 2 Workflows</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Initializing `Mapped_AE` Workflow</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Checking data against spec</span>
@@ -123,19 +123,19 @@ parameter with results from <code>is_mapping_vald</code> for each domain in <cod
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue to the authors.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Creating a new temporary DuckDB connection.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> duckdb keeps downloaded extensions and secrets in a temporary directory:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> /tmp/Rtmp2a23DN/duckdb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> /tmp/Rtmpdq9p8M/duckdb</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> This is removed when the R session ends.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Secrets are lost.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> See ?duckdb_storage for details and alternatives.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] SQL Query complete: 743 rows returned.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] SQL Query complete: 758 rows returned.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Disconnected from temporary DuckDB connection.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 743x15 data.frame saved as `lData$Mapped_SUBJ`.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Returning results from final step: 743x15 data.frame`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 758x15 data.frame saved as `lData$Mapped_SUBJ`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Returning results from final step: 758x15 data.frame`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Completed `Mapped_SUBJ` Workflow</span>
-<span class="r-in"><span><span class="va">ae_step</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/workr/reference/RunStep.html" class="external-link">RunStep</a></span><span class="op">(</span>lStep <span class="op">=</span> <span class="va">lStep</span>, lData <span class="op">=</span> <span class="va">mapped</span>, lMeta <span class="op">=</span> <span class="va">lMeta</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ae_step</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/workr/man/RunStep.html" class="external-link">RunStep</a></span><span class="op">(</span>lStep <span class="op">=</span> <span class="va">lStep</span>, lData <span class="op">=</span> <span class="va">mapped</span>, lMeta <span class="op">=</span> <span class="va">lMeta</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 1 parameter(s) for `gsm.core::ParseThreshold`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strThreshold = Threshold: Passing lMeta$Threshold.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::ParseThreshold`</span>

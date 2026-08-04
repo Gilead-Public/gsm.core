@@ -10,7 +10,7 @@ reportingResults
 
 ## Format
 
-A data frame with 4273 rows and 10 columns:
+A data frame with 4841 rows and 10 columns:
 
 - GroupID:
 

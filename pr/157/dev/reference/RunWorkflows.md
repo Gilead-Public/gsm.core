@@ -3,7 +3,7 @@
 **\[deprecated\]**
 
 `RunWorkflows()` has moved to
-[`workr::RunWorkflows()`](https://gilead-biostats.github.io/workr/reference/RunWorkflows.html).
+[`workr::RunWorkflows()`](https://rdrr.io/pkg/workr/man/RunWorkflows.html).
 This wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage

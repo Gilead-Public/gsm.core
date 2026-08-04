@@ -3,8 +3,8 @@
 **\[deprecated\]**
 
 `RunQuery()` has moved to
-[`workr::RunQuery()`](https://gilead-biostats.github.io/workr/reference/RunQuery.html).
-This wrapper remains for backward compatibility in `{gsm.core}`.
+[`workr::RunQuery()`](https://rdrr.io/pkg/workr/man/RunQuery.html). This
+wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage
 
@@ -50,7 +50,7 @@ query <- "SELECT * FROM df WHERE AGE > 30"
 result <- workr::RunQuery(query, df)
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp2a23DN/duckdb
+#> ℹ /tmp/Rtmpdq9p8M/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

@@ -46,7 +46,7 @@ lWorkflow$workflow and saves the results to lWorkflow."><meta name="robots" cont
 
     <div class="ref-description section level2">
     <p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a>
-<code>RunWorkflow()</code> has moved to <code><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code>. This wrapper remains
+<code>RunWorkflow()</code> has moved to <code><a href="https://rdrr.io/pkg/workr/man/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code>. This wrapper remains
 for backward compatibility in <code>{gsm.core}</code>.</p>
 <p>Attempts to run a single assessment (<code>lWorkflow</code>) using shared data (<code>lData</code>)
 and metadata (<code>lMapping</code>). Calls <code>RunStep</code> for each item in
@@ -106,7 +106,7 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Generate mapped input data to metric workflow.</span></span></span>
-<span class="r-in"><span><span class="va">lMappingWorkflows</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html" class="external-link">MakeWorkflowList</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">lMappingWorkflows</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/workr/man/MakeWorkflowList.html" class="external-link">MakeWorkflowList</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  strNames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AE"</span>, <span class="st">"SUBJ"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  strPath <span class="op">=</span> <span class="st">"example_workflow/1_mappings"</span>,</span></span>
 <span class="r-in"><span>  strPackage <span class="op">=</span> <span class="st">"gsm.core"</span>,</span></span>
@@ -117,7 +117,7 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-in"><span>  Raw_AE <span class="op">=</span> <span class="fu">gsm.core</span><span class="fu">::</span><span class="va"><a href="lSource.html">lSource</a></span><span class="op">$</span><span class="va">Raw_AE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">lMappedData</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflows.html" class="external-link">RunWorkflows</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">lMappedData</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/workr/man/RunWorkflows.html" class="external-link">RunWorkflows</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">lMappingWorkflows</span>,</span></span>
 <span class="r-in"><span>  <span class="va">lRawData</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -141,26 +141,26 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::RunQuery`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Creating a new temporary DuckDB connection.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> duckdb keeps downloaded extensions and secrets in a temporary directory:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> /tmp/Rtmp2a23DN/duckdb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> /tmp/Rtmpdq9p8M/duckdb</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> This is removed when the R session ends.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Secrets are lost.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> See ?duckdb_storage for details and alternatives.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] SQL Query complete: 743 rows returned.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] SQL Query complete: 758 rows returned.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Disconnected from temporary DuckDB connection.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 743x15 data.frame saved as `lData$Mapped_SUBJ`.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Returning results from final step: 743x15 data.frame`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 758x15 data.frame saved as `lData$Mapped_SUBJ`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Returning results from final step: 758x15 data.frame`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Completed `Mapped_SUBJ` Workflow</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run the metric workflow.</span></span></span>
-<span class="r-in"><span><span class="va">lMetricWorkflow</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html" class="external-link">MakeWorkflowList</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">lMetricWorkflow</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/workr/man/MakeWorkflowList.html" class="external-link">MakeWorkflowList</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  strPath <span class="op">=</span> <span class="st">"example_workflow/2_metrics"</span>,</span></span>
 <span class="r-in"><span>  strNames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kri0001"</span>, <span class="st">"kri0002"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  strPackage <span class="op">=</span> <span class="st">"gsm.core"</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">$</span><span class="va">kri0001</span></span></span>
-<span class="r-in"><span><span class="va">lMetricOutput</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://gilead-biostats.github.io/workr/reference/RunWorkflow.html" class="external-link">RunWorkflow</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">lMetricOutput</span> <span class="op">&lt;-</span> <span class="fu">workr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/workr/man/RunWorkflow.html" class="external-link">RunWorkflow</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">lMetricWorkflow</span>,</span></span>
 <span class="r-in"><span>  <span class="va">lMappedData</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -184,12 +184,12 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Input_Rate`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 743x6 data.frame saved as `lData$Analysis_Input`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 758x6 data.frame saved as `lData$Analysis_Input`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 3 of 7: `gsm.core::Transform_Rate`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 1 parameter(s) for `gsm.core::Transform_Rate`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfInput = Analysis_Input: Passing lData$Analysis_Input.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Transform_Rate`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 142x5 data.frame saved as `lData$Analysis_Transformed`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 146x5 data.frame saved as `lData$Analysis_Transformed`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfTransformed = Analysis_Transformed: Passing lData$Analysis_Transformed.</span>
@@ -197,7 +197,7 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Analyze_NormalApprox`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `OverallMetric`, `Factor`, and `Score` columns created from normal</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> approximation.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 142x8 data.frame saved as `lData$Analysis_Analyzed`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 146x8 data.frame saved as `lData$Analysis_Analyzed`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 5 of 7: `gsm.core::Flag`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 4 parameter(s) for `gsm.core::Flag`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfAnalyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.</span>
@@ -205,15 +205,15 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Flag`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 20 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X6850, 0X9625, 0X4921, 0X5738, 0X4592, 0X1177, 0X4914, 0X7463, 0X6839, 0X3401, 0X5880, 0X6828, 0X3030, 0X2826, 0X066, 0X8451, 0X7102, 0X7915, 0X1383, 0X2060</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 28 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X2435, 0X156, 0X5867, 0X7681, 0X2845, 0X7952, 0X9220, 0X1983, 0X3857, 0X3204, 0X5645, 0X2335, 0X5233, 0X8489, 0X7774, 0X6075, 0X3001, 0X3459, 0X2014, 0X7552, 0X7987, 0X766, 0X3686, 0X6068, 0X9000, 0X2524, 0X3730, 0X5451</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> These group(s) will not have KRI score and flag summarized.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 142x9 data.frame saved as `lData$Analysis_Flagged`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 146x9 data.frame saved as `lData$Analysis_Flagged`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 6 of 7: `gsm.core::Summarize`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 1 parameter(s) for `gsm.core::Summarize`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfFlagged = Analysis_Flagged: Passing lData$Analysis_Flagged.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Summarize`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 142x7 data.frame saved as `lData$Analysis_Summary`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 146x7 data.frame saved as `lData$Analysis_Summary`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 7 of 7: `list`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 6 parameter(s) for `list`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] ID = ID: Passing lMeta$ID.</span>
