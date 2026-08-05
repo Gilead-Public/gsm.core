@@ -6,7 +6,7 @@ test_that("Raw_Death contains deathcls column (#153)", {
   expect_true("deathcls" %in% names(lSource$Raw_Death))
 })
 
-test_that("Raw_Death deathcls contains expected death reason values (#153)", {
+test_that("Raw_Death deathcls contains expected death reason values (#153, #156)", {
   # Full gsm.datasim deathcls generator vocabulary (see gsm.datasim R/Raw_Death.R).
   # The prior list held only the three reasons the pre-regen lSource happened to
   # sample; the IP non-starter regen shifts the RNG stream and can surface any of
