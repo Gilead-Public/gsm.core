@@ -10,7 +10,7 @@ reportingMetrics
 
 ## Format
 
-A data frame with 16 rows and 20 columns:
+A data frame with 17 rows and 23 columns:
 
 - MetricID:
 
@@ -92,6 +92,18 @@ A data frame with 16 rows and 20 columns:
 - nPropRate:
 
   Proposed threshold
+
+- Active:
+
+  logical flag indicating whether the metric is active
+
+- GenerateRiskSignal:
+
+  logical flag indicating whether to generate a risk signal
+
+- WindowDays:
+
+  number of days in the metric's observation window
 
 ## Source
 

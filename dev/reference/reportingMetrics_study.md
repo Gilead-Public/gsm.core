@@ -10,7 +10,7 @@ reportingMetrics_study
 
 ## Format
 
-A data frame with 2 rows and 22 columns:
+A data frame with 2 rows and 23 columns:
 
 - MetricID:
 
@@ -100,6 +100,10 @@ A data frame with 2 rows and 22 columns:
 - GenerateRiskSignal:
 
   logical flag indicating whether to generate a risk signal
+
+- WindowDays:
+
+  number of days in the metric's observation window
 
 ## Source
 
