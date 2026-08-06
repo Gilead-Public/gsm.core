@@ -3,10 +3,10 @@
 # Mapped_NonStarter derivation (gsm.mapping#139) and the kri0016/cou0016
 # workflows (gsm.kri#258). Revert all three back to @dev once gsm.datasim#122
 # (PR #126), gsm.mapping#139 (PR #141) and gsm.kri#258 (PR #260) merge.
-pak::pak('Gilead-BioStats/gsm.datasim@feature-122-nonstarter-generators')
-pak::pak('Gilead-BioStats/gsm.mapping@feature-139-nonstarter-mapping')
+pak::pak('Gilead-BioStats/gsm.datasim@dev')
+pak::pak('Gilead-BioStats/gsm.mapping@dev')
 pak::pak('Gilead-BioStats/gsm.core@dev')
-pak::pak('Gilead-BioStats/gsm.kri@feature-258-nonstarter-metrics')
+pak::pak('Gilead-BioStats/gsm.kri@dev')
 
 library(gsm.core)
 library(gsm.mapping)
