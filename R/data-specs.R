@@ -313,5 +313,13 @@
 "lSource"
 
 df_dim_desc <- function(df) {
-  paste0("A data frame with ", dim(df)[1], " rows and ", dim(df)[2], " columns:")
+  # nocov start
+  paste0(
+    "A data frame with ",
+    dim(df)[1],
+    " rows and ",
+    dim(df)[2],
+    " columns:"
+  ) 
+  # nocov end
 }

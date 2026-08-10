@@ -1,6 +1,6 @@
 Package: gsm.core
 Title: Good Statistical Monitoring
-Version: 1.3.0
+Version: 1.3.1
 Authors@R: c(
     person("Jeremy", "Wildfire", , "jwildfire@gmail.com", role = c("aut", "cre")),
     person("George", "Wu", , "george.wu@gilead.com", role = "aut"),
@@ -38,13 +38,10 @@ Depends:
     R (>= 4.0)
 Imports:
     cli,
-    DBI,
-    dbplyr,
     dplyr,
-    duckdb,
     glue,
     lifecycle,
-    log4r,
+    lifecycle,
     magrittr,
     purrr,
     rlang (>= 0.4.11),
@@ -55,6 +52,9 @@ Imports:
 Suggests:
     broom,
     covr,
+    DBI,
+    dbplyr,
+    duckdb,
     gh,
     gt,
     knitr,
@@ -68,8 +68,7 @@ Suggests:
     usethis,
     withr
 Remotes:
-    workr=Gilead-BioStats/workr@main,
-    log4r=r-lib/log4r
+    workr=Gilead-BioStats/workr@main
 VignetteBuilder: 
     knitr
 Config/Needs/website: DT, here, pkgdown, devtools
@@ -80,4 +79,4 @@ Language: en-US
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.1.0

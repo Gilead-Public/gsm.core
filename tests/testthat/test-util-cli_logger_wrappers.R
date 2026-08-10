@@ -58,4 +58,7 @@ test_that("Use cli style messages via logger", {
   expect_error({
     LogMessage(level = "error", message = "cli style error")
   })
+  expect_error({
+    LogMessage(level = "fatal", message = "cli style fatal")
+  })
 })
