@@ -1,4 +1,4 @@
-# gsm.core 1.3.1
+# gsm.core v1.3.1
 
 This patch release removes the log4r package dependency, because the log4r package was archived on CRAN (#159).
 
