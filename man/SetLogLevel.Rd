@@ -3,6 +3,7 @@
 \name{SetLogLevel}
 \alias{SetLogLevel}
 \alias{SetLogLevel.character}
+\alias{SetLogLevel.loglevel}
 \alias{SetLogLevel.numeric}
 \alias{SetLogLevel.default}
 \title{Set the active log level}
@@ -10,6 +11,8 @@
 SetLogLevel(level)
 
 \method{SetLogLevel}{character}(level)
+
+\method{SetLogLevel}{loglevel}(level)
 
 \method{SetLogLevel}{numeric}(level)
 

@@ -3,6 +3,7 @@
 \name{SetLogger}
 \alias{SetLogger}
 \alias{SetLogger.character}
+\alias{SetLogger.loglevel}
 \alias{SetLogger.logger}
 \alias{SetLogger.default}
 \title{Set the logging threshold level}
@@ -10,6 +11,8 @@
 SetLogger(logger)
 
 \method{SetLogger}{character}(logger)
+
+\method{SetLogger}{loglevel}(logger)
 
 \method{SetLogger}{logger}(logger)
 
