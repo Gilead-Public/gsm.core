@@ -12,6 +12,9 @@ SetLogger(logger)
 # S3 method for class 'character'
 SetLogger(logger)
 
+# S3 method for class 'loglevel'
+SetLogger(logger)
+
 # S3 method for class 'logger'
 SetLogger(logger)
 
