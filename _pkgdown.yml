@@ -48,6 +48,8 @@ reference:
   - contents:
      -  cli_fmt
      -  CheckSpec
+     -  GetLogAppender
+     -  GetLogLevel
      -  GetStrFunctionIfNamespaced
      -  LogMessage
      -  MakeWorkflowList
@@ -57,6 +59,8 @@ reference:
      -  RunWorkflow
      -  RunWorkflows
      -  SetLogger
+     -  SetLogAppender
+     -  SetLogLevel
      -  stop_if
 
   - title: Sample Data

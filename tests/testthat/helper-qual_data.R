@@ -143,16 +143,9 @@ get_cached_mapped_data <- function(force_refresh = FALSE) {
   message("Updating cached mapped data...")
   mappings_wf <- workr::MakeWorkflowList(strPath = GetYamlPathMappings())
 
-  ConsoleAppender <- log4r::console_appender(layout = gsm.core::cli_fmt)
-  gsm.core::SetLogger(log4r::logger(
-    threshold = "WARN",
-    appenders = ConsoleAppender
-  ))
+  SetLogLevel("WARN")
   mapped_data <- workr::RunWorkflows(mappings_wf, lData)
-  gsm.core::SetLogger(log4r::logger(
-    "DEBUG",
-    appenders = ConsoleAppender
-  ))
+  SetLogLevel("DEBUG")
 
   saveRDS(mapped_data, cache_file)
   message("Cached mapped data updated successfully.")

@@ -1,6 +1,4 @@
-# Default logger object
-# Initialize a default logger at package load
 .onLoad <- function(libname, pkgname) {
-  logger <- logger("DEBUG", appenders = console_appender(layout = cli_fmt))
-  SetLogger(logger)
+  # Set the log level to the default value if it isn't already set.
+  SetLogger(GetLogLevel()) # nocov
 }
