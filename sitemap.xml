@@ -1,6 +1,5 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://gilead-biostats.github.io/gsm.core/404.html</loc></url>
-<url><loc>https://gilead-biostats.github.io/gsm.core/AGENTS.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/CONTRIBUTING.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/LICENSE.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html</loc></url>
@@ -22,6 +21,8 @@
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/Flag_Accrual.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/Flag_NormalApprox.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/Flag_Poisson.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/GetLogAppender.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/GetLogLevel.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/GetStrFunctionIfNamespaced.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/Input_Rate.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/LogMessage.html</loc></url>
@@ -31,6 +32,8 @@
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/RunStep.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/RunWorkflow.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/RunWorkflows.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/SetLogAppender.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/SetLogLevel.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/SetLogger.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/Summarize.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/Transform_Count.html</loc></url>
@@ -38,6 +41,7 @@
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/analyticsInput.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/analyticsSummary.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/cli_fmt.html</loc></url>
+<url><loc>https://gilead-biostats.github.io/gsm.core/reference/cli_fmt_inform.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/gsm.core-package.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/index.html</loc></url>
 <url><loc>https://gilead-biostats.github.io/gsm.core/reference/lSource.html</loc></url>

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gsm.core</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -156,7 +156,7 @@
           <code><a href="cli_fmt.html">cli_fmt()</a></code>
 
         </dt>
-        <dd>cli style console appender for gsm</dd>
+        <dd>cli-style console appender for gsm</dd>
 
         <dt>
 
@@ -164,6 +164,20 @@
           <span class="badge lifecycle lifecycle-stable">stable</span>
         </dt>
         <dd>Check if the data and spec are compatible</dd>
+
+        <dt>
+
+          <code><a href="GetLogAppender.html">GetLogAppender()</a></code>
+
+        </dt>
+        <dd>Get the current log appender function</dd>
+
+        <dt>
+
+          <code><a href="GetLogLevel.html">GetLogLevel()</a></code>
+
+        </dt>
+        <dd>Get the current logging threshold level</dd>
 
         <dt>
 
@@ -177,7 +191,7 @@
           <code><a href="LogMessage.html">LogMessage()</a></code>
 
         </dt>
-        <dd>Custom logging function that wraps cli messaging</dd>
+        <dd>Log a message via the active appender</dd>
 
         <dt>
 
@@ -226,14 +240,28 @@
           <code><a href="SetLogger.html">SetLogger()</a></code>
 
         </dt>
-        <dd>set the default package logger</dd>
+        <dd>Set the logging threshold level</dd>
+
+        <dt>
+
+          <code><a href="SetLogAppender.html">SetLogAppender()</a></code>
+
+        </dt>
+        <dd>Set the active log appender</dd>
+
+        <dt>
+
+          <code><a href="SetLogLevel.html">SetLogLevel()</a></code>
+
+        </dt>
+        <dd>Set the active log level</dd>
 
         <dt>
 
           <code><a href="stop_if.html">stop_if()</a></code>
 
         </dt>
-        <dd>Custom stop message</dd>
+        <dd>Stop execution if a condition is true</dd>
       </dl></div><div class="section level2">
       <h2 id="sample-data">Sample Data<a class="anchor" aria-label="anchor" href="#sample-data"></a></h2>
 

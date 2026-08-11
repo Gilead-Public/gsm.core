@@ -3,8 +3,8 @@
 **\[deprecated\]**
 
 `RunQuery()` has moved to
-[`workr::RunQuery()`](https://gilead-biostats.github.io/workr/reference/RunQuery.html).
-This wrapper remains for backward compatibility in `{gsm.core}`.
+[`workr::RunQuery()`](https://rdrr.io/pkg/workr/man/RunQuery.html). This
+wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage
 
@@ -49,10 +49,14 @@ query <- "SELECT * FROM df WHERE AGE > 30"
 
 result <- workr::RunQuery(query, df)
 #> [INFO] Creating a new temporary DuckDB connection.
-#> duckdb is keeping downloaded extensions in a temporary directory:
-#> ℹ /tmp/RtmpqBvpqX/duckdb/extensions
-#> This is removed when the R session ends, so extensions are re-downloaded each session.
-#> ℹ To keep them, point `options(duckdb.extension_directory =)` or the `DUCKDB_EXTENSION_DIRECTORY` environment variable at a permanent path.
+#> duckdb keeps downloaded extensions and secrets in a temporary directory:
+#> ℹ /tmp/Rtmpvj3eea/duckdb
+#> This is removed when the R session ends.
+#> • Extensions are re-downloaded each session.
+#> • Secrets are lost.
+#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
+#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+#> ℹ See ?duckdb_storage for details and alternatives.
 #> [INFO] SQL Query complete: 1 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
 ```

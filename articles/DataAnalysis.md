@@ -18,7 +18,7 @@ that is specified in each analysis workflow.
 
 All of these functions will run automatically and sequentially when a
 user calls
-[`workr::RunWorkflow()`](https://gilead-biostats.github.io/workr/reference/RunWorkflow.html)
+[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html)
 with a specified yaml file for KRI metrics found in the
 `workflow/2_metrics` directory of the
 [`{gsm.kri}`](https://github.com/Gilead-BioStats/gsm.kri) package.

@@ -1,19 +1,31 @@
-# cli style console appender for gsm
+# cli-style console appender for gsm
 
-cli style console appender for gsm
+Dispatches a log message to the appropriate `cli` function based on
+`level`. Used as the default log appender.
 
 ## Usage
 
 ``` r
-cli_fmt(level, ...)
+cli_fmt(level, message, cli_detail = NULL)
 ```
 
 ## Arguments
 
 - level:
 
-  warning level that maps to log4r
+  Log level: `"INFO"`, `"WARN"`, `"ERROR"`, or `"FATAL"`.
+  Case-insensitive.
 
-- ...:
+- message:
 
-  should contain message and cli_detail
+  Character string to display; may contain glue-style placeholders that
+  are evaluated in `.envir`.
+
+- cli_detail:
+
+  For `level = "INFO"`, the cli style to use. Passed through to the
+  active appender.
+
+## Value
+
+`NULL`, invisibly.

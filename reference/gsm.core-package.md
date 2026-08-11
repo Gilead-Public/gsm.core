@@ -11,7 +11,7 @@ Useful links:
 
 - <https://gilead-biostats.github.io/gsm.core>
 
-- <https://github.com/Gilead-BioStats/gsm.core,>
+- <https://github.com/Gilead-BioStats/gsm.core>,
 
 - Report bugs at <https://github.com/Gilead-BioStats/gsm.core/issues>
 
@@ -20,6 +20,8 @@ Useful links:
 **Maintainer**: Jeremy Wildfire <jwildfire@gmail.com>
 
 Authors:
+
+- Jeremy Wildfire <jwildfire@gmail.com>
 
 - George Wu <george.wu@gilead.com>
 

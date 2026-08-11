@@ -367,7 +367,7 @@ other Param values as needed.
 
 - Function used to create table: `gsm.reporting::MakeMetric()`
 - Inputs: `lWorkflows` - metadata for the corresponding kri(s) made with
-  [`workr::MakeWorkflowList()`](https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html)
+  [`workr::MakeWorkflowList()`](https://rdrr.io/pkg/workr/man/MakeWorkflowList.html)
 - Workflow used to create table: `3_reporting/Metrics.yaml` in
   `{gsm.reporting}`
 - Usage: Metadata used for charts and tables
@@ -389,12 +389,12 @@ other Param values as needed.
 
 Assessment workflow metadata objects are passed to the `lWorkflow`
 parameter in
-[`workr::RunWorkflow()`](https://gilead-biostats.github.io/workr/reference/RunWorkflow.html)
+[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html)
 to define functions and parameters across multiple studies.
 
 The `lWorkflow` object is a named list of metadata and steps defining
 how each assessment should be run. By default,
-[`workr::MakeWorkflowList()`](https://gilead-biostats.github.io/workr/reference/MakeWorkflowList.html)
+[`workr::MakeWorkflowList()`](https://rdrr.io/pkg/workr/man/MakeWorkflowList.html)
 imports YAML specifications from `workflow/2_metrics` in `{gsm.kri}`.
 Each item in `lWorkflow` expects the following parameters in the `steps`
 section:
