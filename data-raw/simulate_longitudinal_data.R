@@ -1,7 +1,7 @@
-pak::pak('Gilead-BioStats/gsm.datasim@dev')
-pak::pak('Gilead-BioStats/gsm.mapping@dev')
-pak::pak('Gilead-BioStats/gsm.core@dev')
-pak::pak('Gilead-BioStats/gsm.kri@dev')
+pak::pak('Gilead-Public/gsm.datasim@dev')
+pak::pak('Gilead-Public/gsm.mapping@dev')
+pak::pak('Gilead-Public/gsm.core@dev')
+pak::pak('Gilead-Public/gsm.kri@dev')
 
 library(gsm.core)
 library(gsm.mapping)
