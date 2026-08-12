@@ -1,6 +1,7 @@
-pak::pak('Gilead-BioStats/gsm.mapping@dev')
-pak::pak('Gilead-BioStats/gsm.core@dev')
-pak::pak('Gilead-BioStats/gsm.kri@dev')
+pak::pak('Gilead-Public/gsm.datasim@dev')
+pak::pak('Gilead-Public/gsm.mapping@dev')
+pak::pak('Gilead-Public/gsm.core@dev')
+pak::pak('Gilead-Public/gsm.kri@dev')
 
 library(gsm.core)
 library(gsm.mapping)
@@ -12,8 +13,28 @@ library(dplyr)
 library(stringr)
 set.seed(1234)
 
-core_mappings <- c("AE", "COUNTRY", "DATACHG", "DATAENT", "ENROLL", "LB", "VISIT", "Death", "OverallResponse", "Randomization",
-                   "PD", "PK", "QUERY", "STUDY", "STUDCOMP", "SDRGCOMP", "SITE", "SUBJ", "IE", "EXCLUSION")
+core_mappings <- c(
+  "AE",
+  "COUNTRY",
+  "DATACHG",
+  "DATAENT",
+  "ENROLL",
+  "LB",
+  "VISIT",
+  "Death",
+  "OverallResponse",
+  "Randomization",
+  "PD",
+  "PK",
+  "QUERY",
+  "STUDY",
+  "STUDCOMP",
+  "SDRGCOMP",
+  "SITE",
+  "SUBJ",
+  "IE",
+  "EXCLUSION"
+)
 
 basic_sim <- gsm.datasim::generate_rawdata_for_single_study(
   SnapshotCount = 3,
@@ -35,15 +56,31 @@ analyzed <- list()
 reporting <- list()
 dates <- as.Date(c("2025-02-01", "2025-03-01", "2025-04-01"))
 
-mappings_wf <- gsm.core::MakeWorkflowList(strNames = core_mappings, strPath = "workflow/1_mappings", strPackage = "gsm.mapping")
+# Mapped_NonStarter is derived from other mapped frames rather than a raw
+# domain, so it joins the workflow list but not the raw-data generation above.
+mapping_workflows <- c(core_mappings, "NonStarter")
+mappings_wf <- gsm.core::MakeWorkflowList(
+  strNames = mapping_workflows,
+  strPath = "workflow/1_mappings",
+  strPackage = "gsm.mapping"
+)
 mappings_spec <- gsm.mapping::CombineSpecs(mappings_wf)
 metrics_wf <- c(
-  gsm.core::MakeWorkflowList(strPath = "workflow/2_metrics", strPackage = "gsm.kri"),
-  gsm.core::MakeWorkflowList(strPath = "workflow/2_metrics", strPackage = "gsm.qtl")
+  gsm.core::MakeWorkflowList(
+    strPath = "workflow/2_metrics",
+    strPackage = "gsm.kri"
+  ),
+  gsm.core::MakeWorkflowList(
+    strPath = "workflow/2_metrics",
+    strPackage = "gsm.qtl"
+  )
 )
-reporting_wf <- gsm.core::MakeWorkflowList(strPath = "workflow/3_reporting", strPackage = "gsm.reporting")
+reporting_wf <- gsm.core::MakeWorkflowList(
+  strPath = "workflow/3_reporting",
+  strPackage = "gsm.reporting"
+)
 
-for(snap in seq_along(basic_sim)){
+for (snap in seq_along(basic_sim)) {
   lSource <- basic_sim[[snap]]
 
   lRaw <- gsm.mapping::Ingest(lSource, mappings_spec)
@@ -52,17 +89,29 @@ for(snap in seq_along(basic_sim)){
   mapped <- gsm.core::RunWorkflows(mappings_wf, lRaw)
 
   # Step 2 - Create Metrics - calculate metrics using mapped data
-  analyzed[[snap]] <- gsm.core::RunWorkflows(metrics_wf, c(mapped, list(lWorkflows = metrics_wf)))
+  analyzed[[snap]] <- gsm.core::RunWorkflows(
+    metrics_wf,
+    c(mapped, list(lWorkflows = metrics_wf))
+  )
 
   # Step 3 - Create Reporting Layer - create reports using metrics data
-  reporting[[snap]] <- gsm.core::RunWorkflows(reporting_wf, c(mapped, list(lAnalyzed = analyzed[[snap]], lWorkflows = metrics_wf)))
-  reporting[[snap]]$Reporting_Results$SnapshotDate = dates[snap]
-  reporting[[snap]]$Reporting_Bounds$SnapshotDate = dates[snap]
+  reporting[[snap]] <- gsm.core::RunWorkflows(
+    reporting_wf,
+    c(mapped, list(lAnalyzed = analyzed[[snap]], lWorkflows = metrics_wf))
+  )
+  reporting[[snap]]$Reporting_Results$SnapshotDate <- dates[snap]
+  reporting[[snap]]$Reporting_Bounds$SnapshotDate <- dates[snap]
 }
 
-all_reportingResults <- do.call(bind_rows, lapply(reporting, function(x) x$Reporting_Results))
+all_reportingResults <- do.call(
+  bind_rows,
+  lapply(reporting, function(x) x$Reporting_Results)
+)
 all_reportingGroups <- reporting[[snap]]$Reporting_Groups
-all_reportingBounds <- do.call(bind_rows, lapply(reporting, function(x) x$Reporting_Bounds))
+all_reportingBounds <- do.call(
+  bind_rows,
+  lapply(reporting, function(x) x$Reporting_Bounds)
+)
 all_reportingMetrics <- reporting[[snap]]$Reporting_Metrics
 
 #save site and country data separately
@@ -74,28 +123,28 @@ lReporting_site$Reporting_Results <- all_reportingResults %>%
   filter(GroupLevel %in% c("Site"))
 lReporting_site$Reporting_Groups <- all_reportingGroups %>%
   filter(GroupLevel %in% c("Study", "Site"))
-lReporting_site$Reporting_Bounds <-  all_reportingBounds %>%
+lReporting_site$Reporting_Bounds <- all_reportingBounds %>%
   filter(stringr::str_detect(MetricID, "Analysis_kri"))
 lReporting_site$Reporting_Metrics <- all_reportingMetrics %>%
   filter(GroupLevel %in% c("Site"))
 
 lReporting_country$Reporting_Results <- all_reportingResults %>%
-  filter(GroupLevel=="Country")
+  filter(GroupLevel == "Country")
 lReporting_country$Reporting_Groups <- all_reportingGroups %>%
-  filter(GroupLevel%in% c("Study","Country"))
+  filter(GroupLevel %in% c("Study", "Country"))
 lReporting_country$Reporting_Bounds <- all_reportingBounds %>%
   filter(stringr::str_detect(MetricID, "Analysis_cou"))
 lReporting_country$Reporting_Metrics <- all_reportingMetrics %>%
-  filter(GroupLevel=="Country")
+  filter(GroupLevel == "Country")
 
 lReporting_study$Reporting_Results <- all_reportingResults %>%
-  filter(GroupLevel=="Study")
+  filter(GroupLevel == "Study")
 lReporting_study$Reporting_Groups <- all_reportingGroups %>%
-  filter(GroupLevel%in% c("Study"))
+  filter(GroupLevel %in% c("Study"))
 lReporting_study$Reporting_Bounds <- all_reportingBounds %>%
   filter(stringr::str_detect(MetricID, "Analysis_qtl"))
 lReporting_study$Reporting_Metrics <- all_reportingMetrics %>%
-  filter(GroupLevel=="Study")
+  filter(GroupLevel == "Study")
 
 ## test out the data on a report
 # wf_report_site <- MakeWorkflowList(strNames = "report_kri_site", strPackage = "gsm.kri")
@@ -110,61 +159,93 @@ usethis::use_data(lSource, overwrite = TRUE)
 # write CSVs
 # analysis data
 ## site
-write.csv(file = "data-raw/analyticsSummary.csv",
-          x = analyzed[[3]]$Analysis_kri0001$Analysis_Summary,
-          row.names = F)
-write.csv(file = "data-raw/analyticsInput.csv",
-          x = analyzed[[3]]$Analysis_kri0001$Analysis_Input,
-          row.names = F)
+write.csv(
+  file = "data-raw/analyticsSummary.csv",
+  x = analyzed[[3]]$Analysis_kri0001$Analysis_Summary,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/analyticsInput.csv",
+  x = analyzed[[3]]$Analysis_kri0001$Analysis_Input,
+  row.names = F
+)
 
 ## country
-write.csv(file = "data-raw/analyticsSummary_country.csv",
-          x = analyzed[[3]]$Analysis_cou0001$Analysis_Summary,
-          row.names = F)
-write.csv(file = "data-raw/analyticsInput_country.csv",
-          x = analyzed[[3]]$Analysis_cou0001$Analysis_Input,
-          row.names = F)
+write.csv(
+  file = "data-raw/analyticsSummary_country.csv",
+  x = analyzed[[3]]$Analysis_cou0001$Analysis_Summary,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/analyticsInput_country.csv",
+  x = analyzed[[3]]$Analysis_cou0001$Analysis_Input,
+  row.names = F
+)
 
 
 # reporting data
 ## site
-write.csv(file = "data-raw/reportingGroups.csv",
-          x = lReporting_site$Reporting_Groups,
-          row.names = F)
-write.csv(file = "data-raw/reportingBounds.csv",
-          x = lReporting_site$Reporting_Bounds,
-          row.names = F)
-write.csv(file = "data-raw/reportingMetrics.csv",
-          x = lReporting_site$Reporting_Metrics,
-          row.names = F)
-write.csv(file = "data-raw/reportingResults.csv",
-          x = lReporting_site$Reporting_Results,
-          row.names = F)
+write.csv(
+  file = "data-raw/reportingGroups.csv",
+  x = lReporting_site$Reporting_Groups,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingBounds.csv",
+  x = lReporting_site$Reporting_Bounds,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingMetrics.csv",
+  x = lReporting_site$Reporting_Metrics,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingResults.csv",
+  x = lReporting_site$Reporting_Results,
+  row.names = F
+)
 
 ##country
-write.csv(file = "data-raw/reportingGroups_country.csv",
-          x = lReporting_country$Reporting_Groups,
-          row.names = F)
-write.csv(file = "data-raw/reportingBounds_country.csv",
-          x = lReporting_country$Reporting_Bounds,
-          row.names = F)
-write.csv(file = "data-raw/reportingMetrics_country.csv",
-          x = lReporting_country$Reporting_Metrics,
-          row.names = F)
-write.csv(file = "data-raw/reportingResults_country.csv",
-          x = lReporting_country$Reporting_Results,
-          row.names = F)
+write.csv(
+  file = "data-raw/reportingGroups_country.csv",
+  x = lReporting_country$Reporting_Groups,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingBounds_country.csv",
+  x = lReporting_country$Reporting_Bounds,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingMetrics_country.csv",
+  x = lReporting_country$Reporting_Metrics,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingResults_country.csv",
+  x = lReporting_country$Reporting_Results,
+  row.names = F
+)
 
 ##study
-write.csv(file = "data-raw/reportingGroups_study.csv",
-          x = lReporting_study$Reporting_Groups,
-          row.names = F)
-write.csv(file = "data-raw/reportingBounds_study.csv",
-          x = lReporting_study$Reporting_Bounds,
-          row.names = F)
-write.csv(file = "data-raw/reportingMetrics_study.csv",
-          x = lReporting_study$Reporting_Metrics,
-          row.names = F)
-write.csv(file = "data-raw/reportingResults_study.csv",
-          x = lReporting_study$Reporting_Results,
-          row.names = F)
+write.csv(
+  file = "data-raw/reportingGroups_study.csv",
+  x = lReporting_study$Reporting_Groups,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingBounds_study.csv",
+  x = lReporting_study$Reporting_Bounds,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingMetrics_study.csv",
+  x = lReporting_study$Reporting_Metrics,
+  row.names = F
+)
+write.csv(
+  file = "data-raw/reportingResults_study.csv",
+  x = lReporting_study$Reporting_Results,
+  row.names = F
+)

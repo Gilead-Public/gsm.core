@@ -6,7 +6,7 @@
 #' Residual and Predicted Count for each site.
 #'
 #' More information can be found in [The Poisson Regression
-#' Method](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method)
+#' Method](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method)
 #' of the KRI Method vignette.
 #'
 #' @section Statistical Methods:
@@ -20,7 +20,7 @@
 #' @param dfTransformed `data.frame` Transformed data for analysis. Data should
 #'   have one record per site with expected columns: `GroupID`, `GroupLevel`,
 #'   `Numerator`, `Denominator`, and `Metric`. For more details see the
-#'   [Data Model article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+#'   [Data Model article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
 #'   For this function, `dfTransformed` should typically be created using
 #'   [Transform_Rate()].
 #'

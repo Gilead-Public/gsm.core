@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 # Overview
 
 This vignette outlines the statistical methods used to evaluate Key Risk Indicators (KRIs) in the {gsm} suite of packages. KRIs are metrics that allow users to measure pre-defined risks and determine the level of observed risk to data quality and patient safety in a clinical trial. The {gsm} suite of packages  implements a standardized data pipeline to facilitate KRI analysis. Other vignettes provide an overview of this framework ([1](Cookbook.html) [2](DataModel.html), [3](DataAnalysis.html),
-[4](https://gilead-biostats.github.io/gsm.reporting/articles/DataReporting.html)), and the statistical methods for this process are described in detail below.
+[4](https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html)), and the statistical methods for this process are described in detail below.
 
 `{gsm.core}` calculates KRIs by defining a numerator and a denominator for each metric. Then by default, `{gsm.core}` calculates z-scores using a normal approximation with adjustment for over-dispersion to assign risk levels. 
 

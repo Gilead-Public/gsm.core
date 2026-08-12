@@ -5,7 +5,7 @@
 \alias{analyticsInput}
 \title{analyticsInput Dataset}
 \format{
-A data frame with 760 rows and 6 columns:
+A data frame with 758 rows and 6 columns:
 \describe{
 \item{SubjectID}{unique subject identifier}
 \item{GroupID}{grouping variable}

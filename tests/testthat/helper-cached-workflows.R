@@ -299,8 +299,8 @@ get_cached_workflows <- function(
 
   # Repository mapping
   repo_map <- list(
-    "gsm.kri" = "Gilead-BioStats/gsm.kri",
-    "gsm.mapping" = "Gilead-BioStats/gsm.mapping"
+    "gsm.kri" = "Gilead-Public/gsm.kri",
+    "gsm.mapping" = "Gilead-Public/gsm.mapping"
   )
 
   repo <- repo_map[[strPackage]]
