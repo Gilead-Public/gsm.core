@@ -88,7 +88,7 @@ mapped <- workr::RunWorkflows(wf_mapping, lRaw)
 #>   Please report the issue to the authors.
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmppg1Rd1/duckdb
+#> ℹ /tmp/RtmptYhxL7/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
