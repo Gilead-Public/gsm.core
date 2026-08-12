@@ -31,9 +31,9 @@ Description: The Good Statistical Monitoring or 'gsm' suite of R packages
     workflow execution utilities are provided by the companion package
     'workr'.
 License: Apache License (>= 2)
-URL: https://gilead-biostats.github.io/gsm.core,
-    https://github.com/Gilead-BioStats/gsm.core,
-BugReports: https://github.com/Gilead-BioStats/gsm.core/issues
+URL: https://gilead-public.github.io/gsm.core,
+    https://github.com/Gilead-Public/gsm.core,
+BugReports: https://github.com/Gilead-Public/gsm.core/issues
 Depends: 
     R (>= 4.0)
 Imports:
@@ -68,7 +68,7 @@ Suggests:
     usethis,
     withr
 Remotes:
-    workr=Gilead-BioStats/workr@main
+    workr=Gilead-Public/workr@main
 VignetteBuilder: 
     knitr
 Config/Needs/website: DT, here, pkgdown, devtools

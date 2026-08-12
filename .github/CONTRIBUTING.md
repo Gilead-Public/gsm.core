@@ -20,7 +20,7 @@ Issues are the primary way to communicate what needs to be done and to track pro
 
 
 
-The issue templates automatically appear when you select `New Issue` to create a new issue in a given repository, are maintained in {[gsm.utils](https://github.com/Gilead-BioStats/gsm.utils)} and automatically updated in all gsm packages whenever updates are made. Note that suggestions or other input that might not warrant formal submission of an issue can be filed in the Github `Discussions` tab for that repository, which can help facilitate discourse of specific use-cases or requests.
+The issue templates automatically appear when you select `New Issue` to create a new issue in a given repository, are maintained in {[gsm.utils](https://github.com/Gilead-Public/gsm.utils)} and automatically updated in all gsm packages whenever updates are made. Note that suggestions or other input that might not warrant formal submission of an issue can be filed in the Github `Discussions` tab for that repository, which can help facilitate discourse of specific use-cases or requests.
 
 ---
 
@@ -157,7 +157,7 @@ GitHub Actions run automatically on Pull Requests and other repository events to
 
 ### Workflow Configuration
 
-Most workflows are generated and maintained through [`gsm.utils`](https://github.com/Gilead-BioStats/gsm.utils) to ensure consistency across all GSM packages. The one exception to this is `qcthat.yaml` which is maintained in the [`qcthat`](https://github.com/Gilead-BioStats/qcthat) package. Key features:
+Most workflows are generated and maintained through [`gsm.utils`](https://github.com/Gilead-Public/gsm.utils) to ensure consistency across all GSM packages. The one exception to this is `qcthat.yaml` which is maintained in the [`qcthat`](https://github.com/Gilead-Public/qcthat) package. Key features:
 
 - **Automatic triggers**: Workflows run on relevant events (PRs, pushes, releases)
 - **Multi-platform support**: Testing across Linux, macOS, and Windows

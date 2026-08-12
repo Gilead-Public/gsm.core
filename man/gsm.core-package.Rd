@@ -11,9 +11,9 @@ The Good Statistical Monitoring or 'gsm' suite of R packages provides a framewor
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://gilead-biostats.github.io/gsm.core}
-  \item \url{https://github.com/Gilead-BioStats/gsm.core},
-  \item Report bugs at \url{https://github.com/Gilead-BioStats/gsm.core/issues}
+  \item \url{https://gilead-public.github.io/gsm.core}
+  \item \url{https://github.com/Gilead-Public/gsm.core,}
+  \item Report bugs at \url{https://github.com/Gilead-Public/gsm.core/issues}
 }
 
 }
@@ -22,7 +22,6 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Jeremy Wildfire \email{jwildfire@gmail.com}
   \item George Wu \email{george.wu@gilead.com}
   \item Spencer Childress \email{spencer.childress@gilead.com} (\href{https://orcid.org/0000-0001-6877-8511}{ORCID})
   \item Laura Maxwell \email{laura.maxwell@atorusresearch.com}

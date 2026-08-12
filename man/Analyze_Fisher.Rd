@@ -10,7 +10,7 @@ Analyze_Fisher(dfTransformed, strOutcome = "Numerator")
 \item{dfTransformed}{\code{data.frame} Transformed data for analysis. Data should
 have one record per site with expected columns: \code{GroupID}, \code{GroupLevel},
 \code{Numerator}, \code{Denominator}, and \code{Metric}. For more details see the
-\href{https://gilead-biostats.github.io/gsm.core/articles/DataModel.html}{Data Model article}.
+\href{https://gilead-public.github.io/gsm.core/articles/DataModel.html}{Data Model article}.
 For this function, \code{dfTransformed} should typically be created using
 \code{\link[=Transform_Rate]{Transform_Rate()}}.}
 
@@ -27,7 +27,7 @@ Estimate, and Score.
 
 Analyzes count data using the Fisher's exact test.
 
-More information can be found in \href{https://gilead-biostats.github.io/gsm.core/articles/KRI\%20Method.html#the-fishers-exact-method}{The Fisher's Exact Method Section}
+More information can be found in \href{https://gilead-public.github.io/gsm.core/articles/KRI\%20Method.html#the-fishers-exact-method}{The Fisher's Exact Method Section}
 of the KRI Method vignette.
 }
 \section{Statistical Methods}{

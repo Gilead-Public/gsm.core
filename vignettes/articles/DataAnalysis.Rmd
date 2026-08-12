@@ -27,7 +27,7 @@ These functions provide data frames, visualizations, and metadata to be used in 
 
 ![](data_analysis.png){width="100%"} 
 
-All of these functions will run automatically and sequentially when a user calls `workr::RunWorkflow()` with a specified yaml file for KRI metrics found in the `workflow/2_metrics` directory of the [`{gsm.kri}`](https://github.com/Gilead-BioStats/gsm.kri) package.
+All of these functions will run automatically and sequentially when a user calls `workr::RunWorkflow()` with a specified yaml file for KRI metrics found in the `workflow/2_metrics` directory of the [`{gsm.kri}`](https://github.com/Gilead-Public/gsm.kri) package.
 
 Each of these individual functions can also be run independently outside of a specified yaml workflow.
 
@@ -37,7 +37,7 @@ For the purposes of this documentation, we will evaluate the input(s) and output
 
 ## Case Study - Step-by-Step Adverse Event KRI
 
-We will use sample clinical data simulated with the [`{gsm.datasim}`](https://github.com/Gilead-BioStats/gsm.datasim) package to run the Adverse Events (AE) Assessment, i.e., `AE_Assess()`, using the normal approximation method.
+We will use sample clinical data simulated with the [`{gsm.datasim}`](https://github.com/Gilead-Public/gsm.datasim) package to run the Adverse Events (AE) Assessment, i.e., `AE_Assess()`, using the normal approximation method.
 
 Additional statistical methods and supporting functions are explored in [Appendix 1](#appendix-1).
 
@@ -217,7 +217,7 @@ The following sections include various examples of supporting functions and stat
 
 ### What Statistical Models Are Available For Each Assessment?
 
--   By default, all yaml workflow assessments specified in the `inst/workflow/` directory of the `{gsm.kri}` package use the [normal approximation](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-normal-approximation-method) method.
--   Optionally, other statistical methods include: [**Poisson**](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method), [**Fisher's Exact**](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-fishers-exact-method), and [**Identity**](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-identity-method).
+-   By default, all yaml workflow assessments specified in the `inst/workflow/` directory of the `{gsm.kri}` package use the [normal approximation](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-normal-approximation-method) method.
+-   Optionally, other statistical methods include: [**Poisson**](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method), [**Fisher's Exact**](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-fishers-exact-method), and [**Identity**](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-identity-method).
 
 ![](data_analysis_combined.png){width="100%"}
