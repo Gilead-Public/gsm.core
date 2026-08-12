@@ -6,7 +6,7 @@ Used in the data pipeline between `Transform` and `Flag` to rename KRI
 and Score columns.
 
 More information can be found in [The Identity
-Method](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-identity-method)
+Method](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-identity-method)
 of the KRI Method vignette.
 
 ## Usage
@@ -23,9 +23,9 @@ Analyze_Identity(dfTransformed, strValueCol = "Metric")
   record per site with expected columns: `GroupID`, `GroupLevel`,
   `Numerator`, `Denominator`, and `Metric`. For more details see the
   [Data Model
-  article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+  article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
   For this function, `dfTransformed` should typically be created using
-  [`Transform_Count()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Transform_Count.md).
+  [`Transform_Count()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Count.md).
 
 - strValueCol:
 

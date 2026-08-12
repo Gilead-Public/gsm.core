@@ -6,7 +6,7 @@ Creates analysis results data for percentage/rate data using funnel plot
 method with normal approximation.
 
 More information can be found in [The Normal Approximation
-Method](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-normal-approximation-method)
+Method](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-normal-approximation-method)
 of the KRI Method vignette.
 
 ## Usage
@@ -23,9 +23,9 @@ Analyze_NormalApprox(dfTransformed, strType = "binary")
   record per site with expected columns: `GroupID`, `GroupLevel`,
   `Numerator`, `Denominator`, and `Metric`. For more details see the
   [Data Model
-  article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+  article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
   For this function, `dfTransformed` should typically be created using
-  [`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Transform_Rate.md).
+  [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Rate.md).
 
 - strType:
 

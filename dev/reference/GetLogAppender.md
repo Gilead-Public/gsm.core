@@ -11,4 +11,4 @@ GetLogAppender()
 ## Value
 
 A function used as the log appender. Defaults to
-[cli_fmt](https://gilead-biostats.github.io/gsm.core/dev/reference/cli_fmt.md).
+[cli_fmt](https://gilead-public.github.io/gsm.core/dev/reference/cli_fmt.md).

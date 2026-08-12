@@ -42,7 +42,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-BioStats/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-Public/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -51,29 +51,29 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="pkgdown-devel">
-<p><a href="https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml/badge.svg?branch=dev" alt="R-CMD-check"></a> <a href="https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml" class="external-link"><img src="https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml/badge.svg?branch=dev" alt="test-coverage"></a> <a href="https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml" class="external-link"><img src="https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml/badge.svg?branch=dev" alt="pkgdown-all"></a></p>
+<p><a href="https://github.com/Gilead-Public/gsm.core/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/Gilead-Public/gsm.core/actions/workflows/R-CMD-check.yaml/badge.svg?branch=dev" alt="R-CMD-check"></a> <a href="https://github.com/Gilead-Public/gsm.core/actions/workflows/test-coverage.yaml" class="external-link"><img src="https://github.com/Gilead-Public/gsm.core/actions/workflows/test-coverage.yaml/badge.svg?branch=dev" alt="test-coverage"></a> <a href="https://github.com/Gilead-Public/gsm.core/actions/workflows/pkgdown-all.yaml" class="external-link"><img src="https://github.com/Gilead-Public/gsm.core/actions/workflows/pkgdown-all.yaml/badge.svg?branch=dev" alt="pkgdown-all"></a></p>
 </div>
 <!-- badges: end -->
 <div class="section level1">
 <div class="page-header"><h1 id="good-statistical-monitoring-gsmcore-r-package">Good Statistical Monitoring <code>{gsm.core}</code> R package<a class="anchor" aria-label="anchor" href="#good-statistical-monitoring-gsmcore-r-package"></a>
 </h1></div>
-<p>The <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> package provides the analytical foundation for a standardized Risk Based Quality Monitoring (RBQM) framework for clinical trials that pairs a flexible data pipeline with robust reports like the one shown below.</p>
+<p>The <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> package provides the analytical foundation for a standardized Risk Based Quality Monitoring (RBQM) framework for clinical trials that pairs a flexible data pipeline with robust reports like the one shown below.</p>
 <center>
 <img src="reference/figures/gsm_report_screenshot_1.png">
 </center>
-<p>This README provides a high-level overview of <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>; see the <a href="https://gilead-biostats.github.io/gsm.core/">package website</a> for additional details.</p>
-<p>The <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> package is a successor package to <a href="https://github.com/Gilead-BioStats/gsm" class="external-link"><code>{gsm}</code></a>, which has been deprecated as of March 2025. The contents of <code>{gsm}</code> have been split out among 4 packages as follows:</p>
+<p>This README provides a high-level overview of <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>; see the <a href="https://gilead-public.github.io/gsm.core/">package website</a> for additional details.</p>
+<p>The <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> package is a successor package to <a href="https://github.com/Gilead-Public/gsm" class="external-link"><code>{gsm}</code></a>, which has been deprecated as of March 2025. The contents of <code>{gsm}</code> have been split out among 4 packages as follows:</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong><a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a></strong>: A package containing the analytics functionality used to construct and evaluate metrics.</li>
+<strong><a href="https://gilead-public.github.io/gsm.core">gsm.core</a></strong>: A package containing the analytics functionality used to construct and evaluate metrics.</li>
 <li>
-<a href="https://github.com/Gilead-BioStats/workr" class="external-link"><strong><code>{workr}</code></strong></a>: A package that provides the workflow runtime used to execute YAML-defined steps and workflows.</li>
+<a href="https://github.com/Gilead-Public/workr" class="external-link"><strong><code>{workr}</code></strong></a>: A package that provides the workflow runtime used to execute YAML-defined steps and workflows.</li>
 <li>
-<a href="https://github.com/Gilead-BioStats/gsm.mapping" class="external-link"><strong><code>{gsm.mapping}</code></strong></a>: A package that provides workflows to apply the necessary data transformation from raw/source datasets to appropriate domains.</li>
+<a href="https://github.com/Gilead-Public/gsm.mapping" class="external-link"><strong><code>{gsm.mapping}</code></strong></a>: A package that provides workflows to apply the necessary data transformation from raw/source datasets to appropriate domains.</li>
 <li>
-<a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link"><strong><code>{gsm.kri}</code></strong></a>: A package that provides workflows to generate metrics and functionality to visualize and report on these metrics.</li>
+<a href="https://github.com/Gilead-Public/gsm.kri" class="external-link"><strong><code>{gsm.kri}</code></strong></a>: A package that provides workflows to generate metrics and functionality to visualize and report on these metrics.</li>
 <li>
-<a href="https://github.com/Gilead-BioStats/gsm.reporting" class="external-link"><strong><code>{gsm.reporting}</code></strong></a>: A package that provides workflows to generate the reporting data model needed to generate reports.</li>
+<a href="https://github.com/Gilead-Public/gsm.reporting" class="external-link"><strong><code>{gsm.reporting}</code></strong></a>: A package that provides workflows to generate the reporting data model needed to generate reports.</li>
 </ol>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -81,19 +81,19 @@
 <p>You can install the latest release of gsm.core from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"Gilead-BioStats/gsm.core@*release"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"Gilead-Public/gsm.core@*release"</span><span class="op">)</span></span></code></pre></div>
 <div class="pkgdown-devel">
 <p>You can install the development version of gsm.core from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"Gilead-BioStats/gsm.core"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"Gilead-Public/gsm.core"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
 <div class="section level1">
 <h1 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h1>
-<p>The <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> package lays the framework to perform risk assessments primarily focused on detecting differences in quality at the site-level. “High quality” is defined as the absence of errors that matter. We interpret this as focusing on detecting potential issues related to critical data or process across the major risk categories of safety, efficacy, disposition, treatment, and general quality, where each category consists of one or more risk assessment(s). Each risk assessment will analyze the data to flag sites with potential issues and provide a visualization to help the user understand the issue. Some relevant references are provided below.</p>
+<p>The <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> package lays the framework to perform risk assessments primarily focused on detecting differences in quality at the site-level. “High quality” is defined as the absence of errors that matter. We interpret this as focusing on detecting potential issues related to critical data or process across the major risk categories of safety, efficacy, disposition, treatment, and general quality, where each category consists of one or more risk assessment(s). Each risk assessment will analyze the data to flag sites with potential issues and provide a visualization to help the user understand the issue. Some relevant references are provided below.</p>
 <ul>
 <li>Centralized Statistical Monitoring: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7308734/" class="external-link">1</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/38796099/" class="external-link">2</a>
 </li>
@@ -108,7 +108,7 @@
 <div class="section level1">
 <h1 id="process-overview">Process Overview<a class="anchor" aria-label="anchor" href="#process-overview"></a>
 </h1>
-<p>The <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> package is the foundation of a data pipeline for RBM using R. The package, along with <code>{gsm.mapping}</code>, <code>{gsm.kri}</code> and <code>{gsm.reporting}</code> provides a framework that allows users to <strong>assess</strong> and <strong>visualize</strong> site-level risk in clinical trial data. The packages currently provide assessments for the following domains:</p>
+<p>The <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> package is the foundation of a data pipeline for RBM using R. The package, along with <code>{gsm.mapping}</code>, <code>{gsm.kri}</code> and <code>{gsm.reporting}</code> provides a framework that allows users to <strong>assess</strong> and <strong>visualize</strong> site-level risk in clinical trial data. The packages currently provide assessments for the following domains:</p>
 <ol style="list-style-type: decimal">
 <li>Adverse Event Reporting Rate</li>
 <li>Serious Adverse Event Reporting Rate</li>
@@ -126,7 +126,7 @@
 <li>Ineligibility</li>
 <li>Premature Death Rate</li>
 </ol>
-<p>All <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> assessments use a standardized 6 step data pipeline:</p>
+<p>All <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> assessments use a standardized 6 step data pipeline:</p>
 <ol style="list-style-type: decimal">
 <li>
 <strong>Input_Rate</strong> - Converts <code>raw</code> data to <code>input</code> data.</li>
@@ -141,19 +141,19 @@
 <li>
 <strong>Summarize</strong> - Selects key columns from <code>flagged</code> data to create <code>summary</code> data.</li>
 </ol>
-<p>To learn more about <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>’s data pipeline, visit the <a href="https://gilead-biostats.github.io/gsm.core/articles/DataModel.html">Data Pipeline article</a>.</p>
+<p>To learn more about <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>’s data pipeline, visit the <a href="https://gilead-public.github.io/gsm.core/articles/DataModel.html">Data Pipeline article</a>.</p>
 </div>
 <div class="section level1">
 <h1 id="reporting">Reporting<a class="anchor" aria-label="anchor" href="#reporting"></a>
 </h1>
-<p>Detailed RMarkdown/HTML reporting is built into <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>, and provides a detailed overview of all risk assessments for a given trial. For example, an AE risk assessment looks like this:</p>
+<p>Detailed RMarkdown/HTML reporting is built into <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>, and provides a detailed overview of all risk assessments for a given trial. For example, an AE risk assessment looks like this:</p>
 <center>
 <img src="reference/figures/gsm_report_screenshot_2.png">
 </center>
 <p>Full reports for a sample trial run with <a href="https://github.com/Gilead-BioStats/clindata" class="external-link"><code>{clindata}</code></a> are provided below:</p>
 <ul>
-<li><a href="https://gilead-biostats.github.io/gsm.kri/examples/Example_SiteReport.html" class="external-link">Site Report</a></li>
-<li><a href="https://gilead-biostats.github.io/gsm.kri/examples/Example_CountryReport.html" class="external-link">Country Report</a></li>
+<li><a href="https://gilead-public.github.io/gsm.kri/examples/Example_SiteReport.html" class="external-link">Site Report</a></li>
+<li><a href="https://gilead-public.github.io/gsm.kri/examples/Example_CountryReport.html" class="external-link">Country Report</a></li>
 </ul>
 </div>
 <div class="section level1">
@@ -166,22 +166,22 @@
 <p>See the “Process Overview” section above and then check out these articles:</p>
 <ul>
 <li>
-<a href="https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html">Step-by-Step Analysis Workflow Vignette</a> walks users the step-by-step process for creating metrics (KRIs, QTLs, etc) in {gsm}.</li>
+<a href="https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html">Step-by-Step Analysis Workflow Vignette</a> walks users the step-by-step process for creating metrics (KRIs, QTLs, etc) in {gsm}.</li>
 <li>
-<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html" class="external-link">Adverse Event KRI Cookbook Example</a> provides hands-on examples of how to customize KRI metrics related to Adverse events.</li>
+<a href="https://gilead-public.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html" class="external-link">Adverse Event KRI Cookbook Example</a> provides hands-on examples of how to customize KRI metrics related to Adverse events.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="how-do-i-evaluate-a-study">How do I evaluate a study?<a class="anchor" aria-label="anchor" href="#how-do-i-evaluate-a-study"></a>
 </h2>
-<p>The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. Runtime execution is provided by <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a>, while <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> provides the analytical functions used inside those workflows. See the articles below for details and examples.</p>
+<p>The {gsm} workflow process allows creation of reusable pipelines for study (or even cross-study) data snapshots including data mapping, calculation of multiple metrics and creation of reports. Runtime execution is provided by <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a>, while <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> provides the analytical functions used inside those workflows. See the articles below for details and examples.</p>
 <ul>
 <li>
-<a href="https://gilead-biostats.github.io/gsm.core/articles/DataModel.html">Data Model Vignette</a> explains the data pipeline used to calculate multiple metrics and generate study-level reports.</li>
+<a href="https://gilead-public.github.io/gsm.core/articles/DataModel.html">Data Model Vignette</a> explains the data pipeline used to calculate multiple metrics and generate study-level reports.</li>
 <li>
-<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html" class="external-link">Adverse Event Workflow Example</a> demonstrates how to create a configurable workflow using YAML to define the analysis pipeline.</li>
+<a href="https://gilead-public.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html" class="external-link">Adverse Event Workflow Example</a> demonstrates how to create a configurable workflow using YAML to define the analysis pipeline.</li>
 <li>
-<a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_ReportingWorkflow.html" class="external-link">Reporting Workflow Example</a> demonstrates a complete workflow from raw data to KRI reports using standard metrics.</li>
+<a href="https://gilead-public.github.io/gsm.kri/dev/examples/Cookbook_ReportingWorkflow.html" class="external-link">Reporting Workflow Example</a> demonstrates a complete workflow from raw data to KRI reports using standard metrics.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -190,7 +190,7 @@
 <p>The {gsm} framework is designed to be highly modular and customizable. The sections above show examples of customized metrics and workflows. It’s also straightforward to add entire custom modules that add new mappings, metrics and reports. See the vignette below for details.</p>
 <ul>
 <li>
-<a href="https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html">gsm Extensions Vignette</a> describes how to extend {gsm.core} by creating new ‘modules’, including metrics, reports and shiny apps that can be run using the standard gsm pipeline.</li>
+<a href="https://gilead-public.github.io/gsm.core/articles/gsmExtensions.html">gsm Extensions Vignette</a> describes how to extend {gsm.core} by creating new ‘modules’, including metrics, reports and shiny apps that can be run using the standard gsm pipeline.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -198,11 +198,11 @@
 </h2>
 <p>Here are links to sample reports that are available in the {gsm} family of packages. We’re working on adding more all the time and will continue adding examples to this list as they are released.</p>
 <ul>
-<li><a href="https://gilead-biostats.github.io/gsm.kri/examples/Example_SiteReport.html" class="external-link">Site KRI Report</a></li>
-<li><a href="https://gilead-biostats.github.io/gsm.kri/examples/Example_CountryReport.html" class="external-link">Country KRI Report</a></li>
-<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html" class="external-link">Eligibility Report</a></li>
-<li><a href="https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html" class="external-link">Cross-Study Site Risk Score Report</a></li>
-<li><a href="https://gilead-biostats.github.io/gsm.qtl/examples/Example_QTL.html" class="external-link">QTL Report</a></li>
+<li><a href="https://gilead-public.github.io/gsm.kri/examples/Example_SiteReport.html" class="external-link">Site KRI Report</a></li>
+<li><a href="https://gilead-public.github.io/gsm.kri/examples/Example_CountryReport.html" class="external-link">Country KRI Report</a></li>
+<li><a href="https://gilead-public.github.io/gsm.kri/dev/examples/Example_Eligibility.html" class="external-link">Eligibility Report</a></li>
+<li><a href="https://gilead-public.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html" class="external-link">Cross-Study Site Risk Score Report</a></li>
+<li><a href="https://gilead-public.github.io/gsm.qtl/examples/Example_QTL.html" class="external-link">QTL Report</a></li>
 <li><a href="https://rinpharma.shinyapps.io/gsm-app/" class="external-link">Good Statistical Monitoring Shiny App</a></li>
 </ul>
 </div>
@@ -244,7 +244,7 @@
 <li>
 <strong>Code Review</strong> - All changes reviewed and approved via GitHub Pull Requests by QC programmers.</li>
 <li>
-<strong>Continuous Integration</strong> - Automated workflows via GitHub Actions. Full list of GitHub Actions utilized can be found in the <a href="https://gilead-biostats.github.io/gsm.utils/index.html#github-actions-workflows" class="external-link">GitHub Actions Workflows</a> section of the <a href="https://gilead-biostats.github.io/gsm.utils" class="external-link">gsm.utils</a> package.</li>
+<strong>Continuous Integration</strong> - Automated workflows via GitHub Actions. Full list of GitHub Actions utilized can be found in the <a href="https://gilead-public.github.io/gsm.utils/index.html#github-actions-workflows" class="external-link">GitHub Actions Workflows</a> section of the <a href="https://gilead-biostats.github.io/gsm.utils" class="external-link">gsm.utils</a> package.</li>
 <li>
 <strong>Package Checks</strong> - Standard R package checks must pass before PRs are merged.</li>
 </ul>
@@ -252,7 +252,7 @@
 <div class="section level2">
 <h2 id="qualification-framework">Qualification Framework<a class="anchor" aria-label="anchor" href="#qualification-framework"></a>
 </h2>
-<p>{gsm.core} utilizes <a href="https://gilead-biostats.github.io/qcthat/index.html" class="external-link"><code>{qcthat}</code></a> package that provides a structured qualification process by:</p>
+<p>{gsm.core} utilizes <a href="https://gilead-public.github.io/qcthat/index.html" class="external-link"><code>{qcthat}</code></a> package that provides a structured qualification process by:</p>
 <ul>
 <li>Linking package requirements (documented as GitHub issues) to qualification and unit tests</li>
 <li>Generating automated qualification reports showing requirement coverage and test results for every PR and release.</li>
@@ -260,15 +260,15 @@
 <li>Integrating with GitHub Actions workflows</li>
 </ul>
 <p>This comprehensive approach ensures all requirements are properly tested and verified before each release.</p>
-<p>Additional detail, including links to functional documentation and vignettes, is available in the <a href="https://gilead-biostats.github.io/gsm.core/">package website</a>.</p>
+<p>Additional detail, including links to functional documentation and vignettes, is available in the <a href="https://gilead-public.github.io/gsm.core/">package website</a>.</p>
 </div>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/Gilead-BioStats/gsm.core/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/Gilead-BioStats/gsm.core/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/Gilead-Public/gsm.core/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/Gilead-Public/gsm.core/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 

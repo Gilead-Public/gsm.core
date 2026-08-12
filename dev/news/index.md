@@ -4,7 +4,7 @@
 
 This patch release removes the log4r package dependency, because the
 log4r package was archived on CRAN
-([\#159](https://github.com/Gilead-BioStats/gsm.core/issues/159)).
+([\#159](https://github.com/Gilead-Public/gsm.core/issues/159)).
 
 ## gsm.core v1.3.0
 
@@ -16,23 +16,23 @@ Changes:
 
 - Workflow execution is now powered by
   [workr](https://gilead-biostats.github.io/workr):
-  [`RunQuery()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunQuery.md),
-  [`RunStep()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunStep.md),
-  [`RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunWorkflow.md),
-  [`RunWorkflows()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunWorkflows.md),
+  [`RunQuery()`](https://gilead-public.github.io/gsm.core/dev/reference/RunQuery.md),
+  [`RunStep()`](https://gilead-public.github.io/gsm.core/dev/reference/RunStep.md),
+  [`RunWorkflow()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflow.md),
+  [`RunWorkflows()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflows.md),
   and
-  [`MakeWorkflowList()`](https://gilead-biostats.github.io/gsm.core/dev/reference/MakeWorkflowList.md)
+  [`MakeWorkflowList()`](https://gilead-public.github.io/gsm.core/dev/reference/MakeWorkflowList.md)
   are backed by the shared, federated
   [workr](https://gilead-biostats.github.io/workr) runtime. Existing
   code continues to work unchanged through deprecation shims
-  ([\#141](https://github.com/Gilead-BioStats/gsm.core/issues/141),
-  [\#149](https://github.com/Gilead-BioStats/gsm.core/issues/149)).
+  ([\#141](https://github.com/Gilead-Public/gsm.core/issues/141),
+  [\#149](https://github.com/Gilead-Public/gsm.core/issues/149)).
 - The Death domain in the `lSource` dataset now includes a `deathcls`
   column
-  ([\#153](https://github.com/Gilead-BioStats/gsm.core/issues/153)).
+  ([\#153](https://github.com/Gilead-Public/gsm.core/issues/153)).
 - Documented the workflow contract for `gsm` ecosystem packages
-  ([\#145](https://github.com/Gilead-BioStats/gsm.core/issues/145),
-  [\#151](https://github.com/Gilead-BioStats/gsm.core/issues/151)).
+  ([\#145](https://github.com/Gilead-Public/gsm.core/issues/145),
+  [\#151](https://github.com/Gilead-Public/gsm.core/issues/151)).
 
 ## gsm.core v1.2.1
 
@@ -115,11 +115,11 @@ data to use `{gsm.datasim}`. Specifically: - `lSource` package data has
 been updated to include PK data - `analytics` and `reporting` package
 data is now generated using `{gsm.datasim}` simulated data as the source
 data. - Updates to the
-[`Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md)
+[`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
 and
-[`Summarize()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Summarize.md)
+[`Summarize()`](https://gilead-public.github.io/gsm.core/dev/reference/Summarize.md)
 functions to make thresholds more flexible. The
-[`Flag_Accrual()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag_Accrual.md)
+[`Flag_Accrual()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag_Accrual.md)
 helper function now allows thresholds to be based on the Numerator,
 Denominator, or Difference between the two.
 

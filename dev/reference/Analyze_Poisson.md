@@ -16,9 +16,9 @@ Analyze_Poisson(dfTransformed)
   record per site with expected columns: `GroupID`, `GroupLevel`,
   `Numerator`, `Denominator`, and `Metric`. For more details see the
   [Data Model
-  article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+  article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
   For this function, `dfTransformed` should typically be created using
-  [`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Transform_Rate.md).
+  [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Rate.md).
 
 ## Value
 
@@ -31,7 +31,7 @@ Fits a Poisson model to site-level data and adds columns capturing
 Residual and Predicted Count for each site.
 
 More information can be found in [The Poisson Regression
-Method](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method)
+Method](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method)
 of the KRI Method vignette.
 
 ## Statistical Methods

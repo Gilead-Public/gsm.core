@@ -2,7 +2,7 @@
 
 Routes an INFO-level message to the appropriate `cli` formatting
 function based on `cli_detail`. Called internally by
-[`cli_fmt()`](https://gilead-biostats.github.io/gsm.core/dev/reference/cli_fmt.md).
+[`cli_fmt()`](https://gilead-public.github.io/gsm.core/dev/reference/cli_fmt.md).
 
 ## Usage
 

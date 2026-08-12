@@ -1,7 +1,7 @@
 # Stop execution if a condition is true
 
 A thin wrapper around
-[`LogMessage()`](https://gilead-biostats.github.io/gsm.core/dev/reference/LogMessage.md)
+[`LogMessage()`](https://gilead-public.github.io/gsm.core/dev/reference/LogMessage.md)
 that emits an `"ERROR"`-level message (triggering
 [`cli::cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html))
 when `cnd` is `TRUE`.

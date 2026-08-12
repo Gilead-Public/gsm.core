@@ -83,7 +83,7 @@ A data frame with 2 rows and 23 columns:
 - ScoreCol:
 
   Column used for
-  [`Analyze_Identity()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Identity.md)
+  [`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)
 
 - nNumDeviations:
 

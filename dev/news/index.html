@@ -20,7 +20,7 @@
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-BioStats/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-Public/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -30,20 +30,20 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/dev/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/Gilead-Public/gsm.core/blob/dev/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.3.1" id="gsmcore-v131">gsm.core v1.3.1<a class="anchor" aria-label="anchor" href="#gsmcore-v131"></a></h2>
-<p>This patch release removes the log4r package dependency, because the log4r package was archived on CRAN (<a href="https://github.com/Gilead-BioStats/gsm.core/issues/159" class="external-link">#159</a>).</p>
+<p>This patch release removes the log4r package dependency, because the log4r package was archived on CRAN (<a href="https://github.com/Gilead-Public/gsm.core/issues/159" class="external-link">#159</a>).</p>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.3.0" id="gsmcore-v130">gsm.core v1.3.0<a class="anchor" aria-label="anchor" href="#gsmcore-v130"></a></h2>
 <p>This minor release moves the workflow runtime to the new <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a> package and adds the <code>deathcls</code> column to the Death domain in <code>lSource</code>.</p>
 <p>Changes:</p>
-<ul><li>Workflow execution is now powered by <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a>: <code><a href="../reference/RunQuery.html">RunQuery()</a></code>, <code><a href="../reference/RunStep.html">RunStep()</a></code>, <code><a href="../reference/RunWorkflow.html">RunWorkflow()</a></code>, <code><a href="../reference/RunWorkflows.html">RunWorkflows()</a></code>, and <code><a href="../reference/MakeWorkflowList.html">MakeWorkflowList()</a></code> are backed by the shared, federated <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a> runtime. Existing code continues to work unchanged through deprecation shims (<a href="https://github.com/Gilead-BioStats/gsm.core/issues/141" class="external-link">#141</a>, <a href="https://github.com/Gilead-BioStats/gsm.core/issues/149" class="external-link">#149</a>).</li>
-<li>The Death domain in the <code>lSource</code> dataset now includes a <code>deathcls</code> column (<a href="https://github.com/Gilead-BioStats/gsm.core/issues/153" class="external-link">#153</a>).</li>
-<li>Documented the workflow contract for <code>gsm</code> ecosystem packages (<a href="https://github.com/Gilead-BioStats/gsm.core/issues/145" class="external-link">#145</a>, <a href="https://github.com/Gilead-BioStats/gsm.core/issues/151" class="external-link">#151</a>).</li>
+<ul><li>Workflow execution is now powered by <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a>: <code><a href="../reference/RunQuery.html">RunQuery()</a></code>, <code><a href="../reference/RunStep.html">RunStep()</a></code>, <code><a href="../reference/RunWorkflow.html">RunWorkflow()</a></code>, <code><a href="../reference/RunWorkflows.html">RunWorkflows()</a></code>, and <code><a href="../reference/MakeWorkflowList.html">MakeWorkflowList()</a></code> are backed by the shared, federated <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a> runtime. Existing code continues to work unchanged through deprecation shims (<a href="https://github.com/Gilead-Public/gsm.core/issues/141" class="external-link">#141</a>, <a href="https://github.com/Gilead-Public/gsm.core/issues/149" class="external-link">#149</a>).</li>
+<li>The Death domain in the <code>lSource</code> dataset now includes a <code>deathcls</code> column (<a href="https://github.com/Gilead-Public/gsm.core/issues/153" class="external-link">#153</a>).</li>
+<li>Documented the workflow contract for <code>gsm</code> ecosystem packages (<a href="https://github.com/Gilead-Public/gsm.core/issues/145" class="external-link">#145</a>, <a href="https://github.com/Gilead-Public/gsm.core/issues/151" class="external-link">#151</a>).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.1" id="gsmcore-v121">gsm.core v1.2.1<a class="anchor" aria-label="anchor" href="#gsmcore-v121"></a></h2>

@@ -26,9 +26,9 @@ Analyze_NormalApprox_PredictBounds(
   record per site with expected columns: `GroupID`, `GroupLevel`,
   `Numerator`, `Denominator`, and `Metric`. For more details see the
   [Data Model
-  article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+  article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
   For this function, `dfTransformed` should typically be created using
-  [`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Transform_Rate.md).
+  [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Rate.md).
 
 - vThreshold:
 

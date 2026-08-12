@@ -13,7 +13,7 @@ Flag_Accrual(dfFlagged, nAccrualThreshold, strAccrualMetric)
 - dfFlagged:
 
   data.frame in format produced by
-  [`Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md).
+  [`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md).
 
 - nAccrualThreshold:
 

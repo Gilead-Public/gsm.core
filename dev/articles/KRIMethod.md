@@ -9,18 +9,18 @@ observed risk to data quality and patient safety in a clinical trial.
 The {gsm} suite of packages implements a standardized data pipeline to
 facilitate KRI analysis. Other vignettes provide an overview of this
 framework
-([1](https://gilead-biostats.github.io/gsm.core/dev/articles/Cookbook.md)
-[2](https://gilead-biostats.github.io/gsm.core/dev/articles/DataModel.md),
-[3](https://gilead-biostats.github.io/gsm.core/dev/articles/DataAnalysis.md),
-[4](https://gilead-biostats.github.io/gsm.reporting/articles/DataReporting.html)),
+([1](https://gilead-public.github.io/gsm.core/dev/articles/Cookbook.md)
+[2](https://gilead-public.github.io/gsm.core/dev/articles/DataModel.md),
+[3](https://gilead-public.github.io/gsm.core/dev/articles/DataAnalysis.md),
+[4](https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html)),
 and the statistical methods for this process are described in detail
 below.
 
-[gsm.core](https://gilead-biostats.github.io/gsm.core) calculates KRIs
-by defining a numerator and a denominator for each metric. Then by
-default, [gsm.core](https://gilead-biostats.github.io/gsm.core)
-calculates z-scores using a normal approximation with adjustment for
-over-dispersion to assign risk levels.
+[gsm.core](https://gilead-public.github.io/gsm.core) calculates KRIs by
+defining a numerator and a denominator for each metric. Then by default,
+[gsm.core](https://gilead-public.github.io/gsm.core) calculates z-scores
+using a normal approximation with adjustment for over-dispersion to
+assign risk levels.
 
 For KRIs that are percentages (binary outcome), the numerator is the \#
 of events and the denominator is the \# of total participants, and we
@@ -33,9 +33,9 @@ duration, and we then apply the normal approximation of the Poisson
 distribution to determine a risk level.
 
 Alternative statistical methods to calculate standardized scores are
-also available in
-[gsm.core](https://gilead-biostats.github.io/gsm.core), including the
-Identity, Fisher and Poisson methods. More details are provided below.
+also available in [gsm.core](https://gilead-public.github.io/gsm.core),
+including the Identity, Fisher and Poisson methods. More details are
+provided below.
 
 ## Statistical Methods
 
@@ -169,11 +169,11 @@ institutional performance.** *Statistics in medicine* 24.8 (2005):
 #### Estimate and Score
 
 The function
-[`Analyze_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_NormalApprox.md)
-in [gsm.core](https://gilead-biostats.github.io/gsm.core) calculates
+[`Analyze_NormalApprox()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_NormalApprox.md)
+in [gsm.core](https://gilead-public.github.io/gsm.core) calculates
 adjusted z-score for each site as discussed above. The adjusted z-scores
 are then used as a scoring metric in
-[gsm.core](https://gilead-biostats.github.io/gsm.core) to flag possible
+[gsm.core](https://gilead-public.github.io/gsm.core) to flag possible
 outliers using the thresholds discussed below.
 
 #### Threshold
@@ -184,7 +184,7 @@ respectively. The thresholds are set at common choices corresponding to
 95.6% and 99.7% of the data around the mean in a standard normal
 distribution. However, they are fully configurable in the package and
 can be customized and specified in the
-[gsm.core](https://gilead-biostats.github.io/gsm.core) functions.
+[gsm.core](https://gilead-public.github.io/gsm.core) functions.
 
 #### Special Situations
 
@@ -211,8 +211,8 @@ are set based on the actual counts.
 #### Introduction
 
 For the binary outcome KRIs, an optional method in
-[gsm.core](https://gilead-biostats.github.io/gsm.core) is implemented
-with Fisher’s exact test.
+[gsm.core](https://gilead-public.github.io/gsm.core) is implemented with
+Fisher’s exact test.
 
 Fisher’s exact test is a statistical significance test used in the
 analysis of contingency tables when we have nominal variables and want
@@ -224,13 +224,13 @@ approximation, Fisher’s exact test can be applied when sample sizes are
 small.
 
 The function `Analyze_Fisher` in
-[gsm.core](https://gilead-biostats.github.io/gsm.core) utilizes
+[gsm.core](https://gilead-public.github.io/gsm.core) utilizes
 [`stats::fisher.test`](https://rdrr.io/r/stats/fisher.test.html) to
 generate an estimate of odds ratio as well as p-value using the Fisher’s
 exact test with site-level count data. For each site, Fisher’s exact
 test is conducted by comparing to all other sites combined in a 2×2
 contingency table. The p-values are then used as a scoring metric in
-[gsm.core](https://gilead-biostats.github.io/gsm.core) to flag possible
+[gsm.core](https://gilead-public.github.io/gsm.core) to flag possible
 outliers. The default in
 [`stats::fisher.test`](https://rdrr.io/r/stats/fisher.test.html) uses a
 two-sided test (equivalent to testing the null of OR = 1) and does not
@@ -265,14 +265,14 @@ p=\frac{{{a+b} \choose a} {{c+d} \choose c}}{{n \choose {a+c}}}=\frac{{{a+b} \ch
 #### Estimate and Score
 
 The function
-[`Analyze_Fisher()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Fisher.md)
-in [gsm.core](https://gilead-biostats.github.io/gsm.core) utilizes
+[`Analyze_Fisher()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Fisher.md)
+in [gsm.core](https://gilead-public.github.io/gsm.core) utilizes
 [`stats::fisher.test()`](https://rdrr.io/r/stats/fisher.test.html) to
 generate an estimate of odds ratio as well as p-value using the Fisher’s
 exact test with site-level count data. For each site, Fisher’s exact
 test is conducted by comparing to all other sites combined in a
 $`2 \times 2`$ contingency table. The p-values are then used as a
-scoring metric in [gsm.core](https://gilead-biostats.github.io/gsm.core)
+scoring metric in [gsm.core](https://gilead-public.github.io/gsm.core)
 to flag possible outliers using the thresholds discussed below. The
 default in
 [`stats::fisher.test()`](https://rdrr.io/r/stats/fisher.test.html) uses
@@ -289,7 +289,7 @@ distribution of the p-values to find the best separation of the data to
 identify sites at risk. The default thresholds are set at common choices
 of significance levels. However, they are fully configurable in the
 package and can be customized and specified in the
-[gsm.core](https://gilead-biostats.github.io/gsm.core) functions.
+[gsm.core](https://gilead-public.github.io/gsm.core) functions.
 
 #### The Fisher’s exact test assumptions
 
@@ -340,8 +340,8 @@ Fisher’s exact test can be used in all scenarios with binary KRIs.
 #### Introduction
 
 For the rate outcome KRIs, an optional method in
-[gsm.core](https://gilead-biostats.github.io/gsm.core) is implemented
-with Poisson regression.
+[gsm.core](https://gilead-public.github.io/gsm.core) is implemented with
+Poisson regression.
 
 The Poisson distribution is often used to model count data. If $`Y`$ is
 the number of counts following Poisson distribution, the probability
@@ -375,12 +375,12 @@ where $`\log{n_i}`$ is an offset term.
 #### Estimate and Score
 
 The function
-[`Analyze_Poisson()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Poisson.md)
-in [gsm.core](https://gilead-biostats.github.io/gsm.core) utilizes
+[`Analyze_Poisson()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Poisson.md)
+in [gsm.core](https://gilead-public.github.io/gsm.core) utilizes
 [`stats::glm()`](https://rdrr.io/r/stats/glm.html) to generate an
 estimate of fitted values as well as deviance residual with site-level
 count data. The p-values are then used as a scoring metric in
-[gsm.core](https://gilead-biostats.github.io/gsm.core) to flag possible
+[gsm.core](https://gilead-public.github.io/gsm.core) to flag possible
 outliers using the thresholds discussed below.
 
 #### Threshold
@@ -392,7 +392,7 @@ we use the distribution of the deviance residuals to find the best
 separation of the data to identify sites at risk. The default thresholds
 are set at empirical values based on pilot studies’ data. However, they
 are fully configurable in the package and can be customized and
-specified in the [gsm.core](https://gilead-biostats.github.io/gsm.core)
+specified in the [gsm.core](https://gilead-public.github.io/gsm.core)
 functions.
 
 #### Special Situations

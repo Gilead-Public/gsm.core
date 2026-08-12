@@ -3,19 +3,19 @@
 ## Overview
 
 This article describes how to extend
-[gsm.core](https://gilead-biostats.github.io/gsm.core) by creating new
+[gsm.core](https://gilead-public.github.io/gsm.core) by creating new
 “modules”, including metrics, reports and shiny apps that can be run
 using the standard `gsm` pipeline described in these articles: [Data
-Analysis](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html)
+Analysis](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html)
 and
-[DataReporting](https://gilead-biostats.github.io/gsm.reporting/articles/DataReporting.html).
+[DataReporting](https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html).
 As shown in the [Data Analysis
-article](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html),
+article](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html),
 the existing `gsm` data pipeline can be used to capture a monitoring
 ‘snapshot’ for a study that includes a variety of “modules” including
-[metrics](https://github.com/Gilead-BioStats/gsm.mapping/tree/dev/inst/workflow/metrics/kri0001.yaml)
+[metrics](https://github.com/Gilead-Public/gsm.mapping/tree/dev/inst/workflow/metrics/kri0001.yaml)
 and
-[reports](https://github.com/Gilead-BioStats/gsm.kri/blob/dev/inst/workflow/reports/report_kri_site.yaml).
+[reports](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/reports/report_kri_site.yaml).
 
 This article provides detailed specifications for creating new modules,
 a description of the directory structure for the yaml workflows that
@@ -44,12 +44,12 @@ Detailed specifications for each of these sections are provided below.
 Here are links to several sample module configuration files:
 
 - [13 Standard gsm
-  KRIs](https://github.com/Gilead-BioStats/gsm.kri/tree/dev/inst/workflow/2_metrics)
+  KRIs](https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics)
   (e.g. [Adverse Event KRI
-  Metric](https://github.com/Gilead-BioStats/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml))
-- [Site-](https://github.com/Gilead-BioStats/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml)
+  Metric](https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml))
+- [Site-](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml)
   and [Country-level KRI
-  Report](https://github.com/Gilead-BioStats/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_country.yaml)
+  Report](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_country.yaml)
 
 ### `meta` Specification
 
@@ -109,9 +109,9 @@ Additional `meta` header required fields for `{gsm.kri}` **metrics**:
 - `Score`: The score used to calculate the metric. Common values:
   `Z-Score`, `Adjusted Z-Score`, `P-Value`.
 - `Threshold`: The thresholds to flag. Used in
-  [`gsm.core::Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md).
+  [`gsm.core::Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md).
 - `Flag`: *optional* The numeric values assigned to each flag. Used in
-  [`gsm.core::Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md).
+  [`gsm.core::Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md).
 - `GenerateRiskSignal`: *optional* A boolean (`true`/`false`) indicating
   whether a risk signal should be generated when this metric produces a
   flag. If missing or `true`, a risk signal is generated. Only
@@ -146,7 +146,7 @@ columns that are needed from each table. The `gsm` data pipeline is
 designed to be highly customizable, but for the purposes of this
 article, we will assume usage of the standard `gsm` data model described
 in the [Data Model
-article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
 For this standard use case, modules will pull primarily from the
 “Mapped” and “Reporting” data layers.
 
@@ -164,7 +164,7 @@ column contains the following parameters:
 
 Metric `spec`s are typically pulled from the `mapped` data layer. For
 example, the `spec` section for the [AE KRI
-metric](https://github.com/Gilead-BioStats/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml)
+metric](https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml)
 is:
 
     spec:
@@ -193,7 +193,7 @@ are required for the metric to run.
 
 Report modules most often pull data from the `Reporting` data layer. For
 example, the [Site-level KRI
-report](https://github.com/Gilead-BioStats/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml)
+report](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml)
 has the following `spec`:
 
     spec:
@@ -260,7 +260,7 @@ and will vary greatly depending on the module type and the specific
 requirements of the module.
 [workr](https://gilead-biostats.github.io/workr) provides the standard
 workflow-runtime functions used to execute module yaml files, while
-[gsm.core](https://gilead-biostats.github.io/gsm.core) provides many of
+[gsm.core](https://gilead-public.github.io/gsm.core) provides many of
 the analytical functions that those steps call. See
 `?workr::RunWorkflow()` for more details.
 
@@ -344,7 +344,7 @@ the workflow.
 In this example, the steps to produce a site-level KRI report is
 displayed. Here, the only inputs are the `Reporting_*` data, which goes
 through a simple filtering process via
-[`gsm.core::RunQuery`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunQuery.md)
+[`gsm.core::RunQuery`](https://gilead-public.github.io/gsm.core/dev/reference/RunQuery.md)
 before the Charts and Report are created in the following two functions
 
     steps:
@@ -467,7 +467,7 @@ of aggregation.
 
 Examples of these yamls can be found above in the `Module Configuration`
 section, as well as in the [Data Analysis
-article](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html).
+article](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html).
 
 #### `/3_reporting`
 
@@ -482,7 +482,7 @@ folder.
 
 Examples of these yamls can be found above in the `Module Configuration`
 section, as well as in the [Data Reporting
-article](https://gilead-biostats.github.io/gsm.reporting/articles/DataReporting.html).
+article](https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html).
 
 #### `/4_modules`
 
@@ -492,7 +492,7 @@ tables that have been produced in the previous directories. These module
 workflows will contain all of the necessary meta information, as
 detailed in the `Module Configuration` section above, along with the
 data tables required, and steps to produce it, so that
-[`gsm.core::RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunWorkflow.md)
+[`gsm.core::RunWorkflow()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflow.md)
 can take this workflow and produce the module output.
 
 Below is an example of the module yaml workflow for the KRI Site Report
@@ -508,7 +508,7 @@ in `{gsm.kri}`
       Status: Qualified
       Permission: Users
       Outputs: An html report
-      ExampleURL: https://gilead-biostats.github.io/gsm.kri/report_kri_site.html
+      ExampleURL: https://gilead-public.github.io/gsm.kri/report_kri_site.html
     spec:
       Reporting_Results:
         _all:

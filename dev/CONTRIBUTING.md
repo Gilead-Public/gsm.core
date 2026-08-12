@@ -30,7 +30,7 @@ this process, including:
 
 The issue templates automatically appear when you select `New Issue` to
 create a new issue in a given repository, are maintained in
-{[gsm.utils](https://github.com/Gilead-BioStats/gsm.utils)} and
+{[gsm.utils](https://github.com/Gilead-Public/gsm.utils)} and
 automatically updated in all gsm packages whenever updates are made.
 Note that suggestions or other input that might not warrant formal
 submission of an issue can be filed in the Github `Discussions` tab for
@@ -192,25 +192,25 @@ following workflows are configured:
 ### Core Testing and Quality Assurance
 
 - **R CMD Check (Dev)**
-  [`R-CMD-check-dev.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/R-CMD-check-dev.yaml)
+  [`R-CMD-check-dev.yaml`](https://gilead-public.github.io/gsm.core/dev/.github/workflows/R-CMD-check-dev.yaml)
   – Runs for PRs to `dev` branch on Ubuntu (latest and R 4.1.3) to catch
   basic package issues.
 - **R CMD Check (Main)**
-  [`R-CMD-check.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/R-CMD-check.yaml)
+  [`R-CMD-check.yaml`](https://gilead-public.github.io/gsm.core/dev/.github/workflows/R-CMD-check.yaml)
   – Comprehensive testing for PRs to `main` branch across multiple
   platforms:
   - **Linux**: Ubuntu (latest R and 4.1.3)
   - **macOS**: macOS-latest (release R)
   - **Windows**: Windows-latest (release R)
 - **Test Coverage**
-  [`test-coverage.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/test-coverage.yaml)
+  [`test-coverage.yaml`](https://gilead-public.github.io/gsm.core/dev/.github/workflows/test-coverage.yaml)
   – Analyzes code coverage on pushes to `main`/`dev` and PRs, helping
   maintain high test coverage standards.
 
 ### Quality Control and Documentation
 
 - **qcthat Quality Control**
-  [`qcthat.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/qcthat.yaml)
+  [`qcthat.yaml`](https://gilead-public.github.io/gsm.core/dev/.github/workflows/qcthat.yaml)
   – Comprehensive quality control workflow that:
   - Manages User Acceptance Testing (UAT) processes
   - Generates Issue-Test Matrix for tracking test coverage against
@@ -219,7 +219,7 @@ following workflows are configured:
   - Updates UAT status for closed issues
   - Enforces test failure policies
 - **Pkgdown with Examples**
-  [`pkgdown-with-examples.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/pkgdown-with-examples.yaml)
+  [`pkgdown-with-examples.yaml`](https://gilead-public.github.io/gsm.core/dev/.github/workflows/pkgdown-with-examples.yaml)
   – Builds and deploys package documentation:
   - **Push to `main`**: Deploys the main site to the root of `gh-pages`
     (e.g., `/`)
@@ -228,7 +228,7 @@ following workflows are configured:
   - **Pull Requests**: Deploys preview sites under `/pr/<number>/dev` on
     `gh-pages`
 - **Pkgdown Cleanup**
-  [`pkgdown-cleanup.yaml`](https://gilead-biostats.github.io/gsm.core/dev/.github/workflows/pkgdown-cleanup.yaml)
+  [`pkgdown-cleanup.yaml`](https://gilead-public.github.io/gsm.core/dev/.github/workflows/pkgdown-cleanup.yaml)
   – Automatically removes PR preview directories when PRs are closed.
 
 ### Release Management
@@ -241,10 +241,10 @@ following workflows are configured:
 ### Workflow Configuration
 
 Most workflows are generated and maintained through
-[`gsm.utils`](https://github.com/Gilead-BioStats/gsm.utils) to ensure
+[`gsm.utils`](https://github.com/Gilead-Public/gsm.utils) to ensure
 consistency across all GSM packages. The one exception to this is
 `qcthat.yaml` which is maintained in the
-[`qcthat`](https://github.com/Gilead-BioStats/qcthat) package. Key
+[`qcthat`](https://github.com/Gilead-Public/qcthat) package. Key
 features:
 
 - **Automatic triggers**: Workflows run on relevant events (PRs, pushes,

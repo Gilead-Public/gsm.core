@@ -78,12 +78,12 @@ Flag(
 
 This function provides a generalized framework for flagging sites as
 part of the gsm data model (see the [Data Model
-article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html)).
+article](https://gilead-public.github.io/gsm.core/articles/DataModel.html)).
 
 ## Data Specification
 
 `Flag` is designed to support the input data (`dfAnalyzed`) from the
-[`Analyze_Identity()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Identity.md)
+[`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)
 function. At a minimum, the input data must have a `strGroupCol`
 parameter and a numeric `strColumn` parameter defined. `strColumn` will
 be compared to the specified thresholds in `vThreshold` to define a new

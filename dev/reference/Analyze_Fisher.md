@@ -5,7 +5,7 @@
 Analyzes count data using the Fisher's exact test.
 
 More information can be found in [The Fisher's Exact Method
-Section](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-fishers-exact-method)
+Section](https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-fishers-exact-method)
 of the KRI Method vignette.
 
 ## Usage
@@ -22,9 +22,9 @@ Analyze_Fisher(dfTransformed, strOutcome = "Numerator")
   record per site with expected columns: `GroupID`, `GroupLevel`,
   `Numerator`, `Denominator`, and `Metric`. For more details see the
   [Data Model
-  article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+  article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
   For this function, `dfTransformed` should typically be created using
-  [`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Transform_Rate.md).
+  [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Rate.md).
 
 - strOutcome:
 

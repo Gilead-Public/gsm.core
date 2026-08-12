@@ -1,10 +1,10 @@
 # Good Statistical Monitoring `{gsm.core}` R package
 
-[![R-CMD-check](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/R-CMD-check.yaml)
-[![test-coverage](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/test-coverage.yaml)
-[![pkgdown-all](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml/badge.svg?branch=dev)](https://github.com/Gilead-BioStats/gsm.core/actions/workflows/pkgdown-all.yaml)
+[![R-CMD-check](https://github.com/Gilead-Public/gsm.core/actions/workflows/R-CMD-check.yaml/badge.svg?branch=dev)](https://github.com/Gilead-Public/gsm.core/actions/workflows/R-CMD-check.yaml)
+[![test-coverage](https://github.com/Gilead-Public/gsm.core/actions/workflows/test-coverage.yaml/badge.svg?branch=dev)](https://github.com/Gilead-Public/gsm.core/actions/workflows/test-coverage.yaml)
+[![pkgdown-all](https://github.com/Gilead-Public/gsm.core/actions/workflows/pkgdown-all.yaml/badge.svg?branch=dev)](https://github.com/Gilead-Public/gsm.core/actions/workflows/pkgdown-all.yaml)
 
-The [gsm.core](https://gilead-biostats.github.io/gsm.core) package
+The [gsm.core](https://gilead-public.github.io/gsm.core) package
 provides the analytical foundation for a standardized Risk Based Quality
 Monitoring (RBQM) framework for clinical trials that pairs a flexible
 data pipeline with robust reports like the one shown below.
@@ -12,28 +12,28 @@ data pipeline with robust reports like the one shown below.
 ![](reference/figures/gsm_report_screenshot_1.png)
 
 This README provides a high-level overview of
-[gsm.core](https://gilead-biostats.github.io/gsm.core); see the [package
-website](https://gilead-biostats.github.io/gsm.core/) for additional
+[gsm.core](https://gilead-public.github.io/gsm.core); see the [package
+website](https://gilead-public.github.io/gsm.core/) for additional
 details.
 
-The [gsm.core](https://gilead-biostats.github.io/gsm.core) package is a
-successor package to [`{gsm}`](https://github.com/Gilead-BioStats/gsm),
+The [gsm.core](https://gilead-public.github.io/gsm.core) package is a
+successor package to [`{gsm}`](https://github.com/Gilead-Public/gsm),
 which has been deprecated as of March 2025. The contents of `{gsm}` have
 been split out among 4 packages as follows:
 
-1.  **[gsm.core](https://gilead-biostats.github.io/gsm.core)**: A
-    package containing the analytics functionality used to construct and
+1.  **[gsm.core](https://gilead-public.github.io/gsm.core)**: A package
+    containing the analytics functionality used to construct and
     evaluate metrics.
-2.  [**`{workr}`**](https://github.com/Gilead-BioStats/workr): A package
+2.  [**`{workr}`**](https://github.com/Gilead-Public/workr): A package
     that provides the workflow runtime used to execute YAML-defined
     steps and workflows.
-3.  [**`{gsm.mapping}`**](https://github.com/Gilead-BioStats/gsm.mapping):
+3.  [**`{gsm.mapping}`**](https://github.com/Gilead-Public/gsm.mapping):
     A package that provides workflows to apply the necessary data
     transformation from raw/source datasets to appropriate domains.
-4.  [**`{gsm.kri}`**](https://github.com/Gilead-BioStats/gsm.kri): A
+4.  [**`{gsm.kri}`**](https://github.com/Gilead-Public/gsm.kri): A
     package that provides workflows to generate metrics and
     functionality to visualize and report on these metrics.
-5.  [**`{gsm.reporting}`**](https://github.com/Gilead-BioStats/gsm.reporting):
+5.  [**`{gsm.reporting}`**](https://github.com/Gilead-Public/gsm.reporting):
     A package that provides workflows to generate the reporting data
     model needed to generate reports.
 
@@ -45,7 +45,7 @@ You can install the latest release of gsm.core from
 ``` r
 
 # install.packages("pak")
-pak::pak("Gilead-BioStats/gsm.core@*release")
+pak::pak("Gilead-Public/gsm.core@*release")
 ```
 
 You can install the development version of gsm.core from
@@ -54,12 +54,12 @@ You can install the development version of gsm.core from
 ``` r
 
 # install.packages("pak")
-pak::pak("Gilead-BioStats/gsm.core")
+pak::pak("Gilead-Public/gsm.core")
 ```
 
 # Background
 
-The [gsm.core](https://gilead-biostats.github.io/gsm.core) package lays
+The [gsm.core](https://gilead-public.github.io/gsm.core) package lays
 the framework to perform risk assessments primarily focused on detecting
 differences in quality at the site-level. “High quality” is defined as
 the absence of errors that matter. We interpret this as focusing on
@@ -85,12 +85,12 @@ understand the issue. Some relevant references are provided below.
 
 # Process Overview
 
-The [gsm.core](https://gilead-biostats.github.io/gsm.core) package is
-the foundation of a data pipeline for RBM using R. The package, along
-with `{gsm.mapping}`, `{gsm.kri}` and `{gsm.reporting}` provides a
-framework that allows users to **assess** and **visualize** site-level
-risk in clinical trial data. The packages currently provide assessments
-for the following domains:
+The [gsm.core](https://gilead-public.github.io/gsm.core) package is the
+foundation of a data pipeline for RBM using R. The package, along with
+`{gsm.mapping}`, `{gsm.kri}` and `{gsm.reporting}` provides a framework
+that allows users to **assess** and **visualize** site-level risk in
+clinical trial data. The packages currently provide assessments for the
+following domains:
 
 1.  Adverse Event Reporting Rate
 2.  Serious Adverse Event Reporting Rate
@@ -108,8 +108,8 @@ for the following domains:
 14. Ineligibility
 15. Premature Death Rate
 
-All [gsm.core](https://gilead-biostats.github.io/gsm.core) assessments
-use a standardized 6 step data pipeline:
+All [gsm.core](https://gilead-public.github.io/gsm.core) assessments use
+a standardized 6 step data pipeline:
 
 1.  **Input_Rate** - Converts `raw` data to `input` data.
 2.  **Transform** - Converts `input` data to `transformed` data.
@@ -122,14 +122,14 @@ use a standardized 6 step data pipeline:
     `summary` data.
 
 To learn more about
-[gsm.core](https://gilead-biostats.github.io/gsm.core)’s data pipeline,
+[gsm.core](https://gilead-public.github.io/gsm.core)’s data pipeline,
 visit the [Data Pipeline
-article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
 
 # Reporting
 
 Detailed RMarkdown/HTML reporting is built into
-[gsm.core](https://gilead-biostats.github.io/gsm.core), and provides a
+[gsm.core](https://gilead-public.github.io/gsm.core), and provides a
 detailed overview of all risk assessments for a given trial. For
 example, an AE risk assessment looks like this:
 
@@ -140,9 +140,9 @@ Full reports for a sample trial run with
 below:
 
 - [Site
-  Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_SiteReport.html)
+  Report](https://gilead-public.github.io/gsm.kri/examples/Example_SiteReport.html)
 - [Country
-  Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_CountryReport.html)
+  Report](https://gilead-public.github.io/gsm.kri/examples/Example_CountryReport.html)
 
 # Getting Started
 
@@ -155,11 +155,11 @@ See the “Process Overview” section above and then check out these
 articles:
 
 - [Step-by-Step Analysis Workflow
-  Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html)
+  Vignette](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html)
   walks users the step-by-step process for creating metrics (KRIs, QTLs,
   etc) in {gsm}.
 - [Adverse Event KRI Cookbook
-  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html)
+  Example](https://gilead-public.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventKRI.html)
   provides hands-on examples of how to customize KRI metrics related to
   Adverse events.
 
@@ -170,20 +170,20 @@ study (or even cross-study) data snapshots including data mapping,
 calculation of multiple metrics and creation of reports. Runtime
 execution is provided by
 [workr](https://gilead-biostats.github.io/workr), while
-[gsm.core](https://gilead-biostats.github.io/gsm.core) provides the
+[gsm.core](https://gilead-public.github.io/gsm.core) provides the
 analytical functions used inside those workflows. See the articles below
 for details and examples.
 
 - [Data Model
-  Vignette](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html)
+  Vignette](https://gilead-public.github.io/gsm.core/articles/DataModel.html)
   explains the data pipeline used to calculate multiple metrics and
   generate study-level reports.
 - [Adverse Event Workflow
-  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html)
+  Example](https://gilead-public.github.io/gsm.kri/dev/examples/Cookbook_AdverseEventWorkflow.html)
   demonstrates how to create a configurable workflow using YAML to
   define the analysis pipeline.
 - [Reporting Workflow
-  Example](https://gilead-biostats.github.io/gsm.kri/dev/examples/Cookbook_ReportingWorkflow.html)
+  Example](https://gilead-public.github.io/gsm.kri/dev/examples/Cookbook_ReportingWorkflow.html)
   demonstrates a complete workflow from raw data to KRI reports using
   standard metrics.
 
@@ -195,7 +195,7 @@ It’s also straightforward to add entire custom modules that add new
 mappings, metrics and reports. See the vignette below for details.
 
 - [gsm Extensions
-  Vignette](https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html)
+  Vignette](https://gilead-public.github.io/gsm.core/articles/gsmExtensions.html)
   describes how to extend {gsm.core} by creating new ‘modules’,
   including metrics, reports and shiny apps that can be run using the
   standard gsm pipeline.
@@ -207,15 +207,15 @@ of packages. We’re working on adding more all the time and will continue
 adding examples to this list as they are released.
 
 - [Site KRI
-  Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_SiteReport.html)
+  Report](https://gilead-public.github.io/gsm.kri/examples/Example_SiteReport.html)
 - [Country KRI
-  Report](https://gilead-biostats.github.io/gsm.kri/examples/Example_CountryReport.html)
+  Report](https://gilead-public.github.io/gsm.kri/examples/Example_CountryReport.html)
 - [Eligibility
-  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_Eligibility.html)
+  Report](https://gilead-public.github.io/gsm.kri/dev/examples/Example_Eligibility.html)
 - [Cross-Study Site Risk Score
-  Report](https://gilead-biostats.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html)
+  Report](https://gilead-public.github.io/gsm.kri/dev/examples/Example_CrossStudySRS.html)
 - [QTL
-  Report](https://gilead-biostats.github.io/gsm.qtl/examples/Example_QTL.html)
+  Report](https://gilead-public.github.io/gsm.qtl/examples/Example_QTL.html)
 - [Good Statistical Monitoring Shiny
   App](https://rinpharma.shinyapps.io/gsm-app/)
 
@@ -247,7 +247,7 @@ components:
   KRIs, automatically integrated into function documentation.
 - **Contributor Guidelines** - Step-by-step processes for code
   development, releases, and workflow YAML conventions are provided in
-  [CONTRIBUTING.md](https://gilead-biostats.github.io/gsm.core/dev/CONTRIBUTING.md)
+  [CONTRIBUTING.md](https://gilead-public.github.io/gsm.core/dev/CONTRIBUTING.md)
   and must be followed for contributions.
 
 ## Development Practices
@@ -257,7 +257,7 @@ components:
 - **Continuous Integration** - Automated workflows via GitHub Actions.
   Full list of GitHub Actions utilized can be found in the [GitHub
   Actions
-  Workflows](https://gilead-biostats.github.io/gsm.utils/index.html#github-actions-workflows)
+  Workflows](https://gilead-public.github.io/gsm.utils/index.html#github-actions-workflows)
   section of the
   [gsm.utils](https://gilead-biostats.github.io/gsm.utils) package.
 - **Package Checks** - Standard R package checks must pass before PRs
@@ -266,8 +266,8 @@ components:
 ## Qualification Framework
 
 {gsm.core} utilizes
-[`{qcthat}`](https://gilead-biostats.github.io/qcthat/index.html)
-package that provides a structured qualification process by:
+[`{qcthat}`](https://gilead-public.github.io/qcthat/index.html) package
+that provides a structured qualification process by:
 
 - Linking package requirements (documented as GitHub issues) to
   qualification and unit tests
@@ -281,4 +281,4 @@ and verified before each release.
 
 Additional detail, including links to functional documentation and
 vignettes, is available in the [package
-website](https://gilead-biostats.github.io/gsm.core/).
+website](https://gilead-public.github.io/gsm.core/).

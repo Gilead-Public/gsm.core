@@ -42,7 +42,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-BioStats/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-Public/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -59,7 +59,7 @@
       <h1>gsm Extensions</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/dev/vignettes/articles/gsmExtensions.Rmd" class="external-link"><code>vignettes/articles/gsmExtensions.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Gilead-Public/gsm.core/blob/dev/vignettes/articles/gsmExtensions.Rmd" class="external-link"><code>vignettes/articles/gsmExtensions.Rmd</code></a></small>
       <div class="d-none name"><code>gsmExtensions.Rmd</code></div>
     </div>
 
@@ -68,16 +68,16 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>This article describes how to extend <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> by
+<p>This article describes how to extend <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> by
 creating new “modules”, including metrics, reports and shiny apps that
 can be run using the standard <code>gsm</code> pipeline described in
-these articles: <a href="https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html">Data
-Analysis</a> and <a href="https://gilead-biostats.github.io/gsm.reporting/articles/DataReporting.html" class="external-link">DataReporting</a>.
-As shown in the <a href="https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html">Data
+these articles: <a href="https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html">Data
+Analysis</a> and <a href="https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html" class="external-link">DataReporting</a>.
+As shown in the <a href="https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html">Data
 Analysis article</a>, the existing <code>gsm</code> data pipeline can be
 used to capture a monitoring ‘snapshot’ for a study that includes a
-variety of “modules” including <a href="https://github.com/Gilead-BioStats/gsm.mapping/tree/dev/inst/workflow/metrics/kri0001.yaml" class="external-link">metrics</a>
-and <a href="https://github.com/Gilead-BioStats/gsm.kri/blob/dev/inst/workflow/reports/report_kri_site.yaml" class="external-link">reports</a>.</p>
+variety of “modules” including <a href="https://github.com/Gilead-Public/gsm.mapping/tree/dev/inst/workflow/metrics/kri0001.yaml" class="external-link">metrics</a>
+and <a href="https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/reports/report_kri_site.yaml" class="external-link">reports</a>.</p>
 <p>This article provides detailed specifications for creating new
 modules, a description of the directory structure for the yaml workflows
 that comprise a module pipeline, and links to resources that can be used
@@ -114,12 +114,12 @@ below.</p>
 <p>Here are links to several sample module configuration files:</p>
 <ul>
 <li>
-<a href="https://github.com/Gilead-BioStats/gsm.kri/tree/dev/inst/workflow/2_metrics" class="external-link">13
-Standard gsm KRIs</a> (e.g. <a href="https://github.com/Gilead-BioStats/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml" class="external-link">Adverse
+<a href="https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics" class="external-link">13
+Standard gsm KRIs</a> (e.g. <a href="https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml" class="external-link">Adverse
 Event KRI Metric</a>)</li>
 <li>
-<a href="https://github.com/Gilead-BioStats/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml" class="external-link">Site-</a>
-and <a href="https://github.com/Gilead-BioStats/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_country.yaml" class="external-link">Country-level
+<a href="https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml" class="external-link">Site-</a>
+and <a href="https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_country.yaml" class="external-link">Country-level
 KRI Report</a>
 </li>
 </ul>
@@ -268,7 +268,7 @@ requirements for the workflow, including the data tables that are
 required and the columns that are needed from each table. The
 <code>gsm</code> data pipeline is designed to be highly customizable,
 but for the purposes of this article, we will assume usage of the
-standard <code>gsm</code> data model described in the <a href="https://gilead-biostats.github.io/gsm.core/articles/DataModel.html">Data
+standard <code>gsm</code> data model described in the <a href="https://gilead-public.github.io/gsm.core/articles/DataModel.html">Data
 Model article</a>. For this standard use case, modules will pull
 primarily from the “Mapped” and “Reporting” data layers.</p>
 <p>The <code>spec</code> section of the workflow YAML is formatted as a
@@ -290,7 +290,7 @@ differs from target column name.</li>
 </h4>
 <p>Metric <code>spec</code>s are typically pulled from the
 <code>mapped</code> data layer. For example, the <code>spec</code>
-section for the <a href="https://github.com/Gilead-BioStats/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml" class="external-link">AE
+section for the <a href="https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml" class="external-link">AE
 KRI metric</a> is:</p>
 <pre><code><span><span class="va">spec</span><span class="op">:</span></span>
 <span>  <span class="va">Mapped_AE</span><span class="op">:</span></span>
@@ -320,7 +320,7 @@ metric to run.</p>
 <code>spec</code> examples: Report Module<a class="anchor" aria-label="anchor" href="#spec-examples-report-module"></a>
 </h4>
 <p>Report modules most often pull data from the <code>Reporting</code>
-data layer. For example, the <a href="https://github.com/Gilead-BioStats/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml" class="external-link">Site-level
+data layer. For example, the <a href="https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml" class="external-link">Site-level
 KRI report</a> has the following <code>spec</code>:</p>
 <pre><code>spec:
   Reporting_Results: 
@@ -388,7 +388,7 @@ any other object needed to produce the module output.</p>
 configuration and will vary greatly depending on the module type and the
 specific requirements of the module. <a href="https://gilead-biostats.github.io/workr" class="external-link">workr</a> provides the
 standard workflow-runtime functions used to execute module yaml files,
-while <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> provides many of the analytical functions
+while <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> provides many of the analytical functions
 that those steps call. See <code>?workr::RunWorkflow()</code> for more
 details.</p>
 <div class="section level4">
@@ -609,7 +609,7 @@ flagged table, and the summary table. In general, these yamls should at
 least provide a summary table that contains statistics about the metric
 at the specified level of aggregation.</p>
 <p>Examples of these yamls can be found above in the
-<code>Module Configuration</code> section, as well as in the <a href="https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html">Data
+<code>Module Configuration</code> section, as well as in the <a href="https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html">Data
 Analysis article</a>.</p>
 </div>
 <div class="section level4">
@@ -625,7 +625,7 @@ must be taken from the analysis output, such as study/site/group/metric
 metadata and supporting statistics will be constructed through workflows
 in this folder.</p>
 <p>Examples of these yamls can be found above in the
-<code>Module Configuration</code> section, as well as in the <a href="https://gilead-biostats.github.io/gsm.reporting/articles/DataReporting.html" class="external-link">Data
+<code>Module Configuration</code> section, as well as in the <a href="https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html" class="external-link">Data
 Reporting article</a>.</p>
 </div>
 <div class="section level4">
@@ -652,7 +652,7 @@ Report in <code>{gsm.kri}</code></p>
   Status: Qualified
   Permission: Users
   Outputs: An html report
-  ExampleURL: https://gilead-biostats.github.io/gsm.kri/report_kri_site.html
+  ExampleURL: https://gilead-public.github.io/gsm.kri/report_kri_site.html
 spec:
   Reporting_Results:
     _all:

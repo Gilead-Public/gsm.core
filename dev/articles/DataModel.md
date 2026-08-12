@@ -46,7 +46,7 @@ be done using multiple methods including custom R scripts (e.g., with
 `dplyr`), SQL queries, or using `gsm.mapping` workflows (e.g. the
 `system.file("workflow/1_mapping/AE.yaml", package = "gsm.mapping")`
 file). Examples of these methods can be found in the
-[Cookbook](https://gilead-biostats.github.io/gsm.core/articles/Cookbook.html).
+[Cookbook](https://gilead-public.github.io/gsm.core/articles/Cookbook.html).
 
 ## Analysis Data
 
@@ -70,7 +70,7 @@ in more detail below.
 
 1.  `dfInput`: Input data; Cross-domain participant-level input data
     with all needed data for KRI derivation. Created by the
-    [`Input_Rate()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Input_Rate.md)
+    [`Input_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Input_Rate.md)
     function used `mapped` data as input.
 2.  `dfTransformed`: Transformed data; Site-level transformed data
     including KRI calculation. Created by `Transform_*()` functions
@@ -86,7 +86,7 @@ in more detail below.
     always includes both KRI and Flag values so that a user can easily
     look at trends for any given site across multiple assessments.
     Created using the
-    [`Summarize()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Summarize.md)
+    [`Summarize()`](https://gilead-public.github.io/gsm.core/dev/reference/Summarize.md)
     function using `dfFlagged` as input.
 
 The data requirements for each component of the analysis pipeline are
@@ -102,13 +102,13 @@ There are two main approaches to running the analysis workflow:
     individually using the functions provided in the `{gsm}` suite of
     packages. This approach is useful for understanding the data
     requirements and for debugging. See Example 1 in
-    [Cookbook](https://gilead-biostats.github.io/gsm.core/articles/Cookbook.html)
+    [Cookbook](https://gilead-public.github.io/gsm.core/articles/Cookbook.html)
     for an example of this approach.
 2.  **Workflow Analysis**: Run the analysis pipeline using a YAML
     workflow file. This approach is useful for running the same analysis
     on multiple studies or for automating the analysis process. See
     Example 2 in
-    [Cookbook](https://gilead-biostats.github.io/gsm.core/articles/Cookbook.html)
+    [Cookbook](https://gilead-public.github.io/gsm.core/articles/Cookbook.html)
     for an example of this approach.
 
 Note that each step in these workflows can be customized based on the
@@ -119,7 +119,7 @@ workflows.
 
 More details about analysis data pipelines can be found in the [Data
 Analysis
-article](https://gilead-biostats.github.io/gsm.core/articles/DataAnalysis.html).
+article](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html).
 
 ## Reporting Data
 
@@ -134,7 +134,7 @@ studies. The Reporting Data sets used in `{gsm.reporting}` and
     assessments and always includes both KRI and Flag values so that a
     user can easily look at trends for any given site across multiple
     assessments. Created using the
-    [`Summarize()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Summarize.md)
+    [`Summarize()`](https://gilead-public.github.io/gsm.core/dev/reference/Summarize.md)
     function in the analytics pipeline, followed by the `BindResults()`
     function to add columns necessary for reporting and stack metrics
     and snapshots into a single data.frame.
@@ -176,7 +176,7 @@ into the reporting data pipeline.
 #### `Analysis_Input`
 
 - Function(s) used to create table:
-  - [`gsm.core::Input_Rate()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Input_Rate.md)
+  - [`gsm.core::Input_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Input_Rate.md)
 - Inputs:
   - `Analysis_Subjects`
   - `Analysis_Numerator`
@@ -197,8 +197,8 @@ into the reporting data pipeline.
 #### `Analysis_Transformed`
 
 - Function(s) used to create table:
-  - [`gsm.core::Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Transform_Rate.md)
-  - [`gsm.core::Transform_Count()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Transform_Count.md)
+  - [`gsm.core::Transform_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Rate.md)
+  - [`gsm.core::Transform_Count()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Count.md)
 - Inputs: `Analysis_Input`
 - Usage: Convert from input data format to needed format to derive KRI
   for an Assessment via the `Analyze_*()` functions.
@@ -215,10 +215,10 @@ into the reporting data pipeline.
 #### `Analysis_Analyzed`
 
 - Function(s) used to create table:
-  - [`gsm.core::Analyze_Fisher()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Fisher.md)
-  - [`gsm.core::Analyze_Identity()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Identity.md)
-  - [`gsm.core::Analyze_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_NormalApprox.md)
-  - [`gsm.core::Analyze_Poisson()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_Poisson.md)
+  - [`gsm.core::Analyze_Fisher()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Fisher.md)
+  - [`gsm.core::Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)
+  - [`gsm.core::Analyze_NormalApprox()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_NormalApprox.md)
+  - [`gsm.core::Analyze_Poisson()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Poisson.md)
 - Inputs: `Analysis_Transformed`
 - Usage: Prepare the data for `Flag_*()` by performing the specified
   test on the metric provided.
@@ -239,10 +239,10 @@ into the reporting data pipeline.
 #### `Analysis_Flagged`
 
 - Function(s) used to create table:
-  - [`gsm.core::Flag()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Flag.md)
+  - [`gsm.core::Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
 - Inputs: `Analysis_Analyzed`
 - Usage: Flag a group-level metric to be summarized via
-  [`gsm.core::Summarize()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Summarize.md)
+  [`gsm.core::Summarize()`](https://gilead-public.github.io/gsm.core/dev/reference/Summarize.md)
   and used for reporting.
 - Structure:
 
@@ -262,7 +262,7 @@ into the reporting data pipeline.
 #### `Analysis_Summary`
 
 - Function(s) used to create table:
-  - [`gsm.core::Summarize()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Summarize.md)
+  - [`gsm.core::Summarize()`](https://gilead-public.github.io/gsm.core/dev/reference/Summarize.md)
 - Inputs: `Analysis_Flagged`
 - Usage: Summarize KRI at the group level for reporting.
 - Structure:
@@ -306,7 +306,7 @@ into the reporting data pipeline.
 
 - Function(s) used to create table:
   - `gsm.reporting::MakeBounds()`
-  - [`gsm.core::Analyze_NormalApprox_PredictBounds()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Analyze_NormalApprox_PredictBounds.md)
+  - [`gsm.core::Analyze_NormalApprox_PredictBounds()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_NormalApprox_PredictBounds.md)
     (called within `gsm.reporting::MakeBounds()`)
 - Inputs: `lAnalysis`, `strStudyID`, `dSnapshotDate`
 - Workflow used to create table: `3_reporting/Bounds.yaml` in

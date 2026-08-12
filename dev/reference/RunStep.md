@@ -33,7 +33,7 @@ RunStep(lStep, lData, lMeta, lSpec = NULL)
 
   `list` a data specification containing required columns. See the [gsm
   Extensions
-  article](https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html).
+  article](https://gilead-public.github.io/gsm.core/articles/gsmExtensions.html).
 
 ## Value
 
@@ -88,7 +88,7 @@ mapped <- workr::RunWorkflows(wf_mapping, lRaw)
 #>   Please report the issue to the authors.
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpT6TkN1/duckdb
+#> ℹ /tmp/Rtmpw6eu4F/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

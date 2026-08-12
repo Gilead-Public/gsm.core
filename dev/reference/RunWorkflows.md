@@ -60,5 +60,5 @@ RunWorkflows(
 ## Value
 
 A named list of results from
-[`RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/dev/reference/RunWorkflow.md),
+[`RunWorkflow()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflow.md),
 where the names correspond to the names of the workflow ID

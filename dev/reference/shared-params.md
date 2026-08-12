@@ -15,7 +15,7 @@ Reused parameter definitions are gathered here for easier usage.
 
   `data.frame` Input data with one record per subject. Created by
   passing Raw+ data into
-  [`Input_Rate()`](https://gilead-biostats.github.io/gsm.core/dev/reference/Input_Rate.md).
+  [`Input_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Input_Rate.md).
   Expected columns: `GroupID`, `GroupLevel`, `Numerator`, `Denominator`
   and/or columns specified in `strCountCol` and `strGroupCol`.
 

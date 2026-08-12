@@ -42,7 +42,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-BioStats/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-Public/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -63,7 +63,7 @@
       <h1>Step-by-Step Analysis Workflow</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/dev/vignettes/articles/DataAnalysis.Rmd" class="external-link"><code>vignettes/articles/DataAnalysis.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Gilead-Public/gsm.core/blob/dev/vignettes/articles/DataAnalysis.Rmd" class="external-link"><code>vignettes/articles/DataAnalysis.Rmd</code></a></small>
       <div class="d-none name"><code>DataAnalysis.Rmd</code></div>
     </div>
 
@@ -74,7 +74,7 @@
 </h2>
 <p>This vignette walks users through the mechanics of the functions that
 produce all of the Analysis workflow output within the
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> package. The suite of <code>{gsm}</code>
+<a href="https://gilead-public.github.io/gsm.core">gsm.core</a> package. The suite of <code>{gsm}</code>
 packages leverages Key Risk Indicators (KRIs) and thresholds to conduct
 study-level and site-level Risk Based Monitoring for clinical
 trials.</p>
@@ -86,7 +86,7 @@ workflow that is specified in each analysis workflow.</p>
 <p>All of these functions will run automatically and sequentially when a
 user calls <code><a href="https://rdrr.io/pkg/workr/man/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code> with a specified yaml file
 for KRI metrics found in the <code>workflow/2_metrics</code> directory
-of the <a href="https://github.com/Gilead-BioStats/gsm.kri" class="external-link"><code>{gsm.kri}</code></a>
+of the <a href="https://github.com/Gilead-Public/gsm.kri" class="external-link"><code>{gsm.kri}</code></a>
 package.</p>
 <p>Each of these individual functions can also be run independently
 outside of a specified yaml workflow.</p>
@@ -98,7 +98,7 @@ process data.</p>
 <div class="section level3">
 <h3 id="case-study---step-by-step-adverse-event-kri">Case Study - Step-by-Step Adverse Event KRI<a class="anchor" aria-label="anchor" href="#case-study---step-by-step-adverse-event-kri"></a>
 </h3>
-<p>We will use sample clinical data simulated with the <a href="https://github.com/Gilead-BioStats/gsm.datasim" class="external-link"><code>{gsm.datasim}</code></a>
+<p>We will use sample clinical data simulated with the <a href="https://github.com/Gilead-Public/gsm.datasim" class="external-link"><code>{gsm.datasim}</code></a>
 package to run the Adverse Events (AE) Assessment, i.e.,
 <code>AE_Assess()</code>, using the normal approximation method.</p>
 <p>Additional statistical methods and supporting functions are explored
@@ -444,11 +444,11 @@ assessments</li>
 <ul>
 <li>By default, all yaml workflow assessments specified in the
 <code>inst/workflow/</code> directory of the <code>{gsm.kri}</code>
-package use the <a href="https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-normal-approximation-method">normal
+package use the <a href="https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-normal-approximation-method">normal
 approximation</a> method.</li>
-<li>Optionally, other statistical methods include: <a href="https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method"><strong>Poisson</strong></a>,
-<a href="https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-fishers-exact-method"><strong>Fisher’s
-Exact</strong></a>, and <a href="https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-identity-method"><strong>Identity</strong></a>.</li>
+<li>Optionally, other statistical methods include: <a href="https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method"><strong>Poisson</strong></a>,
+<a href="https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-fishers-exact-method"><strong>Fisher’s
+Exact</strong></a>, and <a href="https://gilead-public.github.io/gsm.core/articles/KRI%20Method.html#the-identity-method"><strong>Identity</strong></a>.</li>
 </ul>
 <p><img src="data_analysis_combined.png" style="width:100.0%"></p>
 </div>
