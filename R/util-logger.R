@@ -45,6 +45,12 @@ SetLogLevel.character <- function(level) {
 
 #' @rdname SetLogLevel
 #' @export
+SetLogLevel.loglevel <- function(level) {
+  SetLogLevel(as.character(level)[[1L]])
+}
+
+#' @rdname SetLogLevel
+#' @export
 SetLogLevel.numeric <- function(level) {
   idx <- match(level[[1L]], .log_levels, nomatch = 1L)
   SetLogLevel.character(names(.log_levels)[[idx]])
@@ -81,6 +87,12 @@ SetLogger <- function(logger) {
 #' @export
 SetLogger.character <- function(logger) {
   SetLogLevel(logger[[1L]])
+}
+
+#' @rdname SetLogger
+#' @export
+SetLogger.loglevel <- function(logger) {
+  SetLogLevel(as.character(logger)[[1L]])
 }
 
 #' @rdname SetLogger

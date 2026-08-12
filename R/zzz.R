@@ -1,3 +1,4 @@
 .onLoad <- function(libname, pkgname) {
-  SetLogger("DEBUG") # nocov
+  # Set the log level to the default value if it isn't already set.
+  SetLogger(GetLogLevel()) # nocov
 }
