@@ -13,6 +13,9 @@ SetLogLevel(level)
 # S3 method for class 'character'
 SetLogLevel(level)
 
+# S3 method for class 'loglevel'
+SetLogLevel(level)
+
 # S3 method for class 'numeric'
 SetLogLevel(level)
 

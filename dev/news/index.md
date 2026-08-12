@@ -1,6 +1,10 @@
 # Changelog
 
-## gsm.core (development version)
+## gsm.core v1.3.1
+
+This patch release removes the log4r package dependency, because the
+log4r package was archived on CRAN
+([\#159](https://github.com/Gilead-BioStats/gsm.core/issues/159)).
 
 ## gsm.core v1.3.0
 
