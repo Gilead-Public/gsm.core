@@ -56,9 +56,9 @@ analyzed <- list()
 reporting <- list()
 dates <- as.Date(c("2025-02-01", "2025-03-01", "2025-04-01"))
 
-# Mapped_NonStarter is derived from other mapped frames rather than a raw
-# domain, so it joins the workflow list but not the raw-data generation above.
-mapping_workflows <- c(core_mappings, "NonStarter")
+# Mapped_IPNS is derived from Mapped_SUBJ rather than a raw domain, so it joins
+# the workflow list but not the raw-data generation above.
+mapping_workflows <- c(core_mappings, "IPNS")
 mappings_wf <- gsm.core::MakeWorkflowList(
   strNames = mapping_workflows,
   strPath = "workflow/1_mappings",
