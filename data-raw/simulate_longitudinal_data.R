@@ -2,6 +2,8 @@ pak::pak('Gilead-Public/gsm.datasim@dev')
 pak::pak('Gilead-Public/gsm.mapping@dev')
 pak::pak('Gilead-Public/gsm.core@dev')
 pak::pak('Gilead-Public/gsm.kri@dev')
+pak::pak('Gilead-Public/gsm.reporting@dev')
+pak::pak('Gilead-Public/gsm.qtl@dev')
 
 library(gsm.core)
 library(gsm.mapping)
