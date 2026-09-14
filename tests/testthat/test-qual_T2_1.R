@@ -11,9 +11,15 @@ outputs <- map_vec(kri_workflows$steps, ~ .x$output)
 testthat::test_that("Qual: Given raw participant-level data, a properly specified Workflow for a KRI creates summarized and flagged data (#116)", {
   TestAtLogLevel("WARN")
   test <- robust_runworkflow(kri_workflows, mapped_data)
-  expected_rows <- length(na.omit(unique(test$Mapped_SUBJ[[
-    kri_workflows$steps[[4]]$params$strGroupCol
-  ]])))
+  # Transform_Rate drops groups whose total exposure is 0, so the analysis covers
+  # mapped sites with a non-zero denominator rather than every mapped site.
+  input_params <- kri_workflows$steps[[4]]$params
+  expected_rows <- test$Mapped_SUBJ %>%
+    filter(!is.na(.data[[input_params$strGroupCol]])) %>%
+    group_by(GroupID = .data[[input_params$strGroupCol]]) %>%
+    summarise(Denominator = sum(.data[[input_params$strDenominatorCol]])) %>%
+    filter(.data$Denominator > 0) %>%
+    nrow()
 
   # test output stucture
   expect_true(is.vector(test$vThreshold))

@@ -31,3 +31,19 @@ test_that("Raw_Death has required columns (#153)", {
 test_that("Raw_Death deathcls has no NA values (#153)", {
   expect_false(any(is.na(lSource$Raw_Death$deathcls)))
 })
+
+test_that("lSource carries the upstream IP non-starter fields (#177)", {
+  drv <- c(
+    "drv_enrollment_dt", "drv_ip_dosed", "drv_ip_first_dose_dt",
+    "drv_enrl_first_dose_days", "drv_days_lapsed_since_enrl",
+    "drv_ip_nonstarter_status"
+  )
+  expect_true(all(drv %in% names(lSource$Raw_SUBJ)))
+
+  enrolled <- lSource$Raw_SUBJ[lSource$Raw_SUBJ$enrollyn == "Y", ]
+  expect_true(all(enrolled$drv_ip_nonstarter_status %in% c(
+    "Dosed", "Confirmed Non-Starter",
+    "Potential Non-Starter outside window",
+    "Potential Non-Starter within window"
+  )))
+})
