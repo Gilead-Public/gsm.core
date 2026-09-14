@@ -1,0 +1,261 @@
+.reveal .slides section h1,
+.reveal .slides section h2,
+.reveal .slides section h3,
+.reveal .slides section h4,
+.reveal .slides section h5,
+.reveal .slides section h6,
+.reveal #title-slide .title,
+.reveal #title-slide .subtitle {
+  text-transform: none !important;
+}
+
+.theme-picker {
+  position: fixed;
+  top: 10px;
+  right: 12px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  padding: 0.3rem 0.45rem;
+  backdrop-filter: blur(2px);
+}
+
+.theme-picker.hidden {
+  display: none;
+}
+
+.theme-picker select {
+  font-size: 12px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  padding: 0.1rem 0.2rem;
+}
+
+.reveal .slides section h1 above,
+.reveal .slides section h2 above,
+.reveal .slides section h3 above,
+.reveal .slides section h4 above {
+  display: block;
+  font-size: 50%;
+  line-height: 1.1;
+}
+
+.reveal .slides section .tocbox {
+  position: relative;
+  margin-top: 0.8rem;
+  padding: 1.3rem 2.6rem 1.2rem 1.5rem;
+  border: 1px solid currentColor;
+  border-radius: 14px;
+  background: rgba(127, 127, 127, 0.08);
+  text-align: left;
+}
+
+.reveal .slides section .tocbox::before {
+  content: "☰";
+  position: absolute;
+  top: 0.45rem;
+  right: 0.55rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  background: inherit;
+}
+
+.reveal .slides section .tocbox ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.reveal .slides section .tocbox li {
+  margin: 0.1rem 0;
+}
+
+.reveal .slides section.full-image-slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 !important;
+}
+
+.reveal .slides section.full-image-slide img {
+  max-height: 600px;
+  width: auto;
+  max-width: 100%;
+}
+
+.reveal .slides section.full-image-slide > h2 {
+  order: 2;
+  margin: 0.3rem 0.8rem 0.25rem;
+  font-size: 1.24em;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.reveal .slides section.full-image-slide > p:first-of-type {
+  order: 1;
+  margin: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.reveal .slides section.full-image-slide > p:first-of-type img {
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.reveal .slides section.full-image-slide > p.img-caption {
+  display: block;
+  order: 3;
+  width: calc(100% - 1.6rem);
+  margin: 0.12rem 0.8rem 0.18rem;
+  font-size: 0.34em;
+  line-height: 1.15;
+  text-align: left;
+  color: inherit;
+}
+
+.reveal .slides section.full-image-slide > figure {
+  order: 1;
+  margin: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.reveal .slides section.full-image-slide > figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  margin: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.reveal .slides section.full-image-slide > figure figcaption,
+.reveal .slides section.full-image-slide > figure .figure-caption {
+  order: 2;
+  margin: 0.08rem 0.8rem 0.12rem;
+  font-size: 0.3em;
+  line-height: 1.15;
+  text-align: left;
+}
+
+.reveal .slides section .callout-note.small,
+.reveal .slides section .callout-important.small,
+.reveal .slides section .callout-tip.small {
+  font-size: 0.72em;
+  line-height: 1.25;
+  opacity: 0.9;
+}
+
+.reveal .slides section .workflow-grid {
+  margin-top: 0.04rem;
+  font-size: 0.39em;
+  line-height: 1.08;
+}
+
+.reveal .slides section .workflow-grid .columns {
+  display: flex;
+  gap: 0.28rem;
+}
+
+.reveal .slides section .workflow-grid .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.reveal .slides section .workflow-grid h3 {
+  margin: 0 0 0.04rem;
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+.reveal .slides section .workflow-card {
+  margin: 0 0 5px;
+  padding: 0.03rem 0.14rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  text-align: left;
+  font-size: 0.84em;
+  line-height: 1;
+}
+
+.reveal .slides section .workflow-card strong {
+  display: block;
+  margin: 0;
+  font-size: 1.5em;
+  line-height: 1.02;
+}
+
+.reveal .slides section .workflow-card br {
+  display: none;
+}
+
+.reveal .slides section .workflow-card.role-human {
+  border-color: #4ea1ff;
+  background: rgba(78, 161, 255, 0.24);
+}
+
+.reveal .slides section .workflow-card.role-human strong {
+  color: #7fc0ff;
+}
+
+.reveal .slides section .workflow-card.role-automated {
+  border-color: #5fd08a;
+  background: rgba(95, 208, 138, 0.24);
+}
+
+.reveal .slides section .workflow-card.role-automated strong {
+  color: #9ff0bf;
+}
+
+.reveal .slides section .workflow-grid.workflow-multi-kri {
+  margin-top: 0.08rem;
+}
+
+.reveal .slides section .workflow-grid.workflow-multi-kri .workflow-row {
+  display: flex;
+  gap: 0.22rem;
+  margin-bottom: 0.18rem;
+}
+
+.reveal .slides section .workflow-grid.workflow-multi-kri .workflow-row .workflow-card {
+  flex: 1 1 auto;
+  margin: 0;
+}
+
+.reveal .slides section .workflow-grid.workflow-multi-kri .workflow-row.ten-up .workflow-card {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0.02rem 0.06rem;
+}
+
+.reveal .slides section .workflow-grid.workflow-multi-kri .workflow-row.ten-up .workflow-card strong {
+  font-size: 1.15em;
+  text-align: center;
+}
+.reveal .slides section.constrain-images img {
+  max-height: 420px;
+  width: auto;
+}
