@@ -64,17 +64,18 @@ the mean across the full range of sample sizes/total exposure values.
 ``` r
 # Binary
 dfTransformed <- Transform_Rate(analyticsInput)
+#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
 
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "binary")
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
 dfBounds <- Analyze_NormalApprox_PredictBounds(dfTransformed, c(-3, -2, 2, 3), strType = "binary")
-#> nStep was not provided. Setting default step to 2.944.
+#> nStep was not provided. Setting default step to 2.82.
 
 # Rate
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "rate")
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
 dfBounds <- Analyze_NormalApprox_PredictBounds(dfTransformed, c(-3, -2, 2, 3), strType = "rate")
-#> nStep was not provided. Setting default step to 2.944.
+#> nStep was not provided. Setting default step to 2.82.
 ```

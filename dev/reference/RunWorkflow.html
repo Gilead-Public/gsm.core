@@ -141,17 +141,17 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::RunQuery`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Creating a new temporary DuckDB connection.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> duckdb keeps downloaded extensions and secrets in a temporary directory:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> /tmp/RtmpE8TDDu/duckdb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> /tmp/RtmpjPsYGn/duckdb</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> This is removed when the R session ends.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Secrets are lost.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> See ?duckdb_storage for details and alternatives.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] SQL Query complete: 758 rows returned.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] SQL Query complete: 774 rows returned.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Disconnected from temporary DuckDB connection.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 758x15 data.frame saved as `lData$Mapped_SUBJ`.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Returning results from final step: 758x15 data.frame`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 774x21 data.frame saved as `lData$Mapped_SUBJ`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Returning results from final step: 774x21 data.frame`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Completed `Mapped_SUBJ` Workflow</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run the metric workflow.</span></span></span>
@@ -184,11 +184,12 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Input_Rate`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 758x6 data.frame saved as `lData$Analysis_Input`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 774x6 data.frame saved as `lData$Analysis_Input`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 3 of 7: `gsm.core::Transform_Rate`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 1 parameter(s) for `gsm.core::Transform_Rate`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] dfInput = Analysis_Input: Passing lData$Analysis_Input.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Transform_Rate`</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 146x5 data.frame saved as `lData$Analysis_Transformed`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox`</span>
@@ -205,7 +206,7 @@ is <code>TRUE</code>) or the full workflow object (if <code>bReturnResults</code
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] Calling `gsm.core::Flag`</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 28 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X2435, 0X156, 0X5867, 0X7681, 0X2845, 0X7952, 0X9220, 0X1983, 0X3857, 0X3204, 0X5645, 0X2335, 0X5233, 0X8489, 0X7774, 0X6075, 0X3001, 0X3459, 0X2014, 0X7552, 0X7987, 0X766, 0X3686, 0X6068, 0X9000, 0X2524, 0X3730, 0X5451</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 22 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X9788, 0X7002, 0X7958, 0X8771, 0X1048, 0X1268, 0X7373, 0X3574, 0X2572, 0X9501, 0X1128, 0X3844, 0X2481, 0X3701, 0X4089, 0X3786, 0X5699, 0X7126, 0X3593, 0X2882, 0X3355, 0X3773</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> These group(s) will not have KRI score and flag summarized.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> [INFO] 146x9 data.frame saved as `lData$Analysis_Flagged`.</span>

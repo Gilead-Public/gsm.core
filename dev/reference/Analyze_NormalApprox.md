@@ -53,6 +53,7 @@ data quality and safety.
 ``` r
 # Binary
 dfTransformed <- Transform_Rate(analyticsInput)
+#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
 
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "binary")
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal

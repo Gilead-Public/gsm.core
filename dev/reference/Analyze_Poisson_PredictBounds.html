@@ -96,9 +96,10 @@ TODO: Add link.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dfTransformed</span> <span class="op">&lt;-</span> <span class="fu"><a href="Transform_Rate.html">Transform_Rate</a></span><span class="op">(</span><span class="va">analyticsInput</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dfBounds</span> <span class="op">&lt;-</span> <span class="fu">Analyze_Poisson_PredictBounds</span><span class="op">(</span><span class="va">dfTransformed</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → nStep was not provided. Setting default step to 0.0199942508514479</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → nStep was not provided. Setting default step to 0.0207102446616489</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

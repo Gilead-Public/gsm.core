@@ -102,17 +102,17 @@ lMappedData <- workr::RunWorkflows(
 #> [INFO] Calling `gsm.core::RunQuery`
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpE8TDDu/duckdb
+#> ℹ /tmp/RtmpjPsYGn/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
 #> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
-#> [INFO] SQL Query complete: 758 rows returned.
+#> [INFO] SQL Query complete: 774 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
-#> [INFO] 758x15 data.frame saved as `lData$Mapped_SUBJ`.
-#> [INFO] Returning results from final step: 758x15 data.frame`.
+#> [INFO] 774x21 data.frame saved as `lData$Mapped_SUBJ`.
+#> [INFO] Returning results from final step: 774x21 data.frame`.
 #> [INFO] Completed `Mapped_SUBJ` Workflow
 
 # Run the metric workflow.
@@ -145,11 +145,12 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.
 #> [INFO] strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.
 #> [INFO] Calling `gsm.core::Input_Rate`
-#> [INFO] 758x6 data.frame saved as `lData$Analysis_Input`.
+#> [INFO] 774x6 data.frame saved as `lData$Analysis_Input`.
 #> [INFO] Workflow Step 3 of 7: `gsm.core::Transform_Rate`
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::Transform_Rate`
 #> [INFO] dfInput = Analysis_Input: Passing lData$Analysis_Input.
 #> [INFO] Calling `gsm.core::Transform_Rate`
+#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
 #> [INFO] 146x5 data.frame saved as `lData$Analysis_Transformed`.
 #> [INFO] Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox`
 #> [INFO] Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox`
@@ -166,7 +167,7 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.
 #> [INFO] strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.
 #> [INFO] Calling `gsm.core::Flag`
-#> ℹ 28 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X2435, 0X156, 0X5867, 0X7681, 0X2845, 0X7952, 0X9220, 0X1983, 0X3857, 0X3204, 0X5645, 0X2335, 0X5233, 0X8489, 0X7774, 0X6075, 0X3001, 0X3459, 0X2014, 0X7552, 0X7987, 0X766, 0X3686, 0X6068, 0X9000, 0X2524, 0X3730, 0X5451
+#> ℹ 22 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X9788, 0X7002, 0X7958, 0X8771, 0X1048, 0X1268, 0X7373, 0X3574, 0X2572, 0X9501, 0X1128, 0X3844, 0X2481, 0X3701, 0X4089, 0X3786, 0X5699, 0X7126, 0X3593, 0X2882, 0X3355, 0X3773
 #> These group(s) will not have KRI score and flag summarized.
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
 #> [INFO] 146x9 data.frame saved as `lData$Analysis_Flagged`.
