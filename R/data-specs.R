@@ -117,6 +117,34 @@
 #' @source Generated from `reportingResults.csv` dataset in the `gsm.core` package.
 "reportingResults"
 
+#' reportingActionLog Dataset
+#'
+#' Deterministic longitudinal ActionLog records aligned with flagged site KRI
+#' rows in [reportingResults].
+#'
+#' @format `r df_dim_desc(reportingActionLog)`
+#' \describe{
+#'   \item{StudyID}{unique study identifier}
+#'   \item{SnapshotDate}{date of the KRI snapshot}
+#'   \item{GroupLevel}{level of grouping variable}
+#'   \item{GroupID}{grouping variable}
+#'   \item{MetricID}{unique metric identifier}
+#'   \item{State}{ActionLog state}
+#'   \item{ExtractionDate}{date the synthetic ActionLog was extracted}
+#'   \item{RiskSignalID}{synthetic risk signal identifier}
+#'   \item{RiskSignalURL}{synthetic risk signal URL}
+#'   \item{RiskSignalDuplicateFlag}{whether the signal duplicates a scoring key}
+#'   \item{RelevantSnapshotDate}{relevant snapshot across the signal history}
+#'   \item{RelevantSnapshotFlag}{whether this row is the relevant snapshot}
+#'   \item{RiskSignalAge}{age of the signal in days}
+#'   \item{AssignedTo,SignalDescription,RecommendedAction,ActionTaken,CTMSID,
+#'   CreatedDate,ResolvedDate,FunctionalArea,GroupLabel,MetricLabel,
+#'   MetricAbbreviation,Country}{ActionLog display and action metadata}
+#' }
+#' @source Generated from `reportingActionLog.csv` by
+#'   `data-raw/generate_action_log_fixture.R`.
+"reportingActionLog"
+
 
 #' reportingGroups_country Dataset
 #'

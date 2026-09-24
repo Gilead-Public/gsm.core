@@ -1,6 +1,9 @@
 # gsm.core (development version)
 
 - Regenerated the packaged `lSource` and `reporting*` datasets against the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are replaced by `kri0019`/`cou0019` (#177).
+- Added a deterministic longitudinal `reportingActionLog` fixture aligned with
+  flagged site KRI rows in `reportingResults` for action-weighted Site Risk
+  Score examples and qualification tests.
 
 # gsm.core v1.3.1
 
