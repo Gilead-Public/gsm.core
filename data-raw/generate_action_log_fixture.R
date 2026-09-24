@@ -17,12 +17,21 @@ groups <- read.csv(
   stringsAsFactors = FALSE
 )
 
+if (!requireNamespace("gsm.datasim", quietly = TRUE)) {
+  stop(
+    "Install gsm.datasim with ActionLog simulation support before regenerating this fixture.",
+    call. = FALSE
+  )
+}
+
 eligible <- results[
   results$GroupLevel == "Site" &
     grepl("^Analysis_kri", results$MetricID) &
     !is.na(results$Flag) &
     results$Flag != 0,
-  c("StudyID", "SnapshotDate", "GroupLevel", "GroupID", "MetricID"),
+  c(
+    "StudyID", "SnapshotDate", "GroupLevel", "GroupID", "MetricID", "Flag"
+  ),
   drop = FALSE
 ]
 eligible <- eligible[order(
@@ -32,31 +41,9 @@ eligible <- eligible[order(
 ), , drop = FALSE]
 row.names(eligible) <- NULL
 
-history_key <- paste(eligible$GroupID, eligible$MetricID, sep = "\r")
-history_index <- ave(seq_along(history_key), history_key, FUN = seq_along)
-history_bucket <- vapply(
-  strsplit(history_key, "", fixed = TRUE),
-  function(chars) sum(utf8ToInt(paste(chars, collapse = ""))) %% 4L,
-  integer(1)
-)
-
-eligible$State <- ifelse(
-  history_bucket == 0L,
-  "No Action",
-  ifelse(
-    history_bucket == 1L,
-    ifelse(history_index == 1L, "Awaiting Triage", "Open Action"),
-    ifelse(
-      history_bucket == 2L,
-      ifelse(history_index == 1L, "Open Action", "Closed Action"),
-      "Awaiting Triage"
-    )
-  )
-)
-
 metric_index <- match(eligible$MetricID, metrics$MetricID)
-metric_label <- metrics$Metric[metric_index]
-metric_abbreviation <- metrics$Abbreviation[metric_index]
+eligible$MetricLabel <- metrics$Metric[metric_index]
+eligible$MetricAbbreviation <- metrics$Abbreviation[metric_index]
 
 group_value <- function(param) {
   values <- groups[
@@ -67,72 +54,41 @@ group_value <- function(param) {
   as.character(values$Value[match(eligible$GroupID, values$GroupID)])
 }
 
-resolved <- eligible$State %in% c("No Action", "Closed Action")
-created_date <- eligible$SnapshotDate + 1L
-resolved_date <- as.Date(rep(NA_character_, nrow(eligible)))
-resolved_date[resolved] <- eligible$SnapshotDate[resolved] + 7L
-extraction_date <- eligible$SnapshotDate + 14L
+eligible$GroupLabel <- group_value("InvestigatorLastName")
+eligible$Country <- group_value("Country")
 
-relevant_date <- as.Date(rep(NA_character_, nrow(eligible)))
-for (key in unique(history_key)) {
-  indexes <- which(history_key == key)
-  states <- eligible$State[indexes]
-  dates <- eligible$SnapshotDate[indexes]
-  selected <- if (any(states == "Open Action")) {
-    min(dates[states == "Open Action"])
-  } else if (any(states == "Closed Action")) {
-    max(dates[states == "Closed Action"])
-  } else if (any(states == "Awaiting Triage")) {
-    min(dates[states == "Awaiting Triage"])
-  } else {
-    min(dates)
-  }
-  relevant_date[indexes] <- selected
-}
-
-age_end_date <- extraction_date
-age_end_date[resolved] <- resolved_date[resolved]
-
-reportingActionLog <- data.frame(
-  StudyID = eligible$StudyID,
-  SnapshotDate = eligible$SnapshotDate,
-  GroupLevel = eligible$GroupLevel,
-  GroupID = eligible$GroupID,
-  MetricID = eligible$MetricID,
-  State = eligible$State,
-  AssignedTo = ifelse(
-    eligible$State %in% c("Open Action", "Closed Action"),
-    "Synthetic Monitor",
-    NA_character_
-  ),
-  RiskSignalID = seq.int(900001L, length.out = nrow(eligible)),
-  RiskSignalURL = paste0(
-    "https://example.invalid/risk-signals/",
-    seq.int(900001L, length.out = nrow(eligible))
-  ),
-  SignalDescription = paste(metric_label, "requires review at site", eligible$GroupID),
-  RecommendedAction = "Review the synthetic risk signal.",
-  ActionTaken = ifelse(
-    eligible$State == "Closed Action",
-    "Synthetic review completed.",
-    NA_character_
-  ),
-  CTMSID = NA_character_,
-  CreatedDate = created_date,
-  ResolvedDate = resolved_date,
-  ExtractionDate = extraction_date,
-  RiskSignalDuplicateFlag = FALSE,
-  RelevantSnapshotDate = relevant_date,
-  RelevantSnapshotFlag = relevant_date == eligible$SnapshotDate,
-  RiskSignalAge = as.numeric(age_end_date - eligible$SnapshotDate) + 1,
-  FunctionalArea = "Central Monitoring",
-  GroupLabel = group_value("InvestigatorLastName"),
-  MetricLabel = metric_label,
-  MetricAbbreviation = metric_abbreviation,
-  Country = group_value("Country"),
-  stringsAsFactors = FALSE,
-  check.names = FALSE
+states <- c("Awaiting Triage", "No Action", "Open Action", "Closed Action")
+transition_matrix <- matrix(
+  0,
+  nrow = length(states),
+  ncol = length(states),
+  dimnames = list(states, states)
 )
+transition_matrix["Awaiting Triage", c("Awaiting Triage", "Open Action")] <-
+  c(0.25, 0.75)
+transition_matrix["No Action", "No Action"] <- 1
+transition_matrix["Open Action", c("Open Action", "Closed Action")] <-
+  c(0.4, 0.6)
+transition_matrix["Closed Action", "Closed Action"] <- 1
+
+reportingActionLog <- gsm.datasim::simulate_action_log(
+  df_results = eligible,
+  state_probabilities = c(
+    "Awaiting Triage" = 0.2,
+    "No Action" = 0.4,
+    "Open Action" = 0.2,
+    "Closed Action" = 0.2
+  ),
+  transition_matrix = transition_matrix,
+  seed = 134,
+  extraction_date = max(eligible$SnapshotDate) + 14L,
+  work_item_id_start = 900001L
+)
+
+group_labels <- unique(eligible[c("GroupID", "GroupLabel")])
+reportingActionLog$GroupLabel <- group_labels$GroupLabel[
+  match(reportingActionLog$GroupID, group_labels$GroupID)
+]
 
 write.csv(
   reportingActionLog,

@@ -8,7 +8,7 @@
 A data frame with 284 rows and 25 variables.
 }
 \source{
-Generated from \code{reportingActionLog.csv} by
+Generated through \code{gsm.datasim::simulate_action_log()} by
 \code{data-raw/generate_action_log_fixture.R}.
 }
 \usage{

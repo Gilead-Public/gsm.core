@@ -141,7 +141,7 @@
 #'   CreatedDate,ResolvedDate,FunctionalArea,GroupLabel,MetricLabel,
 #'   MetricAbbreviation,Country}{ActionLog display and action metadata}
 #' }
-#' @source Generated from `reportingActionLog.csv` by
+#' @source Generated through [gsm.datasim::simulate_action_log()] by
 #'   `data-raw/generate_action_log_fixture.R`.
 "reportingActionLog"
 
