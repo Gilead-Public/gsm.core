@@ -513,8 +513,8 @@ This workflow is similar to the standard release workflow, but with
 additional emphasis on ensuring dependencies are up to date and properly
 listed in `DESCRIPTION` given this quarter’s release plan.
 
-1.  Create a **release branch** (e.g., `release-x.y.z`) from `main` in
-    each package repository.
+1.  Create a **release branch** (e.g., `release-x.y.z`) from `dev` in
+    each package repository, as needed.
 2.  Update the version number in `DESCRIPTION` to align with the
     Milestones created for this quarter.
 3.  Add `NEWS.md` entry with release notes.

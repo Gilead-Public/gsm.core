@@ -380,7 +380,7 @@
 <hr><div class="section level2">
 <h2 id="release-workflow-for-quarterly-releases">Release Workflow for Quarterly Releases<a class="anchor" aria-label="anchor" href="#release-workflow-for-quarterly-releases"></a></h2>
 <p>This workflow is similar to the standard release workflow, but with additional emphasis on ensuring dependencies are up to date and properly listed in <code>DESCRIPTION</code> given this quarter’s release plan.</p>
-<ol style="list-style-type: decimal"><li>Create a <strong>release branch</strong> (e.g., <code>release-x.y.z</code>) from <code>main</code> in each package repository.</li>
+<ol style="list-style-type: decimal"><li>Create a <strong>release branch</strong> (e.g., <code>release-x.y.z</code>) from <code>dev</code> in each package repository, as needed.</li>
 <li>Update the version number in <code>DESCRIPTION</code> to align with the Milestones created for this quarter.</li>
 <li>Add <code>NEWS.md</code> entry with release notes.</li>
 <li>Run quality checks, unit tests, and qualification tests to ensure all are passing.</li>
