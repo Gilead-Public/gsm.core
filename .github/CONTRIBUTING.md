@@ -43,7 +43,6 @@ The default **Requirements** view lists Requirement issues across all `gsm` repo
    - `Released` – The work has shipped in a tagged release.
 - **Repository / Milestone** – Where the work lives and which release it is targeted for.
 - **Roadmap** – Quarter when the Requirement is planned for completion.
-- **Triage** – Has the Requirement been approved for development work?
 - **Type** – Requirement, Bug, Feature, Technical Task, or Documentation Task.
 
 Move a Requirement's status forward as it progresses, and set it to `Released` only after the release containing it has been published. Individual sub-issues are closed by their PRs via [closing keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue-using-a-keyword).
@@ -385,13 +384,13 @@ To prevent these issues, follow the release sequence below. **Hard** dependencie
 14. **gsm.rrm** – Risk Review Meeting materials. Suggests `grail`.
 15. **gsm.template** – Study file structure generator. Imports `gsm.datasim`, `gsm.mapping`, `workr`.
 16. **gsm.app** – Shiny application. Imports `gsm.core`, `gsm.kri`; suggests `gsm.mapping`, `gsm.reporting`.
-17. **gsm.qc** – QC framework for the `gsm` suite. Imports `gsm.core`, `gsm.kri`, `gsm.mapping`, `gsm.reporting`.
+17. **gsm.ae** – Adverse Events modules for `gsm.app`, maintained in the [`OpenRBQM`](https://github.com/OpenRBQM/gsm.ae) org. Imports `gsm.app (>= 2.5.2)`, `gsm.mapping`.
 
 **Note on soft cycles:** `gsm.kri` suggests `gsm.reporting` and `gsm.qtl`, while `gsm.reporting` suggests `gsm.kri`. These are `Suggests`-only cycles, so they cannot be fully linearized. Release `gsm.reporting` and `gsm.qtl` before `gsm.kri`, then re-run `gsm.reporting`'s checks against the new `gsm.kri` before closing out the cycle.
 
 **Note on version floors:** Several `DESCRIPTION` files pin minimum versions (e.g. `gsm.kri` requires `gsm.core (>= 1.3.1)`, `gsm.template` requires `gsm.datasim (>= 2.0.0)`). Bump these floors in the downstream package whenever you rely on newly added upstream behavior.
 
-**Note on `Remotes`:** Public packages now live under [`Gilead-Public`](https://github.com/Gilead-Public); Gilead-internal packages remain under `Gilead-BioStats`. Confirm each `Remotes:` entry points at the correct org before releasing.
+**Note on `Remotes`:** Packages are spread across three orgs — public packages under [`Gilead-Public`](https://github.com/Gilead-Public), Gilead-internal packages under `Gilead-BioStats`, and `gsm.ae` under [`OpenRBQM`](https://github.com/OpenRBQM). Confirm each `Remotes:` entry points at the correct org before releasing.
 
 **Note:** Not every package requires a release in every cycle. If no changes have been made (and the version number/NEWS.md do not need updating), simply skip that package and continue with the next in the sequence.
 
