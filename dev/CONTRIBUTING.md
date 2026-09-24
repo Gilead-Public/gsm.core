@@ -2,9 +2,14 @@
 
 This page outlines the development process for `{gsm}` packages. It
 summarizes both our project management and development workflows. The
-project management workflow focuses on using issues to are capture user
-requirements, bugs and technical requirements. The development workflow
+project management workflow focuses on using issues to capture user
+requirements, bugs, and technical requirements. The development workflow
 explains how to submit code using the GitHub flow paradigm.
+
+These guidelines are maintained centrally in
+[`gsm.core`](https://gilead-public.github.io/gsm.core/CONTRIBUTING.html)
+and apply to every repository in the `{gsm}` universe. Other `gsm`
+repositories ship a short `CONTRIBUTING.md` stub that links back here.
 
 # Project Management
 
@@ -19,7 +24,7 @@ Issues are the primary way to communicate what needs to be done and to
 track progress. Several issue templates are provided to help streamline
 this process, including:
 
-- Requirements – Use this template to create a User Requirement.
+- Requirement – Use this template to create a User Requirement.
   Requirements are then assigned sub-issues using the issue types below.
 - Bug – Bug reports for when something isn’t working
 - Feature – User-facing Functionality
@@ -28,14 +33,23 @@ this process, including:
 - Documentation Task – Improvements or additions to the documentation
   including function docs, readme updates and vignettes.
 
-The issue templates automatically appear when you select `New Issue` to
-create a new issue in a given repository, are maintained in
-{[gsm.utils](https://github.com/Gilead-Public/gsm.utils)} and
-automatically updated in all gsm packages whenever updates are made.
-Note that suggestions or other input that might not warrant formal
-submission of an issue can be filed in the Github `Discussions` tab for
-that repository, which can help facilitate discourse of specific
-use-cases or requests.
+The issue templates automatically appear when you select `New Issue` in
+a given repository. Blank issues are disabled, so every issue starts
+from one of the templates above. The templates are maintained in
+[`gsm.utils`](https://github.com/Gilead-Public/gsm.utils) and are rolled
+out to all `gsm` packages with
+[`gsm.utils::update_gsm_package()`](https://rdrr.io/pkg/gsm.utils/man/update_gsm_package.html)
+(see [Repository Tooling](#repository-tooling)).
+
+The `Requirement` template automatically adds the issue to the gsm
+Roadmap project. Sub-issues (Feature, Bug, Technical Task, Documentation
+Task) should be linked to their parent Requirement so that work rolls up
+correctly on the board.
+
+Suggestions or other input that might not warrant formal submission of
+an issue can be filed in the GitHub `Discussions` tab for that
+repository, which can help facilitate discourse of specific use-cases or
+requests.
 
 ------------------------------------------------------------------------
 
@@ -43,20 +57,36 @@ use-cases or requests.
 
 The [gsm Roadmap](https://github.com/orgs/Gilead-BioStats/projects/41)
 GitHub Project is used to track issues and set priorities across
-projects. The gsm team generally batches work into quarterly releases,
-although package releases can happen more frequently. Key cross-repo
-views in the project include:
+repositories. The gsm team generally batches work into quarterly
+releases, although package releases can happen more frequently.
 
-- Roadmap – A list of issues split out by quarter. Generally speaking,
-  related functionality should be grouped into a Requirement. Key
-  columns include:
-  - Status – Issue status (e.g. To Do, In Progress, Done).
-  - Repository/Milestone
-  - Roadmap – Quarter when the requirement is planned for completion.
-  - Triage – Has the requirement been approved for development work?
-  - Type – Bug, Feature, Task, Documentation.
-- Issues – A list of all open non-requirement issues, split by type.
-- Releases – All open issues grouped by repo and sorted by milestone.
+The default **Requirements** view lists Requirement issues across all
+`gsm` repositories, grouped by status. Related functionality should
+generally be grouped under a single Requirement, with
+Feature/Bug/Technical/Documentation issues attached as sub-issues. Key
+fields include:
+
+- **Status** – Where the Requirement sits in the lifecycle:
+  - `Backlog` – Captured, but not yet being worked on.
+  - `Requirement Gathering` – Scope and acceptance criteria are being
+    defined with stakeholders.
+  - `Design` – Technical approach, affected packages, and QC strategy
+    are being worked out.
+  - `Development` – Sub-issues are actively being implemented in `fix-*`
+    branches.
+  - `Review` – Implementation is complete and undergoing code review
+    and/or QC.
+  - `Released` – The work has shipped in a tagged release.
+- **Repository / Milestone** – Where the work lives and which release it
+  is targeted for.
+- **Roadmap** – Quarter when the Requirement is planned for completion.
+- **Type** – Requirement, Bug, Feature, Technical Task, or Documentation
+  Task.
+
+Move a Requirement’s status forward as it progresses, and set it to
+`Released` only after the release containing it has been published.
+Individual sub-issues are closed by their PRs via [closing
+keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue-using-a-keyword).
 
 # Development Workflow
 
@@ -90,7 +120,7 @@ production, but can still be tested and reviewed in isolation.
 ## Development Workflow
 
 1.  **Open an issue** – every change begins with an issue using the
-    right template (`Requirements`, `Bug`, `Feature`,`Technical Task`,
+    right template (`Requirement`, `Bug`, `Feature`, `Technical Task`,
     or `Documentation Task`). This creates a clear record of what’s
     being worked on.
 2.  **Create a branch** – branch names link to issues (e.g., `fix-111`
@@ -103,6 +133,8 @@ production, but can still be tested and reviewed in isolation.
     automatically.
 5.  **Merge & clean up** – once approved and passing checks, merge into
     `dev` and delete the `fix-*` branch.
+6.  **Update the board** – move the parent Requirement’s Status forward
+    (e.g., `Development` → `Review`) as the work progresses.
 
 👉 Following this flow ensures that every contribution is tracked,
 tested, and reviewed before becoming part of the development branch.
@@ -159,6 +191,8 @@ ensure **reliability, traceability, and reproducibility**:
     - Attach QC reports
     - Create a PR that syncs `main` back into `dev`
     - Ensure related Issues are Closed
+    - Set the Status of related Requirements to `Released` on the gsm
+      Roadmap board
 
 👉 This process makes sure that every release is tested, documented, and
 signed off before it goes live.
@@ -180,6 +214,42 @@ double_indent_style$line_break$remove_line_breaks_in_fun_dec <- NULL
 styler::style_dir("R", transformers = double_indent_style)
 styler::style_dir("tests", recursive = TRUE, transformers = double_indent_style)
 ```
+
+------------------------------------------------------------------------
+
+## Repository Tooling
+
+Shared GitHub configuration — issue templates and GitHub Actions
+workflows — is maintained in
+[`gsm.utils`](https://github.com/Gilead-Public/gsm.utils) rather than
+being edited by hand in each repository.
+
+``` r
+
+# install.packages("pak")
+pak::pak("Gilead-Public/gsm.utils")
+
+# Pull the latest issue templates and workflow templates into this package
+gsm.utils::update_gsm_package(strPackageDir = ".")
+```
+
+`update_gsm_package()` will:
+
+- Install/update GitHub issue templates (`add_gsm_issue_templates()`)
+  and remove deprecated ones.
+- Install/update GitHub Actions workflows from the [`actions-v1`
+  branch](https://github.com/Gilead-Public/gsm.utils/tree/actions-v1/workflow_templates)
+  (`add_actions()`) and remove deprecated ones.
+
+New `gsm` extension packages should be scaffolded with
+[`gsm.utils::init_gsm_package()`](https://rdrr.io/pkg/gsm.utils/man/init_gsm_package.html),
+which creates the package skeleton, configures `pkgdown` + GitHub Pages
+and `testthat`, and then calls `update_gsm_package()`.
+
+👉 If you need to change a workflow or issue template, open the issue
+and PR against `gsm.utils` — not against the individual package. The one
+exception is `qcthat.yaml`, which is maintained in
+[`qcthat`](https://github.com/Gilead-Public/qcthat).
 
 ------------------------------------------------------------------------
 
@@ -393,6 +463,7 @@ appropriate package set.
 3.  Develop code + docs + tests.
 4.  Open PR to `dev` (assign self, request review, link issue).
 5.  Merge after approval + passing checks.
+6.  Update the parent Requirement’s Status on the gsm Roadmap board.
 
 ### Release Branch Workflow
 
@@ -403,6 +474,7 @@ appropriate package set.
 5.  QC reviewers complete checklist.
 6.  Merge, publish GitHub Release, attach QC report.
 7.  Sync `main` → `dev` with a PR, close issues, clean up branches.
+8.  Set related Requirements to `Released` on the gsm Roadmap board.
 
 ### QC Checklist
 
@@ -417,6 +489,9 @@ to ensure all checks pass (no errors/warnings/notes).
 No sensitive data or hardcoded paths.
 
 Qualification specs + reports updated.
+
+Issue templates and workflows up to date
+([`gsm.utils::update_gsm_package()`](https://rdrr.io/pkg/gsm.utils/man/update_gsm_package.html)).
 
 All GitHub Actions checks pass.
 
@@ -438,8 +513,8 @@ This workflow is similar to the standard release workflow, but with
 additional emphasis on ensuring dependencies are up to date and properly
 listed in `DESCRIPTION` given this quarter’s release plan.
 
-1.  Create a **release branch** (e.g., `release-x.y.z`) from `main` in
-    each package repository.
+1.  Create a **release branch** (e.g., `release-x.y.z`) from `dev` in
+    each package repository, as needed.
 2.  Update the version number in `DESCRIPTION` to align with the
     Milestones created for this quarter.
 3.  Add `NEWS.md` entry with release notes.
@@ -448,21 +523,25 @@ listed in `DESCRIPTION` given this quarter’s release plan.
 5.  Confirm **dependencies are up to date** and properly listed in
     `DESCRIPTION` given this quarter’s release plan and the instructions
     in the Release Order section below.
-6.  Create and merge a PR for the release branch.
-7.  Tag the release with the semantic version (e.g. `v1.1.0`).
-8.  Ensure that qualification report and tarball are appropriately
+6.  Run
+    [`gsm.utils::update_gsm_package()`](https://rdrr.io/pkg/gsm.utils/man/update_gsm_package.html)
+    so issue templates and workflows match the current standards.
+7.  Create and merge a PR for the release branch.
+8.  Tag the release with the semantic version (e.g. `v1.1.0`).
+9.  Ensure that qualification report and tarball are appropriately
     attached to each release, as required.
-9.  Publish the release on GitHub (use auto-generated release notes +
+10. Publish the release on GitHub (use auto-generated release notes +
     NEWS.md).
 
 ------------------------------------------------------------------------
 
 ## Release Order
 
-Many `{gsm}` packages depend on a small set of foundational packages
-(`gsm.core`, `gsm.mapping`, `gsm.kri`, and `gsm.reporting`). These core
-packages define shared data structures, helper functions, and reporting
-utilities that downstream packages rely on.
+Most `{gsm}` packages build on a small set of foundational packages
+(`workr`, `gsm.core`, `gsm.vizr`, `gsm.mapping`, `gsm.reporting`, and
+`gsm.kri`). These define the workflow engine, shared data structures,
+helper functions, visualizations, and reporting utilities that
+downstream packages rely on.
 
 Because of this dependency structure, it is **critical** to release
 packages in the correct order. If a downstream package is released
@@ -472,33 +551,76 @@ before its dependencies are updated, it may:
 - Introduce inconsistencies in shared functions or data definitions.
 - Break automated workflows (CI/CD, simulations, reporting pipelines).
 
-To prevent these issues, follow the release sequence below:
+To prevent these issues, follow the release sequence below. **Hard**
+dependencies are `Depends`/`Imports`; **soft** dependencies are
+`Suggests` (needed for vignettes, tests, and qualification, so they
+still influence ordering).
 
-1.  **gsm.core** – Foundational utilities used by nearly all other
-    packages.
-2.  **gsm.mapping** – Builds on `gsm.core` to provide study-specific
-    mappings.
-3.  **gsm.qtl** – Depends on `gsm.core`.
-4.  **gsm.kri** – Depends on `gsm.core`, `gsm.mapping` and `gsm.qtl`;
-    provides core risk indicator functionality.
-5.  **gsm.reporting** – Depends on `gsm.core` and `gsm.kri`; underpins
-    all reporting templates.
-6.  **gsm.datasim** – Depends on `gsm.core` and `gsm.mapping` for
-    generating simulated study data.
-7.  **gsm.endpoints** – Uses `gsm.mapping` and `gsm.core`. Also extends
-    `gsm.kri` and `gsm.reporting` for endpoint-specific analyses.
-8.  **grail** – Suggests `gsm.core`, `gsm.mapping`, `gsm.kri`, `gsm.qtl`
-    and `gsm.reporting`.
-9.  **grail.ado** - Depends on `grail` for passing data to ADO.
-10. **gsm.rrm** - Suggests `grail` and `gsm.core`.
-11. **gsm.template** – Depends on `gsm.core`, `gsm.datasim` and
-    `gsm.mapping`.
-12. **gsm.app** – Depends on `gsm.core` and `gsm.kri`. Suggests
-    `gsm.mapping` and `gsm.reporting`.\`
-13. **gsm.ae** – Depends on `gsm.app` and `gsm.mapping`
-14. **gsm.qc** – Depends on `gsm.core`, `gsm.mapping`, `gsm.kri` and
+### Tier 1 – Foundation (no `gsm` dependencies)
+
+1.  **workr** – Workflow execution engine
+    ([`RunWorkflows()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflows.md),
+    [`RunWorkflow()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflow.md),
+    [`RunStep()`](https://gilead-public.github.io/gsm.core/dev/reference/RunStep.md)).
+    Imported by `gsm.core`; no `gsm` dependencies.
+2.  **qcthat** – QC framework for R packages used in clinical trials;
+    also supplies `qcthat.yaml`. Suggested by `gsm.core`, `gsm.kri`,
+    `gsm.qtl`, and `grail`; no `gsm` dependencies.
+3.  **gsm.utils** – Developer tooling (issue templates, GitHub Actions,
+    `pkgdown` helpers). No `gsm` dependencies. Release first in a cycle
+    where shared templates changed, so downstream repos can sync.
+
+### Tier 2 – Core
+
+4.  **gsm.core** – Analytics framework and workflow utilities. Imports
+    `workr`.
+5.  **gsm.vizr** – Shared visualization layer. Imports `gsm.core`.
+6.  **gsm.mapping** – Data mapping framework. Imports `gsm.core`,
+    `workr`.
+7.  **gsm.reporting** – Reporting data model. Imports `gsm.core`;
+    suggests `gsm.kri`, `gsm.mapping`.
+8.  **gsm.qtl** – QTL functions, workflows, and report templates.
+    Imports `gsm.core`, `gsm.vizr`.
+9.  **gsm.kri** – KRI metrics and visualizations. Imports `gsm.core`,
+    `gsm.vizr`, `workr`; suggests `gsm.mapping`, `gsm.reporting`,
+    `gsm.qtl`.
+
+### Tier 3 – Extensions and applications
+
+10. **gsm.datasim** – Synthetic study data. Imports `workr`; suggests
+    `gsm.core`, `gsm.kri`, `gsm.mapping`, `gsm.reporting`.
+11. **gsm.endpoints** – Endpoint monitoring module. Imports `gsm.vizr`;
+    suggests `gsm.core`, `gsm.kri`, `gsm.mapping`, `gsm.reporting`.
+12. **grail** – Risk signal structuring and actioning. Suggests
+    `gsm.core`, `gsm.endpoints`, `gsm.kri`, `gsm.mapping`, `gsm.qtl`,
     `gsm.reporting`.
-15. **gsm.utils** – Optional utilities. No gsm dependencies at this time
+13. **grail.ado** – Azure DevOps integration. Imports `grail`.
+14. **gsm.rrm** – Risk Review Meeting materials. Suggests `grail`.
+15. **gsm.template** – Study file structure generator. Imports
+    `gsm.datasim`, `gsm.mapping`, `workr`.
+16. **gsm.app** – Shiny application. Imports `gsm.core`, `gsm.kri`;
+    suggests `gsm.mapping`, `gsm.reporting`.
+17. **gsm.ae** – Adverse Events modules for `gsm.app`, maintained in the
+    [`OpenRBQM`](https://github.com/OpenRBQM/gsm.ae) org. Imports
+    `gsm.app (>= 2.5.2)`, `gsm.mapping`.
+
+**Note on soft cycles:** `gsm.kri` suggests `gsm.reporting` and
+`gsm.qtl`, while `gsm.reporting` suggests `gsm.kri`. These are
+`Suggests`-only cycles, so they cannot be fully linearized. Release
+`gsm.reporting` and `gsm.qtl` before `gsm.kri`, then re-run
+`gsm.reporting`’s checks against the new `gsm.kri` before closing out
+the cycle.
+
+**Note on version floors:** Several `DESCRIPTION` files pin minimum
+versions (e.g. `gsm.kri` requires `gsm.core (>= 1.3.1)`, `gsm.template`
+requires `gsm.datasim (>= 2.0.0)`). Bump these floors in the downstream
+package whenever you rely on newly added upstream behavior.
+
+**Note on `Remotes`:** Packages are spread across three orgs — public
+packages under [`Gilead-Public`](https://github.com/Gilead-Public),
+Gilead-internal packages under `Gilead-BioStats`, and `gsm.ae` under
+[`OpenRBQM`](https://github.com/OpenRBQM). Confirm each `Remotes:` entry
+points at the correct org before releasing.
 
 **Note:** Not every package requires a release in every cycle. If no
 changes have been made (and the version number/NEWS.md do not need
@@ -518,6 +640,8 @@ conflicts and downstream errors.
   required.
 - Update the Package Release Tracker with release dates, links to
   releases and qualification information. *Gilead Only*
+- Set the Status of all related Requirements to `Released` on the [gsm
+  Roadmap](https://github.com/orgs/Gilead-BioStats/projects/41).
 - Write up a summary of the release updates in an OpenRBQM Discussion.
 - Announce release completion to the team on the `gsm` Teams channel
   with link to OpenRBQM Release Discussion.
