@@ -78,8 +78,6 @@
 <li>
 <strong>Roadmap</strong> – Quarter when the Requirement is planned for completion.</li>
 <li>
-<strong>Triage</strong> – Has the Requirement been approved for development work?</li>
-<li>
 <strong>Type</strong> – Requirement, Bug, Feature, Technical Task, or Documentation Task.</li>
 </ul><p>Move a Requirement’s status forward as it progresses, and set it to <code>Released</code> only after the release containing it has been published. Individual sub-issues are closed by their PRs via <a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue-using-a-keyword" class="external-link">closing keywords</a>.</p>
 </div>
@@ -442,10 +440,10 @@
 <li>
 <strong>gsm.app</strong> – Shiny application. Imports <code>gsm.core</code>, <code>gsm.kri</code>; suggests <code>gsm.mapping</code>, <code>gsm.reporting</code>.</li>
 <li>
-<strong>gsm.qc</strong> – QC framework for the <code>gsm</code> suite. Imports <code>gsm.core</code>, <code>gsm.kri</code>, <code>gsm.mapping</code>, <code>gsm.reporting</code>.</li>
+<strong>gsm.ae</strong> – Adverse Events modules for <code>gsm.app</code>, maintained in the <a href="https://github.com/OpenRBQM/gsm.ae" class="external-link"><code>OpenRBQM</code></a> org. Imports <code>gsm.app (&gt;= 2.5.2)</code>, <code>gsm.mapping</code>.</li>
 </ol><p><strong>Note on soft cycles:</strong> <code>gsm.kri</code> suggests <code>gsm.reporting</code> and <code>gsm.qtl</code>, while <code>gsm.reporting</code> suggests <code>gsm.kri</code>. These are <code>Suggests</code>-only cycles, so they cannot be fully linearized. Release <code>gsm.reporting</code> and <code>gsm.qtl</code> before <code>gsm.kri</code>, then re-run <code>gsm.reporting</code>’s checks against the new <code>gsm.kri</code> before closing out the cycle.</p>
 <p><strong>Note on version floors:</strong> Several <code>DESCRIPTION</code> files pin minimum versions (e.g. <code>gsm.kri</code> requires <code>gsm.core (&gt;= 1.3.1)</code>, <code>gsm.template</code> requires <code>gsm.datasim (&gt;= 2.0.0)</code>). Bump these floors in the downstream package whenever you rely on newly added upstream behavior.</p>
-<p><strong>Note on <code>Remotes</code>:</strong> Public packages now live under <a href="https://github.com/Gilead-Public" class="external-link"><code>Gilead-Public</code></a>; Gilead-internal packages remain under <code>Gilead-BioStats</code>. Confirm each <code>Remotes:</code> entry points at the correct org before releasing.</p>
+<p><strong>Note on <code>Remotes</code>:</strong> Packages are spread across three orgs — public packages under <a href="https://github.com/Gilead-Public" class="external-link"><code>Gilead-Public</code></a>, Gilead-internal packages under <code>Gilead-BioStats</code>, and <code>gsm.ae</code> under <a href="https://github.com/OpenRBQM" class="external-link"><code>OpenRBQM</code></a>. Confirm each <code>Remotes:</code> entry points at the correct org before releasing.</p>
 <p><strong>Note:</strong> Not every package requires a release in every cycle. If no changes have been made (and the version number/NEWS.md do not need updating), simply skip that package and continue with the next in the sequence.</p>
 <p>By following this order, you ensure that every package is released with its latest compatible dependencies already available, minimizing risk of conflicts and downstream errors.</p>
 <hr></div>

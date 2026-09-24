@@ -80,7 +80,6 @@ fields include:
 - **Repository / Milestone** – Where the work lives and which release it
   is targeted for.
 - **Roadmap** – Quarter when the Requirement is planned for completion.
-- **Triage** – Has the Requirement been approved for development work?
 - **Type** – Requirement, Bug, Feature, Technical Task, or Documentation
   Task.
 
@@ -601,8 +600,9 @@ still influence ordering).
     `gsm.datasim`, `gsm.mapping`, `workr`.
 16. **gsm.app** – Shiny application. Imports `gsm.core`, `gsm.kri`;
     suggests `gsm.mapping`, `gsm.reporting`.
-17. **gsm.qc** – QC framework for the `gsm` suite. Imports `gsm.core`,
-    `gsm.kri`, `gsm.mapping`, `gsm.reporting`.
+17. **gsm.ae** – Adverse Events modules for `gsm.app`, maintained in the
+    [`OpenRBQM`](https://github.com/OpenRBQM/gsm.ae) org. Imports
+    `gsm.app (>= 2.5.2)`, `gsm.mapping`.
 
 **Note on soft cycles:** `gsm.kri` suggests `gsm.reporting` and
 `gsm.qtl`, while `gsm.reporting` suggests `gsm.kri`. These are
@@ -616,9 +616,10 @@ versions (e.g. `gsm.kri` requires `gsm.core (>= 1.3.1)`, `gsm.template`
 requires `gsm.datasim (>= 2.0.0)`). Bump these floors in the downstream
 package whenever you rely on newly added upstream behavior.
 
-**Note on `Remotes`:** Public packages now live under
-[`Gilead-Public`](https://github.com/Gilead-Public); Gilead-internal
-packages remain under `Gilead-BioStats`. Confirm each `Remotes:` entry
+**Note on `Remotes`:** Packages are spread across three orgs — public
+packages under [`Gilead-Public`](https://github.com/Gilead-Public),
+Gilead-internal packages under `Gilead-BioStats`, and `gsm.ae` under
+[`OpenRBQM`](https://github.com/OpenRBQM). Confirm each `Remotes:` entry
 points at the correct org before releasing.
 
 **Note:** Not every package requires a release in every cycle. If no
