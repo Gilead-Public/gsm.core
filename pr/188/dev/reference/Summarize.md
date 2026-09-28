@@ -50,7 +50,6 @@ function.
 ``` r
 
 dfTransformed <- Transform_Rate(analyticsInput)
-#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed)
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
