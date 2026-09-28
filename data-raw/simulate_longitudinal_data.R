@@ -253,3 +253,8 @@ write.csv(
   x = lReporting_study$Reporting_Results,
   row.names = F
 )
+
+# Rebuild the bundled data/*.rda objects from the CSVs just written. Without
+# this, data/ (and the row counts in the generated Rd files) silently drift out
+# of sync with data-raw/.
+source("data-raw/sampleData.R")
