@@ -112,3 +112,78 @@ test_that("a site has two or more counted non-starters, so kri0019 flags red (#1
   expect_gte(max(table(subj$invid[counted])), 2)
 })
 
+# ---- Premature treatment discontinuation (#176) ----
+ptd_cols <- c(
+  "drv_treatment_discontinuation_dt",
+  "drv_premature_discontinuation_reason",
+  "drv_days_lapsed_enrl_discontinuation"
+)
+
+test_that("Raw_SUBJ carries the three PTD fields at one row per subject (#176)", {
+  subj <- lSource$Raw_SUBJ
+
+  expect_true(all(ptd_cols %in% names(subj)))
+  expect_s3_class(subj$drv_treatment_discontinuation_dt, "Date")
+  expect_type(subj$drv_premature_discontinuation_reason, "character")
+  expect_type(subj$drv_days_lapsed_enrl_discontinuation, "integer")
+  expect_equal(anyDuplicated(subj$subjid), 0)
+  expect_false("drv_premature_discont" %in% names(subj))
+})
+
+test_that("only dosed subjects carry PTD values (#176)", {
+  subj <- lSource$Raw_SUBJ
+
+  expect_true(all(is.na(subj[!subj$drv_ip_dosed %in% "Y", ptd_cols])))
+})
+
+test_that("days lapsed is NA exactly when the date is NA and otherwise counts from enrollment inclusively (#176)", {
+  subj <- lSource$Raw_SUBJ
+  dt <- subj$drv_treatment_discontinuation_dt
+  dated <- !is.na(dt)
+
+  expect_identical(is.na(subj$drv_days_lapsed_enrl_discontinuation), !dated)
+  expect_equal(
+    subj$drv_days_lapsed_enrl_discontinuation[dated],
+    as.integer(dt[dated] - subj$drv_enrollment_dt[dated]) + 1L
+  )
+})
+
+test_that("discontinuation dates fall between first dose and the as-of date (#176)", {
+  subj <- lSource$Raw_SUBJ
+  dt <- subj$drv_treatment_discontinuation_dt
+  dated <- !is.na(dt)
+
+  expect_true(all(dt[dated] >= subj$drv_ip_first_dose_dt[dated]))
+  expect_true(all(dt[dated] <= as_of_date))
+})
+
+test_that("lSource covers every premature discontinuation scenario (#176)", {
+  subj <- lSource$Raw_SUBJ
+  d <- subj[subj$drv_ip_dosed %in% "Y", ]
+  dated <- !is.na(d$drv_treatment_discontinuation_dt)
+  reason <- d$drv_premature_discontinuation_reason
+  sc <- lSource$Raw_STUDCOMP
+  completed <- d$subjid %in% sc$subjid[sc$compyn %in% "Y"]
+
+  expect_gte(sum(table(d$invid[dated]) >= 3), 5)
+  expect_true(any(dated & is.na(reason)))
+  expect_true(any(dated & grepl(",", reason)))
+  expect_true(any(dated & completed))
+  expect_true(any(!dated & completed))
+  expect_true(any(!dated & !completed))
+  expect_true(any(!dated & !is.na(reason)))
+  expect_true(any(d$drv_days_lapsed_enrl_discontinuation %in% 1L))
+  expect_true(any(!subj$drv_ip_dosed %in% "Y"))
+})
+
+test_that("split reasons come from the full gsm.datasim vocabulary (#176)", {
+  # gsm.datasim R/Raw_SUBJ.R ptd_reason_values, not only what this seed drew.
+  vocabulary <- c(
+    "Adverse Event", "Lack of Efficacy", "Physician Decision",
+    "Withdrawal by Subject", "Protocol Deviation", "Progressive Disease",
+    "Lost to Follow-up"
+  )
+  reasons <- stats::na.omit(lSource$Raw_SUBJ$drv_premature_discontinuation_reason)
+
+  expect_true(all(trimws(unlist(strsplit(reasons, ","))) %in% vocabulary))
+})
