@@ -38,17 +38,19 @@ core_mappings <- c(
   "EXCLUSION"
 )
 
-basic_sim <- gsm.datasim::generate_rawdata_for_single_study(
-  SnapshotCount = 3,
-  SnapshotWidth = "months",
-  ParticipantCount = 1000,
-  SiteCount = 150,
-  StudyID = "AA-AA-000-0000",
-  workflow_path = "workflow/1_mappings",
-  mappings = core_mappings,
-  package = "gsm.mapping",
-  desired_specs = NULL
+# Analytics and reporting are left off here; this script drives those steps
+# itself via RunWorkflows() below.
+basic_study <- gsm.datasim::create_longitudinal_study(
+  study_id = "AA-AA-000-0000",
+  participants = 1000,
+  sites = 150,
+  snapshots = 3,
+  interval = "1 month",
+  domains = core_mappings,
+  run_analytics = FALSE,
+  run_reporting = FALSE
 )
+basic_sim <- basic_study$raw_data
 basic_sim[[1]]$Raw_SITE$site_status <- "Active"
 basic_sim[[2]]$Raw_SITE$site_status <- "Active"
 basic_sim[[3]]$Raw_SITE$site_status <- "Active"
@@ -61,23 +63,23 @@ dates <- as.Date(c("2025-02-01", "2025-03-01", "2025-04-01"))
 # Mapped_IPNS is derived from Mapped_SUBJ rather than a raw domain, so it joins
 # the workflow list but not the raw-data generation above.
 mapping_workflows <- c(core_mappings, "IPNS")
-mappings_wf <- gsm.core::MakeWorkflowList(
+mappings_wf <- workr::MakeWorkflowList(
   strNames = mapping_workflows,
   strPath = "workflow/1_mappings",
   strPackage = "gsm.mapping"
 )
 mappings_spec <- gsm.mapping::CombineSpecs(mappings_wf)
 metrics_wf <- c(
-  gsm.core::MakeWorkflowList(
+  workr::MakeWorkflowList(
     strPath = "workflow/2_metrics",
     strPackage = "gsm.kri"
   ),
-  gsm.core::MakeWorkflowList(
+  workr::MakeWorkflowList(
     strPath = "workflow/2_metrics",
     strPackage = "gsm.qtl"
   )
 )
-reporting_wf <- gsm.core::MakeWorkflowList(
+reporting_wf <- workr::MakeWorkflowList(
   strPath = "workflow/3_reporting",
   strPackage = "gsm.reporting"
 )
@@ -88,16 +90,16 @@ for (snap in seq_along(basic_sim)) {
   lRaw <- gsm.mapping::Ingest(lSource, mappings_spec)
 
   # Step 1 - Create Mapped Data Layer - filter, aggregate and join raw data to create mapped data layer
-  mapped <- gsm.core::RunWorkflows(mappings_wf, lRaw)
+  mapped <- workr::RunWorkflows(mappings_wf, lRaw)
 
   # Step 2 - Create Metrics - calculate metrics using mapped data
-  analyzed[[snap]] <- gsm.core::RunWorkflows(
+  analyzed[[snap]] <- workr::RunWorkflows(
     metrics_wf,
     c(mapped, list(lWorkflows = metrics_wf))
   )
 
   # Step 3 - Create Reporting Layer - create reports using metrics data
-  reporting[[snap]] <- gsm.core::RunWorkflows(
+  reporting[[snap]] <- workr::RunWorkflows(
     reporting_wf,
     c(mapped, list(lAnalyzed = analyzed[[snap]], lWorkflows = metrics_wf))
   )
