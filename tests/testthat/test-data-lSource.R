@@ -47,3 +47,68 @@ test_that("lSource carries the upstream IP non-starter fields (#177)", {
     "Potential Non-Starter within window"
   )))
 })
+
+# ---- IP non-starter scenarios (#184) ----
+# Last snapshot's end date in data-raw/simulate_longitudinal_data.R.
+as_of_date <- as.Date("2012-03-29")
+is_blank <- function(x) is.na(x) | x == ""
+enrolled_subj <- function() lSource$Raw_SUBJ[lSource$Raw_SUBJ$enrollyn %in% "Y", ]
+enrolled_studcomp <- function() {
+  subj <- enrolled_subj()
+  sc <- lSource$Raw_STUDCOMP
+  sc$status <- subj$drv_ip_nonstarter_status[match(sc$subjid, subj$subjid)]
+  sc[!is.na(sc$status), ]
+}
+
+test_that("drv_kit_assigned is NA for non-enrolled, Y for every dosed subject and mixed otherwise (#184)", {
+  subj <- lSource$Raw_SUBJ
+  enrolled <- subj$enrollyn %in% "Y"
+  undosed <- subj$drv_kit_assigned[enrolled & subj$drv_ip_dosed %in% "N"]
+
+  expect_identical(is.na(subj$drv_kit_assigned), !enrolled)
+  expect_true(all(subj$drv_kit_assigned[subj$drv_ip_dosed %in% "Y"] == "Y"))
+  expect_gte(sum(undosed == "Y"), 3)
+  expect_gte(sum(undosed == "N"), 3)
+})
+
+test_that("enrolled subjects cover all four IP non-starter statuses (#184)", {
+  expect_setequal(unique(enrolled_subj()$drv_ip_nonstarter_status), c(
+    "Dosed", "Confirmed Non-Starter",
+    "Potential Non-Starter outside window", "Potential Non-Starter within window"
+  ))
+})
+
+test_that("completion records agree with the IP non-starter status (#184)", {
+  sc <- enrolled_studcomp()
+  subj <- enrolled_subj()
+  confirmed <- subj$subjid[subj$drv_ip_nonstarter_status == "Confirmed Non-Starter"]
+
+  expect_true(all(confirmed %in% sc$subjid[sc$compyn %in% "N"]))
+  expect_false(any(grepl("^Potential", sc$status) & !is_blank(sc$compyn)))
+  expect_true(all(sc$status[sc$compyn %in% "Y"] == "Dosed"))
+  expect_identical(!is_blank(sc$compreas), sc$compyn %in% "N")
+})
+
+test_that("some Confirmed non-starters withdrew consent and some dosed subjects completed (#184)", {
+  sc <- enrolled_studcomp()
+
+  expect_gte(sum(sc$status == "Confirmed Non-Starter" & sc$compreas == "Withdrew Consent"), 3)
+  expect_gte(sum(sc$status == "Dosed" & sc$compyn %in% "Y"), 3)
+})
+
+test_that("completion records fall between the subject's anchor and the as-of date (#184)", {
+  subj <- enrolled_subj()
+  sc <- enrolled_studcomp()
+  anchor <- dplyr::coalesce(subj$drv_ip_first_dose_dt, subj$drv_enrollment_dt)[match(sc$subjid, subj$subjid)]
+  created <- as.Date(sc$mincreated_dts)
+
+  expect_true(all(created >= anchor & created <= as_of_date))
+})
+
+test_that("a site has two or more counted non-starters, so kri0019 flags red (#184)", {
+  subj <- enrolled_subj()
+  counted <- subj$drv_ip_nonstarter_status %in% c("Confirmed Non-Starter", "Potential Non-Starter outside window")
+
+  expect_gte(max(table(subj$invid[counted])), 2)
+})
+
