@@ -5,10 +5,10 @@
 \alias{lSource}
 \title{lSource Dataset}
 \format{
-A data frame with  rows and  columns:
+A named list of 18 data frames, one per raw source
+domain, representing a single study snapshot:
 \describe{
 \item{"Raw_AE"}{AE Source dataset}
-\item{"Raw_COUNTRY"}{Country Source dataset}
 \item{"Raw_DATACHG"}{DATACHG Source dataset}
 \item{"Raw_DATAENT"}{DATAENT Source dataset}
 \item{"Raw_Death"}{Death Source dataset}
