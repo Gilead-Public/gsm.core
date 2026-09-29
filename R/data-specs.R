@@ -292,10 +292,9 @@
 #'
 #'  `r lifecycle::badge("stable")`
 #'
-#' @format `r df_dim_desc(lSource)`
+#' @format A named list of `r length(lSource)` data frames:
 #' \describe{
 #'   \item{"Raw_AE"}{AE Source dataset}
-#'   \item{"Raw_COUNTRY"}{Country Source dataset}
 #'   \item{"Raw_DATACHG"}{DATACHG Source dataset}
 #'   \item{"Raw_DATAENT"}{DATAENT Source dataset}
 #'   \item{"Raw_Death"}{Death Source dataset}
@@ -313,6 +312,7 @@
 #'   \item{"Raw_STUDCOMP"}{STUDCOMP Source dataset}
 #'   \item{"Raw_SUBJ"}{SUBJ Source dataset}
 #'   \item{"Raw_VISIT"}{Visit Source dataset}
+#'   \item{"Raw_VS"}{Vital Signs Source dataset}
 #'   }
 #' @source Generated from `data-raw/simulate_longitudinal_data.R`.
 "lSource"
