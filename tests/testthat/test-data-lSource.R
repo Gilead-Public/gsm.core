@@ -47,3 +47,52 @@ test_that("lSource carries the upstream IP non-starter fields (#177)", {
     "Potential Non-Starter within window"
   )))
 })
+
+test_that("lSource contains Raw_VS domain (#186)", {
+  expect_true("Raw_VS" %in% names(lSource))
+  expect_gt(nrow(lSource$Raw_VS), 0)
+})
+
+test_that("Raw_VS covers the six supported vital sign measures (#186)", {
+  measures <- c("weight", "pulse", "sysbp", "diabp", "resp", "temp")
+  expect_true(all(measures %in% names(lSource$Raw_VS)))
+  performed <- lSource$Raw_VS[lSource$Raw_VS$vsperf_std == "Y", ]
+  for (measure in measures) {
+    expect_true(any(!is.na(performed[[measure]])), info = measure)
+  }
+})
+
+test_that("Raw_VS has red, amber, and normal site bands of consecutive repeats (#186)", {
+  # gsm.datasim (Gilead-Public/gsm.datasim#148) constructs per-site rates of
+  # 3-long consecutive repeats: ~10% of sites "red" (45%), ~20% "amber" (25%),
+  # the rest "normal" (5%). Missing values are dropped before windows form.
+  site_repeat_rates <- function(measure, window = 3) {
+    vs <- lSource$Raw_VS[!is.na(lSource$Raw_VS[[measure]]), ]
+    vs <- vs[order(vs$subjid, vs$vs_dt), ]
+    subj_sites <- unique(lSource$Raw_SUBJ[, c("subjid", "invid")])
+    by_subject <- split(vs[[measure]], vs$subjid)
+    counts <- vapply(by_subject, function(x) {
+      n_windows <- length(x) - window + 1
+      if (n_windows < 1) return(c(0, 0))
+      repeats <- vapply(
+        seq_len(n_windows),
+        function(i) length(unique(x[i:(i + window - 1)])) == 1,
+        logical(1)
+      )
+      c(sum(repeats), n_windows)
+    }, numeric(2))
+    site <- subj_sites$invid[match(colnames(counts), subj_sites$subjid)]
+    tapply(counts[1, ], site, sum) / tapply(counts[2, ], site, sum)
+  }
+
+  measures <- c("weight", "pulse", "sysbp", "diabp", "resp", "temp")
+  for (measure in measures) {
+    rates <- site_repeat_rates(measure)
+    pct_red <- mean(rates >= 0.35)
+    pct_amber <- mean(rates >= 0.15 & rates < 0.35)
+    expect_gt(pct_red, 0.05, label = paste(measure, "red share"))
+    expect_lt(pct_red, 0.15, label = paste(measure, "red share"))
+    expect_gt(pct_amber, 0.15, label = paste(measure, "amber share"))
+    expect_lt(pct_amber, 0.25, label = paste(measure, "amber share"))
+  }
+})
