@@ -5,10 +5,9 @@
 \alias{lSource}
 \title{lSource Dataset}
 \format{
-A data frame with  rows and  columns:
+A named list of 19 data frames:
 \describe{
 \item{"Raw_AE"}{AE Source dataset}
-\item{"Raw_COUNTRY"}{Country Source dataset}
 \item{"Raw_DATACHG"}{DATACHG Source dataset}
 \item{"Raw_DATAENT"}{DATAENT Source dataset}
 \item{"Raw_Death"}{Death Source dataset}
@@ -26,6 +25,7 @@ A data frame with  rows and  columns:
 \item{"Raw_STUDCOMP"}{STUDCOMP Source dataset}
 \item{"Raw_SUBJ"}{SUBJ Source dataset}
 \item{"Raw_VISIT"}{Visit Source dataset}
+\item{"Raw_VS"}{Vital Signs Source dataset}
 }
 }
 \source{

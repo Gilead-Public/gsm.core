@@ -35,7 +35,8 @@ core_mappings <- c(
   "SITE",
   "SUBJ",
   "IE",
-  "EXCLUSION"
+  "EXCLUSION",
+  "VS"
 )
 
 basic_sim <- gsm.datasim::generate_rawdata_for_single_study(
