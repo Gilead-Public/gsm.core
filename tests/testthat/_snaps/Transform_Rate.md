@@ -3,18 +3,18 @@
     Code
       row_removed
     Output
-      # A tibble: 143 x 5
+      # A tibble: 144 x 5
          GroupID GroupLevel Numerator Denominator Metric
          <chr>   <chr>          <int>       <dbl>  <dbl>
-       1 0X092   Site              20         253 0.0791
-       2 0X101   Site              35         365 0.0959
-       3 0X1093  Site               3          22 0.136 
-       4 0X1101  Site               4          43 0.0930
-       5 0X1257  Site              19         275 0.0691
-       6 0X1267  Site               2          21 0.0952
-       7 0X1444  Site              13         154 0.0844
-       8 0X1495  Site              23         235 0.0979
-       9 0X1650  Site               0           9 0     
-      10 0X1696  Site              15         212 0.0708
-      # i 133 more rows
+       1 0X020   Site               3          26 0.115 
+       2 0X077   Site               1          19 0.0526
+       3 0X1012  Site              23         266 0.0865
+       4 0X108   Site              51         600 0.085 
+       5 0X1154  Site              21         230 0.0913
+       6 0X1167  Site               9         107 0.0841
+       7 0X1175  Site              14         140 0.1   
+       8 0X1185  Site              38         402 0.0945
+       9 0X1302  Site               1          12 0.0833
+      10 0X1319  Site               5          56 0.0893
+      # i 134 more rows
 

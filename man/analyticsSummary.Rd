@@ -5,7 +5,7 @@
 \alias{analyticsSummary}
 \title{analyticsSummary Dataset}
 \format{
-A data frame with 144 rows and 7 columns:
+A data frame with 145 rows and 7 columns:
 \describe{
 \item{GroupID}{grouping variable}
 \item{GroupLevel}{level of grouping variable}

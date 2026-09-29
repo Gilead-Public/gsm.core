@@ -13,7 +13,8 @@ library(gsm.reporting)
 library(gsm.qtl)
 library(dplyr)
 library(stringr)
-set.seed(1234)
+# Seed chosen to avoid a Raw_SITE site ID collision (Gilead-Public/gsm.datasim#167)
+set.seed(2963)
 
 core_mappings <- c(
   "AE",

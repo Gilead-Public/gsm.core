@@ -96,3 +96,12 @@ test_that("Raw_VS has red, amber, and normal site bands of consecutive repeats (
     expect_lt(pct_amber, 0.25, label = paste(measure, "amber share"))
   }
 })
+
+test_that("Raw_SITE site IDs are unique and each site maps to one country (#186)", {
+  # Guards against the site ID collision in Gilead-Public/gsm.datasim#167.
+  expect_false(anyDuplicated(lSource$Raw_SITE$pi_number) > 0)
+  subj_sites <- unique(lSource$Raw_SUBJ[, c("invid", "country")])
+  expect_false(anyDuplicated(subj_sites$invid) > 0)
+  site_country <- lSource$Raw_SITE$country[match(subj_sites$invid, lSource$Raw_SITE$pi_number)]
+  expect_identical(subj_sites$country, site_country)
+})
