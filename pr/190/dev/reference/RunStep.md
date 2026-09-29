@@ -88,17 +88,17 @@ mapped <- workr::RunWorkflows(wf_mapping, lRaw)
 #>   Please report the issue to the authors.
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp7950Y3/duckdb
+#> ℹ /tmp/Rtmpl90MUN/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
 #> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
-#> [INFO] SQL Query complete: 738 rows returned.
+#> [INFO] SQL Query complete: 760 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
-#> [INFO] 738x21 data.frame saved as `lData$Mapped_SUBJ`.
-#> [INFO] Returning results from final step: 738x21 data.frame`.
+#> [INFO] 760x21 data.frame saved as `lData$Mapped_SUBJ`.
+#> [INFO] Returning results from final step: 760x21 data.frame`.
 #> [INFO] Completed `Mapped_SUBJ` Workflow
 ae_step <- workr::RunStep(lStep = lStep, lData = mapped, lMeta = lMeta)
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::ParseThreshold`

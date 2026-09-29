@@ -55,8 +55,7 @@ link.
 
 ``` r
 dfTransformed <- Transform_Rate(analyticsInput)
-#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
 
 dfBounds <- Analyze_Poisson_PredictBounds(dfTransformed, c(-5, 5))
-#> → nStep was not provided. Setting default step to 0.0216939220380082
+#> → nStep was not provided. Setting default step to 0.026904933609435
 ```

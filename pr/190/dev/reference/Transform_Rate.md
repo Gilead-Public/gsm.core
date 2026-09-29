@@ -68,5 +68,4 @@ dfTransformed <- Transform_Rate(
   strNumeratorCol = "Numerator",
   strDenominatorCol = "Denominator"
 )
-#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
 ```
