@@ -83,6 +83,7 @@ using a "log" link. Site-level residuals are calculated using
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dfTransformed</span> <span class="op">&lt;-</span> <span class="fu"><a href="Transform_Rate.html">Transform_Rate</a></span><span class="op">(</span><span class="va">analyticsInput</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dfAnalyzed</span> <span class="op">&lt;-</span> <span class="fu">Analyze_Poisson</span><span class="op">(</span><span class="va">dfTransformed</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Fitting log-linked Poisson generalized linear model of [ Numerator ] ~ [ log( Denominator ) ].</span>

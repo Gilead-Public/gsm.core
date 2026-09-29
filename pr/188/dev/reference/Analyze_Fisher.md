@@ -61,9 +61,4 @@ dfTransformed <- Transform_Rate(
   analyticsInput[1:20, ]
 )
 dfAnalyzed <- Analyze_Fisher(dfTransformed)
-#> Error in mutate(., model = purrr::map(.data$GroupID, fisher_model)): ℹ In argument: `model = purrr::map(.data$GroupID, fisher_model)`.
-#> Caused by error in `purrr::map()`:
-#> ℹ In index: 3.
-#> Caused by error in `stats::fisher.test()`:
-#> ! all entries of 'x' must be nonnegative and finite
 ```

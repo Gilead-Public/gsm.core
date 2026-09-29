@@ -10,7 +10,7 @@ analyticsSummary
 
 ## Format
 
-A data frame with 150 rows and 7 columns:
+A data frame with 146 rows and 7 columns:
 
 - GroupID:
 

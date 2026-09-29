@@ -48,6 +48,7 @@ calculated using
 
 ``` r
 dfTransformed <- Transform_Rate(analyticsInput)
+#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
 
 dfAnalyzed <- Analyze_Poisson(dfTransformed)
 #> ℹ Fitting log-linked Poisson generalized linear model of [ Numerator ] ~ [ log( Denominator ) ].

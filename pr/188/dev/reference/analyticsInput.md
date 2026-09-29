@@ -10,7 +10,7 @@ analyticsInput
 
 ## Format
 
-A data frame with 759 rows and 6 columns:
+A data frame with 774 rows and 6 columns:
 
 - SubjectID:
 
