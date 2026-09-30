@@ -3,6 +3,7 @@
 - `lSource` carries `drv_kit_assigned`, and its `Raw_STUDCOMP` records agree with the IP non-starter status (#184).
 - `lSource` carries simulated premature treatment discontinuation fields (#176).
 - Bundled reporting data carry the `kri0019`/`cou0019` count configuration (#180).
+- Bundled reporting data include the inactive `kri0007-2`/`cou0007-2` Premature Treatment Discontinuation Rate metrics (#176).
 - Regenerated the packaged `lSource` and `reporting*` datasets against the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are replaced by `kri0019`/`cou0019` (#177).
 
 # gsm.core v1.3.1
