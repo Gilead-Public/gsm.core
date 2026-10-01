@@ -1,9 +1,9 @@
-pak::pak('Gilead-Public/gsm.datasim@dev')
-pak::pak('Gilead-Public/gsm.mapping@dev')
-pak::pak('Gilead-Public/gsm.core@dev')
-pak::pak('Gilead-Public/gsm.kri@dev')
-pak::pak('Gilead-Public/gsm.reporting@dev')
-pak::pak('Gilead-Public/gsm.qtl@dev')
+# pak::pak('Gilead-Public/gsm.datasim@dev')
+# pak::pak('Gilead-Public/gsm.mapping@dev')
+# pak::pak('Gilead-Public/gsm.kri@dev')
+# pak::pak('Gilead-Public/gsm.reporting@dev')
+# pak::pak('Gilead-Public/gsm.qtl@dev')
+# pak::pak('Gilead-Public/gsm.core@dev')
 
 library(gsm.core)
 library(gsm.mapping)
@@ -13,6 +13,8 @@ library(gsm.reporting)
 library(gsm.qtl)
 library(dplyr)
 library(stringr)
+
+logger::log_threshold(logger::ERROR)
 set.seed(1234)
 
 core_mappings <- c(
