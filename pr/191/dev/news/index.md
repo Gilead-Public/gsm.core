@@ -10,8 +10,9 @@
 - Bundled reporting data carry the `kri0019`/`cou0019` count
   configuration
   ([\#180](https://github.com/Gilead-Public/gsm.core/issues/180)).
-- Bundled reporting data include the inactive `kri0007-2`/`cou0007-2`
-  Premature Treatment Discontinuation Rate metrics
+- Bundled reporting data include the `kri0007-2`/`cou0007-2` Premature
+  Treatment Discontinuation Rate metrics as active and keep
+  `kri0007`/`cou0007` as inactive
   ([\#176](https://github.com/Gilead-Public/gsm.core/issues/176)).
 - Regenerated the packaged `lSource` and `reporting*` datasets against
   the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six
