@@ -12,7 +12,7 @@ test_that("reporting metrics carry the kri0019/cou0019 count config (#180)", {
 # ---- Premature treatment discontinuation (#176) ----
 metric_row <- function(metrics, id) metrics[metrics$MetricID == id, ]
 
-test_that("kri0007-2/cou0007-2 read Premature Treatment Discontinuation Rate and stay inactive (#176)", {
+test_that("kri0007-2/cou0007-2 read Premature Treatment Discontinuation Rate and are active (#176)", {
   kri <- metric_row(reportingMetrics, "Analysis_kri0007-2")
   cou <- metric_row(reportingMetrics_country, "Analysis_cou0007-2")
 
@@ -21,15 +21,19 @@ test_that("kri0007-2/cou0007-2 read Premature Treatment Discontinuation Rate and
     c(kri$Metric, cou$Metric),
     rep("Premature Treatment Discontinuation Rate", 2)
   )
-  # Inactive rows are left out of the site risk score.
-  expect_equal(as.logical(c(kri$Active, cou$Active)), c(FALSE, FALSE))
+  expect_equal(as.logical(c(kri$Active, cou$Active)), c(TRUE, TRUE))
 })
 
-test_that("kri0007/cou0007 keep Treatment Discontinuation Rate (#176)", {
+test_that("kri0007/cou0007 keep Treatment Discontinuation Rate and are bundled inactive (#176)", {
   kri <- metric_row(reportingMetrics, "Analysis_kri0007")
   cou <- metric_row(reportingMetrics_country, "Analysis_cou0007")
 
   expect_equal(c(kri$Abbreviation, cou$Abbreviation), c("TDSC", "TDSC"))
+  # Inactive rows are left out of the site risk score.
+  expect_equal(as.logical(c(kri$Active, cou$Active)), c(FALSE, FALSE))
+  # Results stay bundled so the example reports show the inactive metric.
+  expect_true("Analysis_kri0007" %in% reportingResults$MetricID)
+  expect_true("Analysis_cou0007" %in% reportingResults_country$MetricID)
 })
 
 test_that("latest kri0007-2/cou0007-2 counts equal the dosed and discontinued subjects in lSource (#176)", {

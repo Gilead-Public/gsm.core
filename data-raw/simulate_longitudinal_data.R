@@ -75,7 +75,7 @@ metrics_wf <- c(
   # Inactive metrics stay out of study runs and risk scores, but are bundled
   # so the example reports show them.
   workr::MakeWorkflowList(
-    strNames = I(c("kri0007-2", "cou0007-2")),
+    strNames = I(c("kri0007", "cou0007")),
     strPath = "workflow/2_metrics",
     strPackage = "gsm.kri",
     bActiveOnly = FALSE
