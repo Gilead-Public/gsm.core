@@ -177,7 +177,7 @@ test_that("lSource covers every premature discontinuation scenario (#176)", {
 })
 
 test_that("split reasons come from the full gsm.datasim vocabulary (#176)", {
-  # gsm.datasim R/Raw_SUBJ.R ptd_reason_values, not only what this seed drew.
+  # gsm.datasim R/Raw_SUBJ.R .ptd_reason_values, not only what this seed drew.
   vocabulary <- c(
     "Adverse Event", "Lack of Efficacy", "Physician Decision",
     "Withdrawal by Subject", "Protocol Deviation", "Progressive Disease",
