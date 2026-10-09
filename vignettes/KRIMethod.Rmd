@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 # Overview
 
-This vignette outlines the statistical methods used to evaluate Key Risk Indicators (KRIs) in the {gsm} suite of packages. KRIs are metrics that allow users to measure pre-defined risks and determine the level of observed risk to data quality and patient safety in a clinical trial. The {gsm} suite of packages  implements a standardized data pipeline to facilitate KRI analysis. Other vignettes provide an overview of this framework ([1](Cookbook.html) [2](DataModel.html), [3](DataAnalysis.html),
+This vignette outlines the statistical methods used to evaluate Key Risk Indicators (KRIs) in the {gsm} suite of packages. KRIs are metrics that allow users to measure pre-defined risks and determine the level of observed risk to data quality and patient safety in a clinical trial. The {gsm} suite of packages  implements a standardized data pipeline to facilitate KRI analysis. Other vignettes provide an overview of this framework ([1](https://gilead-public.github.io/gsm.kri/examples/Cookbook_AdverseEventKRI.html), [2](DataModel.html), [3](DataAnalysis.html),
 [4](https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html)), and the statistical methods for this process are described in detail below.
 
 `{gsm.core}` calculates KRIs by defining a numerator and a denominator for each metric. Then by default, `{gsm.core}` calculates z-scores using a normal approximation with adjustment for over-dispersion to assign risk levels. 
@@ -43,22 +43,22 @@ Reference: Zink, Richard C., Anastasia Dmitrienko, and Alex Dmitrienko. **Rethin
 
 #### Binary
 
-Consider the problem of monitoring KRIs with binary outcomes, such as protocol deviation or discontinuation from the study, across multiple sites in a clinical trial. Assume that there are $m$ sites with $n_i$ patients at the $i$ th site, $i = 1, 2, \dots, m$. Denote the total number of patients in the study by $n=\sum_{i=1}^m n_i$. Let $X_{ij}$ signify the outcome of interest for the $j$ th patient at the $i$ th site, where $X_{ij}=1$ indicates that an event has occurred and indicates that an event has not occurred. Finally, let $p_i$ denote the site-level proportion at the $i$ th site. Monitoring tools focus on testing the null hypothesis of consistency of the true site-level proportion across multiple sites. Specifically, the null hypothesis states that the site-level proportion of the binary outcome is constant across the sites, that is, $H_0: p_1 = \dots = p_m = p$, where $p$ is the common proportion. This common proportion can be estimated as $\hat{p} = \frac{1}{n}\sum_{i=1}^m\sum_{j=1}^{n_i}X_{ij}$.
+Consider the problem of monitoring KRIs with binary outcomes, such as protocol deviation or discontinuation from the study, across multiple sites in a clinical trial. Assume that there are $m$ sites with $n_i$ patients at the $i$ th site, $i = 1, 2, \dots, m$. Denote the total number of patients in the study by $n=\sum_{i=1}^m n_i$. Let $X_{ij}$ signify the outcome of interest for the $j$ th patient at the $i$ th site, where $X_{ij}=1$ indicates that an event has occurred and $X_{ij}=0$ indicates that an event has not occurred. Finally, let $p_i$ denote the site-level proportion at the $i$ th site. Monitoring tools focus on testing the null hypothesis of consistency of the true site-level proportion across multiple sites. Specifically, the null hypothesis states that the site-level proportion of the binary outcome is constant across the sites, that is, $H_0: p_1 = \dots = p_m = p$, where $p$ is the common proportion. This common proportion can be estimated as $\hat{p} = \frac{1}{n}\sum_{i=1}^m\sum_{j=1}^{n_i}X_{ij}$.
 
 The control limits are computed using confidence limits based on an asymptotic normal approximation. A 95%
 confidence interval is obtained if the significance level $\alpha=0.05$. Let $X_i=\sum_{j=1}^{n_i}X_{ij}$ represent the total number of events that occur and let $\hat{p}_i=X_i/n_i$ denote the estimated event rate at the $i$ th site. The asymptotic $100(1 – \alpha)%$ confidence interval for $p_i$ is given by $$
 \hat{p}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{p}_i(1-\hat{p}_i)}{n_i}} \leq p_i \leq \hat{p}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{p}_i(1-\hat{p}_i)}{n_i}}
-$$ where $z_{1-\alpha/2}$ is the upper percentile of the standard normal distribution. To construct the control limits for the observed event rate at this site, the estimated event rate is forced to be equal to the overall event rate $\hat{p}_i$. This means that the lower (l) and upper (u) asymptotic control limits for the $i$ th site are defined as $l_i=\hat{p}-z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}$ and $u_i=\hat{p}+z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}$, respectively. Asymptotic control limits may not be reliable in smaller clinical trials, so exact limits for an event rate may be preferable.
+$$ where $z_{1-\alpha/2}$ is the upper $\alpha/2$ quantile of the standard normal distribution. To construct the control limits for the observed event rate at this site, the estimated event rate is forced to be equal to the overall event rate $\hat{p}$. This means that the lower (l) and upper (u) asymptotic control limits for the $i$ th site are defined as $l_i=\hat{p}-z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}$ and $u_i=\hat{p}+z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}$, respectively. Asymptotic control limits may not be reliable in smaller clinical trials, so exact limits for an event rate may be preferable.
 
 #### Rate
 
-Assume that the distribution of number of events up to time $T$ is Poisson with mean $\lambda t$, where $\lambda$ is the event rate for a given unit of time. For the $i$ th site with $X_i=\sum_{j=1}^{N_i}X_{ij}$ events and $T_i=\sum_{j=1}^{N_i}t_{ij}$ exposure, define the exposure-adjusted incidence rate (EAIR) as $\hat{\lambda}_i=\frac{X_i}{T_i}$. For all sites, define $X=\sum_{i=1}^{m}X_{i}$ and $T=\sum_{i=1}^{m}t_{i}$ with $\hat{\lambda}=\frac{X}{T}$. Under a normal approximation, $100(1 – a)%$ confidence interval for the $i$ th site is $$
-\hat{\lambda}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}} \leq p_i \leq \hat{\lambda}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}}
-$$. For these funnel plots accounting for exposure, the x-axis representing the site sample size ($n$) in the above examples is replaced by the total exposure time $T$. To develop a funnel plot, fix $\hat{\lambda}_i=\hat{\lambda}$, and vary $T$ from $min(T_i)$ to $max(T_i)$ to compute the control limits. As an area of future research, the work of Chan and Wang (2009) may suggest methods appropriate for computing an exact confidence interval for the EAIR. Finally, similar methods can be applied for a count-type endpoint $X_{ij}$, where tij would denote the time on study for the $j$ th patient at the $i$ th site.
+Assume that the distribution of number of events up to time $T$ is Poisson with mean $\lambda T$, where $\lambda$ is the event rate for a given unit of time. For the $i$ th site with $X_i=\sum_{j=1}^{n_i}X_{ij}$ events and $T_i=\sum_{j=1}^{n_i}t_{ij}$ exposure, define the exposure-adjusted incidence rate (EAIR) as $\hat{\lambda}_i=\frac{X_i}{T_i}$. For all sites, define $X=\sum_{i=1}^{m}X_{i}$ and $T=\sum_{i=1}^{m}T_{i}$ with $\hat{\lambda}=\frac{X}{T}$. Under a normal approximation, $100(1 – \alpha)%$ confidence interval for the $i$ th site is $$
+\hat{\lambda}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}} \leq \lambda_i \leq \hat{\lambda}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}}
+$$. For these funnel plots accounting for exposure, the x-axis representing the site sample size ($n_i$) in the binary case is replaced by the total exposure time $T_i$. To develop a funnel plot, fix $\hat{\lambda}_i=\hat{\lambda}$, and vary $T$ from $min(T_i)$ to $max(T_i)$ to compute the control limits. Finally, similar methods can be applied for a count-type endpoint $X_{ij}$, where $t_{ij}$ would denote the time on study for the $j$ th patient at the $i$ th site.
 
 ### KRI Metric and Z-score
 
-The KRI metric along with a KRI score are created for each site to measure the level of observed risk to data quality and patient safety in a clinical trial. For scoring purposes, Z-scores from the normal approximation are calculated and defined as such: $z_i=\frac{y_i-\theta_0}{\sqrt{V(Y|\theta_0)}}$ for site $i$, where $y_i$ is the KRI metric calculated for site $i$, $\theta_0$ is the overall mean, $\sqrt{V(Y|\theta_0)}$ is the measurement of variance.
+The KRI metric along with a KRI score are created for each site to measure the level of observed risk to data quality and patient safety in a clinical trial. For scoring purposes, Z-scores from the normal approximation are calculated and defined as such: $z_{0,i}=\frac{y_i-\theta_0}{\sqrt{V(Y|\theta_0)}}$ for site $i$, where $y_i$ is the KRI metric calculated for site $i$, $\theta_0$ is the overall (pooled) metric across all sites, i.e. the sum of all numerators divided by the sum of all denominators (returned as `OverallMetric`), and $\sqrt{V(Y|\theta_0)}$ is the standard deviation of the metric under the null.
 
 For binary outcome, $\sqrt{V(Y|\theta_0)}=\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}$.
 
@@ -66,14 +66,14 @@ For rate outcome, $\sqrt{V(Y|\theta_0)}=\sqrt{\frac{\hat{\lambda}}{T_i}}$.
 
 ### Over-dispersion adjustment
 
-The standard normal approximation method described above assumes the null distribution fully expresses the variability of the sites in-control, but in many situations this assumption will not hold. In the situation that there is a presence of greater variability than expected, majority of the sites will fall outside the specified limits, leading to a double of the appropriateness of the constructed limits.
+The standard normal approximation method described above assumes the null distribution fully expresses the variability of the sites in-control, but in many situations this assumption will not hold. In the situation that there is a presence of greater variability than expected, an excess of sites will fall outside the specified limits, leading to a doubt of the appropriateness of the constructed limits.
 
 A way of handling this issue is to allow over-dispersion in the normal approximation. A multiplicative over-dispersion adjustment was implemented in our approach. 
 
-Suppose a sample of $m$ units are to be **in-control**, the over-dispersion factor $\phi$ can be estimated as the mean squared z-scores, i.e., $\hat\phi = \frac{1}{m}\sum_{i=1}^m z_i^2$. 
+Following Spiegelhalter (2005), the over-dispersion factor $\phi$ is estimated as the mean of the squared unadjusted z-scores $z_{0,i}$ (as defined in the previous section), i.e., $\hat\phi = \frac{1}{m}\sum_{i=1}^m z_{0,i}^2$. In `{gsm.core}`, all $m$ sites are used for this estimate (no subset of in-control sites is identified and no winsorization is applied), and $\hat\phi$ is applied whether it is above or below 1. 
 For binary outcome, the over-dispersion adjusted variance is $V'(Y_i|\phi, p)=\phi\frac{{p}(1-p)}{n_i}$. 
 For rate outcome, the over-dispersion adjusted variance is $V'(Y_i|\phi, \lambda)=\phi\frac{\lambda}{T_i}$. 
-Therefore, after the over-dispersion adjustment, the adjusted z-scores for site $i$ are $z_i = \frac{\hat{p}_i - \hat{p}}{\sqrt{\hat\phi \frac{{\hat{p}}(1-\hat{p})}{n_i}}}$, $z_i = \frac{\hat{\lambda}_i - \hat{\lambda}}{\sqrt{\hat\phi \frac{\hat\lambda}{T_i}}}$, respectively.
+Therefore, after the over-dispersion adjustment, the adjusted z-scores for site $i$ are $z_i = \frac{\hat{p}_i - \hat{p}}{\sqrt{\hat\phi \frac{{\hat{p}}(1-\hat{p})}{n_i}}}$, $z_i = \frac{\hat{\lambda}_i - \hat{\lambda}}{\sqrt{\hat\phi \frac{\hat\lambda}{T_i}}}$, respectively, i.e., $z_i = z_{0,i}/\sqrt{\hat\phi}$.
 
 Reference: Spiegelhalter, David J. **Funnel plots for comparing institutional performance.** *Statistics in medicine* 24.8 (2005): 1185-1202.
 
@@ -83,11 +83,11 @@ The function `Analyze_NormalApprox()` in `{gsm.core}` calculates adjusted z-scor
 
 ### Threshold
 
-By default, sites with adjusted z-score exceeding $\pm 2$ or $\pm 3$ from the normal approximation analysis are flagged as amber or red, respectively. The thresholds are set at common choices corresponding to 95.6% and 99.7% of the data around the mean in a standard normal distribution. However, they are fully configurable in the package and can be customized and specified in the `{gsm.core}` functions. 
+By default (`Flag()` with `vThreshold = c(-3, -2, 2, 3)`), sites with adjusted z-score at or beyond $\pm 2$ or $\pm 3$ from the normal approximation analysis are flagged as amber or red, respectively. The thresholds are set at common choices corresponding to approximately 95.45% and 99.73% of the data around the mean in a standard normal distribution. However, they are fully configurable in the package and can be customized and specified in the `{gsm.core}` functions. 
 
 ### Special Situations
 
-1.  Results are not interpretable or it is not appropriate to apply the asymptotic method: We don't want to flag in certain situations when results not interpretable or when it is not appropriate to apply the asymptotic method due to the small sample sizes. The default threshold for minimum denominator requirement is 30 days exposure or 3 patients at the site level.
+1.  Results are not interpretable or it is not appropriate to apply the asymptotic method: We don't want to flag in certain situations when results not interpretable or when it is not appropriate to apply the asymptotic method due to the small sample sizes. A minimum accrual requirement can be set via the `nAccrualThreshold` and `strAccrualMetric` arguments of `Flag()` (no minimum is applied by default in `{gsm.core}`); the `{gsm.kri}` workflows typically use 30 days exposure for rate KRIs or 3 patients for binary KRIs at the site level.
 
 ### Recommendation
 
@@ -95,7 +95,7 @@ Normal approximation method can be used in all scenarios with binary or rate KRI
 
 ## 2. The Identity Method
 
-Identity method simply uses the count of event in the numerator of the KRI metric itself as the score. The thresholds for monitoring site risk are set based on the actual counts.
+Identity method simply uses a column of the transformed data itself as the score: the KRI `Metric` by default, configurable via the `strValueCol` argument of `Analyze_Identity()`. The thresholds for monitoring site risk are set on the scale of that column (e.g., the actual counts).
 
 ## 3. The Fisher's Exact Method
 
@@ -107,11 +107,11 @@ Fisher's exact test is a statistical significance test used in the analysis of c
 
 In contrast to large-sample based asymptotic statistics which rely on approximation, Fisher's exact test can be applied when sample sizes are small.
 
-The function `Analyze_Fisher` in `{gsm.core}` utilizes `stats::fisher.test` to generate an estimate of odds ratio as well as p-value using the Fisher's exact test with site-level count data. For each site, Fisher's exact test is conducted by comparing to all other sites combined in a 2×2 contingency table. The p-values are then used as a scoring metric in `{gsm.core}` to flag possible outliers. The default in `stats::fisher.test` uses a two-sided test (equivalent to testing the null of OR = 1) and does not compute p-values by Monte Carlo simulation unless `simulate.p.value = TRUE`. Sites with p-values less than 0.05 from the Fisher's exact test analysis are flagged by default. The significance level was set at a common choice.
+The function `Analyze_Fisher` in `{gsm.core}` utilizes `stats::fisher.test` to generate an estimate of odds ratio as well as p-value using the Fisher's exact test with site-level count data. For each site, Fisher's exact test is conducted by comparing to all other sites combined in a 2×2 contingency table. The p-values are then used as a scoring metric in `{gsm.core}` to flag possible outliers. The default in `stats::fisher.test` uses a two-sided test (equivalent to testing the null of OR = 1) and does not compute p-values by Monte Carlo simulation unless `simulate.p.value = TRUE`. Flagging thresholds for the p-values must be specified explicitly (see below).
 
 ### Methods
 
-For example, in a $2 \times 2$ contingency table comparing a particular site to all other sites combined, the two rows displaying the binary outcome are considered repeated Bernoulli random samples with same probability $p=0.5$ of success or failure under the null. Given a $2 \times 2$ contingency table,
+For example, in a $2 \times 2$ contingency table comparing a particular site to all other sites combined, the two columns (the site and all other sites combined) are considered independent binomial samples of the binary outcome with a common, unknown probability $p$ of success under the null. Given a $2 \times 2$ contingency table,
 
 ```{r echo = FALSE, results = 'asis'}
 library(gt)
@@ -132,7 +132,21 @@ The function `Analyze_Fisher()` in `{gsm.core}` utilizes `stats::fisher.test()` 
 
 ### Threshold
 
-By default, sites with p-values less than 0.05 or 0.01 from the Fisher's exact test analysis are flagged as amber or red, respectively. The thresholds are set based on empirical p-value approach, where we use the distribution of the p-values to find the best separation of the data to identify sites at risk. The default thresholds are set at common choices of significance levels. However, they are fully configurable in the package and can be customized and specified in the `{gsm.core}` functions. 
+There are no Fisher-specific default thresholds: `Flag()` defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values (between 0 and 1). Thresholds must therefore be specified explicitly. Common choices of significance levels are p-values less than 0.05 or 0.01, flagged as amber or red, respectively; alternatively, the distribution of the p-values can be used to find the best separation of the data to identify sites at risk. For example:
+
+```{r message = FALSE}
+dfTransformed <- Transform_Rate(analyticsInput)
+dfAnalyzed <- Analyze_Fisher(dfTransformed)
+dfFlagged <- Flag(
+  dfAnalyzed,
+  vThreshold = c(0.01, 0.05),
+  vFlag = c(2, 1, 0),
+  vFlagOrder = c(2, 1, 0)
+)
+head(dfFlagged[, c("GroupID", "Prop", "Prop_Other", "Score", "Flag")])
+```
+
+Note that the two-sided p-values do not indicate the direction of the difference; compare the site proportion (`Prop`) with that of all other sites (`Prop_Other`) to determine whether a flagged site is above or below the rest of the study. 
 
 
 ### The Fisher's exact test assumptions
@@ -147,15 +161,15 @@ The assumptions can be assessed by the knowledge of data collected. No assumptio
 
 1.  Functionally: where we don't have required input to run Fishers: p-value will be set `NA`.
 
-2.  Results not interpretable: we don't want to flag in certain situations when results not interpretable due to small sample sizes. The default threshold for minimum denominator requirement is 3 patients at the site level.
+2.  Results not interpretable: we don't want to flag in certain situations when results not interpretable due to small sample sizes. A minimum denominator requirement (e.g., 3 patients at the site level) can be set via the `nAccrualThreshold` and `strAccrualMetric` arguments of `Flag()`; no minimum is applied by default.
 
 3. An observed zero cell is not an issue when using Fisher's exact test, however, when the expected cell is zero, it means either the marginal is zero (meaningless) or there are structural zeros (need to consider zero-inflated issue: West, L. and Hankin, R. (2008), "Exact Tests for Two-Way Contingency Tables with Structural Zeros," Journal of Statistical Software, 28(11), 1--19).
 
-### constraints
+### Constraints
 
 For small samples, Fisher's exact test is highly discrete. Fisher's exact test is often considered to be more conservative. This may due to the use a discrete statistic with fixed significance levels ([FET Controversies Wiki](https://en.wikipedia.org/wiki/Fisher%27s_exact_test#Controversies)).
 
-Although in practice, Fisher's exact test is usually used when sample sizes are small (e.g., n\<5), it is valid for all sample sizes. However, when sample sizes are large, the computation of the exact test evaluating the hypergeometric probability function given the marginal can take a very long time.
+Although in practice, Fisher's exact test is usually used when sample sizes are small (e.g., expected cell counts \<5), it is valid for all sample sizes. However, when sample sizes are large, the computation of the exact test evaluating the hypergeometric probability function given the marginal can take a very long time.
 
 ### Recommendation
 
@@ -174,27 +188,27 @@ $$ where $\mu$ is the average number of counts and $E(Y)=Var(Y)=\mu$.
 
 ### Methods
 
-This method fits a Poisson model to site-level data and then calculates deviance residuals for each site. The Poisson model is run using standard methods in the `stats` package by fitting a `glm` model with family set to `poisson` using a "log" link. Site-level deviance residuals are calculated using `resid` from `stats::predict.glm` via `broom::augment`.
+This method fits a Poisson model to site-level data and then calculates deviance residuals for each site. The Poisson model is run using standard methods in the `stats` package by fitting a `glm` model with family set to `poisson` using a "log" link. Site-level deviance residuals (the `broom::augment()` default, equivalent to `stats::residuals(type = "deviance")`) and fitted values (via `stats::predict.glm()`) are calculated using `broom::augment()`.
 
-Let $Y_1, ..., Y_N$ be independent random variables with $Y_i \sim Poisson(\mu_i)$ denoting the number of events observed from $n_i$ for the $i$th observation following Poisson distribution. Then $E(Y_i)=\mu_i=n_ie^{x_i\beta}$. Thus,the log-linear generalized linear model (Poisson regression) is 
+Let $Y_1, ..., Y_m$ be independent random variables with $Y_i \sim Poisson(\mu_i)$ denoting the number of events (`Numerator`) observed at the $i$th site with total exposure $T_i$ (`Denominator`). Then $E(Y_i)=\mu_i=T_ie^{\beta_0}$. Thus, the log-linear generalized linear model (Poisson regression) fitted in `{gsm.core}` is the intercept-only model
 $$
-\log{\mu_i}=\log{n_i}+x_i\beta \quad Y_i \sim Poisson(\mu_i)
+\log{\mu_i}=\log{T_i}+\beta_0 \quad Y_i \sim Poisson(\mu_i)
 $$
 
-where $\log{n_i}$ is an offset term.
+where $\log{T_i}$ is an offset term and $e^{\beta_0}$ is the overall event rate.
 
 ### Estimate and Score
 
-The function `Analyze_Poisson()` in `{gsm.core}` utilizes `stats::glm()` to generate an estimate of fitted values as well as deviance residual with site-level count data. The p-values are then used as a scoring metric in `{gsm.core}` to flag possible outliers using the thresholds discussed below.
+The function `Analyze_Poisson()` in `{gsm.core}` utilizes `stats::glm()` to generate an estimate of fitted values as well as deviance residual with site-level count data. The deviance residuals are then used as a scoring metric in `{gsm.core}` to flag possible outliers using the thresholds discussed below.
 
 ### Threshold
 
-By default, sites with deviance residuals exceeding $\pm 5$ or $\pm 7$ from the Poisson analysis are flagged as amber or red, respectively. The thresholds are set based on empirical approach, where we use the distribution of the deviance residuals to find the best separation of the data to identify sites at risk. The default thresholds are set at empirical values based on pilot studies' data. However, they are fully configurable in the package and can be customized and specified in the `{gsm.core}` functions. 
+There are no Poisson-specific default thresholds in `Flag()` (or its alias `Flag_Poisson()`), which defaults to `vThreshold = c(-3, -2, 2, 3)`; thresholds for deviance residuals should therefore be specified explicitly. Empirical values based on pilot studies' data are deviance residuals at or beyond $\pm 5$ or $\pm 7$, flagged as amber or red, respectively (e.g., `Flag(dfAnalyzed, vThreshold = c(-7, -5, 5, 7))`). These thresholds are set based on an empirical approach, where we use the distribution of the deviance residuals to find the best separation of the data to identify sites at risk. They are fully configurable and can be customized in the `{gsm.core}` functions. 
 
 
 ### Special Situations
 
-1.  Results are not interpretable or it is not appropriate to apply the Poisson method: We don't want to flag in certain situations when results not interpretable or when it is not appropriate to apply the Poisson method due to the small sample sizes. The default threshold for minimum denominator requirement is 30 days exposure at the site level.
+1.  Results are not interpretable or it is not appropriate to apply the Poisson method: We don't want to flag in certain situations when results not interpretable or when it is not appropriate to apply the Poisson method due to the small sample sizes. A minimum denominator requirement (e.g., 30 days exposure at the site level) can be set via the `nAccrualThreshold` and `strAccrualMetric` arguments of `Flag()`; no minimum is applied by default.
 
 <!-- TODO. Discuss hard rules on STOP-IF-NOT situations -->
 
@@ -206,13 +220,13 @@ By default, sites with deviance residuals exceeding $\pm 5$ or $\pm 7$ from the 
 
 3.  **Poisson response** Each $Y_i$ follows the Poisson distribution as noted above with mean and variance equal to $\mu_i$.
 
-4.  **Linearity** $\log{\mu_i}=\log{n_i}+x_i\beta$ where $x_i$ are independent predictors.
+4.  **Linearity** $\log{\mu_i}=\log{T_i}+\beta_0$, i.e., the expected count is proportional to exposure, with a common event rate across sites under the null.
 
 ### Assumption checks, constraints and model diagnosis
 
 1.  The assumptions on independence and counted data can be assessed by the knowledge of data collected.
 
-2.  The assumptions on Poisson response can be checked by plotting histogram of the data and comparing empirical mean and variance stratified by the explanatory variable(s). If there is evidence that the assumption of mean=variance is violated, oftentimes we observe variance\>mean. This is called overdispersion. In this case, negative binomial distribution provides an alternative where $Var(Y_i)=\phi E(Y_i)$.
+2.  The assumptions on Poisson response can be checked by plotting histogram of the data and comparing empirical mean and variance stratified by the explanatory variable(s). If there is evidence that the assumption of mean=variance is violated, oftentimes we observe variance\>mean. This is called overdispersion. In this case, a quasi-Poisson model, where $Var(Y_i)=\phi E(Y_i)$, or a negative binomial model, where $Var(Y_i)=\mu_i+\mu_i^2/k$, provides an alternative.
 
 3.  Diagnosis: Goodness of fit test (chi-squared) and deviance residuals. Residuals vs fitted plot. Q-Q plot.
 
