@@ -102,17 +102,17 @@ lMappedData <- workr::RunWorkflows(
 #> [INFO] Calling `gsm.core::RunQuery`
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpmxYbiP/duckdb
+#> ℹ /tmp/RtmpGShMEc/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
 #> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
-#> [INFO] SQL Query complete: 774 rows returned.
+#> [INFO] SQL Query complete: 764 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
-#> [INFO] 774x21 data.frame saved as `lData$Mapped_SUBJ`.
-#> [INFO] Returning results from final step: 774x21 data.frame`.
+#> [INFO] 764x25 data.frame saved as `lData$Mapped_SUBJ`.
+#> [INFO] Returning results from final step: 764x25 data.frame`.
 #> [INFO] Completed `Mapped_SUBJ` Workflow
 
 # Run the metric workflow.
@@ -145,13 +145,13 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.
 #> [INFO] strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.
 #> [INFO] Calling `gsm.core::Input_Rate`
-#> [INFO] 774x6 data.frame saved as `lData$Analysis_Input`.
+#> [INFO] 764x6 data.frame saved as `lData$Analysis_Input`.
 #> [INFO] Workflow Step 3 of 7: `gsm.core::Transform_Rate`
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::Transform_Rate`
 #> [INFO] dfInput = Analysis_Input: Passing lData$Analysis_Input.
 #> [INFO] Calling `gsm.core::Transform_Rate`
 #> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
-#> [INFO] 146x5 data.frame saved as `lData$Analysis_Transformed`.
+#> [INFO] 144x5 data.frame saved as `lData$Analysis_Transformed`.
 #> [INFO] Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox`
 #> [INFO] Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox`
 #> [INFO] dfTransformed = Analysis_Transformed: Passing lData$Analysis_Transformed.
@@ -159,7 +159,7 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] Calling `gsm.core::Analyze_NormalApprox`
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
-#> [INFO] 146x8 data.frame saved as `lData$Analysis_Analyzed`.
+#> [INFO] 144x8 data.frame saved as `lData$Analysis_Analyzed`.
 #> [INFO] Workflow Step 5 of 7: `gsm.core::Flag`
 #> [INFO] Evaluating 4 parameter(s) for `gsm.core::Flag`
 #> [INFO] dfAnalyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.
@@ -167,15 +167,15 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.
 #> [INFO] strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.
 #> [INFO] Calling `gsm.core::Flag`
-#> ℹ 22 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X9788, 0X7002, 0X7958, 0X8771, 0X1048, 0X1268, 0X7373, 0X3574, 0X2572, 0X9501, 0X1128, 0X3844, 0X2481, 0X3701, 0X4089, 0X3786, 0X5699, 0X7126, 0X3593, 0X2882, 0X3355, 0X3773
+#> ℹ 22 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X3166, 0X4553, 0X8174, 0X1845, 0X9136, 0X5580, 0X1010, 0X3438, 0X5517, 0X1726, 0X6349, 0X5876, 0X7677, 0X8445, 0X7180, 0X6139, 0X5806, 0X4500, 0X2606, 0X4120, 0X1099, 0X2916
 #> These group(s) will not have KRI score and flag summarized.
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
-#> [INFO] 146x9 data.frame saved as `lData$Analysis_Flagged`.
+#> [INFO] 144x9 data.frame saved as `lData$Analysis_Flagged`.
 #> [INFO] Workflow Step 6 of 7: `gsm.core::Summarize`
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::Summarize`
 #> [INFO] dfFlagged = Analysis_Flagged: Passing lData$Analysis_Flagged.
 #> [INFO] Calling `gsm.core::Summarize`
-#> [INFO] 146x7 data.frame saved as `lData$Analysis_Summary`.
+#> [INFO] 144x7 data.frame saved as `lData$Analysis_Summary`.
 #> [INFO] Workflow Step 7 of 7: `list`
 #> [INFO] Evaluating 6 parameter(s) for `list`
 #> [INFO] ID = ID: Passing lMeta$ID.
