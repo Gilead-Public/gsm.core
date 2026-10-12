@@ -5,7 +5,8 @@
 \alias{lSource}
 \title{lSource Dataset}
 \format{
-A named list of 19 data frames:
+A named list of 18 data frames, one per raw source
+domain, representing a single study snapshot:
 \describe{
 \item{"Raw_AE"}{AE Source dataset}
 \item{"Raw_DATACHG"}{DATACHG Source dataset}
@@ -25,7 +26,6 @@ A named list of 19 data frames:
 \item{"Raw_STUDCOMP"}{STUDCOMP Source dataset}
 \item{"Raw_SUBJ"}{SUBJ Source dataset}
 \item{"Raw_VISIT"}{Visit Source dataset}
-\item{"Raw_VS"}{Vital Signs Source dataset}
 }
 }
 \source{

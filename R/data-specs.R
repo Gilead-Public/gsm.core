@@ -292,7 +292,8 @@
 #'
 #'  `r lifecycle::badge("stable")`
 #'
-#' @format A named list of `r length(lSource)` data frames:
+#' @format A named list of `r length(lSource)` data frames, one per raw source
+#'   domain, representing a single study snapshot:
 #' \describe{
 #'   \item{"Raw_AE"}{AE Source dataset}
 #'   \item{"Raw_DATACHG"}{DATACHG Source dataset}
