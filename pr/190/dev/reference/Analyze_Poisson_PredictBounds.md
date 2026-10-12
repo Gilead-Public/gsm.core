@@ -57,5 +57,5 @@ link.
 dfTransformed <- Transform_Rate(analyticsInput)
 
 dfBounds <- Analyze_Poisson_PredictBounds(dfTransformed, c(-5, 5))
-#> → nStep was not provided. Setting default step to 0.026904933609435
+#> → nStep was not provided. Setting default step to 0.0267683349700265
 ```

@@ -10,7 +10,8 @@ lSource
 
 ## Format
 
-A named list of 19 data frames:
+A named list of 19 data frames, one per raw source domain, representing
+a single study snapshot:
 
 - "Raw_AE":
 

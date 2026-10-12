@@ -2,6 +2,11 @@
 
 ## gsm.core (development version)
 
+- `lSource` carries `drv_kit_assigned`, and its `Raw_STUDCOMP` records
+  agree with the IP non-starter status
+  ([\#184](https://github.com/Gilead-Public/gsm.core/issues/184)).
+- `lSource` carries simulated premature treatment discontinuation fields
+  ([\#176](https://github.com/Gilead-Public/gsm.core/issues/176)).
 - Regenerated the packaged `lSource` and `reporting*` datasets against
   the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six
   upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are
