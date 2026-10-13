@@ -10,7 +10,7 @@ lSource
 
 ## Format
 
-A named list of 18 data frames, one per raw source domain, representing
+A named list of 19 data frames, one per raw source domain, representing
 a single study snapshot:
 
 - "Raw_AE":
@@ -84,6 +84,10 @@ a single study snapshot:
 - "Raw_VISIT":
 
   Visit Source dataset
+
+- "Raw_VS":
+
+  Vital Signs Source dataset
 
 ## Source
 
