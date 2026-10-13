@@ -15,7 +15,9 @@ library(dplyr)
 library(stringr)
 
 logger::log_threshold(logger::ERROR)
-set.seed(1234)
+# Seed moved off 1234 to avoid a Raw_SITE site ID collision
+# (Gilead-Public/gsm.datasim#167).
+set.seed(1235)
 
 core_mappings <- c(
   "AE",
@@ -37,7 +39,8 @@ core_mappings <- c(
   "SITE",
   "SUBJ",
   "IE",
-  "EXCLUSION"
+  "EXCLUSION",
+  "VS"
 )
 
 # Analytics and reporting are left off here; this script drives those steps

@@ -313,6 +313,7 @@
 #'   \item{"Raw_STUDCOMP"}{STUDCOMP Source dataset}
 #'   \item{"Raw_SUBJ"}{SUBJ Source dataset}
 #'   \item{"Raw_VISIT"}{Visit Source dataset}
+#'   \item{"Raw_VS"}{Vital Signs Source dataset}
 #'   }
 #' @source Generated from `data-raw/simulate_longitudinal_data.R`.
 "lSource"
