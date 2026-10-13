@@ -5,6 +5,7 @@
 - Bundled reporting data carry the `kri0019`/`cou0019` count configuration (#180).
 - Bundled reporting data include the `kri0007-2`/`cou0007-2` Premature Treatment Discontinuation Rate metrics as active and keep `kri0007`/`cou0007` as inactive (#176).
 - Regenerated the packaged `lSource` and `reporting*` datasets against the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are replaced by `kri0019`/`cou0019` (#177).
+- Removed unit tests for the workflow runtime (`RunQuery`, `RunStep`, `RunWorkflow`, `MakeWorkflowList`), which now lives in `{workr}` and is tested there, including by qualification tests (Gilead-Public/workr#96). The tests of the deprecated `{gsm.core}` wrappers remain. Also fixed qualification test T4_2, whose custom-threshold output checks were not running.
 
 # gsm.core v1.3.1
 
