@@ -211,7 +211,7 @@ The following sections include various examples of supporting functions and stat
 
 -   `Analyze_NormalApprox()`: Uses funnel plot method with normal approximation to create analysis results for percentage/rate.
 -   `Analyze_Fisher()`: Uses Fisher's Exact Test to determine if there are non-random associations between a site and a given KRI
--   `Analyze_Identity()`: Used in the data pipeline between `Transform()` and `Flag()` functions to rename the metric and score columns
+-   `Analyze_Identity()`: Used in the data pipeline between `Transform_*()` and `Flag()` to copy a column (`Metric` by default, set with `strValueCol`) into a new `Score` column. All input columns are retained.
 -   `Analyze_Poisson()`: Uses a Poisson model to describe the distribution of events in the overall site population, i.e., determine how many times an event is likely to occur at a site over a specified treatment period
 
 ### Flag Functions
