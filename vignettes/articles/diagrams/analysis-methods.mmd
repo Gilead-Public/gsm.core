@@ -1,0 +1,39 @@
+flowchart TB
+  subgraph normal ["Normal Approximation (binary or rate KRIs)"]
+    direction LR
+    n1[dfInput] -->|"Transform_Rate()"| n2[dfTransformed]
+    n2 -->|"Analyze_NormalApprox(strType)"| n3[dfAnalyzed]
+    n3 -->|"Flag()"| n4[dfFlagged]
+    n4 -->|"Summarize()"| n5[dfSummary]
+  end
+
+  subgraph identity ["Identity"]
+    direction LR
+    i1[dfInput] -->|"Transform_Rate() or<br>Transform_Count() *"| i2[dfTransformed]
+    i2 -->|"Analyze_Identity()"| i3[dfAnalyzed]
+    i3 -->|"Flag()"| i4[dfFlagged]
+    i4 -->|"Summarize()"| i5[dfSummary]
+  end
+
+  subgraph poisson ["Poisson"]
+    direction LR
+    p1[dfInput] -->|"Transform_Rate()"| p2[dfTransformed]
+    p2 -->|"Analyze_Poisson()"| p3[dfAnalyzed]
+    p3 -->|"Flag()<br>residual thresholds"| p4[dfFlagged]
+    p4 -->|"Summarize()"| p5[dfSummary]
+  end
+
+  subgraph fisher ["Fisher's Exact"]
+    direction LR
+    f1[dfInput] -->|"Transform_Rate()"| f2[dfTransformed]
+    f2 -->|"Analyze_Fisher()"| f3[dfAnalyzed]
+    f3 -->|"Flag()<br>p-value thresholds"| f4[dfFlagged]
+    f4 -->|"Summarize() *"| f5[dfSummary]
+  end
+
+  normal ~~~ identity ~~~ poisson ~~~ fisher
+
+  style normal fill:#fff8e1,stroke:#ffc000
+  style identity fill:#fdeee4,stroke:#ed7d31
+  style poisson fill:#eaf1fb,stroke:#5b9bd5
+  style fisher fill:#eef6e9,stroke:#70ad47

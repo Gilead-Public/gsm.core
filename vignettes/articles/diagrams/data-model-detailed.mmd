@@ -1,0 +1,101 @@
+erDiagram
+  Analysis_Input {
+    character SubjectID PK
+    character GroupID FK
+    character GroupLevel
+    numeric Numerator
+    numeric Denominator
+    numeric Metric
+  }
+  Analysis_Transformed {
+    character GroupID PK
+    character GroupLevel "not returned by Transform_Count()"
+    numeric Numerator "TotalCount for Transform_Count()"
+    numeric Denominator
+    numeric Metric
+  }
+  Analysis_Analyzed {
+    character GroupID PK
+    character GroupLevel "not returned by Analyze_Fisher()"
+    numeric Numerator
+    numeric Denominator
+    numeric Metric
+    numeric Score "z-score, residual, p-value or Metric"
+    numeric OverallMetric "NormalApprox only"
+    numeric Factor "NormalApprox only"
+    numeric PredictedCount "Poisson only"
+    numeric Prop "Fisher only (also Prop_Other, *_Other, Estimate)"
+  }
+  Analysis_Flagged {
+    character GroupID PK
+    character GroupLevel
+    numeric Numerator
+    numeric Denominator
+    numeric Metric
+    numeric Score
+    numeric Flag
+    numeric Weight "only if vRiskScoreWeight is set"
+    numeric WeightMax "only if vRiskScoreWeight is set"
+  }
+  Analysis_Summary {
+    character GroupID PK
+    character GroupLevel
+    numeric Numerator
+    numeric Denominator
+    numeric Metric
+    numeric Score
+    numeric Flag
+  }
+  Reporting_Results {
+    character GroupID PK, FK
+    character GroupLevel FK
+    numeric Numerator
+    numeric Denominator
+    numeric Metric
+    numeric Score
+    numeric Flag
+    character MetricID PK, FK
+    character StudyID PK "optional"
+    Date SnapshotDate PK
+    numeric _Change "plus _Previous and _PercentChange (CalculateChange())"
+  }
+  Reporting_Bounds {
+    character MetricID FK
+    character StudyID
+    Date SnapshotDate
+    numeric Threshold "0 = expected value"
+    numeric Denominator
+    numeric LogDenominator
+    numeric Numerator
+    numeric Metric
+  }
+  Reporting_Groups {
+    character GroupID PK
+    character GroupLevel PK
+    character Param PK
+    character Value
+  }
+  Reporting_Metrics {
+    character MetricID PK "Type_ID, e.g. Analysis_kri0001"
+    character Type
+    character ID
+    character GroupLevel
+    character Abbreviation
+    character Metric
+    character Numerator
+    character Denominator
+    character Model
+    character Score
+    character AnalysisType
+    character Threshold
+    character Flag "plus other workflow meta fields"
+  }
+
+  Analysis_Input }|--|| Analysis_Transformed : "Transform_*()"
+  Analysis_Transformed ||--|| Analysis_Analyzed : "Analyze_*()"
+  Analysis_Analyzed ||--|| Analysis_Flagged : "Flag()"
+  Analysis_Flagged ||--|| Analysis_Summary : "Summarize()"
+  Analysis_Summary ||--|| Reporting_Results : "BindResults()"
+  Reporting_Metrics ||--o{ Reporting_Results : "MetricID"
+  Reporting_Metrics ||--o{ Reporting_Bounds : "MetricID"
+  Reporting_Groups }o--o{ Reporting_Results : "GroupID, GroupLevel"

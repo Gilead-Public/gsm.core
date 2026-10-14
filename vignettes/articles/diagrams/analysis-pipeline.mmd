@@ -1,0 +1,17 @@
+%%{init: {"flowchart": {"nodeSpacing": 20, "rankSpacing": 30}}}%%
+flowchart TB
+  subgraph workflow ["YAML KRI workflow (e.g. gsm.kri kri0001.yaml)"]
+    direction TB
+    mapped[("Mapped data<br>(workflow spec inputs)")]
+    input["<b>dfInput</b><br>participant-level numerator and denominator"]
+    transformed["<b>dfTransformed</b><br>group-level metric"]
+    analyzed["<b>dfAnalyzed</b><br>group-level analysis results"]
+    flagged["<b>dfFlagged</b><br>analysis results with flags"]
+    summary["<b>dfSummary</b><br>standardized results for aggregation"]
+
+    mapped -->|"Input_Rate()"| input
+    input -->|"Transform_*()"| transformed
+    transformed -->|"Analyze_*()"| analyzed
+    analyzed -->|"Flag()"| flagged
+    flagged -->|"Summarize()"| summary
+  end
