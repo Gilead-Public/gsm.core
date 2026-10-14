@@ -132,15 +132,11 @@ The function `Analyze_Fisher()` in `{gsm.core}` utilizes `stats::fisher.test()` 
 
 ### Threshold
 
-There are no Fisher-specific default thresholds: `Flag()` defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values (between 0 and 1). Thresholds must therefore be specified explicitly. Common choices of significance levels are p-values less than 0.05 or 0.01, flagged as amber or red, respectively; alternatively, the distribution of the p-values can be used to find the best separation of the data to identify sites at risk. 
-
-Fisher's exact test compares proportions, so the input must be binary at the subject level: `Numerator` is 1 if the subject had the event and 0 otherwise, and `Denominator` is 1. Rate data such as `analyticsInput` (AE counts over days on study) must therefore be converted first, here to whether each subject had at least one AE. For example:
+There are no Fisher-specific default thresholds: `Flag()` defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values (between 0 and 1). Thresholds must therefore be specified explicitly. Common choices of significance levels are p-values less than 0.05 or 0.01, flagged as amber or red, respectively; alternatively, the distribution of the p-values can be used to find the best separation of the data to identify sites at risk. For example:
 
 ```{r message = FALSE}
-dfInput <- analyticsInput
-dfInput$Numerator <- as.integer(dfInput$Numerator > 0)
-dfInput$Denominator <- 1L
-dfTransformed <- Transform_Rate(dfInput)
+dfTransformed <- Transform_Rate(analyticsInput)
+dfTransformed <- dfTransformed[dfTransformed$Numerator <= dfTransformed$Denominator, ]
 dfAnalyzed <- Analyze_Fisher(dfTransformed)
 dfFlagged <- Flag(
   dfAnalyzed,
