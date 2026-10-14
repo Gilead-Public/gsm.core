@@ -132,11 +132,15 @@ The function `Analyze_Fisher()` in `{gsm.core}` utilizes `stats::fisher.test()` 
 
 ### Threshold
 
-There are no Fisher-specific default thresholds: `Flag()` defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values (between 0 and 1). Thresholds must therefore be specified explicitly. Common choices of significance levels are p-values less than 0.05 or 0.01, flagged as amber or red, respectively; alternatively, the distribution of the p-values can be used to find the best separation of the data to identify sites at risk. For example:
+There are no Fisher-specific default thresholds: `Flag()` defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values (between 0 and 1). Thresholds must therefore be specified explicitly. Common choices of significance levels are p-values less than 0.05 or 0.01, flagged as amber or red, respectively; alternatively, the distribution of the p-values can be used to find the best separation of the data to identify sites at risk.
+
+For this subject-level example, Fisher's exact test needs counts of subjects with and without an event, not AE counts over days on study. The rate data in `analyticsInput` are therefore converted to a binary outcome: `Numerator` is 1 if the subject had at least one AE and 0 otherwise, and `Denominator` is 1. After aggregation, the metric is the proportion of subjects with at least one AE, not the exposure-adjusted AE rate. No sites are excluded based on their observed rate.
 
 ```{r message = FALSE}
-dfTransformed <- Transform_Rate(analyticsInput)
-dfTransformed <- dfTransformed[dfTransformed$Numerator <= dfTransformed$Denominator, ]
+dfInput <- analyticsInput
+dfInput$Numerator <- as.integer(dfInput$Numerator > 0)
+dfInput$Denominator <- 1L
+dfTransformed <- Transform_Rate(dfInput)
 dfAnalyzed <- Analyze_Fisher(dfTransformed)
 dfFlagged <- Flag(
   dfAnalyzed,
@@ -191,12 +195,12 @@ $$ where $\mu$ is the average number of counts and $E(Y)=Var(Y)=\mu$.
 
 This method fits a Poisson model to site-level data and then calculates deviance residuals for each site. The Poisson model is run using standard methods in the `stats` package by fitting a `glm` model with family set to `poisson` using a "log" link. Site-level deviance residuals (the `broom::augment()` default, equivalent to `stats::residuals(type = "deviance")`) and fitted values (via `stats::predict.glm()`) are calculated using `broom::augment()`.
 
-Let $Y_1, ..., Y_m$ be independent random variables with $Y_i \sim Poisson(\mu_i)$ denoting the number of events (`Numerator`) observed at the $i$th site with total exposure $T_i$ (`Denominator`). Then $E(Y_i)=\mu_i=T_ie^{\beta_0}$. Thus, the log-linear generalized linear model (Poisson regression) fitted in `{gsm.core}` is the intercept-only model
+Let $Y_1, ..., Y_m$ be independent random variables with $Y_i \sim Poisson(\mu_i)$ denoting the number of events (`Numerator`) observed at the $i$th site with total exposure $T_i$ (`Denominator`). The current `Analyze_Poisson()` implementation uses the formula `Numerator ~ stats::offset(LogDenominator)`, where `LogDenominator` is $\log T_i$. In this formula, `stats::glm()` treats the namespaced `stats::offset()` expression as an ordinary predictor rather than a fixed offset. It therefore estimates both an intercept and an exposure coefficient:
 $$
-\log{\mu_i}=\log{T_i}+\beta_0 \quad Y_i \sim Poisson(\mu_i)
+\log{\mu_i}=\beta_0+\beta_1\log{T_i}, \qquad E(Y_i)=\mu_i=e^{\beta_0}T_i^{\beta_1}.
 $$
 
-where $\log{T_i}$ is an offset term and $e^{\beta_0}$ is the overall event rate.
+**Implementation limitation:** a common-rate, exposure-adjusted Poisson model would fix $\beta_1=1$, giving $\log{\mu_i}=\log{T_i}+\beta_0$ and a common event rate $e^{\beta_0}$. That is not the model currently fitted by `Analyze_Poisson()`. Its `Score` and `PredictedCount` come from the model with an estimated exposure coefficient; they should not be interpreted as results from an intercept-only, fixed-offset model.
 
 ### Estimate and Score
 
@@ -221,7 +225,7 @@ There are no Poisson-specific default thresholds in `Flag()` (or its alias `Flag
 
 3.  **Poisson response** Each $Y_i$ follows the Poisson distribution as noted above with mean and variance equal to $\mu_i$.
 
-4.  **Linearity** $\log{\mu_i}=\log{T_i}+\beta_0$, i.e., the expected count is proportional to exposure, with a common event rate across sites under the null.
+4.  **Linearity** In the current implementation, $\log{\mu_i}=\beta_0+\beta_1\log{T_i}$. The expected count is proportional to exposure only when $\beta_1=1$; this constraint is not imposed (see the implementation limitation above).
 
 ### Assumption checks, constraints and model diagnosis
 
