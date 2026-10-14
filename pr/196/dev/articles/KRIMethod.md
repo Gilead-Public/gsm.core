@@ -304,20 +304,12 @@ defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values
 Common choices of significance levels are p-values less than 0.05 or
 0.01, flagged as amber or red, respectively; alternatively, the
 distribution of the p-values can be used to find the best separation of
-the data to identify sites at risk.
-
-Fisher’s exact test compares proportions, so the input must be binary at
-the subject level: `Numerator` is 1 if the subject had the event and 0
-otherwise, and `Denominator` is 1. Rate data such as `analyticsInput`
-(AE counts over days on study) must therefore be converted first, here
-to whether each subject had at least one AE. For example:
+the data to identify sites at risk. For example:
 
 ``` r
 
-dfInput <- analyticsInput
-dfInput$Numerator <- as.integer(dfInput$Numerator > 0)
-dfInput$Denominator <- 1L
-dfTransformed <- Transform_Rate(dfInput)
+dfTransformed <- Transform_Rate(analyticsInput)
+dfTransformed <- dfTransformed[dfTransformed$Numerator <= dfTransformed$Denominator, ]
 dfAnalyzed <- Analyze_Fisher(dfTransformed)
 dfFlagged <- Flag(
   dfAnalyzed,
@@ -327,14 +319,14 @@ dfFlagged <- Flag(
 )
 head(dfFlagged[, c("GroupID", "Prop", "Prop_Other", "Score", "Flag")])
 #> # A tibble: 6 × 5
-#>   GroupID  Prop Prop_Other    Score  Flag
-#>   <chr>   <dbl>      <dbl>    <dbl> <dbl>
-#> 1 0X700   0          0.847 0.000594     2
-#> 2 0X094   0.25       0.845 0.0136       1
-#> 3 0X5070  0          0.844 0.0247       1
-#> 4 0X8090  0.556      0.846 0.0392       1
-#> 5 0X3598  0.5        0.845 0.0534       0
-#> 6 0X7225  0.6        0.845 0.0575       0
+#>   GroupID   Prop Prop_Other   Score  Flag
+#>   <chr>    <dbl>      <dbl>   <dbl> <dbl>
+#> 1 0X8487  0.375      0.0804 0.00107     2
+#> 2 0X2908  0.2        0.0803 0.00267     2
+#> 3 0X9490  0.0470     0.0813 0.00282     2
+#> 4 0X8015  0.364      0.0805 0.00876     2
+#> 5 0X6995  0.0425     0.0810 0.0109      1
+#> 6 0X3939  0.333      0.0805 0.0123      1
 ```
 
 Note that the two-sided p-values do not indicate the direction of the
