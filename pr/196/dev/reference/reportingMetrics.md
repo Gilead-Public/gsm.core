@@ -10,7 +10,7 @@ reportingMetrics
 
 ## Format
 
-A data frame with 17 rows and 23 columns:
+A data frame with 18 rows and 23 columns:
 
 - MetricID:
 

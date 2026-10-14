@@ -213,8 +213,13 @@ calculated. Common values: <code>Site</code>, <code>Country</code>.</li>
 <li>
 <code>Denominator</code>: The denominator of the metric.</li>
 <li>
-<code>AnalysisType</code>: The analysis type, passed to the
-<code>strType</code> parameter of the analysis function. Common values:
+<code>AnalysisType</code>: The analysis type. In normal
+approximation workflows it is passed to the <code>strType</code>
+parameter of <code><a href="../reference/Analyze_NormalApprox.html">gsm.core::Analyze_NormalApprox()</a></code> (accepted
+values: <code>rate</code>, <code>binary</code>). For other models, such
+as <code>identity</code>, it is workflow and reporting metadata only and
+is not passed to the analysis function (<code><a href="../reference/Analyze_Identity.html">Analyze_Identity()</a></code>
+has no <code>strType</code> parameter). Common values:
 <code>rate</code>, <code>binary</code>, <code>identity</code>
 </li>
 <li>

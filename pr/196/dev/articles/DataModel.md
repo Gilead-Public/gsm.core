@@ -273,19 +273,22 @@ into the reporting data pipeline.
 - Usage: Prepare the data for
   [`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
   by performing the specified test on the metric provided.
-- Structure (columns marked `*` are only returned by some `Analyze_*()`
-  functions;
-  [`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)
-  returns the columns of its input plus `Score`, and
+- Structure (columns marked `*` depend on the `Analyze_*()` function and
+  the transform used.
   [`Analyze_Fisher()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Fisher.md)
-  returns no `GroupLevel` column):
+  returns no `GroupLevel` column.
+  [`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)
+  returns the columns of its input plus `Score`, so after
+  [`Transform_Count()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Count.md)
+  it returns only `GroupID`, `TotalCount`, `Metric` and `Score`):
 
 | Table | Column Name | Description | Type | Optional |
 |----|----|----|----|----|
 | Analysis_Analyzed | GroupID | The group ID for the metric | Character |  |
-| Analysis_Analyzed | GroupLevel | The group type for the metric (e.g. “Site”) | Character |  |
-| Analysis_Analyzed | Numerator | The calculated numerator value | Numeric |  |
-| Analysis_Analyzed | Denominator | The calculated denominator value | Numeric |  |
+| Analysis_Analyzed | GroupLevel | The group type for the metric (e.g. “Site”) | Character | \* |
+| Analysis_Analyzed | Numerator | The calculated numerator value | Numeric | \* |
+| Analysis_Analyzed | Denominator | The calculated denominator value | Numeric | \* |
+| Analysis_Analyzed | TotalCount | The sum of `strCountCol` for the group ([`Transform_Count()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Count.md) followed by [`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)) | Numeric | \* |
 | Analysis_Analyzed | Metric | The calculated rate/metric value | Numeric |  |
 | Analysis_Analyzed | Score | The Statistical Score (e.g. adjusted z-score, deviance residual, p-value or metric value) | Numeric |  |
 | Analysis_Analyzed | OverallMetric | The overall rate/proportion across all groups ([`Analyze_NormalApprox()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_NormalApprox.md)) | Numeric | \* |
@@ -301,14 +304,19 @@ into the reporting data pipeline.
 - Usage: Flag a group-level metric to be summarized via
   [`gsm.core::Summarize()`](https://gilead-public.github.io/gsm.core/dev/reference/Summarize.md)
   and used for reporting.
-- Structure:
+- Structure
+  ([`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
+  returns the columns of `Analysis_Analyzed` plus `Flag`; columns marked
+  `*` are only present for some analysis methods, as described for
+  `Analysis_Analyzed`):
 
 | Table | Column Name | Description | Type | Optional |
 |----|----|----|----|----|
 | Analysis_Flagged | GroupID | The group ID for the metric | Character |  |
-| Analysis_Flagged | GroupLevel | The group type for the metric (e.g. “Site”) | Character |  |
-| Analysis_Flagged | Numerator | The calculated numerator value | Numeric |  |
-| Analysis_Flagged | Denominator | The calculated denominator value | Numeric |  |
+| Analysis_Flagged | GroupLevel | The group type for the metric (e.g. “Site”) | Character | \* |
+| Analysis_Flagged | Numerator | The calculated numerator value | Numeric | \* |
+| Analysis_Flagged | Denominator | The calculated denominator value | Numeric | \* |
+| Analysis_Flagged | TotalCount | The sum of `strCountCol` for the group ([`Transform_Count()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Count.md) followed by [`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)) | Numeric | \* |
 | Analysis_Flagged | Metric | The calculated rate/metric value | Numeric |  |
 | Analysis_Flagged | Score | The Statistical Score | Numeric |  |
 | Analysis_Flagged | Flag | The ordinal Flag to be applied | Numeric |  |

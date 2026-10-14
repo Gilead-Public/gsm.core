@@ -304,13 +304,20 @@ defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values
 Common choices of significance levels are p-values less than 0.05 or
 0.01, flagged as amber or red, respectively; alternatively, the
 distribution of the p-values can be used to find the best separation of
-the data to identify sites at risk. For example:
+the data to identify sites at risk.
+
+Fisher’s exact test compares proportions, so the input must be binary at
+the subject level: `Numerator` is 1 if the subject had the event and 0
+otherwise, and `Denominator` is 1. Rate data such as `analyticsInput`
+(AE counts over days on study) must therefore be converted first, here
+to whether each subject had at least one AE. For example:
 
 ``` r
 
-dfTransformed <- Transform_Rate(analyticsInput)
-#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0
-#> removed.
+dfInput <- analyticsInput
+dfInput$Numerator <- as.integer(dfInput$Numerator > 0)
+dfInput$Denominator <- 1L
+dfTransformed <- Transform_Rate(dfInput)
 dfAnalyzed <- Analyze_Fisher(dfTransformed)
 dfFlagged <- Flag(
   dfAnalyzed,
@@ -320,14 +327,14 @@ dfFlagged <- Flag(
 )
 head(dfFlagged[, c("GroupID", "Prop", "Prop_Other", "Score", "Flag")])
 #> # A tibble: 6 × 5
-#>   GroupID  Prop Prop_Other     Score  Flag
-#>   <chr>   <dbl>      <dbl>     <dbl> <dbl>
-#> 1 0X3773  0.714     0.0835 0.0000741     2
-#> 2 0X8743  0.267     0.0834 0.00260       2
-#> 3 0X2413  0.146     0.0832 0.00535       2
-#> 4 0X7497  0.174     0.0834 0.00542       2
-#> 5 0X3355  0.259     0.0835 0.00565       2
-#> 6 0X4264  0.123     0.0831 0.0110        1
+#>   GroupID  Prop Prop_Other    Score  Flag
+#>   <chr>   <dbl>      <dbl>    <dbl> <dbl>
+#> 1 0X700   0          0.847 0.000594     2
+#> 2 0X094   0.25       0.845 0.0136       1
+#> 3 0X5070  0          0.844 0.0247       1
+#> 4 0X8090  0.556      0.846 0.0392       1
+#> 5 0X3598  0.5        0.845 0.0534       0
+#> 6 0X7225  0.6        0.845 0.0575       0
 ```
 
 Note that the two-sided p-values do not indicate the direction of the

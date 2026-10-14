@@ -503,11 +503,13 @@ for an Assessment via the <code>Analyze_*()</code> functions.</li>
 </li>
 <li>Usage: Prepare the data for <code><a href="../reference/Flag.html">Flag()</a></code> by performing the
 specified test on the metric provided.</li>
-<li>Structure (columns marked <code>*</code> are only returned by some
-<code>Analyze_*()</code> functions; <code><a href="../reference/Analyze_Identity.html">Analyze_Identity()</a></code>
-returns the columns of its input plus <code>Score</code>, and
-<code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a></code> returns no <code>GroupLevel</code>
-column):</li>
+<li>Structure (columns marked <code>*</code> depend on the
+<code>Analyze_*()</code> function and the transform used.
+<code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a></code> returns no <code>GroupLevel</code> column.
+<code><a href="../reference/Analyze_Identity.html">Analyze_Identity()</a></code> returns the columns of its input plus
+<code>Score</code>, so after <code><a href="../reference/Transform_Count.html">Transform_Count()</a></code> it returns
+only <code>GroupID</code>, <code>TotalCount</code>, <code>Metric</code>
+and <code>Score</code>):</li>
 </ul>
 <table class="table">
 <colgroup>
@@ -537,30 +539,39 @@ column):</li>
 <td>GroupLevel</td>
 <td>The group type for the metric (e.g. “Site”)</td>
 <td>Character</td>
-<td></td>
+<td>*</td>
 </tr>
 <tr class="odd">
 <td>Analysis_Analyzed</td>
 <td>Numerator</td>
 <td>The calculated numerator value</td>
 <td>Numeric</td>
-<td></td>
+<td>*</td>
 </tr>
 <tr class="even">
 <td>Analysis_Analyzed</td>
 <td>Denominator</td>
 <td>The calculated denominator value</td>
 <td>Numeric</td>
-<td></td>
+<td>*</td>
 </tr>
 <tr class="odd">
+<td>Analysis_Analyzed</td>
+<td>TotalCount</td>
+<td>The sum of <code>strCountCol</code> for the group
+(<code><a href="../reference/Transform_Count.html">Transform_Count()</a></code> followed by
+<code><a href="../reference/Analyze_Identity.html">Analyze_Identity()</a></code>)</td>
+<td>Numeric</td>
+<td>*</td>
+</tr>
+<tr class="even">
 <td>Analysis_Analyzed</td>
 <td>Metric</td>
 <td>The calculated rate/metric value</td>
 <td>Numeric</td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Analysis_Analyzed</td>
 <td>Score</td>
 <td>The Statistical Score (e.g. adjusted z-score, deviance residual,
@@ -568,7 +579,7 @@ p-value or metric value)</td>
 <td>Numeric</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Analysis_Analyzed</td>
 <td>OverallMetric</td>
 <td>The overall rate/proportion across all groups
@@ -576,7 +587,7 @@ p-value or metric value)</td>
 <td>Numeric</td>
 <td>*</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Analysis_Analyzed</td>
 <td>Factor</td>
 <td>The over-dispersion factor
@@ -584,7 +595,7 @@ p-value or metric value)</td>
 <td>Numeric</td>
 <td>*</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Analysis_Analyzed</td>
 <td>PredictedCount</td>
 <td>The expected count from the Poisson model
@@ -592,7 +603,7 @@ p-value or metric value)</td>
 <td>Numeric</td>
 <td>*</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Analysis_Analyzed</td>
 <td>Numerator_Other, Denominator_Other, Prop, Prop_Other, Estimate</td>
 <td>Values for all other groups, group proportions and odds ratio
@@ -617,7 +628,10 @@ estimate (<code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a><
 </li>
 <li>Usage: Flag a group-level metric to be summarized via
 <code><a href="../reference/Summarize.html">gsm.core::Summarize()</a></code> and used for reporting.</li>
-<li>Structure:</li>
+<li>Structure (<code><a href="../reference/Flag.html">Flag()</a></code> returns the columns of
+<code>Analysis_Analyzed</code> plus <code>Flag</code>; columns marked
+<code>*</code> are only present for some analysis methods, as described
+for <code>Analysis_Analyzed</code>):</li>
 </ul>
 <table class="table">
 <colgroup>
@@ -647,44 +661,53 @@ estimate (<code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a><
 <td>GroupLevel</td>
 <td>The group type for the metric (e.g. “Site”)</td>
 <td>Character</td>
-<td></td>
+<td>*</td>
 </tr>
 <tr class="odd">
 <td>Analysis_Flagged</td>
 <td>Numerator</td>
 <td>The calculated numerator value</td>
 <td>Numeric</td>
-<td></td>
+<td>*</td>
 </tr>
 <tr class="even">
 <td>Analysis_Flagged</td>
 <td>Denominator</td>
 <td>The calculated denominator value</td>
 <td>Numeric</td>
-<td></td>
+<td>*</td>
 </tr>
 <tr class="odd">
+<td>Analysis_Flagged</td>
+<td>TotalCount</td>
+<td>The sum of <code>strCountCol</code> for the group
+(<code><a href="../reference/Transform_Count.html">Transform_Count()</a></code> followed by
+<code><a href="../reference/Analyze_Identity.html">Analyze_Identity()</a></code>)</td>
+<td>Numeric</td>
+<td>*</td>
+</tr>
+<tr class="even">
 <td>Analysis_Flagged</td>
 <td>Metric</td>
 <td>The calculated rate/metric value</td>
 <td>Numeric</td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Analysis_Flagged</td>
 <td>Score</td>
 <td>The Statistical Score</td>
 <td>Numeric</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Analysis_Flagged</td>
 <td>Flag</td>
 <td>The ordinal Flag to be applied</td>
 <td>Numeric</td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Analysis_Flagged</td>
 <td>OverallMetric</td>
 <td>The overall rate/proportion across all groups
@@ -692,7 +715,7 @@ estimate (<code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a><
 <td>Numeric</td>
 <td>*</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Analysis_Flagged</td>
 <td>Factor</td>
 <td>The over-dispersion factor
@@ -700,7 +723,7 @@ estimate (<code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a><
 <td>Numeric</td>
 <td>*</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Analysis_Flagged</td>
 <td>PredictedCount</td>
 <td>The expected count from the Poisson model
@@ -708,7 +731,7 @@ estimate (<code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a><
 <td>Numeric</td>
 <td>*</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Analysis_Flagged</td>
 <td>Numerator_Other, Denominator_Other, Prop, Prop_Other, Estimate</td>
 <td>Values for all other groups, group proportions and odds ratio
@@ -716,7 +739,7 @@ estimate (<code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a><
 <td>Numeric</td>
 <td>*</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Analysis_Flagged</td>
 <td>Weight, WeightMax</td>
 <td>Risk score weight for the flag and maximum weight (only when

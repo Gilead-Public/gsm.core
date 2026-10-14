@@ -113,7 +113,7 @@ course of treatment per site, i.e., a rate.
 ``` r
 
 dfTransformed <- Transform_Rate(dfInput)
-#> Warning: 3 values of [ GroupID ] with a [ Denominator ] value of 0
+#> Warning: 7 values of [ GroupID ] with a [ Denominator ] value of 0
 #> removed.
 ```
 
@@ -186,7 +186,7 @@ dfFlagged <- Flag(
   nAccrualThreshold = 30,
   strAccrualMetric = "Denominator"
 )
-#> ℹ 22 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X7002, 0X7958, 0X3574, 0X8771, 0X9501, 0X1128, 0X9788, 0X2481, 0X3701, 0X1048, 0X4089, 0X2572, 0X1268, 0X7126, 0X2882, 0X7373, 0X3355, 0X3844, 0X5699, 0X3593, 0X3773, 0X3786
+#> ℹ 32 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X7203, 0X5132, 0X012, 0X6284, 0X4050, 0X9427, 0X3833, 0X2831, 0X6450, 0X5070, 0X2193, 0X5089, 0X5391, 0X6269, 0X4352, 0X4766, 0X6394, 0X1211, 0X2615, 0X3686, 0X1259, 0X6457, 0X002, 0X3423, 0X3939, 0X8015, 0X1391, 0X9242, 0X6562, 0X8487, 0X9570, 0X7965
 #> These group(s) will not have KRI score and flag summarized.
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
 ```
@@ -308,9 +308,10 @@ of the most commonly called upon functions.
   Uses Fisher’s Exact Test to determine if there are non-random
   associations between a site and a given KRI
 - [`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md):
-  Used in the data pipeline between `Transform()` and
+  Used in the data pipeline between `Transform_*()` and
   [`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
-  functions to rename the metric and score columns
+  to copy a column (`Metric` by default, set with `strValueCol`) into a
+  new `Score` column. All input columns are retained.
 - [`Analyze_Poisson()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Poisson.md):
   Uses a Poisson model to describe the distribution of events in the
   overall site population, i.e., determine how many times an event is

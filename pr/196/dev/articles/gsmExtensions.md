@@ -106,8 +106,15 @@ Additional `meta` header required fields for `{gsm.kri}` **metrics**:
 - `Metric`: Full name of the metric.
 - `Numerator`: The numerator of the metric.
 - `Denominator`: The denominator of the metric.
-- `AnalysisType`: The analysis type, passed to the `strType` parameter
-  of the analysis function. Common values: `rate`, `binary`, `identity`
+- `AnalysisType`: The analysis type. In normal approximation workflows
+  it is passed to the `strType` parameter of
+  [`gsm.core::Analyze_NormalApprox()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_NormalApprox.md)
+  (accepted values: `rate`, `binary`). For other models, such as
+  `identity`, it is workflow and reporting metadata only and is not
+  passed to the analysis function
+  ([`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)
+  has no `strType` parameter). Common values: `rate`, `binary`,
+  `identity`
 - `Model`: The model used to calculate the metric. Common values:
   `Normal Approximation`, `Identity` (other models, such as `Poisson`
   and `Fisher`, are available in
