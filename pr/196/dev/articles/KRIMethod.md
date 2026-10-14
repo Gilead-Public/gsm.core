@@ -304,12 +304,22 @@ defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values
 Common choices of significance levels are p-values less than 0.05 or
 0.01, flagged as amber or red, respectively; alternatively, the
 distribution of the p-values can be used to find the best separation of
-the data to identify sites at risk. For example:
+the data to identify sites at risk.
+
+For this subject-level example, Fisher’s exact test needs counts of
+subjects with and without an event, not AE counts over days on study.
+The rate data in `analyticsInput` are therefore converted to a binary
+outcome: `Numerator` is 1 if the subject had at least one AE and 0
+otherwise, and `Denominator` is 1. After aggregation, the metric is the
+proportion of subjects with at least one AE, not the exposure-adjusted
+AE rate. No sites are excluded based on their observed rate.
 
 ``` r
 
-dfTransformed <- Transform_Rate(analyticsInput)
-dfTransformed <- dfTransformed[dfTransformed$Numerator <= dfTransformed$Denominator, ]
+dfInput <- analyticsInput
+dfInput$Numerator <- as.integer(dfInput$Numerator > 0)
+dfInput$Denominator <- 1L
+dfTransformed <- Transform_Rate(dfInput)
 dfAnalyzed <- Analyze_Fisher(dfTransformed)
 dfFlagged <- Flag(
   dfAnalyzed,
@@ -319,14 +329,14 @@ dfFlagged <- Flag(
 )
 head(dfFlagged[, c("GroupID", "Prop", "Prop_Other", "Score", "Flag")])
 #> # A tibble: 6 × 5
-#>   GroupID   Prop Prop_Other   Score  Flag
-#>   <chr>    <dbl>      <dbl>   <dbl> <dbl>
-#> 1 0X8487  0.375      0.0804 0.00107     2
-#> 2 0X2908  0.2        0.0803 0.00267     2
-#> 3 0X9490  0.0470     0.0813 0.00282     2
-#> 4 0X8015  0.364      0.0805 0.00876     2
-#> 5 0X6995  0.0425     0.0810 0.0109      1
-#> 6 0X3939  0.333      0.0805 0.0123      1
+#>   GroupID  Prop Prop_Other    Score  Flag
+#>   <chr>   <dbl>      <dbl>    <dbl> <dbl>
+#> 1 0X700   0          0.847 0.000594     2
+#> 2 0X094   0.25       0.845 0.0136       1
+#> 3 0X5070  0          0.844 0.0247       1
+#> 4 0X8090  0.556      0.846 0.0392       1
+#> 5 0X3598  0.5        0.845 0.0534       0
+#> 6 0X7225  0.6        0.845 0.0575       0
 ```
 
 Note that the two-sided p-values do not indicate the direction of the
@@ -414,16 +424,27 @@ calculated using
 Let $`Y_1, ..., Y_m`$ be independent random variables with
 $`Y_i \sim Poisson(\mu_i)`$ denoting the number of events (`Numerator`)
 observed at the $`i`$th site with total exposure $`T_i`$
-(`Denominator`). Then $`E(Y_i)=\mu_i=T_ie^{\beta_0}`$. Thus, the
-log-linear generalized linear model (Poisson regression) fitted in
-[gsm.core](https://gilead-public.github.io/gsm.core) is the
-intercept-only model
+(`Denominator`). The current
+[`Analyze_Poisson()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Poisson.md)
+implementation uses the formula
+`Numerator ~ stats::offset(LogDenominator)`, where `LogDenominator` is
+$`\log T_i`$. In this formula,
+[`stats::glm()`](https://rdrr.io/r/stats/glm.html) treats the namespaced
+[`stats::offset()`](https://rdrr.io/r/stats/offset.html) expression as
+an ordinary predictor rather than a fixed offset. It therefore estimates
+both an intercept and an exposure coefficient:
 ``` math
-\log{\mu_i}=\log{T_i}+\beta_0 \quad Y_i \sim Poisson(\mu_i)
+\log{\mu_i}=\beta_0+\beta_1\log{T_i}, \qquad E(Y_i)=\mu_i=e^{\beta_0}T_i^{\beta_1}.
 ```
 
-where $`\log{T_i}`$ is an offset term and $`e^{\beta_0}`$ is the overall
-event rate.
+**Implementation limitation:** a common-rate, exposure-adjusted Poisson
+model would fix $`\beta_1=1`$, giving $`\log{\mu_i}=\log{T_i}+\beta_0`$
+and a common event rate $`e^{\beta_0}`$. That is not the model currently
+fitted by
+[`Analyze_Poisson()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Poisson.md).
+Its `Score` and `PredictedCount` come from the model with an estimated
+exposure coefficient; they should not be interpreted as results from an
+intercept-only, fixed-offset model.
 
 #### Estimate and Score
 
@@ -474,9 +495,10 @@ sites at risk. They are fully configurable and can be customized in the
 3.  **Poisson response** Each $`Y_i`$ follows the Poisson distribution
     as noted above with mean and variance equal to $`\mu_i`$.
 
-4.  **Linearity** $`\log{\mu_i}=\log{T_i}+\beta_0`$, i.e., the expected
-    count is proportional to exposure, with a common event rate across
-    sites under the null.
+4.  **Linearity** In the current implementation,
+    $`\log{\mu_i}=\beta_0+\beta_1\log{T_i}`$. The expected count is
+    proportional to exposure only when $`\beta_1=1`$; this constraint is
+    not imposed (see the implementation limitation above).
 
 #### Assumption checks, constraints and model diagnosis
 

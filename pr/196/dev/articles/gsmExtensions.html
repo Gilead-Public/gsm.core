@@ -339,12 +339,15 @@ for this metric. Note that other columns may be present in these tables
 (perhaps due to a <code>spec</code> from a different module), but only
 the columns listed in the <code>spec</code> section are required for the
 metric to run.</p>
-<p>Note that <code><a href="https://rdrr.io/pkg/workr/man/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code> only checks that each
-data table listed in the <code>spec</code> is present in
-<code>lData</code>; it does not check the listed columns or their types.
-Column- and type-level checks can be run with
-<code><a href="../reference/CheckSpec.html">gsm.core::CheckSpec()</a></code>, or applied when ingesting raw data
-with <code>gsm.mapping::ApplySpec()</code>.</p>
+<p>For the nested GSM <code>spec</code> format shown above,
+<code><a href="https://rdrr.io/pkg/workr/man/RunWorkflow.html" class="external-link">workr::RunWorkflow()</a></code> checks that each listed data table is
+present in <code>lData</code>, but does not check the nested column
+names or their types. <code>workr</code> also supports column-name lists
+under a table’s <code>required_cols</code>, <code>required</code> or
+<code>columns</code> field; those lists are checked for missing columns,
+but not column types. Column- and type-level checks for the nested GSM
+format can be run with <code><a href="../reference/CheckSpec.html">gsm.core::CheckSpec()</a></code>, or applied
+when ingesting raw data with <code>gsm.mapping::ApplySpec()</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="spec-examples-report-module">

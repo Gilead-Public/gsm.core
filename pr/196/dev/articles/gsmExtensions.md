@@ -215,11 +215,14 @@ columns may be present in these tables (perhaps due to a `spec` from a
 different module), but only the columns listed in the `spec` section are
 required for the metric to run.
 
-Note that
+For the nested GSM `spec` format shown above,
 [`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html)
-only checks that each data table listed in the `spec` is present in
-`lData`; it does not check the listed columns or their types. Column-
-and type-level checks can be run with
+checks that each listed data table is present in `lData`, but does not
+check the nested column names or their types. `workr` also supports
+column-name lists under a table’s `required_cols`, `required` or
+`columns` field; those lists are checked for missing columns, but not
+column types. Column- and type-level checks for the nested GSM format
+can be run with
 [`gsm.core::CheckSpec()`](https://gilead-public.github.io/gsm.core/dev/reference/CheckSpec.md),
 or applied when ingesting raw data with `gsm.mapping::ApplySpec()`.
 
