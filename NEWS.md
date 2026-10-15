@@ -1,5 +1,6 @@
 # gsm.core (development version)
 
+- `lSource$Raw_AE` carries AE outcome (`aeout`), derived relatedness (`aereldrv`) and serious-death flag (`aesdth`), with simulated fatal adverse events linked to `Raw_Death` for the Premature Deaths report; the bundled `analytics*` and `reporting*` datasets are regenerated to match (#179).
 - `lSource` carries `drv_kit_assigned`, and its `Raw_STUDCOMP` records agree with the IP non-starter status (#184).
 - `lSource` carries simulated premature treatment discontinuation fields (#176).
 - Bundled reporting data carry the `kri0019`/`cou0019` count configuration (#180).
