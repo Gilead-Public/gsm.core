@@ -66,3 +66,14 @@ test_that("at least one kri0007-2 site is flagged (#176)", {
 
   expect_true(any(abs(flags) %in% c(1, 2)))
 })
+
+# ---- Repeat-measure KRIs (#187) ----
+test_that("reporting data include the kri0020a-f/cou0020a-f repeat-measure metrics (#187)", {
+  kri_ids <- paste0("Analysis_kri0020", letters[1:6])
+  cou_ids <- paste0("Analysis_cou0020", letters[1:6])
+
+  expect_true(all(kri_ids %in% reportingMetrics$MetricID))
+  expect_true(all(cou_ids %in% reportingMetrics_country$MetricID))
+  expect_true(all(kri_ids %in% reportingResults$MetricID))
+  expect_true(all(cou_ids %in% reportingResults_country$MetricID))
+})

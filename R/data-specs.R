@@ -75,6 +75,10 @@
 #'   \item{Active}{logical flag indicating whether the metric is active}
 #'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
 #'   \item{WindowDays}{number of days in the metric's observation window}
+#'   \item{ValueCol}{column of repeated measurements evaluated by repeat-measure metrics}
+#'   \item{WindowLength}{number of consecutive measurements in each repeat-measure window}
+#'   \item{NumeratorCol}{column used as the numerator by repeat-measure metrics}
+#'   \item{DenominatorCol}{column used as the denominator by repeat-measure metrics}
 #' }
 #' @source Generated from `reportingMetrics.csv` dataset in the `gsm.core` package.
 "reportingMetrics"
@@ -161,6 +165,10 @@
 #'   \item{Active}{logical flag indicating whether the metric is active}
 #'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
 #'   \item{WindowDays}{number of days in the metric's observation window}
+#'   \item{ValueCol}{column of repeated measurements evaluated by repeat-measure metrics}
+#'   \item{WindowLength}{number of consecutive measurements in each repeat-measure window}
+#'   \item{NumeratorCol}{column used as the numerator by repeat-measure metrics}
+#'   \item{DenominatorCol}{column used as the denominator by repeat-measure metrics}
 #' }
 #' @source Generated from `reportingMetrics_country.csv` dataset in the `gsm.core` package.
 "reportingMetrics_country"
@@ -246,6 +254,10 @@
 #'   \item{Active}{logical flag indicating whether the metric is active}
 #'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
 #'   \item{WindowDays}{number of days in the metric's observation window}
+#'   \item{ValueCol}{column of repeated measurements evaluated by repeat-measure metrics}
+#'   \item{WindowLength}{number of consecutive measurements in each repeat-measure window}
+#'   \item{NumeratorCol}{column used as the numerator by repeat-measure metrics}
+#'   \item{DenominatorCol}{column used as the denominator by repeat-measure metrics}
 #' }
 #' @source Generated from `reportingMetrics_study.csv` dataset in the `gsm.core` package.
 "reportingMetrics_study"
