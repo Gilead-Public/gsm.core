@@ -2,6 +2,8 @@
 # row-order-only diffs and rows appear in a meaningful order. Sourced by
 # simulate_longitudinal_data.R.
 
+library(dplyr)
+
 # Curated Study Param order, taken from the pre-sort output in v1.3.1.
 study_param_order <- c(
   "studyid", "nickname", "protocol_title", "status", "num_plan_site",
@@ -15,52 +17,59 @@ study_param_order <- c(
 # Rank MetricIDs naturally: kri0001 < kri0007 < kri0007-2 < kri0020a, with
 # srs metrics last.
 metric_rank <- function(id) {
-  ids <- sort(unique(id), method = "radix")
-  core <- sub("^.*_", "", ids)
-  prefix <- sub("[0-9].*$", "", core)
-  num <- suppressWarnings(as.numeric(sub("^[^0-9]*([0-9]+).*$", "\\1", core)))
-  suffix <- sub("^[^0-9]*[0-9]+", "", core)
-  ord <- order(
-    prefix == "srs", prefix, num, suffix, ids,
-    method = "radix", na.last = TRUE
-  )
-  match(id, ids[ord])
+  ids <- dplyr::tibble(id = unique(id)) |>
+    dplyr::mutate(
+      core = sub("^.*_", "", .data$id),
+      prefix = sub("[0-9].*$", "", .data$core),
+      num = suppressWarnings(
+        as.numeric(sub("^[^0-9]*([0-9]+).*$", "\\1", .data$core))
+      ),
+      suffix = sub("^[^0-9]*[0-9]+", "", .data$core)
+    ) |>
+    dplyr::arrange(
+      .data$prefix == "srs", .data$prefix, .data$num, .data$suffix, .data$id
+    )
+  match(id, ids$id)
 }
 
 sort_reporting_metrics <- function(x) {
-  x[order(metric_rank(x$MetricID), method = "radix"), , drop = FALSE] |>
-    `rownames<-`(NULL)
+  dplyr::arrange(x, metric_rank(.data$MetricID))
 }
 
 sort_reporting_results <- function(x) {
-  x[order(
-    x$GroupLevel, x$GroupID, -as.numeric(as.Date(x$SnapshotDate)),
-    metric_rank(x$MetricID),
-    method = "radix"
-  ), , drop = FALSE] |>
-    `rownames<-`(NULL)
+  dplyr::arrange(
+    x,
+    metric_rank(.data$MetricID),
+    dplyr::desc(as.Date(.data$SnapshotDate)),
+    .data$GroupLevel,
+    .data$GroupID
+  )
 }
 
 sort_reporting_bounds <- function(x) {
-  x[order(
-    metric_rank(x$MetricID), -as.numeric(as.Date(x$SnapshotDate)),
-    x$Threshold, x$Denominator,
-    method = "radix"
-  ), , drop = FALSE] |>
-    `rownames<-`(NULL)
+  dplyr::arrange(
+    x,
+    metric_rank(.data$MetricID),
+    dplyr::desc(as.Date(.data$SnapshotDate)),
+    .data$Threshold,
+    .data$Denominator
+  )
 }
 
 sort_reporting_groups <- function(x) {
-  study_rank <- ifelse(
-    x$GroupLevel == "Study",
-    match(x$Param, study_param_order),
-    NA_integer_
+  dplyr::arrange(
+    x,
+    .data$GroupLevel,
+    .data$GroupID,
+    # NA for non-Study rows, which then fall back to Param order.
+    dplyr::if_else(
+      .data$GroupLevel == "Study",
+      match(.data$Param, study_param_order),
+      NA_integer_
+    ),
+    tolower(.data$Param),
+    .data$Param
   )
-  x[order(
-    x$GroupLevel, x$GroupID, study_rank, tolower(x$Param), x$Param,
-    method = "radix", na.last = TRUE
-  ), , drop = FALSE] |>
-    `rownames<-`(NULL)
 }
 
 sort_reporting <- function(x, name) {
