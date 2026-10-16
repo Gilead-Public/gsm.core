@@ -174,98 +174,39 @@ lSource <- basic_sim[[3]]
 usethis::use_data(lSource, overwrite = TRUE)
 
 # write CSVs
-# analysis data
-## site
-write.csv(
-  file = "data-raw/analyticsSummary.csv",
-  x = analyzed[[3]]$Analysis_kri0001$Analysis_Summary,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/analyticsInput.csv",
-  x = analyzed[[3]]$Analysis_kri0001$Analysis_Input,
-  row.names = F
-)
+# Sort on every column (C locale via dplyr::arrange) so reruns don't produce
+# row-order-only diffs in data-raw/ or data/.
+write_sorted_csv <- function(x, file) {
+  write.csv(
+    dplyr::arrange(x, dplyr::across(dplyr::everything())),
+    file = file,
+    row.names = FALSE
+  )
+}
 
-## country
-write.csv(
-  file = "data-raw/analyticsSummary_country.csv",
-  x = analyzed[[3]]$Analysis_cou0001$Analysis_Summary,
-  row.names = F
+csv_outputs <- list(
+  # analysis data
+  analyticsSummary = analyzed[[3]]$Analysis_kri0001$Analysis_Summary,
+  analyticsInput = analyzed[[3]]$Analysis_kri0001$Analysis_Input,
+  analyticsSummary_country = analyzed[[3]]$Analysis_cou0001$Analysis_Summary,
+  analyticsInput_country = analyzed[[3]]$Analysis_cou0001$Analysis_Input,
+  # reporting data
+  reportingGroups = lReporting_site$Reporting_Groups,
+  reportingBounds = lReporting_site$Reporting_Bounds,
+  reportingMetrics = lReporting_site$Reporting_Metrics,
+  reportingResults = lReporting_site$Reporting_Results,
+  reportingGroups_country = lReporting_country$Reporting_Groups,
+  reportingBounds_country = lReporting_country$Reporting_Bounds,
+  reportingMetrics_country = lReporting_country$Reporting_Metrics,
+  reportingResults_country = lReporting_country$Reporting_Results,
+  reportingGroups_study = lReporting_study$Reporting_Groups,
+  reportingBounds_study = lReporting_study$Reporting_Bounds,
+  reportingMetrics_study = lReporting_study$Reporting_Metrics,
+  reportingResults_study = lReporting_study$Reporting_Results
 )
-write.csv(
-  file = "data-raw/analyticsInput_country.csv",
-  x = analyzed[[3]]$Analysis_cou0001$Analysis_Input,
-  row.names = F
-)
-
-
-# reporting data
-## site
-write.csv(
-  file = "data-raw/reportingGroups.csv",
-  x = lReporting_site$Reporting_Groups,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingBounds.csv",
-  x = lReporting_site$Reporting_Bounds,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingMetrics.csv",
-  x = lReporting_site$Reporting_Metrics,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingResults.csv",
-  x = lReporting_site$Reporting_Results,
-  row.names = F
-)
-
-##country
-write.csv(
-  file = "data-raw/reportingGroups_country.csv",
-  x = lReporting_country$Reporting_Groups,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingBounds_country.csv",
-  x = lReporting_country$Reporting_Bounds,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingMetrics_country.csv",
-  x = lReporting_country$Reporting_Metrics,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingResults_country.csv",
-  x = lReporting_country$Reporting_Results,
-  row.names = F
-)
-
-##study
-write.csv(
-  file = "data-raw/reportingGroups_study.csv",
-  x = lReporting_study$Reporting_Groups,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingBounds_study.csv",
-  x = lReporting_study$Reporting_Bounds,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingMetrics_study.csv",
-  x = lReporting_study$Reporting_Metrics,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingResults_study.csv",
-  x = lReporting_study$Reporting_Results,
-  row.names = F
-)
+for (name in names(csv_outputs)) {
+  write_sorted_csv(csv_outputs[[name]], file.path("data-raw", paste0(name, ".csv")))
+}
 
 # Rebuild the bundled data/*.rda objects from the CSVs just written. Without
 # this, data/ (and the row counts in the generated Rd files) silently drift out
