@@ -174,12 +174,13 @@ lSource <- basic_sim[[3]]
 usethis::use_data(lSource, overwrite = TRUE)
 
 # write CSVs
-# Sort on every column (C locale via dplyr::arrange) so reruns don't produce
-# row-order-only diffs in data-raw/ or data/.
-write_sorted_csv <- function(x, file) {
+# Sort reporting data on explicit keys (see sort_reporting.R) so reruns don't
+# produce row-order-only diffs in data-raw/ or data/.
+source("data-raw/sort_reporting.R")
+write_sorted_csv <- function(x, name) {
   write.csv(
-    dplyr::arrange(x, dplyr::across(dplyr::everything())),
-    file = file,
+    sort_reporting(x, name),
+    file = file.path("data-raw", paste0(name, ".csv")),
     row.names = FALSE
   )
 }
@@ -205,7 +206,7 @@ csv_outputs <- list(
   reportingResults_study = lReporting_study$Reporting_Results
 )
 for (name in names(csv_outputs)) {
-  write_sorted_csv(csv_outputs[[name]], file.path("data-raw", paste0(name, ".csv")))
+  write_sorted_csv(csv_outputs[[name]], name)
 }
 
 # Rebuild the bundled data/*.rda objects from the CSVs just written. Without
