@@ -246,3 +246,22 @@ test_that("Raw_SITE site IDs are unique and each site maps to one country (#186)
   site_country <- lSource$Raw_SITE$country[match(subj_sites$invid, lSource$Raw_SITE$pi_number)]
   expect_identical(subj_sites$country, site_country)
 })
+
+# ---- Fatal adverse events (#179) ----
+test_that("Raw_AE carries AE outcome, derived relatedness and serious-death flag (#179)", {
+  ae <- lSource$Raw_AE
+
+  expect_true(all(c("aeout", "aereldrv", "aesdth") %in% names(ae)))
+  expect_true(all(ae$aereldrv %in% c("Yes", "No", NA)))
+  expect_true(all(ae$aesdth %in% c("Yes", "No", NA)))
+})
+
+test_that("fatal AEs are flagged serious-death and reach subjects in Raw_Death (#179)", {
+  ae <- lSource$Raw_AE
+  fatal <- ae[ae$aeout %in% "Fatal", ]
+
+  expect_gt(nrow(fatal), 0)
+  expect_true(all(fatal$aesdth == "Yes"))
+  expect_true(all(ae$aeout[ae$aesdth %in% "Yes"] == "Fatal"))
+  expect_true(any(lSource$Raw_Death$subjid %in% fatal$subjid))
+})
