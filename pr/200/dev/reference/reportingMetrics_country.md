@@ -10,7 +10,7 @@ reportingMetrics_country
 
 ## Format
 
-A data frame with 17 rows and 23 columns:
+A data frame with 23 rows and 27 columns:
 
 - MetricID:
 
@@ -104,6 +104,22 @@ A data frame with 17 rows and 23 columns:
 - WindowDays:
 
   number of days in the metric's observation window
+
+- ValueCol:
+
+  column of repeated measurements evaluated by repeat-measure metrics
+
+- WindowLength:
+
+  number of consecutive measurements in each repeat-measure window
+
+- NumeratorCol:
+
+  column used as the numerator by repeat-measure metrics
+
+- DenominatorCol:
+
+  column used as the denominator by repeat-measure metrics
 
 ## Source
 

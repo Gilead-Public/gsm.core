@@ -1,7 +1,7 @@
 # Run a workflow via it's YAML specification.
 
 **\[deprecated\]** `RunWorkflow()` has moved to
-[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html).
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html).
 This wrapper remains for backward compatibility in `{gsm.core}`.
 
 Attempts to run a single assessment (`lWorkflow`) using shared data
@@ -102,7 +102,7 @@ lMappedData <- workr::RunWorkflows(
 #> [INFO] Calling `gsm.core::RunQuery`
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp9Xfsuq/duckdb
+#> ℹ /tmp/RtmpZpsenZ/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

@@ -246,9 +246,9 @@ final output. Each item in `steps` has the following properties:
   for more details on how to specify parameters for each function.
 
 **Note**: It is important to note that the default behavior of
-[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html)
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html)
 and
-[`workr::RunWorkflows()`](https://rdrr.io/pkg/workr/man/RunWorkflows.html)
+[`workr::RunWorkflows()`](https://gilead-public.github.io/workr/reference/RunWorkflows.html)
 is to return the *last* output in the steps section of the workflow.
 Therefore, each yaml file, regardless of which directory it is in,
 should only produce one output, whether that be a data table, list, html
@@ -258,7 +258,7 @@ module output.
 The `steps` section is the most complex part of the module configuration
 and will vary greatly depending on the module type and the specific
 requirements of the module.
-[workr](https://gilead-biostats.github.io/workr) provides the standard
+[workr](https://gilead-public.github.io/workr) provides the standard
 workflow-runtime functions used to execute module yaml files, while
 [gsm.core](https://gilead-public.github.io/gsm.core) provides many of
 the analytical functions that those steps call. See
@@ -267,17 +267,18 @@ the analytical functions that those steps call. See
 #### `steps[]$params` Specification
 
 After processing the YAML `meta` and `spec` sections,
-[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html)
-calls [`workr::RunStep()`](https://rdrr.io/pkg/workr/man/RunStep.html)
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html)
+calls
+[`workr::RunStep()`](https://gilead-public.github.io/workr/reference/RunStep.html)
 for each step in the `steps` section of the YAML. The `params` section
 of each step is passed to
-[`workr::RunStep()`](https://rdrr.io/pkg/workr/man/RunStep.html) as a
-list of parameters along with a copy of the metadata header (`lMeta`)
-and any data (`lData`).
-[`workr::RunStep()`](https://rdrr.io/pkg/workr/man/RunStep.html) then
-parses the list of `params` by passing data from `lMeta` and `lData`
-when appropriate. Finally, the parsed parameters are passed to the
-function specified in the `name` field of the step.
+[`workr::RunStep()`](https://gilead-public.github.io/workr/reference/RunStep.html)
+as a list of parameters along with a copy of the metadata header
+(`lMeta`) and any data (`lData`).
+[`workr::RunStep()`](https://gilead-public.github.io/workr/reference/RunStep.html)
+then parses the list of `params` by passing data from `lMeta` and
+`lData` when appropriate. Finally, the parsed parameters are passed to
+the function specified in the `name` field of the step.
 
 #### `steps` examples
 
@@ -288,7 +289,7 @@ specified. Here, `Threshold`, `GroupLevel`, `Type`, `AccrualThreshold`
 and `AccrualMetric` are specified in the `meta` section of the workflow,
 and would be accessed via the `paramVal` process discussed above. As a
 default, the output of these steps as run with
-[`workr::RunWorkflows()`](https://rdrr.io/pkg/workr/man/RunWorkflows.html)
+[`workr::RunWorkflows()`](https://gilead-public.github.io/workr/reference/RunWorkflows.html)
 would be a list of data tables, as specified in the final `list` step of
 the workflow.
 

@@ -60,5 +60,6 @@ level was set at a common choice.
 dfTransformed <- Transform_Rate(
   analyticsInput[1:20, ]
 )
+#> Warning: 1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.
 dfAnalyzed <- Analyze_Fisher(dfTransformed)
 ```

@@ -34,13 +34,13 @@ log4r package was archived on CRAN
 ## gsm.core v1.3.0
 
 This minor release moves the workflow runtime to the new
-[workr](https://gilead-biostats.github.io/workr) package and adds the
+[workr](https://gilead-public.github.io/workr) package and adds the
 `deathcls` column to the Death domain in `lSource`.
 
 Changes:
 
 - Workflow execution is now powered by
-  [workr](https://gilead-biostats.github.io/workr):
+  [workr](https://gilead-public.github.io/workr):
   [`RunQuery()`](https://gilead-public.github.io/gsm.core/dev/reference/RunQuery.md),
   [`RunStep()`](https://gilead-public.github.io/gsm.core/dev/reference/RunStep.md),
   [`RunWorkflow()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflow.md),
@@ -48,8 +48,8 @@ Changes:
   and
   [`MakeWorkflowList()`](https://gilead-public.github.io/gsm.core/dev/reference/MakeWorkflowList.md)
   are backed by the shared, federated
-  [workr](https://gilead-biostats.github.io/workr) runtime. Existing
-  code continues to work unchanged through deprecation shims
+  [workr](https://gilead-public.github.io/workr) runtime. Existing code
+  continues to work unchanged through deprecation shims
   ([\#141](https://github.com/Gilead-Public/gsm.core/issues/141),
   [\#149](https://github.com/Gilead-Public/gsm.core/issues/149)).
 - The Death domain in the `lSource` dataset now includes a `deathcls`

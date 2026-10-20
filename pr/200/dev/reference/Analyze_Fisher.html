@@ -98,6 +98,7 @@ choice.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dfTransformed</span> <span class="op">&lt;-</span> <span class="fu"><a href="Transform_Rate.html">Transform_Rate</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">analyticsInput</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 values of [ GroupID ] with a [ Denominator ] value of 0 removed.</span>
 <span class="r-in"><span><span class="va">dfAnalyzed</span> <span class="op">&lt;-</span> <span class="fu">Analyze_Fisher</span><span class="op">(</span><span class="va">dfTransformed</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
