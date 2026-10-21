@@ -3,8 +3,8 @@
 **\[deprecated\]**
 
 `RunStep()` has moved to
-[`workr::RunStep()`](https://rdrr.io/pkg/workr/man/RunStep.html). This
-wrapper remains for backward compatibility in `{gsm.core}`.
+[`workr::RunStep()`](https://gilead-public.github.io/workr/reference/RunStep.html).
+This wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage
 
@@ -88,7 +88,7 @@ mapped <- workr::RunWorkflows(wf_mapping, lRaw)
 #>   Please report the issue to the authors.
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpmphRcC/duckdb
+#> ℹ /tmp/RtmpvRipUM/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
