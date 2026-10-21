@@ -36,7 +36,20 @@ test_that("kri0007/cou0007 keep Treatment Discontinuation Rate and are bundled i
   expect_true("Analysis_cou0007" %in% reportingResults_country$MetricID)
 })
 
-test_that("latest kri0007-2/cou0007-2 counts equal the dosed and discontinued subjects in lSource (#176)", {
+test_that("kri0007-2/cou0007-2 count dosed participants who did not complete study drug per protocol (#201)", {
+  kri <- metric_row(reportingMetrics, "Analysis_kri0007-2")
+  cou <- metric_row(reportingMetrics_country, "Analysis_cou0007-2")
+
+  expect_equal(
+    c(kri$Numerator, cou$Numerator),
+    rep(
+      "Enrolled and dosed participants who did not complete study drug per protocol",
+      2
+    )
+  )
+})
+
+test_that("latest kri0007-2/cou0007-2 counts equal the dosed subjects and those with drv_drg_completion N in lSource (#201)", {
   subj <- lSource$Raw_SUBJ
   dosed <- subj[subj$enrollyn %in% "Y" & subj$drv_ip_dosed %in% "Y", ]
   check <- function(results, id, col) {
@@ -46,7 +59,7 @@ test_that("latest kri0007-2/cou0007-2 counts equal the dosed and discontinued su
     ]
     want <- dplyr::summarise(
       dplyr::group_by(dosed, GroupID = .data[[col]]),
-      Numerator = sum(!is.na(.data$drv_treatment_discontinuation_dt)),
+      Numerator = sum(.data$drv_drg_completion %in% "N"),
       Denominator = dplyr::n()
     )
     expect_setequal(got$GroupID, want$GroupID)
