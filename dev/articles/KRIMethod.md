@@ -9,7 +9,7 @@ observed risk to data quality and patient safety in a clinical trial.
 The {gsm} suite of packages implements a standardized data pipeline to
 facilitate KRI analysis. Other vignettes provide an overview of this
 framework
-([1](https://gilead-public.github.io/gsm.core/dev/articles/Cookbook.md)
+([1](https://gilead-public.github.io/gsm.kri/examples/Cookbook_AdverseEventKRI.html),
 [2](https://gilead-public.github.io/gsm.core/dev/articles/DataModel.md),
 [3](https://gilead-public.github.io/gsm.core/dev/articles/DataAnalysis.md),
 [4](https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html)),
@@ -66,12 +66,12 @@ $`n_i`$ patients at the $`i`$ th site, $`i = 1, 2, \dots, m`$. Denote
 the total number of patients in the study by $`n=\sum_{i=1}^m n_i`$. Let
 $`X_{ij}`$ signify the outcome of interest for the $`j`$ th patient at
 the $`i`$ th site, where $`X_{ij}=1`$ indicates that an event has
-occurred and indicates that an event has not occurred. Finally, let
-$`p_i`$ denote the site-level proportion at the $`i`$ th site.
-Monitoring tools focus on testing the null hypothesis of consistency of
-the true site-level proportion across multiple sites. Specifically, the
-null hypothesis states that the site-level proportion of the binary
-outcome is constant across the sites, that is,
+occurred and $`X_{ij}=0`$ indicates that an event has not occurred.
+Finally, let $`p_i`$ denote the site-level proportion at the $`i`$ th
+site. Monitoring tools focus on testing the null hypothesis of
+consistency of the true site-level proportion across multiple sites.
+Specifically, the null hypothesis states that the site-level proportion
+of the binary outcome is constant across the sites, that is,
 $`H_0: p_1 = \dots = p_m = p`$, where $`p`$ is the common proportion.
 This common proportion can be estimated as
 $`\hat{p} = \frac{1}{n}\sum_{i=1}^m\sum_{j=1}^{n_i}X_{ij}`$.
@@ -86,11 +86,12 @@ interval for $`p_i`$ is given by
 ``` math
 \hat{p}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{p}_i(1-\hat{p}_i)}{n_i}} \leq p_i \leq \hat{p}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{p}_i(1-\hat{p}_i)}{n_i}}
 ```
-where $`z_{1-\alpha/2}`$ is the upper percentile of the standard normal
-distribution. To construct the control limits for the observed event
-rate at this site, the estimated event rate is forced to be equal to the
-overall event rate $`\hat{p}_i`$. This means that the lower (l) and
-upper (u) asymptotic control limits for the $`i`$ th site are defined as
+where $`z_{1-\alpha/2}`$ is the upper $`\alpha/2`$ quantile of the
+standard normal distribution. To construct the control limits for the
+observed event rate at this site, the estimated event rate is forced to
+be equal to the overall event rate $`\hat{p}`$. This means that the
+lower (l) and upper (u) asymptotic control limits for the $`i`$ th site
+are defined as
 $`l_i=\hat{p}-z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}`$ and
 $`u_i=\hat{p}+z_{1-\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}`$,
 respectively. Asymptotic control limits may not be reliable in smaller
@@ -99,27 +100,25 @@ clinical trials, so exact limits for an event rate may be preferable.
 ##### Rate
 
 Assume that the distribution of number of events up to time $`T`$ is
-Poisson with mean $`\lambda t`$, where $`\lambda`$ is the event rate for
+Poisson with mean $`\lambda T`$, where $`\lambda`$ is the event rate for
 a given unit of time. For the $`i`$ th site with
-$`X_i=\sum_{j=1}^{N_i}X_{ij}`$ events and $`T_i=\sum_{j=1}^{N_i}t_{ij}`$
+$`X_i=\sum_{j=1}^{n_i}X_{ij}`$ events and $`T_i=\sum_{j=1}^{n_i}t_{ij}`$
 exposure, define the exposure-adjusted incidence rate (EAIR) as
 $`\hat{\lambda}_i=\frac{X_i}{T_i}`$. For all sites, define
-$`X=\sum_{i=1}^{m}X_{i}`$ and $`T=\sum_{i=1}^{m}t_{i}`$ with
+$`X=\sum_{i=1}^{m}X_{i}`$ and $`T=\sum_{i=1}^{m}T_{i}`$ with
 $`\hat{\lambda}=\frac{X}{T}`$. Under a normal approximation,
-$`100(1 – a)%`$ confidence interval for the $`i`$ th site is
+$`100(1 – \alpha)%`$ confidence interval for the $`i`$ th site is
 ``` math
-\hat{\lambda}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}} \leq p_i \leq \hat{\lambda}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}}
+\hat{\lambda}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}} \leq \lambda_i \leq \hat{\lambda}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}}
 ```
 . For these funnel plots accounting for exposure, the x-axis
-representing the site sample size ($`n`$) in the above examples is
-replaced by the total exposure time $`T`$. To develop a funnel plot, fix
-$`\hat{\lambda}_i=\hat{\lambda}`$, and vary $`T`$ from $`min(T_i)`$ to
-$`max(T_i)`$ to compute the control limits. As an area of future
-research, the work of Chan and Wang (2009) may suggest methods
-appropriate for computing an exact confidence interval for the EAIR.
-Finally, similar methods can be applied for a count-type endpoint
-$`X_{ij}`$, where tij would denote the time on study for the $`j`$ th
-patient at the $`i`$ th site.
+representing the site sample size ($`n_i`$) in the binary case is
+replaced by the total exposure time $`T_i`$. To develop a funnel plot,
+fix $`\hat{\lambda}_i=\hat{\lambda}`$, and vary $`T`$ from $`min(T_i)`$
+to $`max(T_i)`$ to compute the control limits. Finally, similar methods
+can be applied for a count-type endpoint $`X_{ij}`$, where $`t_{ij}`$
+would denote the time on study for the $`j`$ th patient at the $`i`$ th
+site.
 
 #### KRI Metric and Z-score
 
@@ -127,9 +126,12 @@ The KRI metric along with a KRI score are created for each site to
 measure the level of observed risk to data quality and patient safety in
 a clinical trial. For scoring purposes, Z-scores from the normal
 approximation are calculated and defined as such:
-$`z_i=\frac{y_i-\theta_0}{\sqrt{V(Y|\theta_0)}}`$ for site $`i`$, where
-$`y_i`$ is the KRI metric calculated for site $`i`$, $`\theta_0`$ is the
-overall mean, $`\sqrt{V(Y|\theta_0)}`$ is the measurement of variance.
+$`z_{0,i}=\frac{y_i-\theta_0}{\sqrt{V(Y|\theta_0)}}`$ for site $`i`$,
+where $`y_i`$ is the KRI metric calculated for site $`i`$, $`\theta_0`$
+is the overall (pooled) metric across all sites, i.e. the sum of all
+numerators divided by the sum of all denominators (returned as
+`OverallMetric`), and $`\sqrt{V(Y|\theta_0)}`$ is the standard deviation
+of the metric under the null.
 
 For binary outcome,
 $`\sqrt{V(Y|\theta_0)}=\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}`$.
@@ -143,24 +145,28 @@ The standard normal approximation method described above assumes the
 null distribution fully expresses the variability of the sites
 in-control, but in many situations this assumption will not hold. In the
 situation that there is a presence of greater variability than expected,
-majority of the sites will fall outside the specified limits, leading to
-a double of the appropriateness of the constructed limits.
+an excess of sites will fall outside the specified limits, leading to a
+doubt of the appropriateness of the constructed limits.
 
 A way of handling this issue is to allow over-dispersion in the normal
 approximation. A multiplicative over-dispersion adjustment was
 implemented in our approach.
 
-Suppose a sample of $`m`$ units are to be **in-control**, the
-over-dispersion factor $`\phi`$ can be estimated as the mean squared
-z-scores, i.e., $`\hat\phi = \frac{1}{m}\sum_{i=1}^m z_i^2`$. For binary
+Following Spiegelhalter (2005), the over-dispersion factor $`\phi`$ is
+estimated as the mean of the squared unadjusted z-scores $`z_{0,i}`$ (as
+defined in the previous section), i.e.,
+$`\hat\phi = \frac{1}{m}\sum_{i=1}^m z_{0,i}^2`$. In
+[gsm.core](https://gilead-public.github.io/gsm.core), all $`m`$ sites
+are used for this estimate (no subset of in-control sites is identified
+and no winsorization is applied), and $`\hat\phi`$ is applied whether it
+is above or below 1. For binary outcome, the over-dispersion adjusted
+variance is $`V'(Y_i|\phi, p)=\phi\frac{{p}(1-p)}{n_i}`$. For rate
 outcome, the over-dispersion adjusted variance is
-$`V'(Y_i|\phi, p)=\phi\frac{{p}(1-p)}{n_i}`$. For rate outcome, the
-over-dispersion adjusted variance is
 $`V'(Y_i|\phi, \lambda)=\phi\frac{\lambda}{T_i}`$. Therefore, after the
 over-dispersion adjustment, the adjusted z-scores for site $`i`$ are
 $`z_i = \frac{\hat{p}_i - \hat{p}}{\sqrt{\hat\phi \frac{{\hat{p}}(1-\hat{p})}{n_i}}}`$,
 $`z_i = \frac{\hat{\lambda}_i - \hat{\lambda}}{\sqrt{\hat\phi \frac{\hat\lambda}{T_i}}}`$,
-respectively.
+respectively, i.e., $`z_i = z_{0,i}/\sqrt{\hat\phi}`$.
 
 Reference: Spiegelhalter, David J. **Funnel plots for comparing
 institutional performance.** *Statistics in medicine* 24.8 (2005):
@@ -178,22 +184,29 @@ outliers using the thresholds discussed below.
 
 #### Threshold
 
-By default, sites with adjusted z-score exceeding $`\pm 2`$ or $`\pm 3`$
-from the normal approximation analysis are flagged as amber or red,
-respectively. The thresholds are set at common choices corresponding to
-95.6% and 99.7% of the data around the mean in a standard normal
-distribution. However, they are fully configurable in the package and
-can be customized and specified in the
-[gsm.core](https://gilead-public.github.io/gsm.core) functions.
+By default
+([`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
+with `vThreshold = c(-3, -2, 2, 3)`), sites with adjusted z-score at or
+beyond $`\pm 2`$ or $`\pm 3`$ from the normal approximation analysis are
+flagged as amber or red, respectively. The thresholds are set at common
+choices corresponding to approximately 95.45% and 99.73% of the data
+around the mean in a standard normal distribution. However, they are
+fully configurable in the package and can be customized and specified in
+the [gsm.core](https://gilead-public.github.io/gsm.core) functions.
 
 #### Special Situations
 
 1.  Results are not interpretable or it is not appropriate to apply the
     asymptotic method: We don’t want to flag in certain situations when
     results not interpretable or when it is not appropriate to apply the
-    asymptotic method due to the small sample sizes. The default
-    threshold for minimum denominator requirement is 30 days exposure or
-    3 patients at the site level.
+    asymptotic method due to the small sample sizes. A minimum accrual
+    requirement can be set via the `nAccrualThreshold` and
+    `strAccrualMetric` arguments of
+    [`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
+    (no minimum is applied by default in
+    [gsm.core](https://gilead-public.github.io/gsm.core)); the
+    `{gsm.kri}` workflows typically use 30 days exposure for rate KRIs
+    or 3 patients for binary KRIs at the site level.
 
 #### Recommendation
 
@@ -202,9 +215,12 @@ rate KRIs.
 
 ### 2. The Identity Method
 
-Identity method simply uses the count of event in the numerator of the
-KRI metric itself as the score. The thresholds for monitoring site risk
-are set based on the actual counts.
+Identity method simply uses a column of the transformed data itself as
+the score: the KRI `Metric` by default, configurable via the
+`strValueCol` argument of
+[`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md).
+The thresholds for monitoring site risk are set on the scale of that
+column (e.g., the actual counts).
 
 ### 3. The Fisher’s Exact Method
 
@@ -235,17 +251,16 @@ outliers. The default in
 [`stats::fisher.test`](https://rdrr.io/r/stats/fisher.test.html) uses a
 two-sided test (equivalent to testing the null of OR = 1) and does not
 compute p-values by Monte Carlo simulation unless
-`simulate.p.value = TRUE`. Sites with p-values less than 0.05 from the
-Fisher’s exact test analysis are flagged by default. The significance
-level was set at a common choice.
+`simulate.p.value = TRUE`. Flagging thresholds for the p-values must be
+specified explicitly (see below).
 
 #### Methods
 
 For example, in a $`2 \times 2`$ contingency table comparing a
-particular site to all other sites combined, the two rows displaying the
-binary outcome are considered repeated Bernoulli random samples with
-same probability $`p=0.5`$ of success or failure under the null. Given a
-$`2 \times 2`$ contingency table,
+particular site to all other sites combined, the two columns (the site
+and all other sites combined) are considered independent binomial
+samples of the binary outcome with a common, unknown probability $`p`$
+of success under the null. Given a $`2 \times 2`$ contingency table,
 
 | Site1 | RestSites |
 |-------|-----------|
@@ -282,14 +297,52 @@ specified.
 
 #### Threshold
 
-By default, sites with p-values less than 0.05 or 0.01 from the Fisher’s
-exact test analysis are flagged as amber or red, respectively. The
-thresholds are set based on empirical p-value approach, where we use the
-distribution of the p-values to find the best separation of the data to
-identify sites at risk. The default thresholds are set at common choices
-of significance levels. However, they are fully configurable in the
-package and can be customized and specified in the
-[gsm.core](https://gilead-public.github.io/gsm.core) functions.
+There are no Fisher-specific default thresholds:
+[`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
+defaults to `vThreshold = c(-3, -2, 2, 3)`, which never flags p-values
+(between 0 and 1). Thresholds must therefore be specified explicitly.
+Common choices of significance levels are p-values less than 0.05 or
+0.01, flagged as amber or red, respectively; alternatively, the
+distribution of the p-values can be used to find the best separation of
+the data to identify sites at risk.
+
+For this subject-level example, Fisher’s exact test needs counts of
+subjects with and without an event, not AE counts over days on study.
+The rate data in `analyticsInput` are therefore converted to a binary
+outcome: `Numerator` is 1 if the subject had at least one AE and 0
+otherwise, and `Denominator` is 1. After aggregation, the metric is the
+proportion of subjects with at least one AE, not the exposure-adjusted
+AE rate. No sites are excluded based on their observed rate.
+
+``` r
+
+dfInput <- analyticsInput
+dfInput$Numerator <- as.integer(dfInput$Numerator > 0)
+dfInput$Denominator <- 1L
+dfTransformed <- Transform_Rate(dfInput)
+dfAnalyzed <- Analyze_Fisher(dfTransformed)
+dfFlagged <- Flag(
+  dfAnalyzed,
+  vThreshold = c(0.01, 0.05),
+  vFlag = c(2, 1, 0),
+  vFlagOrder = c(2, 1, 0)
+)
+head(dfFlagged[, c("GroupID", "Prop", "Prop_Other", "Score", "Flag")])
+#> # A tibble: 6 × 5
+#>   GroupID  Prop Prop_Other    Score  Flag
+#>   <chr>   <dbl>      <dbl>    <dbl> <dbl>
+#> 1 0X700   0          0.847 0.000594     2
+#> 2 0X094   0.25       0.845 0.0136       1
+#> 3 0X5070  0          0.844 0.0247       1
+#> 4 0X8090  0.556      0.846 0.0392       1
+#> 5 0X3598  0.5        0.845 0.0534       0
+#> 6 0X7225  0.6        0.845 0.0575       0
+```
+
+Note that the two-sided p-values do not indicate the direction of the
+difference; compare the site proportion (`Prop`) with that of all other
+sites (`Prop_Other`) to determine whether a flagged site is above or
+below the rest of the study.
 
 #### The Fisher’s exact test assumptions
 
@@ -307,8 +360,11 @@ assumption check is necessary.
 
 2.  Results not interpretable: we don’t want to flag in certain
     situations when results not interpretable due to small sample sizes.
-    The default threshold for minimum denominator requirement is 3
-    patients at the site level.
+    A minimum denominator requirement (e.g., 3 patients at the site
+    level) can be set via the `nAccrualThreshold` and `strAccrualMetric`
+    arguments of
+    [`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md);
+    no minimum is applied by default.
 
 3.  An observed zero cell is not an issue when using Fisher’s exact
     test, however, when the expected cell is zero, it means either the
@@ -317,7 +373,7 @@ assumption check is necessary.
     “Exact Tests for Two-Way Contingency Tables with Structural Zeros,”
     Journal of Statistical Software, 28(11), 1–19).
 
-#### constraints
+#### Constraints
 
 For small samples, Fisher’s exact test is highly discrete. Fisher’s
 exact test is often considered to be more conservative. This may due to
@@ -326,10 +382,10 @@ Controversies
 Wiki](https://en.wikipedia.org/wiki/Fisher%27s_exact_test#Controversies)).
 
 Although in practice, Fisher’s exact test is usually used when sample
-sizes are small (e.g., n\<5), it is valid for all sample sizes. However,
-when sample sizes are large, the computation of the exact test
-evaluating the hypergeometric probability function given the marginal
-can take a very long time.
+sizes are small (e.g., expected cell counts \<5), it is valid for all
+sample sizes. However, when sample sizes are large, the computation of
+the exact test evaluating the hypergeometric probability function given
+the marginal can take a very long time.
 
 #### Recommendation
 
@@ -357,20 +413,38 @@ This method fits a Poisson model to site-level data and then calculates
 deviance residuals for each site. The Poisson model is run using
 standard methods in the `stats` package by fitting a `glm` model with
 family set to `poisson` using a “log” link. Site-level deviance
-residuals are calculated using `resid` from
-[`stats::predict.glm`](https://rdrr.io/r/stats/predict.glm.html) via
-[`broom::augment`](https://generics.r-lib.org/reference/augment.html).
+residuals (the
+[`broom::augment()`](https://generics.r-lib.org/reference/augment.html)
+default, equivalent to `stats::residuals(type = "deviance")`) and fitted
+values (via
+[`stats::predict.glm()`](https://rdrr.io/r/stats/predict.glm.html)) are
+calculated using
+[`broom::augment()`](https://generics.r-lib.org/reference/augment.html).
 
-Let $`Y_1, ..., Y_N`$ be independent random variables with
-$`Y_i \sim Poisson(\mu_i)`$ denoting the number of events observed from
-$`n_i`$ for the $`i`$th observation following Poisson distribution. Then
-$`E(Y_i)=\mu_i=n_ie^{x_i\beta}`$. Thus,the log-linear generalized linear
-model (Poisson regression) is
+Let $`Y_1, ..., Y_m`$ be independent random variables with
+$`Y_i \sim Poisson(\mu_i)`$ denoting the number of events (`Numerator`)
+observed at the $`i`$th site with total exposure $`T_i`$
+(`Denominator`). The current
+[`Analyze_Poisson()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Poisson.md)
+implementation uses the formula
+`Numerator ~ stats::offset(LogDenominator)`, where `LogDenominator` is
+$`\log T_i`$. In this formula,
+[`stats::glm()`](https://rdrr.io/r/stats/glm.html) treats the namespaced
+[`stats::offset()`](https://rdrr.io/r/stats/offset.html) expression as
+an ordinary predictor rather than a fixed offset. It therefore estimates
+both an intercept and an exposure coefficient:
 ``` math
-\log{\mu_i}=\log{n_i}+x_i\beta \quad Y_i \sim Poisson(\mu_i)
+\log{\mu_i}=\beta_0+\beta_1\log{T_i}, \qquad E(Y_i)=\mu_i=e^{\beta_0}T_i^{\beta_1}.
 ```
 
-where $`\log{n_i}`$ is an offset term.
+**Implementation limitation:** a common-rate, exposure-adjusted Poisson
+model would fix $`\beta_1=1`$, giving $`\log{\mu_i}=\log{T_i}+\beta_0`$
+and a common event rate $`e^{\beta_0}`$. That is not the model currently
+fitted by
+[`Analyze_Poisson()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Poisson.md).
+Its `Score` and `PredictedCount` come from the model with an estimated
+exposure coefficient; they should not be interpreted as results from an
+intercept-only, fixed-offset model.
 
 #### Estimate and Score
 
@@ -379,30 +453,36 @@ The function
 in [gsm.core](https://gilead-public.github.io/gsm.core) utilizes
 [`stats::glm()`](https://rdrr.io/r/stats/glm.html) to generate an
 estimate of fitted values as well as deviance residual with site-level
-count data. The p-values are then used as a scoring metric in
+count data. The deviance residuals are then used as a scoring metric in
 [gsm.core](https://gilead-public.github.io/gsm.core) to flag possible
 outliers using the thresholds discussed below.
 
 #### Threshold
 
-By default, sites with deviance residuals exceeding $`\pm 5`$ or
-$`\pm 7`$ from the Poisson analysis are flagged as amber or red,
-respectively. The thresholds are set based on empirical approach, where
-we use the distribution of the deviance residuals to find the best
-separation of the data to identify sites at risk. The default thresholds
-are set at empirical values based on pilot studies’ data. However, they
-are fully configurable in the package and can be customized and
-specified in the [gsm.core](https://gilead-public.github.io/gsm.core)
-functions.
+There are no Poisson-specific default thresholds in
+[`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md)
+(or its alias
+[`Flag_Poisson()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag_Poisson.md)),
+which defaults to `vThreshold = c(-3, -2, 2, 3)`; thresholds for
+deviance residuals should therefore be specified explicitly. Empirical
+values based on pilot studies’ data are deviance residuals at or beyond
+$`\pm 5`$ or $`\pm 7`$, flagged as amber or red, respectively (e.g.,
+`Flag(dfAnalyzed, vThreshold = c(-7, -5, 5, 7))`). These thresholds are
+set based on an empirical approach, where we use the distribution of the
+deviance residuals to find the best separation of the data to identify
+sites at risk. They are fully configurable and can be customized in the
+[gsm.core](https://gilead-public.github.io/gsm.core) functions.
 
 #### Special Situations
 
 1.  Results are not interpretable or it is not appropriate to apply the
     Poisson method: We don’t want to flag in certain situations when
     results not interpretable or when it is not appropriate to apply the
-    Poisson method due to the small sample sizes. The default threshold
-    for minimum denominator requirement is 30 days exposure at the site
-    level.
+    Poisson method due to the small sample sizes. A minimum denominator
+    requirement (e.g., 30 days exposure at the site level) can be set
+    via the `nAccrualThreshold` and `strAccrualMetric` arguments of
+    [`Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md);
+    no minimum is applied by default.
 
 #### Poisson regression assumptions
 
@@ -415,8 +495,10 @@ functions.
 3.  **Poisson response** Each $`Y_i`$ follows the Poisson distribution
     as noted above with mean and variance equal to $`\mu_i`$.
 
-4.  **Linearity** $`\log{\mu_i}=\log{n_i}+x_i\beta`$ where $`x_i`$ are
-    independent predictors.
+4.  **Linearity** In the current implementation,
+    $`\log{\mu_i}=\beta_0+\beta_1\log{T_i}`$. The expected count is
+    proportional to exposure only when $`\beta_1=1`$; this constraint is
+    not imposed (see the implementation limitation above).
 
 #### Assumption checks, constraints and model diagnosis
 
@@ -427,9 +509,10 @@ functions.
     histogram of the data and comparing empirical mean and variance
     stratified by the explanatory variable(s). If there is evidence that
     the assumption of mean=variance is violated, oftentimes we observe
-    variance\>mean. This is called overdispersion. In this case,
-    negative binomial distribution provides an alternative where
-    $`Var(Y_i)=\phi E(Y_i)`$.
+    variance\>mean. This is called overdispersion. In this case, a
+    quasi-Poisson model, where $`Var(Y_i)=\phi E(Y_i)`$, or a negative
+    binomial model, where $`Var(Y_i)=\mu_i+\mu_i^2/k`$, provides an
+    alternative.
 
 3.  Diagnosis: Goodness of fit test (chi-squared) and deviance
     residuals. Residuals vs fitted plot. Q-Q plot.

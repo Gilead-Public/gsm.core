@@ -9,13 +9,11 @@ using the standard `gsm` pipeline described in these articles: [Data
 Analysis](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html)
 and
 [DataReporting](https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html).
-As shown in the [Data Analysis
-article](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html),
-the existing `gsm` data pipeline can be used to capture a monitoring
+The existing `gsm` data pipeline can be used to capture a monitoring
 ‘snapshot’ for a study that includes a variety of “modules” including
-[metrics](https://github.com/Gilead-Public/gsm.mapping/tree/dev/inst/workflow/metrics/kri0001.yaml)
+[metrics](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/2_metrics/kri0001.yaml)
 and
-[reports](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/reports/report_kri_site.yaml).
+[reports](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml).
 
 This article provides detailed specifications for creating new modules,
 a description of the directory structure for the yaml workflows that
@@ -26,13 +24,13 @@ configure study-level gsm pipelines that utilize these extensions.
 
 `gsm` modules will typically be part of an R package and have a YAML
 configuration file - `{module_name}.yaml` - saved under
-`\inst\workflow\4_modules`. Module config files include 3 key
-properties:
+`inst/workflow/<n>_<stage>/` (e.g. `2_metrics` for metrics, `4_modules`
+for reports and apps). Module config files include 3 key properties:
 
 - `meta`: (required) Report metadata used for centralized library and
   fields referenced in `steps` section of workflow.
-- `spec`: (required) Data table requirement for the report. Typically
-  from `Mapped_*` or `Reporting_*` data.
+- `spec`: (optional, recommended) Data table requirement for the report.
+  Typically from `Mapped_*` or `Reporting_*` data.
 - `steps`: (required) Functions to produce the reporting output from
   `Mapped_*` and/or `Reporting_*` data to final output (`html`, `csv` or
   `shinyApp`).
@@ -43,10 +41,10 @@ Detailed specifications for each of these sections are provided below.
 
 Here are links to several sample module configuration files:
 
-- [13 Standard gsm
+- [Standard gsm
   KRIs](https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics)
   (e.g. [Adverse Event KRI
-  Metric](https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml))
+  Metric](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/2_metrics/kri0001.yaml))
 - [Site-](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml)
   and [Country-level KRI
   Report](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_country.yaml)
@@ -57,7 +55,10 @@ The `meta` section of a workflow YAML provides key metadata describing
 the module. It must include the following fields:
 
 - `Name`: Name of the reporting output.
-- `Type`: “Report”, “Metric” or “App”
+- `Type`: The workflow type, e.g. “Mapped”, “Analysis” (metrics),
+  “Reporting” or “Report”. Together with `ID`, it forms the result name
+  (`{Type}_{ID}`, e.g. `Analysis_kri0001`) returned by
+  [`workr::RunWorkflows()`](https://gilead-public.github.io/workr/reference/RunWorkflows.html).
 - `ID`: The unique ID for the module. This should be the same as the
   workflow file name, without extension.
 - `Description`: A one-line description of the module specified in the
@@ -66,16 +67,17 @@ the module. It must include the following fields:
   workflow is active. Workflows with `Active: false` are filtered out of
   workflow lists. If missing or `true`, the workflow is included.
 - `Priority`: *optional* A number specifying the priority of the
-  workflow within the directory, with lower numbers having higher
+  workflow within the workflow list, with lower numbers having higher
   priority, and running first. This is used when workflows within the
   same directory require outputs from other workflows, and thus need to
   be run in a particular order. If missing, will be set to 0 to run
   first.
 - `Details`: *optional* A more detailed description of the module
   specified in the workflow.
-- `Repo`: Package repo and version. Should be compatible with the `repo`
-  parameter in `remotes::install_github()`.
-- `Status`: The validation status of the reporting output. Valid values:
+- `Repo`: *optional* Package repo and version. Should be compatible with
+  the `repo` parameter in `remotes::install_github()`.
+- `Status`: *optional* The validation status of the reporting output.
+  Valid values:
   - `Qualified`: Output has been qualified via our qualification process
     specified
     [here](https://gilead-biostats.github.io/gsm.qc/articles/QualificationWorkflow.html).
@@ -84,16 +86,17 @@ the module. It must include the following fields:
   - `Prototype`: Output is created using custom scripts on an ad-hoc
     basis.
 
-Additional `meta` header required fields for **Modules**:
+Additional `meta` header fields for **Modules**:
 
-- `Permission`: Level of permissions for viewing that match the `Users`
-  argument in the Study Configuration file. Common values: `Admin`,
-  `Users`.
+- `Permission`: *optional* Level of permissions for viewing that match
+  the `Users` argument in the Study Configuration file. Common values:
+  `Admin`, `Users`.
 - `Output`: The output of the workflow, including format. Each workflow
   should only produce a single reporting output.
-- `ExampleURL`: Location of a sample report. For html reports, this is
-  typically a page on the pkgdown site (ending with “/{ModuleID}.html”),
-  or a sample app deployed on [shinyapps.io](https://shinyapps.io).
+- `ExampleURL`: *optional* Location of a sample report. For html
+  reports, this is typically a page on the pkgdown site (ending with
+  “/{ModuleID}.html”), or a sample app deployed on
+  [shinyapps.io](https://shinyapps.io).
 
 Additional `meta` header required fields for `{gsm.kri}` **metrics**:
 
@@ -103,14 +106,35 @@ Additional `meta` header required fields for `{gsm.kri}` **metrics**:
 - `Metric`: Full name of the metric.
 - `Numerator`: The numerator of the metric.
 - `Denominator`: The denominator of the metric.
-- `AnalysisType`: The analysis type. Common values: `rate`, `binary`
+- `AnalysisType`: The analysis type. In normal approximation workflows
+  it is passed to the `strType` parameter of
+  [`gsm.core::Analyze_NormalApprox()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_NormalApprox.md)
+  (accepted values: `rate`, `binary`). For other models, such as
+  `identity`, it is workflow and reporting metadata only and is not
+  passed to the analysis function
+  ([`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_Identity.md)
+  has no `strType` parameter). Common values: `rate`, `binary`,
+  `identity`
 - `Model`: The model used to calculate the metric. Common values:
-  `Normal Approximation`, `Exact`, `Bayesian`.
+  `Normal Approximation`, `Identity` (other models, such as `Poisson`
+  and `Fisher`, are available in
+  [gsm.core](https://gilead-public.github.io/gsm.core)).
 - `Score`: The score used to calculate the metric. Common values:
   `Z-Score`, `Adjusted Z-Score`, `P-Value`.
-- `Threshold`: The thresholds to flag. Used in
+- `Threshold`: The thresholds to flag, as a comma-separated string.
+  Parsed with
+  [`gsm.core::ParseThreshold()`](https://gilead-public.github.io/gsm.core/dev/reference/ParseThreshold.md)
+  and passed to the `vThreshold` parameter of
   [`gsm.core::Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md).
-- `Flag`: *optional* The numeric values assigned to each flag. Used in
+- `Flag`: *optional* The numeric values assigned to each flag, as a
+  comma-separated string. Parsed with
+  `gsm.core::ParseThreshold(bSort = FALSE)` and passed to the `vFlag`
+  parameter of
+  [`gsm.core::Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md).
+- `RiskScoreWeight`: *optional* The risk score weight assigned to each
+  flag value, as a comma-separated string. Parsed with
+  `gsm.core::ParseThreshold(bSort = FALSE)` and passed to the
+  `vRiskScoreWeight` parameter of
   [`gsm.core::Flag()`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md).
 - `GenerateRiskSignal`: *optional* A boolean (`true`/`false`) indicating
   whether a risk signal should be generated when this metric produces a
@@ -127,16 +151,17 @@ Additional `meta` header required fields for `{gsm.kri}` **metrics**:
 
 A simple `meta` section for a report might look like this:
 
-      File: report_example.yaml
-      ID: example_report
+    # File: report_example.yaml
+    meta:
+      ID: report_example
       Name: An example report
       Description: A report that is an example
       Type: Report
       Repo: gsm.example v1.0.0
       Status: Qualified
       Permission: Users
-      Outputs: An html report
-      ExampleURL: https://gilead-biostats.github.io/gsm.example/example_report.html
+      Output: html
+      ExampleURL: <pkgdown site URL>/report_example.html
 
 ### `spec` Specification
 
@@ -154,8 +179,9 @@ The `spec` section of the workflow YAML is formatted as a list of data
 tables, with each table containing a list of columns. Finally, each
 column contains the following parameters:
 
-- `type`: Character field describing the data type of the column. Use a
-  `mode` as defined by R. This parameter is optional.
+- `type`: Character field describing the data type of the column. Use
+  the expected R class (e.g. `character`, `integer`, `numeric`, `Date`;
+  `timestamp` for `POSIXct`). This parameter is optional.
 - `source_col`: Character field containing the column name from the
   source data frame. Only necessary when source column name differs from
   target column name.
@@ -164,14 +190,14 @@ column contains the following parameters:
 
 Metric `spec`s are typically pulled from the `mapped` data layer. For
 example, the `spec` section for the [AE KRI
-metric](https://github.com/Gilead-Public/gsm.kri/tree/dev/inst/workflow/2_metrics/kri0001.yaml)
+metric](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/2_metrics/kri0001.yaml)
 is:
 
     spec:
       Mapped_AE:
         subjid:
           type: character
-      Mapped_ENROLL:
+      Mapped_SUBJ:
         subjid:
           type: character
         invid:
@@ -180,21 +206,32 @@ is:
           type: integer
 
 So, in summary, the AE KRI metric requires two data tables, `Mapped_AE`
-and `Mapped_ENROLL`, both of which are from the mapped data layer. The
+and `Mapped_SUBJ`, both of which are from the mapped data layer. The
 `Mapped_AE` table must have a character Subject ID column called
-`subjid` while `Mapped_ENROLL` must have character Subject ID (`subjid`)
-and Investigator ID (`invid`) columns and a numeric `timeonstudy`
+`subjid` while `Mapped_SUBJ` must have character Subject ID (`subjid`)
+and Investigator ID (`invid`) columns and an integer `timeonstudy`
 column. All columns are required for this metric. Note that other
 columns may be present in these tables (perhaps due to a `spec` from a
-differently module), but only the columns listed in the `spec` section
-are required for the metric to run.
+different module), but only the columns listed in the `spec` section are
+required for the metric to run.
+
+For the nested GSM `spec` format shown above,
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html)
+checks that each listed data table is present in `lData`, but does not
+check the nested column names or their types. `workr` also supports
+column-name lists under a table’s `required_cols`, `required` or
+`columns` field; those lists are checked for missing columns, but not
+column types. Column- and type-level checks for the nested GSM format
+can be run with
+[`gsm.core::CheckSpec()`](https://gilead-public.github.io/gsm.core/dev/reference/CheckSpec.md),
+or applied when ingesting raw data with `gsm.mapping::ApplySpec()`.
 
 #### `spec` examples: Report Module
 
 Report modules most often pull data from the `Reporting` data layer. For
 example, the [Site-level KRI
 report](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/4_modules/report_kri_site.yaml)
-has the following `spec`:
+has the following entry in its `spec` (excerpt):
 
     spec:
       Reporting_Results: 
@@ -203,16 +240,18 @@ has the following `spec`:
 
 Note that the `_all` key word is used to specify that all standard
 columns from the `Reporting_Results` data table are expected and that
-the table required - without it, the report can’t run. The other
-`Reporting` tables are used to enhance the report, but are not required,
-and thus not included in the spec.
+the table is required - without it, the report can’t run. The full
+`spec` of the report lists `Reporting_Metrics`, `Reporting_Groups` and
+`Reporting_Bounds` in the same way, as all four tables are needed to
+produce the report (see the full example in the `/4_modules` section
+below).
 
 The `Mapped` data layer is also available for use in reports and apps.
 Most typically, mapped data is used to drill down from high-level metric
-findings (e.g. “Site 5 has an elevated AE rate relative to other
-studies”) to site- or participant- level details (e.g. “Participant
-00016 from Site 5 had 5 AEs and 3 SAEs reported in the last 3 months.”).
-For example, the [Deep Dive app](https://openrbqm.shinyapps.io/gsm-app/)
+findings (e.g. “Site 5 has an elevated AE rate relative to other sites”)
+to site- or participant- level details (e.g. “Participant 00016 from
+Site 5 had 5 AEs and 3 SAEs reported in the last 3 months.”). For
+example, the [Deep Dive app](https://openrbqm.shinyapps.io/gsm-app/)
 includes both Reporting and Mapped data in its `spec`. Here is a
 representative excerpt from the `spec`:
 
@@ -236,9 +275,12 @@ property that describes in detail how the module is run. The `steps`
 section is a list of functions that are run in sequence to produce the
 final output. Each item in `steps` has the following properties:
 
-- `name`: The name of the function to be run. This is typically be a
-  function that is available in one of `{gsm}` packages or in a package
-  that is listed in the `repo` section of the `meta` header.
+- `name`: The name of the function to be run. This is typically a
+  function that is available in one of the `{gsm}` packages. Use the
+  `package::function` form
+  (e.g. [`gsm.core::Flag`](https://gilead-public.github.io/gsm.core/dev/reference/Flag.md))
+  for functions from packages that are not attached; the `Repo` field of
+  the `meta` header is not used to load packages.
 - `output`: The name of the output of the function. This is the name of
   the data table that is created by the function.
 - `params`: A list of parameters that are passed to the function. The
@@ -246,9 +288,9 @@ final output. Each item in `steps` has the following properties:
   for more details on how to specify parameters for each function.
 
 **Note**: It is important to note that the default behavior of
-[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html)
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html)
 and
-[`workr::RunWorkflows()`](https://rdrr.io/pkg/workr/man/RunWorkflows.html)
+[`workr::RunWorkflows()`](https://gilead-public.github.io/workr/reference/RunWorkflows.html)
 is to return the *last* output in the steps section of the workflow.
 Therefore, each yaml file, regardless of which directory it is in,
 should only produce one output, whether that be a data table, list, html
@@ -258,7 +300,7 @@ module output.
 The `steps` section is the most complex part of the module configuration
 and will vary greatly depending on the module type and the specific
 requirements of the module.
-[workr](https://gilead-biostats.github.io/workr) provides the standard
+[workr](https://gilead-public.github.io/workr) provides the standard
 workflow-runtime functions used to execute module yaml files, while
 [gsm.core](https://gilead-public.github.io/gsm.core) provides many of
 the analytical functions that those steps call. See
@@ -267,36 +309,69 @@ the analytical functions that those steps call. See
 #### `steps[]$params` Specification
 
 After processing the YAML `meta` and `spec` sections,
-[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html)
-calls [`workr::RunStep()`](https://rdrr.io/pkg/workr/man/RunStep.html)
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html)
+calls
+[`workr::RunStep()`](https://gilead-public.github.io/workr/reference/RunStep.html)
 for each step in the `steps` section of the YAML. The `params` section
 of each step is passed to
-[`workr::RunStep()`](https://rdrr.io/pkg/workr/man/RunStep.html) as a
-list of parameters along with a copy of the metadata header (`lMeta`)
-and any data (`lData`).
-[`workr::RunStep()`](https://rdrr.io/pkg/workr/man/RunStep.html) then
-parses the list of `params` by passing data from `lMeta` and `lData`
-when appropriate. Finally, the parsed parameters are passed to the
-function specified in the `name` field of the step.
+[`workr::RunStep()`](https://gilead-public.github.io/workr/reference/RunStep.html)
+as a list of parameters along with a copy of the metadata header
+(`lMeta`), any data (`lData`) and the `spec` (`lSpec`).
+[`workr::RunStep()`](https://gilead-public.github.io/workr/reference/RunStep.html)
+then parses each parameter value (`paramVal`) in the following order:
+
+1.  If `paramVal` is `lMeta`, `lData` or `lSpec`, the full object is
+    passed.
+2.  If `paramVal` matches a field name in `lMeta`, that field’s value is
+    passed (e.g. `strGroupLevel: GroupLevel` passes `lMeta$GroupLevel`).
+3.  If `paramVal` matches an object name in `lData`, that object is
+    passed (e.g. `dfInput: Analysis_Input` passes
+    `lData$Analysis_Input`).
+4.  If `paramVal` is an `expr()`/`exprs()` call, it is parsed into an R
+    expression.
+5.  Otherwise, `paramVal` is passed as a string
+    (e.g. `strGroupCol: invid`). Vectors are passed as they are.
+
+Because `lMeta` and `lData` are checked first, a string parameter that
+happens to match a `meta` field or a data object name will be replaced
+by that value. Finally, the parsed parameters are passed to the function
+specified in the `name` field of the step.
 
 #### `steps` examples
 
 ##### `Metric` steps example
 
 In the example below, the steps to produce the AE analysis output is
-specified. Here, `Threshold`, `GroupLevel`, `Type`, `AccrualThreshold`
-and `AccrualMetric` are specified in the `meta` section of the workflow,
-and would be accessed via the `paramVal` process discussed above. As a
-default, the output of these steps as run with
-[`workr::RunWorkflows()`](https://rdrr.io/pkg/workr/man/RunWorkflows.html)
+specified. Here, `Threshold`, `Flag`, `RiskScoreWeight`, `GroupLevel`,
+`AnalysisType`, `AccrualThreshold` and `AccrualMetric` are specified in
+the `meta` section of the workflow (see
+[kri0001.yaml](https://github.com/Gilead-Public/gsm.kri/blob/dev/inst/workflow/2_metrics/kri0001.yaml)),
+and are accessed via the `paramVal` process discussed above. Note that
+`AnalysisType` must be `rate` here, since
+[`gsm.core::Analyze_NormalApprox()`](https://gilead-public.github.io/gsm.core/dev/reference/Analyze_NormalApprox.md)
+defaults to `strType = "binary"`. As a default, the output of these
+steps as run with
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html)
 would be a list of data tables, as specified in the final `list` step of
-the workflow.
+the workflow. The element names of this list (e.g. `Analysis_Summary`)
+are used by downstream reporting workflows, such as
+`gsm.reporting::BindResults()`, and should not be changed.
 
     steps:
       - name: gsm.core::ParseThreshold
         output: vThreshold
         params:
           strThreshold: Threshold
+      - name: gsm.core::ParseThreshold
+        output: vRiskScoreWeight
+        params:
+          strThreshold: RiskScoreWeight
+          bSort: false
+      - name: gsm.core::ParseThreshold
+        output: vFlag
+        params:
+          strThreshold: Flag
+          bSort: false
       - name: gsm.core::Input_Rate
         output: Analysis_Input
         params:
@@ -323,6 +398,8 @@ the workflow.
         params:
           dfAnalyzed: Analysis_Analyzed
           vThreshold: vThreshold
+          vFlag: vFlag
+          vRiskScoreWeight: vRiskScoreWeight
           nAccrualThreshold: AccrualThreshold
           strAccrualMetric: AccrualMetric
       - name: gsm.core::Summarize
@@ -330,30 +407,30 @@ the workflow.
         params:
           dfFlagged: Analysis_Flagged
       - name: list
-        output: kri0001
+        output: lAnalysis
         params:
-          id: ID
-          input: Analysis_Input
-          transformed: Analysis_Transformed
-          analyzed: Analysis_Analyzed
-          flagged: Analysis_Flagged
-          summary: Analysis_Summary
+          ID: ID
+          Analysis_Input: Analysis_Input
+          Analysis_Transformed: Analysis_Transformed
+          Analysis_Analyzed: Analysis_Analyzed
+          Analysis_Flagged: Analysis_Flagged
+          Analysis_Summary: Analysis_Summary
 
 ##### `Report` steps example
 
 In this example, the steps to produce a site-level KRI report is
 displayed. Here, the only inputs are the `Reporting_*` data, which goes
 through a simple filtering process via
-[`gsm.core::RunQuery`](https://gilead-public.github.io/gsm.core/dev/reference/RunQuery.md)
+[`workr::RunQuery`](https://gilead-public.github.io/workr/reference/RunQuery.html)
 before the Charts and Report are created in the following two functions
 
     steps:
-      - name: gsm.core::RunQuery
+      - name: workr::RunQuery
         output: Reporting_Results_Site
         params:
           df: Reporting_Results
           strQuery: "SELECT * FROM df WHERE GroupLevel == 'Site'"
-      - name: gsm.core::RunQuery
+      - name: workr::RunQuery
         output: Reporting_Metrics_Site
         params:
           df: Reporting_Metrics
@@ -376,23 +453,27 @@ before the Charts and Report are created in the following two functions
 ## Directory Structure for Workflows
 
 Each extension that produces report(s) will have a `workflow` directory
-in the `inst` of the package that follows a standard structure. This
-directory will contain 4 folders in which to store the yaml workflow
-files that map data, perform analysis, produce reporting data, and
-generate the output of a module. Each module output requires it’s own
-unique yaml in the `4_modules` folder, which will take inputs generated
-from the previous three directories.
+in the `inst` of the package that follows a standard structure. The
+standard gsm pipeline uses 4 folders in which to store the yaml workflow
+files that map data (`1_mappings`, in `{gsm.mapping}`), perform analysis
+(`2_metrics`, e.g. in `{gsm.kri}`), produce reporting data
+(`3_reporting`, in `{gsm.reporting}`), and generate the output of a
+module (`4_modules`, e.g. in `{gsm.kri}`). An extension only needs to
+include the folders for the stages it provides. Each module output
+requires its own unique yaml in the `4_modules` folder, which will take
+inputs generated from the previous three stages.
 
 #### `/1_mappings`
 
 The mappings folder in the `{gsm.mapping}` package contains all of the
 mappings from `Raw_*` data to `Mapped_*` data. Each file within this
 directory is to be named for the data table it is creating, minus the
-`Mapped_` suffix. The yamls will contain the three required sections,
-which are discussed in detail in the `Module Configuration` section
-above. The yamls in this folder will be combined via
-`gsm.mapping::CombineSpecs()` to create a master spec that defines all
-necessary tables and columns for the module(s) in this package.
+`Mapped_` prefix (e.g. `AE.yaml` creates `Mapped_AE`). The yamls will
+contain the three required sections, which are discussed in detail in
+the `Module Configuration` section above. The yamls in this folder will
+be combined via `gsm.mapping::CombineSpecs()` to create a master spec
+that defines all of the `Raw_*` tables and columns required by the
+mappings.
 
 Below are two examples of these mapping yaml files- the first which
 requires no transformations, and is very simple, and the second which
@@ -456,17 +537,19 @@ requires multiple steps to produce the desired mapped data.
 
 The metrics directory contains all of the workflows that perform
 analysis steps, converting mapped data into metrics that are displayed
-in a report. In the case of `{gsm.kri}`, these metrics are the 12 Key
-Risk Indicators, calculated at both the site- and country-level, that
-are discussed in the Data Analysis Step-by-Step article. Each yaml in
-this file produces a list of analysis data tables that capture the
-formatted input table, the transformed table, the flagged table, and the
-summary table. In general, these yamls should at least provide a summary
-table that contains statistics about the metric at the specified level
-of aggregation.
+in a report. In the case of `{gsm.kri}`, these metrics are the standard
+Key Risk Indicators, calculated at both the site- and country-level,
+whose analysis functions are discussed in the Data Analysis Step-by-Step
+article. Each yaml in this folder produces a list of analysis data
+tables that capture the formatted input table, the transformed table,
+the analyzed table, the flagged table, and the summary table. In
+general, these yamls should at least provide a summary table that
+contains statistics about the metric at the specified level of
+aggregation.
 
 Examples of these yamls can be found above in the `Module Configuration`
-section, as well as in the [Data Analysis
+section, and the functions they call are walked through step-by-step in
+the [Data Analysis
 article](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html).
 
 #### `/3_reporting`
@@ -480,8 +563,10 @@ taken from the analysis output, such as study/site/group/metric metadata
 and supporting statistics will be constructed through workflows in this
 folder.
 
-Examples of these yamls can be found above in the `Module Configuration`
-section, as well as in the [Data Reporting
+Examples of these yamls can be found in the [`3_reporting` folder of
+`{gsm.reporting}`](https://github.com/Gilead-Public/gsm.reporting/tree/dev/inst/workflow/3_reporting),
+and the functions they call are walked through step-by-step in the [Data
+Reporting
 article](https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html).
 
 #### `/4_modules`
@@ -492,7 +577,7 @@ tables that have been produced in the previous directories. These module
 workflows will contain all of the necessary meta information, as
 detailed in the `Module Configuration` section above, along with the
 data tables required, and steps to produce it, so that
-[`gsm.core::RunWorkflow()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflow.md)
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html)
 can take this workflow and produce the module output.
 
 Below is an example of the module yaml workflow for the KRI Site Report
@@ -504,11 +589,7 @@ in `{gsm.kri}`
       Output: html
       Name: Site-Level Key Risk Indicator Report
       Description: A report summarizing key risk indicators at the site level
-      Repo: gsm.kri v1.0.0
-      Status: Qualified
-      Permission: Users
-      Outputs: An html report
-      ExampleURL: https://gilead-public.github.io/gsm.kri/report_kri_site.html
+      Active: true
     spec:
       Reporting_Results:
         _all:
@@ -523,12 +604,12 @@ in `{gsm.kri}`
         _all:
           required: true
     steps:
-      - name: gsm.core::RunQuery
+      - name: workr::RunQuery
         output: Reporting_Results_Site
         params:
           df: Reporting_Results
           strQuery: "SELECT * FROM df WHERE GroupLevel == 'Site'"
-      - name: gsm.core::RunQuery
+      - name: workr::RunQuery
         output: Reporting_Metrics_Site
         params:
           df: Reporting_Metrics
