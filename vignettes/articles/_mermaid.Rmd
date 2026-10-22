@@ -1,0 +1,19 @@
+```{r mermaid-setup, include = FALSE}
+# Renders ```{mermaid} chunks (or chunks with `file = "diagrams/*.mmd"`) as
+# <pre class="mermaid"> blocks; mermaid.js (loaded below) draws them in the browser.
+knitr::knit_engines$set(mermaid = function(options) {
+  code <- paste(options$code, collapse = "\n")
+  paste0(
+    "\n```{=html}\n<pre class=\"mermaid\">\n",
+    htmltools::htmlEscape(code),
+    "\n</pre>\n```\n"
+  )
+})
+```
+
+```{=html}
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "strict" });
+</script>
+```
