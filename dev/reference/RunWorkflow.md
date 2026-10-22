@@ -102,7 +102,7 @@ lMappedData <- workr::RunWorkflows(
 #> [INFO] Calling `gsm.core::RunQuery`
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpBEvHMl/duckdb
+#> ℹ /tmp/RtmpocOxH1/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -111,8 +111,8 @@ lMappedData <- workr::RunWorkflows(
 #> ℹ See ?duckdb_storage for details and alternatives.
 #> [INFO] SQL Query complete: 754 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
-#> [INFO] 754x25 data.frame saved as `lData$Mapped_SUBJ`.
-#> [INFO] Returning results from final step: 754x25 data.frame`.
+#> [INFO] 754x26 data.frame saved as `lData$Mapped_SUBJ`.
+#> [INFO] Returning results from final step: 754x26 data.frame`.
 #> [INFO] Completed `Mapped_SUBJ` Workflow
 
 # Run the metric workflow.
