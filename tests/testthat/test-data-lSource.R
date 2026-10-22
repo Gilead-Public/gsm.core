@@ -189,6 +189,39 @@ test_that("split reasons come from the full gsm.datasim vocabulary (#176)", {
   expect_true(all(trimws(unlist(strsplit(reasons, ","))) %in% vocabulary))
 })
 
+# ---- Study drug completion outcome (#201) ----
+test_that("Raw_SUBJ carries drv_drg_completion as character with Y, N, Potential No or null (#201)", {
+  value <- lSource$Raw_SUBJ$drv_drg_completion
+
+  expect_type(value, "character")
+  expect_true(all(is_null_value(value) | value %in% c("Y", "N", "Potential No")))
+})
+
+test_that("non-dosed subjects have a null drv_drg_completion (#201)", {
+  subj <- lSource$Raw_SUBJ
+
+  expect_length(subj$drv_drg_completion, nrow(subj))
+  expect_true(all(is_null_value(subj$drv_drg_completion[!subj$drv_ip_dosed %in% "Y"])))
+})
+
+test_that("dosed subjects cover every drv_drg_completion value with and without a discontinuation date (#201)", {
+  d <- lSource$Raw_SUBJ[lSource$Raw_SUBJ$drv_ip_dosed %in% "Y", ]
+  value <- d$drv_drg_completion
+  dated <- !is.na(d$drv_treatment_discontinuation_dt)
+
+  for (v in c("Y", "N", "Potential No")) {
+    expect_true(any(value %in% v & dated), label = paste(v, "with a date"))
+    expect_true(any(value %in% v & !dated), label = paste(v, "without a date"))
+  }
+  expect_true(any(is_null_value(value)))
+})
+
+test_that("at least 5 sites have 3 or more dosed N subjects, so kri0007-2 can flag (#201)", {
+  d <- lSource$Raw_SUBJ[lSource$Raw_SUBJ$drv_ip_dosed %in% "Y", ]
+
+  expect_gte(sum(table(d$invid[d$drv_drg_completion %in% "N"]) >= 3), 5)
+})
+
 test_that("lSource contains Raw_VS domain (#186)", {
   expect_true("Raw_VS" %in% names(lSource))
   expect_gt(nrow(lSource$Raw_VS), 0)
