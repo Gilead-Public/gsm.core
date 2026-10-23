@@ -2,6 +2,22 @@
 
 ## gsm.core (development version)
 
+- `lSource` carries `drv_kit_assigned`, and its `Raw_STUDCOMP` records
+  agree with the IP non-starter status
+  ([\#184](https://github.com/Gilead-Public/gsm.core/issues/184)).
+- `lSource` carries simulated premature treatment discontinuation fields
+  ([\#176](https://github.com/Gilead-Public/gsm.core/issues/176),
+  [\#201](https://github.com/Gilead-Public/gsm.core/issues/201)).
+- Bundled reporting data carry the `kri0019`/`cou0019` count
+  configuration
+  ([\#180](https://github.com/Gilead-Public/gsm.core/issues/180)).
+- Bundled reporting data include the `kri0007-2`/`cou0007-2` Premature
+  Treatment Discontinuation Rate metrics as active and keep
+  `kri0007`/`cou0007` as inactive
+  ([\#176](https://github.com/Gilead-Public/gsm.core/issues/176)).
+- Bundled reporting data count `kri0007-2`/`cou0007-2` premature
+  treatment discontinuation from `drv_drg_completion`
+  ([\#201](https://github.com/Gilead-Public/gsm.core/issues/201)).
 - Regenerated the packaged `lSource` and `reporting*` datasets against
   the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six
   upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are
@@ -10,7 +26,11 @@
 - Added a deterministic longitudinal `reportingActionLog` fixture
   aligned with flagged site KRI rows in `reportingResults` for
   action-weighted Site Risk Score examples and qualification tests. The
-  fixture is generated through `gsm.datasim::simulate_action_log()`.
+  fixture is generated through `gsm.datasim::simulate_action_log()`. It
+  now retains one complete frozen extraction per snapshot and follows
+  grail’s source-neutral 33-column schema, including character IDs,
+  unactioned signals, multiple actions, independent states, and action
+  lifecycle metadata.
 
 ## gsm.core v1.3.1
 
@@ -21,13 +41,13 @@ log4r package was archived on CRAN
 ## gsm.core v1.3.0
 
 This minor release moves the workflow runtime to the new
-[workr](https://gilead-biostats.github.io/workr) package and adds the
+[workr](https://gilead-public.github.io/workr) package and adds the
 `deathcls` column to the Death domain in `lSource`.
 
 Changes:
 
 - Workflow execution is now powered by
-  [workr](https://gilead-biostats.github.io/workr):
+  [workr](https://gilead-public.github.io/workr):
   [`RunQuery()`](https://gilead-public.github.io/gsm.core/dev/reference/RunQuery.md),
   [`RunStep()`](https://gilead-public.github.io/gsm.core/dev/reference/RunStep.md),
   [`RunWorkflow()`](https://gilead-public.github.io/gsm.core/dev/reference/RunWorkflow.md),
@@ -35,8 +55,8 @@ Changes:
   and
   [`MakeWorkflowList()`](https://gilead-public.github.io/gsm.core/dev/reference/MakeWorkflowList.md)
   are backed by the shared, federated
-  [workr](https://gilead-biostats.github.io/workr) runtime. Existing
-  code continues to work unchanged through deprecation shims
+  [workr](https://gilead-public.github.io/workr) runtime. Existing code
+  continues to work unchanged through deprecation shims
   ([\#141](https://github.com/Gilead-Public/gsm.core/issues/141),
   [\#149](https://github.com/Gilead-Public/gsm.core/issues/149)).
 - The Death domain in the `lSource` dataset now includes a `deathcls`

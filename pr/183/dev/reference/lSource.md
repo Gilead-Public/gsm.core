@@ -10,15 +10,12 @@ lSource
 
 ## Format
 
-A data frame with rows and columns:
+A named list of 19 data frames, one per raw source domain, representing
+a single study snapshot:
 
 - "Raw_AE":
 
   AE Source dataset
-
-- "Raw_COUNTRY":
-
-  Country Source dataset
 
 - "Raw_DATACHG":
 
@@ -87,6 +84,10 @@ A data frame with rows and columns:
 - "Raw_VISIT":
 
   Visit Source dataset
+
+- "Raw_VS":
+
+  Vital Signs Source dataset
 
 ## Source
 

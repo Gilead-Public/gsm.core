@@ -3,6 +3,10 @@
 Deterministic longitudinal ActionLog records aligned with flagged site
 KRI rows in
 [reportingResults](https://gilead-public.github.io/gsm.core/dev/reference/reportingResults.md).
+Each extraction is a complete frozen read of signals known at that
+snapshot. Multiple actions and unactioned signals follow the
+source-neutral grail Action Log schema; the result key is not unique
+without extraction, signal, and action identifiers.
 
 ## Usage
 
@@ -12,14 +16,7 @@ reportingActionLog
 
 ## Format
 
-A data frame with 284 rows and 25 variables.
-
-## Source
-
-Generated through `gsm.datasim::simulate_action_log()` by
-`data-raw/generate_action_log_fixture.R`.
-
-## Details
+A data frame with 629 rows and 33 columns:
 
 - StudyID:
 
@@ -57,6 +54,26 @@ Generated through `gsm.datasim::simulate_action_log()` by
 
   synthetic risk signal URL
 
+- ActionID,ActionURL:
+
+  character action identifier and URL, missing for unactioned signals
+
+- ActionState,RiskSignalState:
+
+  independent action and risk-signal states
+
+- ActionCreatedDate,ActionResolvedDate:
+
+  action lifecycle dates
+
+- ActionCriticality:
+
+  logical criticality; missing when unassessed
+
+- MetricType:
+
+  risk-signal metric type
+
 - RiskSignalDuplicateFlag:
 
   whether the signal duplicates a scoring key
@@ -73,8 +90,13 @@ Generated through `gsm.datasim::simulate_action_log()` by
 
   age of the signal in days
 
-- AssignedTo, SignalDescription, RecommendedAction, ActionTaken, CTMSID,
-  CreatedDate, ResolvedDate, FunctionalArea, GroupLabel, MetricLabel,
-  MetricAbbreviation, Country:
+- AssignedTo,SignalDescription,RecommendedAction,ActionTaken,CTMSID,
+  CreatedDate,ResolvedDate,FunctionalArea,GroupLabel,MetricLabel,
+  MetricAbbreviation,Country:
 
   ActionLog display and action metadata
+
+## Source
+
+Generated through `gsm.datasim::simulate_action_log()` by
+`data-raw/generate_action_log_fixture.R`.

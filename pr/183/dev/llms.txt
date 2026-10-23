@@ -168,9 +168,8 @@ articles:
 The {gsm} workflow process allows creation of reusable pipelines for
 study (or even cross-study) data snapshots including data mapping,
 calculation of multiple metrics and creation of reports. Runtime
-execution is provided by
-[workr](https://gilead-biostats.github.io/workr), while
-[gsm.core](https://gilead-public.github.io/gsm.core) provides the
+execution is provided by [workr](https://gilead-public.github.io/workr),
+while [gsm.core](https://gilead-public.github.io/gsm.core) provides the
 analytical functions used inside those workflows. See the articles below
 for details and examples.
 
