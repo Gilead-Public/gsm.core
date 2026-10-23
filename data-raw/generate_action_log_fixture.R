@@ -30,15 +30,24 @@ eligible <- results[
     !is.na(results$Flag) &
     results$Flag != 0,
   c(
-    "StudyID", "SnapshotDate", "GroupLevel", "GroupID", "MetricID", "Flag"
+    "StudyID",
+    "SnapshotDate",
+    "GroupLevel",
+    "GroupID",
+    "MetricID",
+    "Flag"
   ),
   drop = FALSE
 ]
-eligible <- eligible[order(
-  eligible$SnapshotDate,
-  eligible$GroupID,
-  eligible$MetricID
-), , drop = FALSE]
+eligible <- eligible[
+  order(
+    eligible$SnapshotDate,
+    eligible$GroupID,
+    eligible$MetricID
+  ),
+  ,
+  drop = FALSE
+]
 row.names(eligible) <- NULL
 
 metric_index <- match(eligible$MetricID, metrics$MetricID)
@@ -71,18 +80,31 @@ transition_matrix["Open Action", c("Open Action", "Closed Action")] <-
   c(0.4, 0.6)
 transition_matrix["Closed Action", "Closed Action"] <- 1
 
-reportingActionLog <- gsm.datasim::simulate_action_log(
-  df_results = eligible,
-  state_probabilities = c(
-    "Awaiting Triage" = 0.2,
-    "No Action" = 0.4,
-    "Open Action" = 0.2,
-    "Closed Action" = 0.2
-  ),
-  transition_matrix = transition_matrix,
-  seed = 134,
-  extraction_date = max(eligible$SnapshotDate) + 14L,
-  work_item_id_start = 900001L
+extraction_dates <- sort(unique(eligible$SnapshotDate))
+reportingActionLog <- do.call(
+  rbind,
+  lapply(seq_along(extraction_dates), function(index) {
+    extraction_date <- extraction_dates[index]
+    frozen_results <- eligible[
+      eligible$SnapshotDate <= extraction_date,
+      ,
+      drop = FALSE
+    ]
+    gsm.datasim::simulate_action_log(
+      df_results = frozen_results,
+      state_probabilities = c(
+        "Awaiting Triage" = 0.2,
+        "No Action" = 0.4,
+        "Open Action" = 0.2,
+        "Closed Action" = 0.2
+      ),
+      transition_matrix = transition_matrix,
+      seed = 134,
+      extraction_date = extraction_date,
+      work_item_id_start = 900001L,
+      actions_per_signal = rep(c(0L, 1L, 2L), length.out = nrow(frozen_results))
+    )
+  })
 )
 
 group_labels <- unique(eligible[c("GroupID", "GroupLabel")])
@@ -96,3 +118,4 @@ write.csv(
   row.names = FALSE,
   na = ""
 )
+save(reportingActionLog, file = "data/reportingActionLog.rda", compress = "xz")

@@ -4,7 +4,10 @@
 - Added a deterministic longitudinal `reportingActionLog` fixture aligned with
   flagged site KRI rows in `reportingResults` for action-weighted Site Risk
   Score examples and qualification tests. The fixture is generated through
-  `gsm.datasim::simulate_action_log()`.
+  `gsm.datasim::simulate_action_log()`. It now retains one complete frozen
+  extraction per snapshot and follows grail's source-neutral 33-column schema,
+  including character IDs, unactioned signals, multiple actions, independent
+  states, and action lifecycle metadata.
 
 # gsm.core v1.3.1
 

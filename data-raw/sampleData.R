@@ -17,11 +17,21 @@ rm(reportingResults)
 
 reportingActionLog <- read.csv(
   "data-raw/reportingActionLog.csv",
-  colClasses = c(GroupID = "character")
+  colClasses = c(
+    GroupID = "character",
+    RiskSignalID = "character",
+    ActionID = "character",
+    ActionCriticality = "logical"
+  )
 )
 for (column in c(
-  "SnapshotDate", "CreatedDate", "ResolvedDate", "ExtractionDate",
-  "RelevantSnapshotDate"
+  "SnapshotDate",
+  "CreatedDate",
+  "ResolvedDate",
+  "ExtractionDate",
+  "RelevantSnapshotDate",
+  "ActionCreatedDate",
+  "ActionResolvedDate"
 )) {
   reportingActionLog[[column]] <- as.Date(reportingActionLog[[column]])
 }

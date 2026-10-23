@@ -120,7 +120,10 @@
 #' reportingActionLog Dataset
 #'
 #' Deterministic longitudinal ActionLog records aligned with flagged site KRI
-#' rows in [reportingResults].
+#' rows in [reportingResults]. Each extraction is a complete frozen read of
+#' signals known at that snapshot. Multiple actions and unactioned signals
+#' follow the source-neutral grail Action Log schema; the result key is not
+#' unique without extraction, signal, and action identifiers.
 #'
 #' @format `r df_dim_desc(reportingActionLog)`
 #' \describe{
@@ -133,6 +136,11 @@
 #'   \item{ExtractionDate}{date the synthetic ActionLog was extracted}
 #'   \item{RiskSignalID}{synthetic risk signal identifier}
 #'   \item{RiskSignalURL}{synthetic risk signal URL}
+#'   \item{ActionID,ActionURL}{character action identifier and URL, missing for unactioned signals}
+#'   \item{ActionState,RiskSignalState}{independent action and risk-signal states}
+#'   \item{ActionCreatedDate,ActionResolvedDate}{action lifecycle dates}
+#'   \item{ActionCriticality}{logical criticality; missing when unassessed}
+#'   \item{MetricType}{risk-signal metric type}
 #'   \item{RiskSignalDuplicateFlag}{whether the signal duplicates a scoring key}
 #'   \item{RelevantSnapshotDate}{relevant snapshot across the signal history}
 #'   \item{RelevantSnapshotFlag}{whether this row is the relevant snapshot}
@@ -141,7 +149,7 @@
 #'   CreatedDate,ResolvedDate,FunctionalArea,GroupLabel,MetricLabel,
 #'   MetricAbbreviation,Country}{ActionLog display and action metadata}
 #' }
-#' @source Generated through [gsm.datasim::simulate_action_log()] by
+#' @source Generated through `gsm.datasim::simulate_action_log()` by
 #'   `data-raw/generate_action_log_fixture.R`.
 "reportingActionLog"
 
@@ -353,6 +361,6 @@ df_dim_desc <- function(df) {
     " rows and ",
     dim(df)[2],
     " columns:"
-  ) 
+  )
   # nocov end
 }
