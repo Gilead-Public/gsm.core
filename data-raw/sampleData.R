@@ -15,6 +15,29 @@ reportingResults$SnapshotDate <- as.Date(reportingResults$SnapshotDate)
 usethis::use_data(reportingResults, overwrite = TRUE, compress = "xz")
 rm(reportingResults)
 
+reportingActionLog <- read.csv(
+  "data-raw/reportingActionLog.csv",
+  colClasses = c(
+    GroupID = "character",
+    RiskSignalID = "character",
+    ActionID = "character",
+    ActionCriticality = "logical"
+  )
+)
+for (column in c(
+  "SnapshotDate",
+  "CreatedDate",
+  "ResolvedDate",
+  "ExtractionDate",
+  "RelevantSnapshotDate",
+  "ActionCreatedDate",
+  "ActionResolvedDate"
+)) {
+  reportingActionLog[[column]] <- as.Date(reportingActionLog[[column]])
+}
+usethis::use_data(reportingActionLog, overwrite = TRUE, compress = "xz")
+rm(reportingActionLog)
+
 analyticsSummary <- read.csv("data-raw/analyticsSummary.csv", colClasses = c(GroupID = "character"))
 usethis::use_data(analyticsSummary, overwrite = TRUE, compress = "gzip")
 rm(analyticsSummary)
