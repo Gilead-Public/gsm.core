@@ -16,7 +16,7 @@ reportingActionLog
 
 ## Format
 
-A data frame with 629 rows and 33 columns:
+A data frame with 1520 rows and 33 columns:
 
 - StudyID:
 
