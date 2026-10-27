@@ -75,6 +75,10 @@
 #'   \item{Active}{logical flag indicating whether the metric is active}
 #'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
 #'   \item{WindowDays}{number of days in the metric's observation window}
+#'   \item{ValueCol}{column of repeated measurements evaluated by repeat-measure metrics}
+#'   \item{WindowLength}{number of consecutive measurements in each repeat-measure window}
+#'   \item{NumeratorCol}{column used as the numerator by repeat-measure metrics}
+#'   \item{DenominatorCol}{column used as the denominator by repeat-measure metrics}
 #' }
 #' @source Generated from `reportingMetrics.csv` dataset in the `gsm.core` package.
 "reportingMetrics"
@@ -197,6 +201,10 @@
 #'   \item{Active}{logical flag indicating whether the metric is active}
 #'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
 #'   \item{WindowDays}{number of days in the metric's observation window}
+#'   \item{ValueCol}{column of repeated measurements evaluated by repeat-measure metrics}
+#'   \item{WindowLength}{number of consecutive measurements in each repeat-measure window}
+#'   \item{NumeratorCol}{column used as the numerator by repeat-measure metrics}
+#'   \item{DenominatorCol}{column used as the denominator by repeat-measure metrics}
 #' }
 #' @source Generated from `reportingMetrics_country.csv` dataset in the `gsm.core` package.
 "reportingMetrics_country"
@@ -282,6 +290,10 @@
 #'   \item{Active}{logical flag indicating whether the metric is active}
 #'   \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
 #'   \item{WindowDays}{number of days in the metric's observation window}
+#'   \item{ValueCol}{column of repeated measurements evaluated by repeat-measure metrics}
+#'   \item{WindowLength}{number of consecutive measurements in each repeat-measure window}
+#'   \item{NumeratorCol}{column used as the numerator by repeat-measure metrics}
+#'   \item{DenominatorCol}{column used as the denominator by repeat-measure metrics}
 #' }
 #' @source Generated from `reportingMetrics_study.csv` dataset in the `gsm.core` package.
 "reportingMetrics_study"
@@ -328,10 +340,10 @@
 #'
 #'  `r lifecycle::badge("stable")`
 #'
-#' @format `r df_dim_desc(lSource)`
+#' @format A named list of `r length(lSource)` data frames, one per raw source
+#'   domain, representing a single study snapshot:
 #' \describe{
 #'   \item{"Raw_AE"}{AE Source dataset}
-#'   \item{"Raw_COUNTRY"}{Country Source dataset}
 #'   \item{"Raw_DATACHG"}{DATACHG Source dataset}
 #'   \item{"Raw_DATAENT"}{DATAENT Source dataset}
 #'   \item{"Raw_Death"}{Death Source dataset}
@@ -349,6 +361,7 @@
 #'   \item{"Raw_STUDCOMP"}{STUDCOMP Source dataset}
 #'   \item{"Raw_SUBJ"}{SUBJ Source dataset}
 #'   \item{"Raw_VISIT"}{Visit Source dataset}
+#'   \item{"Raw_VS"}{Vital Signs Source dataset}
 #'   }
 #' @source Generated from `data-raw/simulate_longitudinal_data.R`.
 "lSource"

@@ -1,9 +1,9 @@
-pak::pak('Gilead-Public/gsm.datasim@dev')
-pak::pak('Gilead-Public/gsm.mapping@dev')
-pak::pak('Gilead-Public/gsm.core@dev')
-pak::pak('Gilead-Public/gsm.kri@dev')
-pak::pak('Gilead-Public/gsm.reporting@dev')
-pak::pak('Gilead-Public/gsm.qtl@dev')
+# pak::pak('Gilead-Public/gsm.datasim@dev')
+# pak::pak('Gilead-Public/gsm.mapping@dev')
+# pak::pak('Gilead-Public/gsm.kri@dev')
+# pak::pak('Gilead-Public/gsm.reporting@dev')
+# pak::pak('Gilead-Public/gsm.qtl@dev')
+# pak::pak('Gilead-Public/gsm.core@dev')
 
 library(gsm.core)
 library(gsm.mapping)
@@ -13,7 +13,11 @@ library(gsm.reporting)
 library(gsm.qtl)
 library(dplyr)
 library(stringr)
-set.seed(1234)
+
+logger::log_threshold(logger::ERROR)
+# Seed moved off 1234 to avoid a Raw_SITE site ID collision
+# (Gilead-Public/gsm.datasim#167).
+set.seed(1235)
 
 core_mappings <- c(
   "AE",
@@ -35,20 +39,23 @@ core_mappings <- c(
   "SITE",
   "SUBJ",
   "IE",
-  "EXCLUSION"
+  "EXCLUSION",
+  "VS"
 )
 
-basic_sim <- gsm.datasim::generate_rawdata_for_single_study(
-  SnapshotCount = 3,
-  SnapshotWidth = "months",
-  ParticipantCount = 1000,
-  SiteCount = 150,
-  StudyID = "AA-AA-000-0000",
-  workflow_path = "workflow/1_mappings",
-  mappings = core_mappings,
-  package = "gsm.mapping",
-  desired_specs = NULL
+# Analytics and reporting are left off here; this script drives those steps
+# itself via RunWorkflows() below.
+basic_study <- gsm.datasim::create_longitudinal_study(
+  study_id = "AA-AA-000-0000",
+  participants = 1000,
+  sites = 150,
+  snapshots = 3,
+  interval = "1 month",
+  domains = core_mappings,
+  run_analytics = FALSE,
+  run_reporting = FALSE
 )
+basic_sim <- basic_study$raw_data
 basic_sim[[1]]$Raw_SITE$site_status <- "Active"
 basic_sim[[2]]$Raw_SITE$site_status <- "Active"
 basic_sim[[3]]$Raw_SITE$site_status <- "Active"
@@ -61,23 +68,31 @@ dates <- as.Date(c("2025-02-01", "2025-03-01", "2025-04-01"))
 # Mapped_IPNS is derived from Mapped_SUBJ rather than a raw domain, so it joins
 # the workflow list but not the raw-data generation above.
 mapping_workflows <- c(core_mappings, "IPNS")
-mappings_wf <- gsm.core::MakeWorkflowList(
+mappings_wf <- workr::MakeWorkflowList(
   strNames = mapping_workflows,
   strPath = "workflow/1_mappings",
   strPackage = "gsm.mapping"
 )
 mappings_spec <- gsm.mapping::CombineSpecs(mappings_wf)
 metrics_wf <- c(
-  gsm.core::MakeWorkflowList(
+  workr::MakeWorkflowList(
     strPath = "workflow/2_metrics",
     strPackage = "gsm.kri"
   ),
-  gsm.core::MakeWorkflowList(
+  # Inactive metrics stay out of study runs and risk scores, but are bundled
+  # so the example reports show them.
+  workr::MakeWorkflowList(
+    strNames = I(c("kri0007", "cou0007")),
+    strPath = "workflow/2_metrics",
+    strPackage = "gsm.kri",
+    bActiveOnly = FALSE
+  ),
+  workr::MakeWorkflowList(
     strPath = "workflow/2_metrics",
     strPackage = "gsm.qtl"
   )
 )
-reporting_wf <- gsm.core::MakeWorkflowList(
+reporting_wf <- workr::MakeWorkflowList(
   strPath = "workflow/3_reporting",
   strPackage = "gsm.reporting"
 )
@@ -88,16 +103,16 @@ for (snap in seq_along(basic_sim)) {
   lRaw <- gsm.mapping::Ingest(lSource, mappings_spec)
 
   # Step 1 - Create Mapped Data Layer - filter, aggregate and join raw data to create mapped data layer
-  mapped <- gsm.core::RunWorkflows(mappings_wf, lRaw)
+  mapped <- workr::RunWorkflows(mappings_wf, lRaw)
 
   # Step 2 - Create Metrics - calculate metrics using mapped data
-  analyzed[[snap]] <- gsm.core::RunWorkflows(
+  analyzed[[snap]] <- workr::RunWorkflows(
     metrics_wf,
     c(mapped, list(lWorkflows = metrics_wf))
   )
 
   # Step 3 - Create Reporting Layer - create reports using metrics data
-  reporting[[snap]] <- gsm.core::RunWorkflows(
+  reporting[[snap]] <- workr::RunWorkflows(
     reporting_wf,
     c(mapped, list(lAnalyzed = analyzed[[snap]], lWorkflows = metrics_wf))
   )
@@ -159,95 +174,42 @@ lSource <- basic_sim[[3]]
 usethis::use_data(lSource, overwrite = TRUE)
 
 # write CSVs
-# analysis data
-## site
-write.csv(
-  file = "data-raw/analyticsSummary.csv",
-  x = analyzed[[3]]$Analysis_kri0001$Analysis_Summary,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/analyticsInput.csv",
-  x = analyzed[[3]]$Analysis_kri0001$Analysis_Input,
-  row.names = F
-)
+# Sort reporting data on explicit keys (see sort_reporting.R) so reruns don't
+# produce row-order-only diffs in data-raw/ or data/.
+source("data-raw/sort_reporting.R")
+write_sorted_csv <- function(x, name) {
+  write.csv(
+    sort_reporting(x, name),
+    file = file.path("data-raw", paste0(name, ".csv")),
+    row.names = FALSE
+  )
+}
 
-## country
-write.csv(
-  file = "data-raw/analyticsSummary_country.csv",
-  x = analyzed[[3]]$Analysis_cou0001$Analysis_Summary,
-  row.names = F
+csv_outputs <- list(
+  # analysis data
+  analyticsSummary = analyzed[[3]]$Analysis_kri0001$Analysis_Summary,
+  analyticsInput = analyzed[[3]]$Analysis_kri0001$Analysis_Input,
+  analyticsSummary_country = analyzed[[3]]$Analysis_cou0001$Analysis_Summary,
+  analyticsInput_country = analyzed[[3]]$Analysis_cou0001$Analysis_Input,
+  # reporting data
+  reportingGroups = lReporting_site$Reporting_Groups,
+  reportingBounds = lReporting_site$Reporting_Bounds,
+  reportingMetrics = lReporting_site$Reporting_Metrics,
+  reportingResults = lReporting_site$Reporting_Results,
+  reportingGroups_country = lReporting_country$Reporting_Groups,
+  reportingBounds_country = lReporting_country$Reporting_Bounds,
+  reportingMetrics_country = lReporting_country$Reporting_Metrics,
+  reportingResults_country = lReporting_country$Reporting_Results,
+  reportingGroups_study = lReporting_study$Reporting_Groups,
+  reportingBounds_study = lReporting_study$Reporting_Bounds,
+  reportingMetrics_study = lReporting_study$Reporting_Metrics,
+  reportingResults_study = lReporting_study$Reporting_Results
 )
-write.csv(
-  file = "data-raw/analyticsInput_country.csv",
-  x = analyzed[[3]]$Analysis_cou0001$Analysis_Input,
-  row.names = F
-)
+for (name in names(csv_outputs)) {
+  write_sorted_csv(csv_outputs[[name]], name)
+}
 
-
-# reporting data
-## site
-write.csv(
-  file = "data-raw/reportingGroups.csv",
-  x = lReporting_site$Reporting_Groups,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingBounds.csv",
-  x = lReporting_site$Reporting_Bounds,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingMetrics.csv",
-  x = lReporting_site$Reporting_Metrics,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingResults.csv",
-  x = lReporting_site$Reporting_Results,
-  row.names = F
-)
-
-##country
-write.csv(
-  file = "data-raw/reportingGroups_country.csv",
-  x = lReporting_country$Reporting_Groups,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingBounds_country.csv",
-  x = lReporting_country$Reporting_Bounds,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingMetrics_country.csv",
-  x = lReporting_country$Reporting_Metrics,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingResults_country.csv",
-  x = lReporting_country$Reporting_Results,
-  row.names = F
-)
-
-##study
-write.csv(
-  file = "data-raw/reportingGroups_study.csv",
-  x = lReporting_study$Reporting_Groups,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingBounds_study.csv",
-  x = lReporting_study$Reporting_Bounds,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingMetrics_study.csv",
-  x = lReporting_study$Reporting_Metrics,
-  row.names = F
-)
-write.csv(
-  file = "data-raw/reportingResults_study.csv",
-  x = lReporting_study$Reporting_Results,
-  row.names = F
-)
+# Rebuild the bundled data/*.rda objects from the CSVs just written. Without
+# this, data/ (and the row counts in the generated Rd files) silently drift out
+# of sync with data-raw/.
+source("data-raw/sampleData.R")

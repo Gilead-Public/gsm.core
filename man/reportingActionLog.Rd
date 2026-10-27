@@ -5,7 +5,7 @@
 \alias{reportingActionLog}
 \title{reportingActionLog Dataset}
 \format{
-A data frame with 629 rows and 33 columns:
+A data frame with 1520 rows and 33 columns:
 \describe{
 \item{StudyID}{unique study identifier}
 \item{SnapshotDate}{date of the KRI snapshot}
