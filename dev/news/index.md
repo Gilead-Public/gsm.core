@@ -23,6 +23,13 @@
   upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are
   replaced by `kri0019`/`cou0019`
   ([\#177](https://github.com/Gilead-Public/gsm.core/issues/177)).
+- Removed unit tests for the workflow runtime (`RunQuery`, `RunStep`,
+  `RunWorkflow`, `MakeWorkflowList`), which now lives in
+  [workr](https://gilead-public.github.io/workr) and is tested there,
+  including by qualification tests (Gilead-Public/workr#96). The tests
+  of the deprecated [gsm.core](https://gilead-public.github.io/gsm.core)
+  wrappers remain. Also fixed qualification test T4_2, whose
+  custom-threshold output checks were not running.
 
 ## gsm.core v1.3.1
 
