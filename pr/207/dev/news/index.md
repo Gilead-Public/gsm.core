@@ -40,6 +40,8 @@ runtime tests to [workr](https://gilead-public.github.io/workr).
   of the deprecated [gsm.core](https://gilead-public.github.io/gsm.core)
   wrappers remain. Also fixed qualification test T4_2, whose
   custom-threshold output checks were not running.
+- Documentation has been updated including vignettes, roxygen and org
+  migration to `Gilead-Public`
 
 ## gsm.core v1.3.1
 
