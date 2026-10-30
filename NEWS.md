@@ -11,6 +11,7 @@ This patch release refreshes the bundled `lSource` and reporting data for the IP
 - Bundled reporting data count `kri0007-2`/`cou0007-2` premature treatment discontinuation from `drv_drg_completion` (#201).
 - Regenerated the packaged `lSource` and `reporting*` datasets against the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are replaced by `kri0019`/`cou0019` (#177).
 - Removed unit tests for the workflow runtime (`RunQuery`, `RunStep`, `RunWorkflow`, `MakeWorkflowList`), which now lives in `{workr}` and is tested there, including by qualification tests (Gilead-Public/workr#96). The tests of the deprecated `{gsm.core}` wrappers remain. Also fixed qualification test T4_2, whose custom-threshold output checks were not running.
+- Documentation has been updated including vignettes, roxygen and org migration to `Gilead-Public`
 
 # gsm.core v1.3.1
 
