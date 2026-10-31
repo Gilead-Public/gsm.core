@@ -5,7 +5,7 @@
 \alias{reportingMetrics_country}
 \title{reportingMetrics_country Dataset}
 \format{
-A data frame with 15 rows and 22 columns:
+A data frame with 23 rows and 27 columns:
 \describe{
 \item{MetricID}{unique metric identifier}
 \item{GroupLevel}{level of grouping variable}
@@ -29,6 +29,11 @@ A data frame with 15 rows and 22 columns:
 \item{nPropRate}{Proposed threshold}
 \item{Active}{logical flag indicating whether the metric is active}
 \item{GenerateRiskSignal}{logical flag indicating whether to generate a risk signal}
+\item{WindowDays}{number of days in the metric's observation window}
+\item{ValueCol}{column of repeated measurements evaluated by repeat-measure metrics}
+\item{WindowLength}{number of consecutive measurements in each repeat-measure window}
+\item{NumeratorCol}{column used as the numerator by repeat-measure metrics}
+\item{DenominatorCol}{column used as the denominator by repeat-measure metrics}
 }
 }
 \source{

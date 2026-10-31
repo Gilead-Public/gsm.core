@@ -1,3 +1,18 @@
+# gsm.core v1.3.2
+
+This patch release refreshes the bundled `lSource` and reporting data for the IP Monitoring (IP non-starters and premature treatment discontinuation) and Repeat Measurements metrics, and moves workflow runtime tests to `{workr}`.
+
+- `lSource` includes a `Raw_VS` vital signs domain (#186).
+- Bundled reporting data include the repeat-measure vital-sign metrics `kri0020a`-`f` and `cou0020a`-`f` (#187).
+- `lSource` carries `drv_kit_assigned`, and its `Raw_STUDCOMP` records agree with the IP non-starter status (#184).
+- `lSource` carries simulated premature treatment discontinuation fields (#176, #201).
+- Bundled reporting data carry the `kri0019`/`cou0019` count configuration (#180).
+- Bundled reporting data include the `kri0007-2`/`cou0007-2` Premature Treatment Discontinuation Rate metrics as active and keep `kri0007`/`cou0007` as inactive (#176).
+- Bundled reporting data count `kri0007-2`/`cou0007-2` premature treatment discontinuation from `drv_drg_completion` (#201).
+- Regenerated the packaged `lSource` and `reporting*` datasets against the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are replaced by `kri0019`/`cou0019` (#177).
+- Removed unit tests for the workflow runtime (`RunQuery`, `RunStep`, `RunWorkflow`, `MakeWorkflowList`), which now lives in `{workr}` and is tested there, including by qualification tests (Gilead-Public/workr#96). The tests of the deprecated `{gsm.core}` wrappers remain. Also fixed qualification test T4_2, whose custom-threshold output checks were not running.
+- Documentation has been updated including vignettes, roxygen and org migration to `Gilead-Public`
+
 # gsm.core v1.3.1
 
 This patch release removes the log4r package dependency, because the log4r package was archived on CRAN (#159).

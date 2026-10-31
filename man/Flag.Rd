@@ -43,7 +43,7 @@ method is used.
 }
 \details{
 This function provides a generalized framework for flagging sites as part of the
-gsm data model (see the \href{https://gilead-biostats.github.io/gsm.core/articles/DataModel.html}{Data Model article}).
+gsm data model (see the \href{https://gilead-public.github.io/gsm.core/articles/DataModel.html}{Data Model article}).
 }
 \section{Data Specification}{
 

@@ -8,7 +8,7 @@
 ## Milestone
 <!--- Link to the milestone for the release. ---> 
 <!--- Make sure all relevant issues/PRs are included on the linked pages. --->
-Milestone: [v1.0.0](https://github.com/Gilead-BioStats/gsm.core/milestone/1)
+Milestone: [v1.0.0](https://github.com/Gilead-Public/gsm.core/milestone/1)
 
 # Overall Risk Assessment 
 <!--- Complete the following Risk Assessment for this Release-->
@@ -45,6 +45,6 @@ Notes:
 - [ ] Formatted code with `styler`
 - [ ] Run `spell_check()`
 - [ ] Completed QC of documentation including `README.md` and relevant Vignettes
-- [ ] Build site `pkgdown::build_site()` and check that all affected examples are displayed correctly and that all new functions occur on the "[Reference](https://gilead-biostats.github.io/gsm.core/reference/index.html)" page. 
+- [ ] Build site `pkgdown::build_site()` and check that all affected examples are displayed correctly and that all new functions occur on the "[Reference](https://gilead-public.github.io/gsm.core/reference/index.html)" page. 
 - [ ] Draft GitHub release created using automatic template and updated with additional details. Remember to click "release" after PR is merged.  
 

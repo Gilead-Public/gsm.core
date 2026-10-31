@@ -14,7 +14,7 @@ testthat::test_that("Qual: Given pre-processed input data, a properly specified 
   test <- robust_runworkflow(
     ae_workflow,
     list(Analysis_Input = gsm.core::analyticsInput),
-    step = steps
+    steps = steps
   )
   expect_true(all(outputs %in% names(test)))
   expect_true(is.vector(test$vThreshold))

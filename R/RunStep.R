@@ -10,7 +10,7 @@
 #'   include the name of the function to run (`lStep$name`), name of the object where the function result should be saved (`lStep$output`) and configurable parameters (`lStep$params`) (if any)
 #' @param lData `list` a named list of domain level data frames.
 #' @param lSpec `list` a data specification containing required columns. See the
-#'  [gsm Extensions article](https://gilead-biostats.github.io/gsm.core/articles/gsmExtensions.html).
+#'  [gsm Extensions article](https://gilead-public.github.io/gsm.core/articles/gsmExtensions.html).
 #' @param lMeta `list` a named list of meta data.
 #'
 #' @examples
