@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">gsm.core</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-BioStats/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/Gilead-Public/gsm.core/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -58,7 +58,7 @@
       <h1>KRI Method</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Gilead-BioStats/gsm.core/blob/main/vignettes/KRIMethod.Rmd" class="external-link"><code>vignettes/KRIMethod.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Gilead-Public/gsm.core/blob/main/vignettes/KRIMethod.Rmd" class="external-link"><code>vignettes/KRIMethod.Rmd</code></a></small>
       <div class="d-none name"><code>KRIMethod.Rmd</code></div>
     </div>
 
@@ -73,12 +73,12 @@ that allow users to measure pre-defined risks and determine the level of
 observed risk to data quality and patient safety in a clinical trial.
 The {gsm} suite of packages implements a standardized data pipeline to
 facilitate KRI analysis. Other vignettes provide an overview of this
-framework (<a href="Cookbook.html">1</a> <a href="DataModel.html">2</a>,
-<a href="DataAnalysis.html">3</a>, <a href="https://gilead-biostats.github.io/gsm.reporting/articles/DataReporting.html" class="external-link">4</a>),
+framework (<a href="https://gilead-public.github.io/gsm.kri/examples/Cookbook_AdverseEventKRI.html" class="external-link">1</a>,
+<a href="DataModel.html">2</a>, <a href="DataAnalysis.html">3</a>, <a href="https://gilead-public.github.io/gsm.reporting/articles/DataReporting.html" class="external-link">4</a>),
 and the statistical methods for this process are described in detail
 below.</p>
-<p><a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> calculates KRIs by defining a numerator and a
-denominator for each metric. Then by default, <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>
+<p><a href="https://gilead-public.github.io/gsm.core">gsm.core</a> calculates KRIs by defining a numerator and a
+denominator for each metric. Then by default, <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>
 calculates z-scores using a normal approximation with adjustment for
 over-dispersion to assign risk levels.</p>
 <p>For KRIs that are percentages (binary outcome), the numerator is the
@@ -90,7 +90,7 @@ events and the denominator is the total participant exposure or study
 duration, and we then apply the normal approximation of the Poisson
 distribution to determine a risk level.</p>
 <p>Alternative statistical methods to calculate standardized scores are
-also available in <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>, including the Identity,
+also available in <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>, including the Identity,
 Fisher and Poisson methods. More details are provided below.</p>
 </div>
 <div class="section level2">
@@ -140,8 +140,9 @@ th patient at the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
 th site, where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">X_{ij}=1</annotation></semantics></math>
-indicates that an event has occurred and indicates that an event has not
-occurred. Finally, let
+indicates that an event has occurred and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">X_{ij}=0</annotation></semantics></math>
+indicates that an event has not occurred. Finally, let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>i</mi></msub><annotation encoding="application/x-tex">p_i</annotation></semantics></math>
 denote the site-level proportion at the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
@@ -173,10 +174,12 @@ is given by
 \hat{p}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{p}_i(1-\hat{p}_i)}{n_i}} \leq p_i \leq \hat{p}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{p}_i(1-\hat{p}_i)}{n_i}}
 </annotation></semantics></math> where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><annotation encoding="application/x-tex">z_{1-\alpha/2}</annotation></semantics></math>
-is the upper percentile of the standard normal distribution. To
-construct the control limits for the observed event rate at this site,
-the estimated event rate is forced to be equal to the overall event rate
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>p</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\hat{p}_i</annotation></semantics></math>.
+is the upper
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\alpha/2</annotation></semantics></math>
+quantile of the standard normal distribution. To construct the control
+limits for the observed event rate at this site, the estimated event
+rate is forced to be equal to the overall event rate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>p</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat{p}</annotation></semantics></math>.
 This means that the lower (l) and upper (u) asymptotic control limits
 for the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
@@ -194,35 +197,35 @@ preferable.</p>
 <p>Assume that the distribution of number of events up to time
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
 is Poisson with mean
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\lambda t</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">\lambda T</annotation></semantics></math>,
 where
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
 is the event rate for a given unit of time. For the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
 th site with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mi>i</mi></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><msub><mi>N</mi><mi>i</mi></msub></msubsup><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">X_i=\sum_{j=1}^{N_i}X_{ij}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mi>i</mi></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><msub><mi>n</mi><mi>i</mi></msub></msubsup><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">X_i=\sum_{j=1}^{n_i}X_{ij}</annotation></semantics></math>
 events and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>i</mi></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><msub><mi>N</mi><mi>i</mi></msub></msubsup><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">T_i=\sum_{j=1}^{N_i}t_{ij}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>i</mi></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><msub><mi>n</mi><mi>i</mi></msub></msubsup><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">T_i=\sum_{j=1}^{n_i}t_{ij}</annotation></semantics></math>
 exposure, define the exposure-adjusted incidence rate (EAIR) as
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>=</mo><mfrac><msub><mi>X</mi><mi>i</mi></msub><msub><mi>T</mi><mi>i</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">\hat{\lambda}_i=\frac{X_i}{T_i}</annotation></semantics></math>.
 For all sites, define
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></msubsup><msub><mi>X</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">X=\sum_{i=1}^{m}X_{i}</annotation></semantics></math>
 and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></msubsup><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">T=\sum_{i=1}^{m}t_{i}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></msubsup><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">T=\sum_{i=1}^{m}T_{i}</annotation></semantics></math>
 with
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mo>=</mo><mfrac><mi>X</mi><mi>T</mi></mfrac></mrow><annotation encoding="application/x-tex">\hat{\lambda}=\frac{X}{T}</annotation></semantics></math>.
 Under a normal approximation,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mi>–</mi><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">100(1 – a)%</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mi>–</mi><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">100(1 – \alpha)%</annotation></semantics></math>
 confidence interval for the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
 th site is
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>−</mo><msub><mi>z</mi><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><msqrt><mfrac><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><msub><mi>T</mi><mi>i</mi></msub></mfrac></msqrt><mo>≤</mo><msub><mi>p</mi><mi>i</mi></msub><mo>≤</mo><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>+</mo><msub><mi>z</mi><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><msqrt><mfrac><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><msub><mi>T</mi><mi>i</mi></msub></mfrac></msqrt></mrow><annotation encoding="application/x-tex">
-\hat{\lambda}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}} \leq p_i \leq \hat{\lambda}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}}
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>−</mo><msub><mi>z</mi><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><msqrt><mfrac><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><msub><mi>T</mi><mi>i</mi></msub></mfrac></msqrt><mo>≤</mo><msub><mi>λ</mi><mi>i</mi></msub><mo>≤</mo><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>+</mo><msub><mi>z</mi><mrow><mn>1</mn><mo>−</mo><mi>α</mi><mi>/</mi><mn>2</mn></mrow></msub><msqrt><mfrac><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><msub><mi>T</mi><mi>i</mi></msub></mfrac></msqrt></mrow><annotation encoding="application/x-tex">
+\hat{\lambda}_i-z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}} \leq \lambda_i \leq \hat{\lambda}_i+z_{1-\alpha/2}\sqrt{\frac{\hat{\lambda}_i}{T_i}}
 </annotation></semantics></math>. For these funnel plots accounting for
 exposure, the x-axis representing the site sample size
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>)
-in the above examples is replaced by the total exposure time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>.
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>i</mi></msub><annotation encoding="application/x-tex">n_i</annotation></semantics></math>)
+in the binary case is replaced by the total exposure time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>i</mi></msub><annotation encoding="application/x-tex">T_i</annotation></semantics></math>.
 To develop a funnel plot, fix
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>=</mo><mover><mi>λ</mi><mo accent="true">̂</mo></mover></mrow><annotation encoding="application/x-tex">\hat{\lambda}_i=\hat{\lambda}</annotation></semantics></math>,
 and vary
@@ -231,12 +234,12 @@ from
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>T</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">min(T_i)</annotation></semantics></math>
 to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>T</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">max(T_i)</annotation></semantics></math>
-to compute the control limits. As an area of future research, the work
-of Chan and Wang (2009) may suggest methods appropriate for computing an
-exact confidence interval for the EAIR. Finally, similar methods can be
-applied for a count-type endpoint
+to compute the control limits. Finally, similar methods can be applied
+for a count-type endpoint
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">X_{ij}</annotation></semantics></math>,
-where tij would denote the time on study for the
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">t_{ij}</annotation></semantics></math>
+would denote the time on study for the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
 th patient at the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
@@ -250,7 +253,7 @@ th site.</p>
 measure the level of observed risk to data quality and patient safety in
 a clinical trial. For scoring purposes, Z-scores from the normal
 approximation are calculated and defined as such:
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><msub><mi>θ</mi><mn>0</mn></msub></mrow><msqrt><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow></msqrt></mfrac></mrow><annotation encoding="application/x-tex">z_i=\frac{y_i-\theta_0}{\sqrt{V(Y|\theta_0)}}</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub><mo>=</mo><mfrac><mrow><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><msub><mi>θ</mi><mn>0</mn></msub></mrow><msqrt><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow></msqrt></mfrac></mrow><annotation encoding="application/x-tex">z_{0,i}=\frac{y_i-\theta_0}{\sqrt{V(Y|\theta_0)}}</annotation></semantics></math>
 for site
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,
 where
@@ -258,9 +261,11 @@ where
 is the KRI metric calculated for site
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\theta_0</annotation></semantics></math>
-is the overall mean,
+is the overall (pooled) metric across all sites, i.e. the sum of all
+numerators divided by the sum of all denominators (returned as
+<code>OverallMetric</code>), and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{V(Y|\theta_0)}</annotation></semantics></math>
-is the measurement of variance.</p>
+is the standard deviation of the metric under the null.</p>
 <p>For binary outcome,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>θ</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow></msqrt><mo>=</mo><msqrt><mfrac><mrow><mover><mi>p</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mover><mi>p</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><msub><mi>n</mi><mi>i</mi></msub></mfrac></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{V(Y|\theta_0)}=\sqrt{\frac{\hat{p}(1-\hat{p})}{n_i}}</annotation></semantics></math>.</p>
 <p>For rate outcome,
@@ -273,18 +278,24 @@ is the measurement of variance.</p>
 null distribution fully expresses the variability of the sites
 in-control, but in many situations this assumption will not hold. In the
 situation that there is a presence of greater variability than expected,
-majority of the sites will fall outside the specified limits, leading to
-a double of the appropriateness of the constructed limits.</p>
+an excess of sites will fall outside the specified limits, leading to a
+doubt of the appropriateness of the constructed limits.</p>
 <p>A way of handling this issue is to allow over-dispersion in the
 normal approximation. A multiplicative over-dispersion adjustment was
 implemented in our approach.</p>
-<p>Suppose a sample of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
-units are to be <strong>in-control</strong>, the over-dispersion factor
+<p>Following Spiegelhalter (2005), the over-dispersion factor
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>
-can be estimated as the mean squared z-scores, i.e.,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>m</mi></mfrac><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></msubsup><msubsup><mi>z</mi><mi>i</mi><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">\hat\phi = \frac{1}{m}\sum_{i=1}^m z_i^2</annotation></semantics></math>.
-For binary outcome, the over-dispersion adjusted variance is
+is estimated as the mean of the squared unadjusted z-scores
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>z</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub><annotation encoding="application/x-tex">z_{0,i}</annotation></semantics></math>
+(as defined in the previous section), i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover><mo>=</mo><mfrac><mn>1</mn><mi>m</mi></mfrac><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></msubsup><msubsup><mi>z</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">\hat\phi = \frac{1}{m}\sum_{i=1}^m z_{0,i}^2</annotation></semantics></math>.
+In <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>, all
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+sites are used for this estimate (no subset of in-control sites is
+identified and no winsorization is applied), and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat\phi</annotation></semantics></math>
+is applied whether it is above or below 1. For binary outcome, the
+over-dispersion adjusted variance is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>V</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">|</mo><mi>ϕ</mi><mo>,</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>ϕ</mi><mfrac><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo stretchy="false" form="postfix">)</mo></mrow><msub><mi>n</mi><mi>i</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">V'(Y_i|\phi, p)=\phi\frac{{p}(1-p)}{n_i}</annotation></semantics></math>.
 For rate outcome, the over-dispersion adjusted variance is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>V</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">|</mo><mi>ϕ</mi><mo>,</mo><mi>λ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>ϕ</mi><mfrac><mi>λ</mi><msub><mi>T</mi><mi>i</mi></msub></mfrac></mrow><annotation encoding="application/x-tex">V'(Y_i|\phi, \lambda)=\phi\frac{\lambda}{T_i}</annotation></semantics></math>.
@@ -294,7 +305,8 @@ for site
 are
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mover><mi>p</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>−</mo><mover><mi>p</mi><mo accent="true">̂</mo></mover></mrow><msqrt><mrow><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover><mfrac><mrow><mover><mi>p</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mover><mi>p</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><msub><mi>n</mi><mi>i</mi></msub></mfrac></mrow></msqrt></mfrac></mrow><annotation encoding="application/x-tex">z_i = \frac{\hat{p}_i - \hat{p}}{\sqrt{\hat\phi \frac{{\hat{p}}(1-\hat{p})}{n_i}}}</annotation></semantics></math>,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mover><mi>λ</mi><mo accent="true">̂</mo></mover><mi>i</mi></msub><mo>−</mo><mover><mi>λ</mi><mo accent="true">̂</mo></mover></mrow><msqrt><mrow><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover><mfrac><mover><mi>λ</mi><mo accent="true">̂</mo></mover><msub><mi>T</mi><mi>i</mi></msub></mfrac></mrow></msqrt></mfrac></mrow><annotation encoding="application/x-tex">z_i = \frac{\hat{\lambda}_i - \hat{\lambda}}{\sqrt{\hat\phi \frac{\hat\lambda}{T_i}}}</annotation></semantics></math>,
-respectively.</p>
+respectively, i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mi>i</mi></msub><mo>=</mo><msub><mi>z</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub><mi>/</mi><msqrt><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover></msqrt></mrow><annotation encoding="application/x-tex">z_i = z_{0,i}/\sqrt{\hat\phi}</annotation></semantics></math>.</p>
 <p>Reference: Spiegelhalter, David J. <strong>Funnel plots for comparing
 institutional performance.</strong> <em>Statistics in medicine</em> 24.8
 (2005): 1185-1202.</p>
@@ -303,24 +315,26 @@ institutional performance.</strong> <em>Statistics in medicine</em> 24.8
 <h4 id="estimate-and-score">Estimate and Score<a class="anchor" aria-label="anchor" href="#estimate-and-score"></a>
 </h4>
 <p>The function <code><a href="../reference/Analyze_NormalApprox.html">Analyze_NormalApprox()</a></code> in
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> calculates adjusted z-score for each site as
+<a href="https://gilead-public.github.io/gsm.core">gsm.core</a> calculates adjusted z-score for each site as
 discussed above. The adjusted z-scores are then used as a scoring metric
-in <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> to flag possible outliers using the
+in <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> to flag possible outliers using the
 thresholds discussed below.</p>
 </div>
 <div class="section level4">
 <h4 id="threshold">Threshold<a class="anchor" aria-label="anchor" href="#threshold"></a>
 </h4>
-<p>By default, sites with adjusted z-score exceeding
+<p>By default (<code><a href="../reference/Flag.html">Flag()</a></code> with
+<code>vThreshold = c(-3, -2, 2, 3)</code>), sites with adjusted z-score
+at or beyond
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\pm 2</annotation></semantics></math>
 or
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">\pm 3</annotation></semantics></math>
 from the normal approximation analysis are flagged as amber or red,
 respectively. The thresholds are set at common choices corresponding to
-95.6% and 99.7% of the data around the mean in a standard normal
-distribution. However, they are fully configurable in the package and
-can be customized and specified in the <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>
-functions.</p>
+approximately 95.45% and 99.73% of the data around the mean in a
+standard normal distribution. However, they are fully configurable in
+the package and can be customized and specified in the
+<a href="https://gilead-public.github.io/gsm.core">gsm.core</a> functions.</p>
 </div>
 <div class="section level4">
 <h4 id="special-situations">Special Situations<a class="anchor" aria-label="anchor" href="#special-situations"></a>
@@ -329,9 +343,12 @@ functions.</p>
 <li>Results are not interpretable or it is not appropriate to apply the
 asymptotic method: We don’t want to flag in certain situations when
 results not interpretable or when it is not appropriate to apply the
-asymptotic method due to the small sample sizes. The default threshold
-for minimum denominator requirement is 30 days exposure or 3 patients at
-the site level.</li>
+asymptotic method due to the small sample sizes. A minimum accrual
+requirement can be set via the <code>nAccrualThreshold</code> and
+<code>strAccrualMetric</code> arguments of <code><a href="../reference/Flag.html">Flag()</a></code> (no
+minimum is applied by default in <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>); the
+<code>{gsm.kri}</code> workflows typically use 30 days exposure for rate
+KRIs or 3 patients for binary KRIs at the site level.</li>
 </ol>
 </div>
 <div class="section level4">
@@ -344,9 +361,11 @@ or rate KRIs.</p>
 <div class="section level3">
 <h3 id="the-identity-method">2. The Identity Method<a class="anchor" aria-label="anchor" href="#the-identity-method"></a>
 </h3>
-<p>Identity method simply uses the count of event in the numerator of
-the KRI metric itself as the score. The thresholds for monitoring site
-risk are set based on the actual counts.</p>
+<p>Identity method simply uses a column of the transformed data itself
+as the score: the KRI <code>Metric</code> by default, configurable via
+the <code>strValueCol</code> argument of
+<code><a href="../reference/Analyze_Identity.html">Analyze_Identity()</a></code>. The thresholds for monitoring site risk
+are set on the scale of that column (e.g., the actual counts).</p>
 </div>
 <div class="section level3">
 <h3 id="the-fishers-exact-method">3. The Fisher’s Exact Method<a class="anchor" aria-label="anchor" href="#the-fishers-exact-method"></a>
@@ -355,7 +374,7 @@ risk are set based on the actual counts.</p>
 <h4 id="introduction-1">Introduction<a class="anchor" aria-label="anchor" href="#introduction-1"></a>
 </h4>
 <p>For the binary outcome KRIs, an optional method in
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> is implemented with Fisher’s exact test.</p>
+<a href="https://gilead-public.github.io/gsm.core">gsm.core</a> is implemented with Fisher’s exact test.</p>
 <p>Fisher’s exact test is a statistical significance test used in the
 analysis of contingency tables when we have nominal variables and want
 to find out if proportions for one variable are different among values
@@ -363,18 +382,17 @@ of the other variables.</p>
 <p>In contrast to large-sample based asymptotic statistics which rely on
 approximation, Fisher’s exact test can be applied when sample sizes are
 small.</p>
-<p>The function <code>Analyze_Fisher</code> in <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>
+<p>The function <code>Analyze_Fisher</code> in <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>
 utilizes <code><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">stats::fisher.test</a></code> to generate an estimate of odds
 ratio as well as p-value using the Fisher’s exact test with site-level
 count data. For each site, Fisher’s exact test is conducted by comparing
 to all other sites combined in a 2×2 contingency table. The p-values are
-then used as a scoring metric in <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> to flag
+then used as a scoring metric in <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> to flag
 possible outliers. The default in <code><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">stats::fisher.test</a></code> uses a
 two-sided test (equivalent to testing the null of OR = 1) and does not
 compute p-values by Monte Carlo simulation unless
-<code>simulate.p.value = TRUE</code>. Sites with p-values less than 0.05
-from the Fisher’s exact test analysis are flagged by default. The
-significance level was set at a common choice.</p>
+<code>simulate.p.value = TRUE</code>. Flagging thresholds for the
+p-values must be specified explicitly (see below).</p>
 </div>
 <div class="section level4">
 <h4 id="methods-1">Methods<a class="anchor" aria-label="anchor" href="#methods-1"></a>
@@ -382,10 +400,11 @@ significance level was set at a common choice.</p>
 <p>For example, in a
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2 \times 2</annotation></semantics></math>
 contingency table comparing a particular site to all other sites
-combined, the two rows displaying the binary outcome are considered
-repeated Bernoulli random samples with same probability
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">p=0.5</annotation></semantics></math>
-of success or failure under the null. Given a
+combined, the two columns (the site and all other sites combined) are
+considered independent binomial samples of the binary outcome with a
+common, unknown probability
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+of success under the null. Given a
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2 \times 2</annotation></semantics></math>
 contingency table,</p>
 <div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -872,14 +891,14 @@ p=\frac{{{a+b} \choose a} {{c+d} \choose c}}{{n \choose {a+c}}}=\frac{{{a+b} \ch
 <div class="section level4">
 <h4 id="estimate-and-score-1">Estimate and Score<a class="anchor" aria-label="anchor" href="#estimate-and-score-1"></a>
 </h4>
-<p>The function <code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a></code> in <a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a>
+<p>The function <code><a href="../reference/Analyze_Fisher.html">Analyze_Fisher()</a></code> in <a href="https://gilead-public.github.io/gsm.core">gsm.core</a>
 utilizes <code><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">stats::fisher.test()</a></code> to generate an estimate of
 odds ratio as well as p-value using the Fisher’s exact test with
 site-level count data. For each site, Fisher’s exact test is conducted
 by comparing to all other sites combined in a
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2 \times 2</annotation></semantics></math>
 contingency table. The p-values are then used as a scoring metric in
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> to flag possible outliers using the thresholds
+<a href="https://gilead-public.github.io/gsm.core">gsm.core</a> to flag possible outliers using the thresholds
 discussed below. The default in <code><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">stats::fisher.test()</a></code> uses
 two-sided test (equivalent to testing the null: OR=1) and not to compute
 p-values by Monte Carlo simulation unless
@@ -888,14 +907,47 @@ p-values by Monte Carlo simulation unless
 <div class="section level4">
 <h4 id="threshold-1">Threshold<a class="anchor" aria-label="anchor" href="#threshold-1"></a>
 </h4>
-<p>By default, sites with p-values less than 0.05 or 0.01 from the
-Fisher’s exact test analysis are flagged as amber or red, respectively.
-The thresholds are set based on empirical p-value approach, where we use
-the distribution of the p-values to find the best separation of the data
-to identify sites at risk. The default thresholds are set at common
-choices of significance levels. However, they are fully configurable in
-the package and can be customized and specified in the
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> functions.</p>
+<p>There are no Fisher-specific default thresholds: <code><a href="../reference/Flag.html">Flag()</a></code>
+defaults to <code>vThreshold = c(-3, -2, 2, 3)</code>, which never flags
+p-values (between 0 and 1). Thresholds must therefore be specified
+explicitly. Common choices of significance levels are p-values less than
+0.05 or 0.01, flagged as amber or red, respectively; alternatively, the
+distribution of the p-values can be used to find the best separation of
+the data to identify sites at risk.</p>
+<p>For this subject-level example, Fisher’s exact test needs counts of
+subjects with and without an event, not AE counts over days on study.
+The rate data in <code>analyticsInput</code> are therefore converted to
+a binary outcome: <code>Numerator</code> is 1 if the subject had at
+least one AE and 0 otherwise, and <code>Denominator</code> is 1. After
+aggregation, the metric is the proportion of subjects with at least one
+AE, not the exposure-adjusted AE rate. No sites are excluded based on
+their observed rate.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dfInput</span> <span class="op">&lt;-</span> <span class="va">analyticsInput</span></span>
+<span><span class="va">dfInput</span><span class="op">$</span><span class="va">Numerator</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">dfInput</span><span class="op">$</span><span class="va">Numerator</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">dfInput</span><span class="op">$</span><span class="va">Denominator</span> <span class="op">&lt;-</span> <span class="fl">1L</span></span>
+<span><span class="va">dfTransformed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Transform_Rate.html">Transform_Rate</a></span><span class="op">(</span><span class="va">dfInput</span><span class="op">)</span></span>
+<span><span class="va">dfAnalyzed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Analyze_Fisher.html">Analyze_Fisher</a></span><span class="op">(</span><span class="va">dfTransformed</span><span class="op">)</span></span>
+<span><span class="va">dfFlagged</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Flag.html">Flag</a></span><span class="op">(</span></span>
+<span>  <span class="va">dfAnalyzed</span>,</span>
+<span>  vThreshold <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.05</span><span class="op">)</span>,</span>
+<span>  vFlag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>  vFlagOrder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dfFlagged</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GroupID"</span>, <span class="st">"Prop"</span>, <span class="st">"Prop_Other"</span>, <span class="st">"Score"</span>, <span class="st">"Flag"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   GroupID  Prop Prop_Other    Score  Flag</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0X700   0          0.847 0.000<span style="text-decoration: underline;">594</span>     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 0X094   0.25       0.845 0.013<span style="text-decoration: underline;">6</span>       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 0X5070  0          0.844 0.024<span style="text-decoration: underline;">7</span>       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 0X8090  0.556      0.846 0.039<span style="text-decoration: underline;">2</span>       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 0X3598  0.5        0.845 0.053<span style="text-decoration: underline;">4</span>       0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 0X7225  0.6        0.845 0.057<span style="text-decoration: underline;">5</span>       0</span></span></code></pre></div>
+<p>Note that the two-sided p-values do not indicate the direction of the
+difference; compare the site proportion (<code>Prop</code>) with that of
+all other sites (<code>Prop_Other</code>) to determine whether a flagged
+site is above or below the rest of the study.</p>
 </div>
 <div class="section level4">
 <h4 id="the-fishers-exact-test-assumptions">The Fisher’s exact test assumptions<a class="anchor" aria-label="anchor" href="#the-fishers-exact-test-assumptions"></a>
@@ -916,9 +968,11 @@ No assumption check is necessary.</p>
 <li><p>Functionally: where we don’t have required input to run Fishers:
 p-value will be set <code>NA</code>.</p></li>
 <li><p>Results not interpretable: we don’t want to flag in certain
-situations when results not interpretable due to small sample sizes. The
-default threshold for minimum denominator requirement is 3 patients at
-the site level.</p></li>
+situations when results not interpretable due to small sample sizes. A
+minimum denominator requirement (e.g., 3 patients at the site level) can
+be set via the <code>nAccrualThreshold</code> and
+<code>strAccrualMetric</code> arguments of <code><a href="../reference/Flag.html">Flag()</a></code>; no
+minimum is applied by default.</p></li>
 <li><p>An observed zero cell is not an issue when using Fisher’s exact
 test, however, when the expected cell is zero, it means either the
 marginal is zero (meaningless) or there are structural zeros (need to
@@ -928,17 +982,17 @@ Statistical Software, 28(11), 1–19).</p></li>
 </ol>
 </div>
 <div class="section level4">
-<h4 id="constraints">constraints<a class="anchor" aria-label="anchor" href="#constraints"></a>
+<h4 id="constraints">Constraints<a class="anchor" aria-label="anchor" href="#constraints"></a>
 </h4>
 <p>For small samples, Fisher’s exact test is highly discrete. Fisher’s
 exact test is often considered to be more conservative. This may due to
 the use a discrete statistic with fixed significance levels (<a href="https://en.wikipedia.org/wiki/Fisher%27s_exact_test#Controversies" class="external-link">FET
 Controversies Wiki</a>).</p>
 <p>Although in practice, Fisher’s exact test is usually used when sample
-sizes are small (e.g., n&lt;5), it is valid for all sample sizes.
-However, when sample sizes are large, the computation of the exact test
-evaluating the hypergeometric probability function given the marginal
-can take a very long time.</p>
+sizes are small (e.g., expected cell counts &lt;5), it is valid for all
+sample sizes. However, when sample sizes are large, the computation of
+the exact test evaluating the hypergeometric probability function given
+the marginal can take a very long time.</p>
 </div>
 <div class="section level4">
 <h4 id="recommendation-1">Recommendation<a class="anchor" aria-label="anchor" href="#recommendation-1"></a>
@@ -954,7 +1008,7 @@ KRIs.</p>
 <h4 id="introduction-2">Introduction<a class="anchor" aria-label="anchor" href="#introduction-2"></a>
 </h4>
 <p>For the rate outcome KRIs, an optional method in
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> is implemented with Poisson regression.</p>
+<a href="https://gilead-public.github.io/gsm.core">gsm.core</a> is implemented with Poisson regression.</p>
 <p>The Poisson distribution is often used to model count data. If
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
 is the number of counts following Poisson distribution, the probability
@@ -973,51 +1027,71 @@ is the average number of counts and
 calculates deviance residuals for each site. The Poisson model is run
 using standard methods in the <code>stats</code> package by fitting a
 <code>glm</code> model with family set to <code>poisson</code> using a
-“log” link. Site-level deviance residuals are calculated using
-<code>resid</code> from <code><a href="https://rdrr.io/r/stats/predict.glm.html" class="external-link">stats::predict.glm</a></code> via
-<code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">broom::augment</a></code>.</p>
+“log” link. Site-level deviance residuals (the
+<code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">broom::augment()</a></code> default, equivalent to
+<code>stats::residuals(type = "deviance")</code>) and fitted values (via
+<code><a href="https://rdrr.io/r/stats/predict.glm.html" class="external-link">stats::predict.glm()</a></code>) are calculated using
+<code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">broom::augment()</a></code>.</p>
 <p>Let
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Y</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>Y</mi><mi>N</mi></msub></mrow><annotation encoding="application/x-tex">Y_1, ..., Y_N</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Y</mi><mn>1</mn></msub><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><msub><mi>Y</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">Y_1, ..., Y_m</annotation></semantics></math>
 be independent random variables with
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Y</mi><mi>i</mi></msub><mo>∼</mo><mi>P</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi>o</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>μ</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Y_i \sim Poisson(\mu_i)</annotation></semantics></math>
-denoting the number of events observed from
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>i</mi></msub><annotation encoding="application/x-tex">n_i</annotation></semantics></math>
-for the
+denoting the number of events (<code>Numerator</code>) observed at the
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>th
-observation following Poisson distribution. Then
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>=</mo><msub><mi>n</mi><mi>i</mi></msub><msup><mi>e</mi><mrow><msub><mi>x</mi><mi>i</mi></msub><mi>β</mi></mrow></msup></mrow><annotation encoding="application/x-tex">E(Y_i)=\mu_i=n_ie^{x_i\beta}</annotation></semantics></math>.
-Thus,the log-linear generalized linear model (Poisson regression) is
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>μ</mi><mi>i</mi></msub><mo>=</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>n</mi><mi>i</mi></msub><mo>+</mo><msub><mi>x</mi><mi>i</mi></msub><mi>β</mi><mspace width="1.0em"></mspace><msub><mi>Y</mi><mi>i</mi></msub><mo>∼</mo><mi>P</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi>o</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>μ</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
-\log{\mu_i}=\log{n_i}+x_i\beta \quad Y_i \sim Poisson(\mu_i)
+site with total exposure
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>i</mi></msub><annotation encoding="application/x-tex">T_i</annotation></semantics></math>
+(<code>Denominator</code>). The current <code><a href="../reference/Analyze_Poisson.html">Analyze_Poisson()</a></code>
+implementation uses the formula
+<code>Numerator ~ stats::offset(LogDenominator)</code>, where
+<code>LogDenominator</code> is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\log T_i</annotation></semantics></math>.
+In this formula, <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm()</a></code> treats the namespaced
+<code><a href="https://rdrr.io/r/stats/offset.html" class="external-link">stats::offset()</a></code> expression as an ordinary predictor rather
+than a fixed offset. It therefore estimates both an intercept and an
+exposure coefficient:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>μ</mi><mi>i</mi></msub><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>T</mi><mi>i</mi></msub><mo>,</mo><mspace width="2.0em"></mspace><mi>E</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>=</mo><msup><mi>e</mi><msub><mi>β</mi><mn>0</mn></msub></msup><msubsup><mi>T</mi><mi>i</mi><msub><mi>β</mi><mn>1</mn></msub></msubsup><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\log{\mu_i}=\beta_0+\beta_1\log{T_i}, \qquad E(Y_i)=\mu_i=e^{\beta_0}T_i^{\beta_1}.
 </annotation></semantics></math></p>
-<p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>n</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\log{n_i}</annotation></semantics></math>
-is an offset term.</p>
+<p><strong>Implementation limitation:</strong> a common-rate,
+exposure-adjusted Poisson model would fix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\beta_1=1</annotation></semantics></math>,
+giving
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>μ</mi><mi>i</mi></msub><mo>=</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>T</mi><mi>i</mi></msub><mo>+</mo><msub><mi>β</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\log{\mu_i}=\log{T_i}+\beta_0</annotation></semantics></math>
+and a common event rate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>e</mi><msub><mi>β</mi><mn>0</mn></msub></msup><annotation encoding="application/x-tex">e^{\beta_0}</annotation></semantics></math>.
+That is not the model currently fitted by
+<code><a href="../reference/Analyze_Poisson.html">Analyze_Poisson()</a></code>. Its <code>Score</code> and
+<code>PredictedCount</code> come from the model with an estimated
+exposure coefficient; they should not be interpreted as results from an
+intercept-only, fixed-offset model.</p>
 </div>
 <div class="section level4">
 <h4 id="estimate-and-score-2">Estimate and Score<a class="anchor" aria-label="anchor" href="#estimate-and-score-2"></a>
 </h4>
 <p>The function <code><a href="../reference/Analyze_Poisson.html">Analyze_Poisson()</a></code> in
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> utilizes <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm()</a></code> to generate
+<a href="https://gilead-public.github.io/gsm.core">gsm.core</a> utilizes <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm()</a></code> to generate
 an estimate of fitted values as well as deviance residual with
-site-level count data. The p-values are then used as a scoring metric in
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> to flag possible outliers using the thresholds
-discussed below.</p>
+site-level count data. The deviance residuals are then used as a scoring
+metric in <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> to flag possible outliers using the
+thresholds discussed below.</p>
 </div>
 <div class="section level4">
 <h4 id="threshold-2">Threshold<a class="anchor" aria-label="anchor" href="#threshold-2"></a>
 </h4>
-<p>By default, sites with deviance residuals exceeding
+<p>There are no Poisson-specific default thresholds in
+<code><a href="../reference/Flag.html">Flag()</a></code> (or its alias <code><a href="../reference/Flag_Poisson.html">Flag_Poisson()</a></code>), which
+defaults to <code>vThreshold = c(-3, -2, 2, 3)</code>; thresholds for
+deviance residuals should therefore be specified explicitly. Empirical
+values based on pilot studies’ data are deviance residuals at or beyond
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">\pm 5</annotation></semantics></math>
 or
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>7</mn></mrow><annotation encoding="application/x-tex">\pm 7</annotation></semantics></math>
-from the Poisson analysis are flagged as amber or red, respectively. The
-thresholds are set based on empirical approach, where we use the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>7</mn></mrow><annotation encoding="application/x-tex">\pm 7</annotation></semantics></math>,
+flagged as amber or red, respectively (e.g.,
+<code>Flag(dfAnalyzed, vThreshold = c(-7, -5, 5, 7))</code>). These
+thresholds are set based on an empirical approach, where we use the
 distribution of the deviance residuals to find the best separation of
-the data to identify sites at risk. The default thresholds are set at
-empirical values based on pilot studies’ data. However, they are fully
-configurable in the package and can be customized and specified in the
-<a href="https://gilead-biostats.github.io/gsm.core">gsm.core</a> functions.</p>
+the data to identify sites at risk. They are fully configurable and can
+be customized in the <a href="https://gilead-public.github.io/gsm.core">gsm.core</a> functions.</p>
 </div>
 <div class="section level4">
 <h4 id="special-situations-2">Special Situations<a class="anchor" aria-label="anchor" href="#special-situations-2"></a>
@@ -1026,8 +1100,10 @@ configurable in the package and can be customized and specified in the
 <li>Results are not interpretable or it is not appropriate to apply the
 Poisson method: We don’t want to flag in certain situations when results
 not interpretable or when it is not appropriate to apply the Poisson
-method due to the small sample sizes. The default threshold for minimum
-denominator requirement is 30 days exposure at the site level.</li>
+method due to the small sample sizes. A minimum denominator requirement
+(e.g., 30 days exposure at the site level) can be set via the
+<code>nAccrualThreshold</code> and <code>strAccrualMetric</code>
+arguments of <code><a href="../reference/Flag.html">Flag()</a></code>; no minimum is applied by default.</li>
 </ol>
 <!-- TODO. Discuss hard rules on STOP-IF-NOT situations -->
 </div>
@@ -1046,11 +1122,12 @@ are non-negative integer (counts).</p></li>
 follows the Poisson distribution as noted above with mean and variance
 equal to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\mu_i</annotation></semantics></math>.</p></li>
-<li><p><strong>Linearity</strong>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>μ</mi><mi>i</mi></msub><mo>=</mo><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>n</mi><mi>i</mi></msub><mo>+</mo><msub><mi>x</mi><mi>i</mi></msub><mi>β</mi></mrow><annotation encoding="application/x-tex">\log{\mu_i}=\log{n_i}+x_i\beta</annotation></semantics></math>
-where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_i</annotation></semantics></math>
-are independent predictors.</p></li>
+<li><p><strong>Linearity</strong> In the current implementation,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>μ</mi><mi>i</mi></msub><mo>=</mo><msub><mi>β</mi><mn>0</mn></msub><mo>+</mo><msub><mi>β</mi><mn>1</mn></msub><mrow><mi mathvariant="normal">log</mi><mo>⁡</mo></mrow><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\log{\mu_i}=\beta_0+\beta_1\log{T_i}</annotation></semantics></math>.
+The expected count is proportional to exposure only when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\beta_1=1</annotation></semantics></math>;
+this constraint is not imposed (see the implementation limitation
+above).</p></li>
 </ol>
 </div>
 <div class="section level4">
@@ -1063,9 +1140,12 @@ by the knowledge of data collected.</p></li>
 histogram of the data and comparing empirical mean and variance
 stratified by the explanatory variable(s). If there is evidence that the
 assumption of mean=variance is violated, oftentimes we observe
-variance&gt;mean. This is called overdispersion. In this case, negative
-binomial distribution provides an alternative where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>ϕ</mi><mi>E</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Var(Y_i)=\phi E(Y_i)</annotation></semantics></math>.</p></li>
+variance&gt;mean. This is called overdispersion. In this case, a
+quasi-Poisson model, where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>ϕ</mi><mi>E</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Var(Y_i)=\phi E(Y_i)</annotation></semantics></math>,
+or a negative binomial model, where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>Y</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>+</mo><msubsup><mi>μ</mi><mi>i</mi><mn>2</mn></msubsup><mi>/</mi><mi>k</mi></mrow><annotation encoding="application/x-tex">Var(Y_i)=\mu_i+\mu_i^2/k</annotation></semantics></math>,
+provides an alternative.</p></li>
 <li><p>Diagnosis: Goodness of fit test (chi-squared) and deviance
 residuals. Residuals vs fitted plot. Q-Q plot.</p></li>
 <li><p>Other considerations: Structural zeros may happen in contrast to

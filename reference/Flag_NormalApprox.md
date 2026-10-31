@@ -70,4 +70,4 @@ Flag_NormalApprox(
 ## Details
 
 Alias for
-[`Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md)
+[`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md)

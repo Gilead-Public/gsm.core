@@ -9,11 +9,11 @@ utilities are provided by the companion package 'workr'.
 
 Useful links:
 
-- <https://gilead-biostats.github.io/gsm.core>
+- <https://gilead-public.github.io/gsm.core>
 
-- <https://github.com/Gilead-BioStats/gsm.core>,
+- <https://github.com/Gilead-Public/gsm.core>,
 
-- Report bugs at <https://github.com/Gilead-BioStats/gsm.core/issues>
+- Report bugs at <https://github.com/Gilead-Public/gsm.core/issues>
 
 ## Author
 

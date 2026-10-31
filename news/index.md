@@ -1,38 +1,81 @@
 # Changelog
 
+## gsm.core v1.3.2
+
+This patch release refreshes the bundled `lSource` and reporting data
+for the IP Monitoring (IP non-starters and premature treatment
+discontinuation) and Repeat Measurements metrics, and moves workflow
+runtime tests to [workr](https://gilead-public.github.io/workr).
+
+- `lSource` includes a `Raw_VS` vital signs domain
+  ([\#186](https://github.com/Gilead-Public/gsm.core/issues/186)).
+- Bundled reporting data include the repeat-measure vital-sign metrics
+  `kri0020a`-`f` and `cou0020a`-`f`
+  ([\#187](https://github.com/Gilead-Public/gsm.core/issues/187)).
+- `lSource` carries `drv_kit_assigned`, and its `Raw_STUDCOMP` records
+  agree with the IP non-starter status
+  ([\#184](https://github.com/Gilead-Public/gsm.core/issues/184)).
+- `lSource` carries simulated premature treatment discontinuation fields
+  ([\#176](https://github.com/Gilead-Public/gsm.core/issues/176),
+  [\#201](https://github.com/Gilead-Public/gsm.core/issues/201)).
+- Bundled reporting data carry the `kri0019`/`cou0019` count
+  configuration
+  ([\#180](https://github.com/Gilead-Public/gsm.core/issues/180)).
+- Bundled reporting data include the `kri0007-2`/`cou0007-2` Premature
+  Treatment Discontinuation Rate metrics as active and keep
+  `kri0007`/`cou0007` as inactive
+  ([\#176](https://github.com/Gilead-Public/gsm.core/issues/176)).
+- Bundled reporting data count `kri0007-2`/`cou0007-2` premature
+  treatment discontinuation from `drv_drg_completion`
+  ([\#201](https://github.com/Gilead-Public/gsm.core/issues/201)).
+- Regenerated the packaged `lSource` and `reporting*` datasets against
+  the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six
+  upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are
+  replaced by `kri0019`/`cou0019`
+  ([\#177](https://github.com/Gilead-Public/gsm.core/issues/177)).
+- Removed unit tests for the workflow runtime (`RunQuery`, `RunStep`,
+  `RunWorkflow`, `MakeWorkflowList`), which now lives in
+  [workr](https://gilead-public.github.io/workr) and is tested there,
+  including by qualification tests (Gilead-Public/workr#96). The tests
+  of the deprecated [gsm.core](https://gilead-public.github.io/gsm.core)
+  wrappers remain. Also fixed qualification test T4_2, whose
+  custom-threshold output checks were not running.
+- Documentation has been updated including vignettes, roxygen and org
+  migration to `Gilead-Public`
+
 ## gsm.core v1.3.1
 
 This patch release removes the log4r package dependency, because the
 log4r package was archived on CRAN
-([\#159](https://github.com/Gilead-BioStats/gsm.core/issues/159)).
+([\#159](https://github.com/Gilead-Public/gsm.core/issues/159)).
 
 ## gsm.core v1.3.0
 
 This minor release moves the workflow runtime to the new
-[workr](https://gilead-biostats.github.io/workr) package and adds the
+[workr](https://gilead-public.github.io/workr) package and adds the
 `deathcls` column to the Death domain in `lSource`.
 
 Changes:
 
 - Workflow execution is now powered by
-  [workr](https://gilead-biostats.github.io/workr):
-  [`RunQuery()`](https://gilead-biostats.github.io/gsm.core/reference/RunQuery.md),
-  [`RunStep()`](https://gilead-biostats.github.io/gsm.core/reference/RunStep.md),
-  [`RunWorkflow()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflow.md),
-  [`RunWorkflows()`](https://gilead-biostats.github.io/gsm.core/reference/RunWorkflows.md),
+  [workr](https://gilead-public.github.io/workr):
+  [`RunQuery()`](https://gilead-public.github.io/gsm.core/reference/RunQuery.md),
+  [`RunStep()`](https://gilead-public.github.io/gsm.core/reference/RunStep.md),
+  [`RunWorkflow()`](https://gilead-public.github.io/gsm.core/reference/RunWorkflow.md),
+  [`RunWorkflows()`](https://gilead-public.github.io/gsm.core/reference/RunWorkflows.md),
   and
-  [`MakeWorkflowList()`](https://gilead-biostats.github.io/gsm.core/reference/MakeWorkflowList.md)
+  [`MakeWorkflowList()`](https://gilead-public.github.io/gsm.core/reference/MakeWorkflowList.md)
   are backed by the shared, federated
-  [workr](https://gilead-biostats.github.io/workr) runtime. Existing
-  code continues to work unchanged through deprecation shims
-  ([\#141](https://github.com/Gilead-BioStats/gsm.core/issues/141),
-  [\#149](https://github.com/Gilead-BioStats/gsm.core/issues/149)).
+  [workr](https://gilead-public.github.io/workr) runtime. Existing code
+  continues to work unchanged through deprecation shims
+  ([\#141](https://github.com/Gilead-Public/gsm.core/issues/141),
+  [\#149](https://github.com/Gilead-Public/gsm.core/issues/149)).
 - The Death domain in the `lSource` dataset now includes a `deathcls`
   column
-  ([\#153](https://github.com/Gilead-BioStats/gsm.core/issues/153)).
+  ([\#153](https://github.com/Gilead-Public/gsm.core/issues/153)).
 - Documented the workflow contract for `gsm` ecosystem packages
-  ([\#145](https://github.com/Gilead-BioStats/gsm.core/issues/145),
-  [\#151](https://github.com/Gilead-BioStats/gsm.core/issues/151)).
+  ([\#145](https://github.com/Gilead-Public/gsm.core/issues/145),
+  [\#151](https://github.com/Gilead-Public/gsm.core/issues/151)).
 
 ## gsm.core v1.2.1
 
@@ -115,11 +158,11 @@ data to use `{gsm.datasim}`. Specifically: - `lSource` package data has
 been updated to include PK data - `analytics` and `reporting` package
 data is now generated using `{gsm.datasim}` simulated data as the source
 data. - Updates to the
-[`Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md)
+[`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md)
 and
-[`Summarize()`](https://gilead-biostats.github.io/gsm.core/reference/Summarize.md)
+[`Summarize()`](https://gilead-public.github.io/gsm.core/reference/Summarize.md)
 functions to make thresholds more flexible. The
-[`Flag_Accrual()`](https://gilead-biostats.github.io/gsm.core/reference/Flag_Accrual.md)
+[`Flag_Accrual()`](https://gilead-public.github.io/gsm.core/reference/Flag_Accrual.md)
 helper function now allows thresholds to be based on the Numerator,
 Denominator, or Difference between the two.
 

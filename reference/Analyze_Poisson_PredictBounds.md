@@ -24,9 +24,9 @@ Analyze_Poisson_PredictBounds(
   record per site with expected columns: `GroupID`, `GroupLevel`,
   `Numerator`, `Denominator`, and `Metric`. For more details see the
   [Data Model
-  article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+  article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
   For this function, `dfTransformed` should typically be created using
-  [`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Transform_Rate.md).
+  [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/reference/Transform_Rate.md).
 
 - vThreshold:
 
@@ -57,5 +57,5 @@ link.
 dfTransformed <- Transform_Rate(analyticsInput)
 
 dfBounds <- Analyze_Poisson_PredictBounds(dfTransformed, c(-5, 5))
-#> → nStep was not provided. Setting default step to 0.0240056595118446
+#> → nStep was not provided. Setting default step to 0.0267683349700265
 ```

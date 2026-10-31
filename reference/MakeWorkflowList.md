@@ -3,7 +3,7 @@
 **\[deprecated\]**
 
 `MakeWorkflowList()` has moved to
-[`workr::MakeWorkflowList()`](https://rdrr.io/pkg/workr/man/MakeWorkflowList.html).
+[`workr::MakeWorkflowList()`](https://gilead-public.github.io/workr/reference/MakeWorkflowList.html).
 This wrapper remains for backward compatibility in `{gsm.core}`.
 
 ## Usage

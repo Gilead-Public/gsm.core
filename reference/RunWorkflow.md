@@ -1,7 +1,7 @@
 # Run a workflow via it's YAML specification.
 
 **\[deprecated\]** `RunWorkflow()` has moved to
-[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html).
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html).
 This wrapper remains for backward compatibility in `{gsm.core}`.
 
 Attempts to run a single assessment (`lWorkflow`) using shared data
@@ -102,17 +102,17 @@ lMappedData <- workr::RunWorkflows(
 #> [INFO] Calling `gsm.core::RunQuery`
 #> [INFO] Creating a new temporary DuckDB connection.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmpvj3eea/duckdb
+#> ℹ /tmp/Rtmp9U64mT/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
 #> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
 #> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
 #> ℹ See ?duckdb_storage for details and alternatives.
-#> [INFO] SQL Query complete: 762 rows returned.
+#> [INFO] SQL Query complete: 754 rows returned.
 #> [INFO] Disconnected from temporary DuckDB connection.
-#> [INFO] 762x15 data.frame saved as `lData$Mapped_SUBJ`.
-#> [INFO] Returning results from final step: 762x15 data.frame`.
+#> [INFO] 754x26 data.frame saved as `lData$Mapped_SUBJ`.
+#> [INFO] Returning results from final step: 754x26 data.frame`.
 #> [INFO] Completed `Mapped_SUBJ` Workflow
 
 # Run the metric workflow.
@@ -145,12 +145,12 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] strDenominatorMethod = Sum: No matching data found. Passing 'Sum' as a string.
 #> [INFO] strDenominatorCol = timeonstudy: No matching data found. Passing 'timeonstudy' as a string.
 #> [INFO] Calling `gsm.core::Input_Rate`
-#> [INFO] 762x6 data.frame saved as `lData$Analysis_Input`.
+#> [INFO] 754x6 data.frame saved as `lData$Analysis_Input`.
 #> [INFO] Workflow Step 3 of 7: `gsm.core::Transform_Rate`
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::Transform_Rate`
 #> [INFO] dfInput = Analysis_Input: Passing lData$Analysis_Input.
 #> [INFO] Calling `gsm.core::Transform_Rate`
-#> [INFO] 143x5 data.frame saved as `lData$Analysis_Transformed`.
+#> [INFO] 141x5 data.frame saved as `lData$Analysis_Transformed`.
 #> [INFO] Workflow Step 4 of 7: `gsm.core::Analyze_NormalApprox`
 #> [INFO] Evaluating 2 parameter(s) for `gsm.core::Analyze_NormalApprox`
 #> [INFO] dfTransformed = Analysis_Transformed: Passing lData$Analysis_Transformed.
@@ -158,7 +158,7 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] Calling `gsm.core::Analyze_NormalApprox`
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
-#> [INFO] 143x8 data.frame saved as `lData$Analysis_Analyzed`.
+#> [INFO] 141x8 data.frame saved as `lData$Analysis_Analyzed`.
 #> [INFO] Workflow Step 5 of 7: `gsm.core::Flag`
 #> [INFO] Evaluating 4 parameter(s) for `gsm.core::Flag`
 #> [INFO] dfAnalyzed = Analysis_Analyzed: Passing lData$Analysis_Analyzed.
@@ -166,15 +166,15 @@ lMetricOutput <- workr::RunWorkflow(
 #> [INFO] nAccrualThreshold = AccrualThreshold: Passing lMeta$AccrualThreshold.
 #> [INFO] strAccrualMetric = AccrualMetric: Passing lMeta$AccrualMetric.
 #> [INFO] Calling `gsm.core::Flag`
-#> ℹ 27 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X943, 0X5928, 0X2857, 0X3178, 0X993, 0X7789, 0X9361, 0X3066, 0X7440, 0X1670, 0X518, 0X3046, 0X3329, 0X8583, 0X3840, 0X1568, 0X1299, 0X1746, 0X9044, 0X7907, 0X9666, 0X7328, 0X7855, 0X9315, 0X3282, 0X8344, 0X6511
+#> ℹ 32 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X4050, 0X7203, 0X2831, 0X002, 0X5070, 0X5132, 0X012, 0X6450, 0X4352, 0X3833, 0X6284, 0X9427, 0X4766, 0X6394, 0X1259, 0X5391, 0X6269, 0X2193, 0X6562, 0X5089, 0X6457, 0X1211, 0X2615, 0X3686, 0X1391, 0X3423, 0X3939, 0X9242, 0X8015, 0X8487, 0X9570, 0X7965
 #> These group(s) will not have KRI score and flag summarized.
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
-#> [INFO] 143x9 data.frame saved as `lData$Analysis_Flagged`.
+#> [INFO] 141x9 data.frame saved as `lData$Analysis_Flagged`.
 #> [INFO] Workflow Step 6 of 7: `gsm.core::Summarize`
 #> [INFO] Evaluating 1 parameter(s) for `gsm.core::Summarize`
 #> [INFO] dfFlagged = Analysis_Flagged: Passing lData$Analysis_Flagged.
 #> [INFO] Calling `gsm.core::Summarize`
-#> [INFO] 143x7 data.frame saved as `lData$Analysis_Summary`.
+#> [INFO] 141x7 data.frame saved as `lData$Analysis_Summary`.
 #> [INFO] Workflow Step 7 of 7: `list`
 #> [INFO] Evaluating 6 parameter(s) for `list`
 #> [INFO] ID = ID: Passing lMeta$ID.

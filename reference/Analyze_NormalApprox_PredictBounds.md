@@ -26,9 +26,9 @@ Analyze_NormalApprox_PredictBounds(
   record per site with expected columns: `GroupID`, `GroupLevel`,
   `Numerator`, `Denominator`, and `Metric`. For more details see the
   [Data Model
-  article](https://gilead-biostats.github.io/gsm.core/articles/DataModel.html).
+  article](https://gilead-public.github.io/gsm.core/articles/DataModel.html).
   For this function, `dfTransformed` should typically be created using
-  [`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Transform_Rate.md).
+  [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/reference/Transform_Rate.md).
 
 - vThreshold:
 
@@ -69,12 +69,12 @@ dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "binary")
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
 dfBounds <- Analyze_NormalApprox_PredictBounds(dfTransformed, c(-3, -2, 2, 3), strType = "binary")
-#> nStep was not provided. Setting default step to 3.224.
+#> nStep was not provided. Setting default step to 3.22.
 
 # Rate
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "rate")
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
 dfBounds <- Analyze_NormalApprox_PredictBounds(dfTransformed, c(-3, -2, 2, 3), strType = "rate")
-#> nStep was not provided. Setting default step to 3.224.
+#> nStep was not provided. Setting default step to 3.22.
 ```

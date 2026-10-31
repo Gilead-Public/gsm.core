@@ -4,10 +4,10 @@
 
 This vignette walks users through the mechanics of the functions that
 produce all of the Analysis workflow output within the
-[gsm.core](https://gilead-biostats.github.io/gsm.core) package. The
-suite of `{gsm}` packages leverages Key Risk Indicators (KRIs) and
-thresholds to conduct study-level and site-level Risk Based Monitoring
-for clinical trials.
+[gsm.core](https://gilead-public.github.io/gsm.core) package. The suite
+of `{gsm}` packages leverages Key Risk Indicators (KRIs) and thresholds
+to conduct study-level and site-level Risk Based Monitoring for clinical
+trials.
 
 These functions provide data frames, visualizations, and metadata to be
 used in reporting and error checking at clinical sites. The image below
@@ -18,10 +18,10 @@ that is specified in each analysis workflow.
 
 All of these functions will run automatically and sequentially when a
 user calls
-[`workr::RunWorkflow()`](https://rdrr.io/pkg/workr/man/RunWorkflow.html)
+[`workr::RunWorkflow()`](https://gilead-public.github.io/workr/reference/RunWorkflow.html)
 with a specified yaml file for KRI metrics found in the
-`workflow/2_metrics` directory of the
-[`{gsm.kri}`](https://github.com/Gilead-BioStats/gsm.kri) package.
+`inst/workflow/2_metrics` directory of the
+[`{gsm.kri}`](https://github.com/Gilead-Public/gsm.kri) package.
 
 Each of these individual functions can also be run independently outside
 of a specified yaml workflow.
@@ -36,9 +36,9 @@ process data.
 ### Case Study - Step-by-Step Adverse Event KRI
 
 We will use sample clinical data simulated with the
-[`{gsm.datasim}`](https://github.com/Gilead-BioStats/gsm.datasim)
-package to run the Adverse Events (AE) Assessment, i.e., `AE_Assess()`,
-using the normal approximation method.
+[`{gsm.datasim}`](https://github.com/Gilead-Public/gsm.datasim) package
+to reproduce, step by step, the Adverse Event (AE) KRI (`kri0001` in
+`{gsm.kri}`), which uses the normal approximation method.
 
 Additional statistical methods and supporting functions are explored in
 [Appendix 1](#appendix-1).
@@ -47,25 +47,30 @@ Additional statistical methods and supporting functions are explored in
 
 Start by creating `dfInput` using sample rawplus data created with
 `{gsm.datasim}`. Note that
-[`Input_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Input_Rate.md)
-requires three specific clinical datasets, which include a subject-level
-demographics/exposure dataset (`dfSubjects`) and a domain-level dataset
-(`dfNumerator`) that records every adverse event per subject.
+[`Input_Rate()`](https://gilead-public.github.io/gsm.core/reference/Input_Rate.md)
+requires three datasets: a subject-level dataset (`dfSubjects`) that
+assigns each subject to a group, a numerator dataset (`dfNumerator`;
+here, one record per adverse event), and a denominator dataset
+(`dfDenominator`; here, the subject-level dataset containing time on
+study). In this example, `dfSubjects` and `dfDenominator` are the same
+data frame.
 
 Since
-[`Input_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Input_Rate.md)
+[`Input_Rate()`](https://gilead-public.github.io/gsm.core/reference/Input_Rate.md)
 is a generalized function, it is also required that you specify the
 relevant column names for the Subject (`strSubjectCol`), Group
 (`strGroupCol`) and optionally the Denominator (`strDenominatorCol`) and
 Numerator (`strNumeratorCol`) when it is not simply “Denominator” or
-“Numerator”, respectively.
+“Numerator”, respectively. `strGroupLevel` labels the type of group
+(e.g. “Site” or “Country”); if omitted, it defaults to the value of
+`strGroupCol`.
 
 Finally, the method for calculating the Numerator and Denominator is
 specified in `strNumeratorMethod` and `strDenominatorMethod` as either
-“Count” or “Sum”. If the method is “Count”, the function simply counts
-the number of rows in the provided data frame. If the numerator method
-is “Sum”, the function takes the sum of the values in the specified
-column (`strNumeratorCol` or `strDenominatorCol`).
+“Count” or “Sum”. If the method is “Count”, the function counts the
+number of rows per subject in the provided data frame. If the method is
+“Sum”, the function sums the values of the specified column
+(`strNumeratorCol` or `strDenominatorCol`) per subject.
 
 ``` r
 
@@ -75,6 +80,7 @@ dfInput <- Input_Rate(
               dfDenominator = gsm.core::lSource$Raw_SUBJ,
               strSubjectCol = "subjid",
               strGroupCol = "invid",
+              strGroupLevel = "Site",
               strNumeratorMethod = "Count",
               strDenominatorMethod = "Sum",
               strDenominatorCol = "timeonstudy"
@@ -82,17 +88,17 @@ dfInput <- Input_Rate(
 ```
 
 The data frame `dfInput` for an AE assessment will be created by running
-[`Input_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Input_Rate.md)
+[`Input_Rate()`](https://gilead-public.github.io/gsm.core/reference/Input_Rate.md)
 and will have one record per subject, with the following columns:
 
 - `SubjectID`: Subject Identifier
 - `GroupID`: Group Identifier
 - `GroupLevel`: Type of Group specified in `GroupID` (Country, Site)
-- `Numerator`: Total Time on Treatment (measured in days; per subject)
-- `Denominator`: Total Number of Event(s) of Interest (in this example,
+- `Numerator`: Total Number of Event(s) of Interest (in this example,
   the number of AEs reported; per subject)
-- `Metric`: Rate of Event Incidence (calculated as `Exposure`/`Count`;
-  per subject)
+- `Denominator`: Total Time on Study (measured in days; per subject)
+- `Metric`: Rate of Event Incidence (calculated as
+  `Numerator`/`Denominator`; per subject)
 
 ------------------------------------------------------------------------
 
@@ -100,14 +106,14 @@ and will have one record per subject, with the following columns:
 
 The data frame `dfTransformed` is derived from `dfInput` using a
 `Transform()` function. In our example, the analysis pipeline pulls in
-[`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Transform_Rate.md)
+[`Transform_Rate()`](https://gilead-public.github.io/gsm.core/reference/Transform_Rate.md)
 since the default metric for AEs is the number of AEs reported over the
 course of treatment per site, i.e., a rate.
 
 ``` r
 
 dfTransformed <- Transform_Rate(dfInput)
-#> Warning: 5 values of [ GroupID ] with a [ Denominator ] value of 0
+#> Warning: 7 values of [ GroupID ] with a [ Denominator ] value of 0
 #> removed.
 ```
 
@@ -119,7 +125,7 @@ transformed data, including KRI calculation. Using our example AE data,
 - `GroupLevel`: Type of Group specified in `GroupID` (Country, Site)
 - `Numerator`: Cumulative Number of Event(s) of Interest (in this
   example, number of AEs reported across subjects)
-- `Denominator`: Cumulative Time on Treatment (in days, across subjects)
+- `Denominator`: Cumulative Time on Study (in days, across subjects)
 - `Metric`: Rate of Event(s) of Interest (in this example, number of AEs
   reported over the course of treatment in days)
 
@@ -131,12 +137,15 @@ The data frame `dfAnalyzed` is derived from `dfTransformed` using an
 `Analyze()` function, which incorporates a specific statistical model.
 The resulting `dfAnalyzed` data frame will contain site-level analysis
 results data. The normal approximation method is the default statistical
-model for AE data, so the analysis pipeline automatically runs
-[`Analyze_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_NormalApprox.md).
+model for AE data, so the analysis pipeline runs
+[`Analyze_NormalApprox()`](https://gilead-public.github.io/gsm.core/reference/Analyze_NormalApprox.md).
+Because the AE metric is a rate (events per day on study) rather than a
+proportion, `strType = "rate"` must be specified; the default,
+`strType = "binary"`, is intended for proportions.
 
 ``` r
 
-dfAnalyzed <- Analyze_NormalApprox(dfTransformed)
+dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "rate")
 #> `OverallMetric`, `Factor`, and `Score` columns created from normal
 #> approximation.
 ```
@@ -148,87 +157,101 @@ Using our example AE data, `dfAnalyzed` contains the following columns:
 - `Numerator`: Cumulative Number of Event(s) of Interest (in this
   example, number of AEs reported across subjects); Carried from
   `dfTransformed`.
-- `Denominator`: Cumulative Time on Treatment (in days, across
-  subjects); Carried from `dfTransformed`.
+- `Denominator`: Cumulative Time on Study (in days, across subjects);
+  Carried from `dfTransformed`.
 - `Metric`: Rate of Event(s) of Interest (in this example, number of AEs
   reported over the course of treatment in days); Carried from
   `dfTransformed`.
 - `OverallMetric`: Aggregate metric for the group that is being
   assessed. ( sum(Numerator) / sum(Denominator) ).
-- `Factor`: Calculated over-dispersion adjustment factor (mean of the
-  z-score sum of squares calculated in the analysis functions).
-- `Score`: Calculated Residual (per site).
+- `Factor`: Over-dispersion adjustment factor (the mean of the squared
+  unadjusted z-scores across all groups).
+- `Score`: Over-dispersion-adjusted z-score (per site).
 
 ------------------------------------------------------------------------
 
 #### 4. Create `dfFlagged`
 
 The data frame `dfFlagged` is derived from `dfAnalyzed` using the
-[`Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md)
+[`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md)
 function. The resulting `dfFlagged` data frame will contain site-level
 analysis results data with flagging incorporated based on a
 pre-specified statistical threshold to highlight possible outliers.
 
 ``` r
 
-dfFlagged <- Flag(dfAnalyzed, vThreshold = c(-3, -2, 2, 3))
+dfFlagged <- Flag(
+  dfAnalyzed,
+  vThreshold = c(-2, -1, 2, 3),
+  nAccrualThreshold = 30,
+  strAccrualMetric = "Denominator"
+)
+#> ℹ 32 Group(s) have insufficient sample size due to KRI denominator less than 30: 0X7203, 0X5132, 0X012, 0X6284, 0X4050, 0X9427, 0X3833, 0X2831, 0X6450, 0X5070, 0X2193, 0X5089, 0X5391, 0X6269, 0X4352, 0X4766, 0X6394, 0X1211, 0X2615, 0X3686, 0X1259, 0X6457, 0X002, 0X3423, 0X3939, 0X8015, 0X1391, 0X9242, 0X6562, 0X8487, 0X9570, 0X7965
+#> These group(s) will not have KRI score and flag summarized.
 #> ℹ Sorted dfFlagged using custom Flag order: 2.Sorted dfFlagged using custom Flag order: -2.Sorted dfFlagged using custom Flag order: 1.Sorted dfFlagged using custom Flag order: -1.Sorted dfFlagged using custom Flag order: 0.
 ```
 
-The default flagging function for the normal approximation method is
-[`Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md)
-and the default threshold is (-3, -2, 2, 3). Using our example AE data,
-`dfFlagged` contains the following columns:
+The thresholds above match the AE KRI workflow (`kri0001`) in
+`{gsm.kri}`. Note that they differ from the generic
+[`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md)
+defaults of (-3, -2, 2, 3); the appropriate thresholds depend on the
+KRI. Groups whose `Denominator` (here, total days on study) is below
+`nAccrualThreshold` are not evaluated, and their `Score` and `Flag` are
+set to `NA`. Using our example AE data, `dfFlagged` contains the
+following columns:
 
 - `GroupID`: Group Identifier (default is Site ID)
 - `GroupLevel`: Type of Group specified in `GroupID` (Country, Site)
 - `Numerator`: Cumulative Number of Event(s) of Interest (in this
   example, number of AEs reported across subjects); Carried from
   `dfAnalyzed`
-- `Denominator`: Cumulative Time on Treatment (in days, across
-  subjects); Carried from `dfAnalyzed`
+- `Denominator`: Cumulative Time on Study (in days, across subjects);
+  Carried from `dfAnalyzed`
 - `Metric`: Rate of Event(s) of Interest (in this example, number of AEs
   reported over the course of treatment in days); Carried from
   `dfAnalyzed`
 - `OverallMetric`: Aggregate metric for the group that is being
   assessed. ( sum(Numerator) / sum(Denominator) ).
-- `Factor`: Calculated over-dispersion adjustment factor (mean of the
-  z-score sum of squares calculated in the analysis functions); Carried
-  from `dfAnalyzed`.
-- `Score`: Calculated Residual (per site); Carried from `dfAnalyzed`
+- `Factor`: Over-dispersion adjustment factor (the mean of the squared
+  unadjusted z-scores across all groups); Carried from `dfAnalyzed`.
+- `Score`: Over-dispersion-adjusted z-score (per site); Carried from
+  `dfAnalyzed`
 - `Flag`: Flag Indicating Possible Statistical Outliers; Valid values
   for this variable include -2, -1, 0, 1, and 2, which determine the
   “extremeness” of the outlier. -2 and 2 represent more extreme
-  outliers, -1 and 1 represent less extreme outliers, and 0 represents a
-  non-outlier.
+  outliers, -1 and 1 represent less extreme outliers, 0 represents a
+  non-outlier, and `NA` indicates the group did not meet the accrual
+  threshold.
 
 ------------------------------------------------------------------------
 
 #### 5. Create `dfSummary`
 
 The data frame `dfSummary` is derived from `dfFlagged` using the
-[`Summarize()`](https://gilead-biostats.github.io/gsm.core/reference/Summarize.md)
+[`Summarize()`](https://gilead-public.github.io/gsm.core/reference/Summarize.md)
 function. The resulting `dfSummary` data frame will contain the most
 relevant columns from `dfFlagged` with data sorted in a meaningful way
 to provide a concise overview of the assessment. Flagged sites will sort
-earlier than non-flagged sites, with the more “extreme” outliers
-displayed first. The columns in `dfSummary` include:
+earlier than non-flagged sites, in the flag order 2, -2, 1, -1, 0;
+within each flag level, sites are sorted by descending absolute `Metric`
+(not by `Score`). The columns in `dfSummary` include:
 
 - `GroupID`: Group Identifier (default is Site ID)
 - `GroupLevel`: Type of Group specified in `GroupID` (Country, Site)
 - `Numerator`: Cumulative Number of Event(s) of Interest (in this
   example, number of AEs reported across subjects); Carried from
-  `dfAnalyzed`
-- `Denominator`: Cumulative Time on Treatment (in days, across
-  subjects); Carried from `dfAnalyzed`
+  `dfFlagged`
+- `Denominator`: Cumulative Time on Study (in days, across subjects);
+  Carried from `dfFlagged`
 - `Metric`: Rate of Event(s) of Interest (in this example, number of AEs
   reported over the course of treatment in days)
-- `Score`: Calculated Residual (per site)
+- `Score`: Over-dispersion-adjusted z-score (per site)
 - `Flag`: Flag Indicating Possible Statistical Outliers; Valid values
   for this variable include -2, -1, 0, 1, and 2, which determine the
   “extremeness” of the outlier. -2 and 2 represent more extreme
-  outliers, -1 and 1 represent less extreme outliers, and 0 represents a
-  non-outlier.
+  outliers, -1 and 1 represent less extreme outliers, 0 represents a
+  non-outlier, and `NA` indicates the group did not meet the accrual
+  threshold.
 
 ``` r
 
@@ -240,15 +263,15 @@ dfSummary <- Summarize(dfFlagged)
 ## Recap - Normal Approximation Adverse Event KRI
 
 - `dfInput` used as original input using
-  [`Input_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Input_Rate.md)
+  [`Input_Rate()`](https://gilead-public.github.io/gsm.core/reference/Input_Rate.md)
 - `dfTransformed` created from `dfInput` using
-  [`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Transform_Rate.md)
+  [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/reference/Transform_Rate.md)
 - `dfAnalyzed` created from `dfTransformed` using
-  [`Analyze_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_NormalApprox.md)
+  `Analyze_NormalApprox(strType = "rate")`
 - `dfFlagged` created from `dfAnalyzed` using
-  [`Flag_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/reference/Flag_NormalApprox.md)
+  [`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md)
 - `dfSummary` created from `dfFlagged` using
-  [`Summarize()`](https://gilead-biostats.github.io/gsm.core/reference/Summarize.md)
+  [`Summarize()`](https://gilead-public.github.io/gsm.core/reference/Summarize.md)
 
 ------------------------------------------------------------------------
 
@@ -261,60 +284,67 @@ of the most commonly called upon functions.
 
 #### Mapping Functions
 
-- [`RunQuery()`](https://gilead-biostats.github.io/gsm.core/reference/RunQuery.md):
+- [`workr::RunQuery()`](https://gilead-public.github.io/workr/reference/RunQuery.html):
   Run a SQL query to create new data.frames with filtering and column
   name specifications.
-- [`Input_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Input_Rate.md):
+  ([`gsm.core::RunQuery()`](https://gilead-public.github.io/gsm.core/reference/RunQuery.md)
+  is a deprecated wrapper for this function.)
+- [`Input_Rate()`](https://gilead-public.github.io/gsm.core/reference/Input_Rate.md):
   Calculate a subject level rate from raw numerator and denominator data
 
 #### Transform Functions
 
-- [`Transform_Rate()`](https://gilead-biostats.github.io/gsm.core/reference/Transform_Rate.md):
+- [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/reference/Transform_Rate.md):
   Calculates cumulative rate of Event(s) of Interest per site
-- [`Transform_Count()`](https://gilead-biostats.github.io/gsm.core/reference/Transform_Count.md):
+- [`Transform_Count()`](https://gilead-public.github.io/gsm.core/reference/Transform_Count.md):
   Calculates cumulative number of Event(s) of Interest per site
 
 #### Analyze Functions
 
-- [`Analyze_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_NormalApprox.md):
+- [`Analyze_NormalApprox()`](https://gilead-public.github.io/gsm.core/reference/Analyze_NormalApprox.md):
   Uses funnel plot method with normal approximation to create analysis
   results for percentage/rate.
-- [`Analyze_Fisher()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_Fisher.md):
+- [`Analyze_Fisher()`](https://gilead-public.github.io/gsm.core/reference/Analyze_Fisher.md):
   Uses Fisher’s Exact Test to determine if there are non-random
   associations between a site and a given KRI
-- [`Analyze_Identity()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_Identity.md):
-  Used in the data pipeline between `Transform()` and
-  [`Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md)
-  functions to rename KRI and Score columns
-- [`Analyze_Poisson()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_Poisson.md):
+- [`Analyze_Identity()`](https://gilead-public.github.io/gsm.core/reference/Analyze_Identity.md):
+  Used in the data pipeline between `Transform_*()` and
+  [`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md)
+  to copy a column (`Metric` by default, set with `strValueCol`) into a
+  new `Score` column. All input columns are retained.
+- [`Analyze_Poisson()`](https://gilead-public.github.io/gsm.core/reference/Analyze_Poisson.md):
   Uses a Poisson model to describe the distribution of events in the
   overall site population, i.e., determine how many times an event is
   likely to occur at a site over a specified treatment period
 
 #### Flag Functions
 
-- [`Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md):
+- [`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md):
   Default flagging function for all assessments
-- [`Flag_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/reference/Flag_NormalApprox.md):
-  Deprecated flagging function when
-  [`Analyze_NormalApprox()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_NormalApprox.md)
-  is used for an assessment.
-- [`Flag_Poisson()`](https://gilead-biostats.github.io/gsm.core/reference/Flag_Poisson.md):
-  Deprecated flagging function when
-  [`Analyze_Poisson()`](https://gilead-biostats.github.io/gsm.core/reference/Analyze_Poisson.md)
-  is used for an assessment
+- [`Flag_NormalApprox()`](https://gilead-public.github.io/gsm.core/reference/Flag_NormalApprox.md):
+  Alias for
+  [`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md),
+  retained for backward compatibility; use
+  [`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md)
+  instead.
+- [`Flag_Poisson()`](https://gilead-public.github.io/gsm.core/reference/Flag_Poisson.md):
+  Alias for
+  [`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md),
+  retained for backward compatibility; use
+  [`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md)
+  instead.
 
 #### What Statistical Models Are Available For Each Assessment?
 
 - By default, all yaml workflow assessments specified in the
   `inst/workflow/` directory of the `{gsm.kri}` package use the [normal
-  approximation](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-normal-approximation-method)
+  approximation](https://gilead-public.github.io/gsm.core/articles/KRIMethod.html#the-normal-approximation-method)
   method.
 - Optionally, other statistical methods include:
-  [**Poisson**](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-poisson-regression-method),
+  [**Poisson**](https://gilead-public.github.io/gsm.core/articles/KRIMethod.html#the-poisson-regression-method),
   [**Fisher’s
-  Exact**](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-fishers-exact-method),
+  Exact**](https://gilead-public.github.io/gsm.core/articles/KRIMethod.html#the-fishers-exact-method),
   and
-  [**Identity**](https://gilead-biostats.github.io/gsm.core/articles/KRI%20Method.html#the-identity-method).
+  [**Identity**](https://gilead-public.github.io/gsm.core/articles/KRIMethod.html#the-identity-method).
 
 ![](data_analysis_combined.png)

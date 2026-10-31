@@ -16,7 +16,7 @@ Summarize(dfFlagged, nMinDenominator = lifecycle::deprecated())
 - dfFlagged:
 
   data.frame in format produced by
-  [`Flag()`](https://gilead-biostats.github.io/gsm.core/reference/Flag.md).
+  [`Flag()`](https://gilead-public.github.io/gsm.core/reference/Flag.md).
 
 - nMinDenominator:
 
