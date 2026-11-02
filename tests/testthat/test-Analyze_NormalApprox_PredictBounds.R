@@ -50,7 +50,10 @@ test_that("Analyze_NormalApprox_PredictBounds processes data correctly (#21)", {
 
   dfBounds <- quiet_Analyze_NormalApprox_PredictBounds(dfTransformed)
 
-  expect_true(all(c("Threshold", "LogDenominator", "Denominator", "Numerator") %in% names(dfBounds)))
+  expect_true(all(
+    c("Threshold", "LogDenominator", "Denominator", "Numerator") %in%
+      names(dfBounds)
+  ))
   expect_equal(dfBounds$Threshold[1], -3)
 })
 

@@ -62,7 +62,10 @@ CheckSpec <- function(lData, lSpec) {
   allCols <- c()
   missingCols <- c()
   # remove all lSpec entries where we are requesting `_all` columns, and no other columns are included in the df's spec
-  lSpecDataFrames <- which(sapply(lSpec, function(x) (names(x)[1] != "_all") | (length(names(x)) > 1))) %>% names()
+  lSpecDataFrames <- which(sapply(lSpec, function(x) {
+    (names(x)[1] != "_all") | (length(names(x)) > 1)
+  })) %>%
+    names()
   for (strDataFrame in lSpecDataFrames) {
     chrDataFrameColnames <- colnames(lData[[strDataFrame]])
     # check classes in data
@@ -106,7 +109,10 @@ CheckSpec <- function(lData, lSpec) {
 
       thisMissingCols <- lSpecColumns[!lSpecColumns %in% lDataColumns]
       if (length(thisMissingCols) > 0) {
-        missingCols <- c(missingCols, paste(strDataFrame, thisMissingCols, sep = "$"))
+        missingCols <- c(
+          missingCols,
+          paste(strDataFrame, thisMissingCols, sep = "$")
+        )
       }
     }
   }

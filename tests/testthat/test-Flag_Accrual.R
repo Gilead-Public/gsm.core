@@ -41,5 +41,7 @@ test_that("Function correctly applies accrual threshold (#7, #28)", {
     },
     "have insufficient sample size due to KRI denominator less than 4"
   )
-  expect_true(all(is.na(result_diff$Flag[which((result_diff$Denominator - result_diff$Numerator) < 4)])))
+  expect_true(all(is.na(result_diff$Flag[which(
+    (result_diff$Denominator - result_diff$Numerator) < 4
+  )])))
 })

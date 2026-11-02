@@ -1,5 +1,8 @@
 test_that("gsm.core::RunStep forwards to workr with a deprecation warning", {
-  lStep <- list(name = "dummy_function", params = list(x = "lMeta", y = "lData"))
+  lStep <- list(
+    name = "dummy_function",
+    params = list(x = "lMeta", y = "lData")
+  )
   lData <- list(data1 = 100)
   lMeta <- list(meta1 = 200)
 

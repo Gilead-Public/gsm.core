@@ -172,7 +172,10 @@ test_that("SetLogger extracts appender from logger without threshold (#159)", {
   })
 
   my_appender <- function(level, ...) NULL
-  fake_logger <- structure(list(appenders = list(my_appender)), class = "logger")
+  fake_logger <- structure(
+    list(appenders = list(my_appender)),
+    class = "logger"
+  )
   SetLogger(fake_logger)
   expect_equal(GetLogLevel(), "DEBUG")
   expect_identical(GetLogAppender(), my_appender)
