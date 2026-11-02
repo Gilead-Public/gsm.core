@@ -257,8 +257,8 @@ components:
   Full list of GitHub Actions utilized can be found in the [GitHub
   Actions
   Workflows](https://gilead-public.github.io/gsm.utils/index.html#github-actions-workflows)
-  section of the
-  [gsm.utils](https://gilead-biostats.github.io/gsm.utils) package.
+  section of the [gsm.utils](https://gilead-public.github.io/gsm.utils)
+  package.
 - **Package Checks** - Standard R package checks must pass before PRs
   are merged.
 

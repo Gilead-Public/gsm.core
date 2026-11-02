@@ -38,7 +38,7 @@ a given repository. Blank issues are disabled, so every issue starts
 from one of the templates above. The templates are maintained in
 [`gsm.utils`](https://github.com/Gilead-Public/gsm.utils) and are rolled
 out to all `gsm` packages with
-[`gsm.utils::update_gsm_package()`](https://rdrr.io/pkg/gsm.utils/man/update_gsm_package.html)
+[`gsm.utils::update_gsm_package()`](https://gilead-public.github.io/gsm.utils/reference/update_gsm_package.html)
 (see [Repository Tooling](#repository-tooling)).
 
 The `Requirement` template automatically adds the issue to the gsm
@@ -242,7 +242,7 @@ gsm.utils::update_gsm_package(strPackageDir = ".")
   (`add_actions()`) and remove deprecated ones.
 
 New `gsm` extension packages should be scaffolded with
-[`gsm.utils::init_gsm_package()`](https://rdrr.io/pkg/gsm.utils/man/init_gsm_package.html),
+[`gsm.utils::init_gsm_package()`](https://gilead-public.github.io/gsm.utils/reference/init_gsm_package.html),
 which creates the package skeleton, configures `pkgdown` + GitHub Pages
 and `testthat`, and then calls `update_gsm_package()`.
 
@@ -491,7 +491,7 @@ No sensitive data or hardcoded paths.
 Qualification specs + reports updated.
 
 Issue templates and workflows up to date
-([`gsm.utils::update_gsm_package()`](https://rdrr.io/pkg/gsm.utils/man/update_gsm_package.html)).
+([`gsm.utils::update_gsm_package()`](https://gilead-public.github.io/gsm.utils/reference/update_gsm_package.html)).
 
 All GitHub Actions checks pass.
 
@@ -524,7 +524,7 @@ listed in `DESCRIPTION` given this quarter’s release plan.
     `DESCRIPTION` given this quarter’s release plan and the instructions
     in the Release Order section below.
 6.  Run
-    [`gsm.utils::update_gsm_package()`](https://rdrr.io/pkg/gsm.utils/man/update_gsm_package.html)
+    [`gsm.utils::update_gsm_package()`](https://gilead-public.github.io/gsm.utils/reference/update_gsm_package.html)
     so issue templates and workflows match the current standards.
 7.  Create and merge a PR for the release branch.
 8.  Tag the release with the semantic version (e.g. `v1.1.0`).
