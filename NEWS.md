@@ -1,3 +1,5 @@
+# gsm.core (development version)
+
 # gsm.core v1.3.2
 
 This patch release refreshes the bundled `lSource` and reporting data for the IP Monitoring (IP non-starters and premature treatment discontinuation) and Repeat Measurements metrics, and moves workflow runtime tests to `{workr}`.
