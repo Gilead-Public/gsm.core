@@ -7,12 +7,28 @@ test_that("gsm.core runtime wrappers warn and forward", {
   )
 
   mapped <- suppressMessages(workr::RunWorkflows(wf_mapping[1:2], lRaw))
-  expected <- suppressMessages(workr::RunWorkflow(workflow, mapped, bReturnResult = FALSE, bKeepInputData = FALSE))
+  expected <- suppressMessages(workr::RunWorkflow(
+    workflow,
+    mapped,
+    bReturnResult = FALSE,
+    bKeepInputData = FALSE
+  ))
 
-  expect_warning(gsm.core::MakeWorkflowList(strPath = "testdata/mappings"), "deprecated")
-  expect_warning(suppressMessages(gsm.core::RunWorkflows(wf_mapping[1:2], lRaw)), "deprecated")
   expect_warning(
-    actual <- suppressMessages(gsm.core::RunWorkflow(workflow, mapped, bReturnResult = FALSE, bKeepInputData = FALSE)),
+    gsm.core::MakeWorkflowList(strPath = "testdata/mappings"),
+    "deprecated"
+  )
+  expect_warning(
+    suppressMessages(gsm.core::RunWorkflows(wf_mapping[1:2], lRaw)),
+    "deprecated"
+  )
+  expect_warning(
+    actual <- suppressMessages(gsm.core::RunWorkflow(
+      workflow,
+      mapped,
+      bReturnResult = FALSE,
+      bKeepInputData = FALSE
+    )),
     "deprecated"
   )
   expect_equal(actual, expected)
@@ -69,7 +85,12 @@ lMapped <- quiet_RunWorkflows(lWorkflows = wf_mapping, lData = lRaw)
 # Run Metrics
 results <- purrr::map(
   workflows,
-  ~ quiet_RunWorkflow(lWorkflow = .x, lData = lMapped, bReturnResult = FALSE, bKeepInputData = FALSE)
+  ~ quiet_RunWorkflow(
+    lWorkflow = .x,
+    lData = lMapped,
+    bReturnResult = FALSE,
+    bKeepInputData = FALSE
+  )
 )
 
 yaml_outputs <- purrr::map(
@@ -77,31 +98,10 @@ yaml_outputs <- purrr::map(
   ~ .x[!grepl("lCharts", .x)]
 )
 
-test_that("RunWorkflow preserves all steps when bReturnResult = FALSE", {
-  expect_no_error({
-    purrr::iwalk(
-      workflows,
-      function(this_workflow, this_name) {
-        expect_identical(
-          this_workflow, results[[this_name]][names(this_workflow)]
-        )
-      }
-    )
-  })
-})
-
-test_that("RunWorkflow contains all outputs from yaml steps", {
-  expect_no_error({
-    purrr::iwalk(
-      results,
-      function(this_result, this_name) {
-        expect_setequal(yaml_outputs[[this_name]], names(this_result$lData))
-      }
-    )
-  })
-})
-
-test_that("RunWorkflow contains all outputs from yaml steps with populated fields (contains rows of data)", {
+# The workflow runtime itself is tested in {workr}. This test stays in
+# {gsm.core} because it checks that every gsm.core analytics step in the
+# metric workflows returns data.
+test_that("gsm.core metric workflow steps all produce populated outputs (contains rows of data)", {
   expect_no_error({
     purrr::iwalk(
       yaml_outputs,

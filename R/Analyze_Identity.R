@@ -27,8 +27,14 @@
 #' @export
 
 Analyze_Identity <- function(dfTransformed, strValueCol = "Metric") {
-  stop_if(!is.data.frame(dfTransformed), message = "dfTransformed is not a data.frame")
-  stop_if(!(strValueCol %in% names(dfTransformed)), message = "strValueCol not found in dfTransformed")
+  stop_if(
+    !is.data.frame(dfTransformed),
+    message = "dfTransformed is not a data.frame"
+  )
+  stop_if(
+    !(strValueCol %in% names(dfTransformed)),
+    message = "strValueCol not found in dfTransformed"
+  )
 
   dfAnalyzed <- dfTransformed %>%
     mutate(

@@ -7,8 +7,24 @@ test_that("output created as expected and has correct structure", {
     "Fitting log-linked Poisson generalized linear model"
   )
   expect_true(is.data.frame(ae_anly))
-  expect_equal(sort(unique(analyticsInput$GroupID[which(analyticsInput$Denominator != 0)])), sort(ae_anly$GroupID))
-  expect_equal(names(ae_anly), c("GroupID", "GroupLevel", "Numerator", "Denominator", "Metric", "Score", "PredictedCount"))
+  expect_equal(
+    sort(unique(analyticsInput$GroupID[which(
+      analyticsInput$Denominator != 0
+    )])),
+    sort(ae_anly$GroupID)
+  )
+  expect_equal(
+    names(ae_anly),
+    c(
+      "GroupID",
+      "GroupLevel",
+      "Numerator",
+      "Denominator",
+      "Metric",
+      "Score",
+      "PredictedCount"
+    )
+  )
 })
 
 test_that("incorrect inputs throw errors", {

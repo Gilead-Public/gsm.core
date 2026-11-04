@@ -85,16 +85,31 @@ Analyze_NormalApprox_PredictBounds <- function(
   )
 
   if (strType == "binary") {
-    dfBounds <- tidyr::expand_grid(Threshold = vThreshold, Denominator = vRange) %>%
+    dfBounds <- tidyr::expand_grid(
+      Threshold = vThreshold,
+      Denominator = vRange
+    ) %>%
       filter(.data$Denominator > 0) %>%
       mutate(
         LogDenominator = log(.data$Denominator),
         # Calculate expected event percentage at sample size.
         vMu = sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator),
-        phi = mean(((dfTransformed$Metric - sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator)) /
-          sqrt(sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator) * (1 - sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator)) / dfTransformed$Denominator))^2),
+        phi = mean(
+          ((dfTransformed$Metric -
+            sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator)) /
+            sqrt(
+              sum(dfTransformed$Numerator) /
+                sum(dfTransformed$Denominator) *
+                (1 -
+                  sum(dfTransformed$Numerator) /
+                    sum(dfTransformed$Denominator)) /
+                dfTransformed$Denominator
+            ))^2
+        ),
         # Calculate lower and upper bounds of expected event percentage given specified threshold.
-        Metric = .data$vMu + .data$Threshold * sqrt(.data$phi * .data$vMu * (1 - .data$vMu) / .data$Denominator),
+        Metric = .data$vMu +
+          .data$Threshold *
+            sqrt(.data$phi * .data$vMu * (1 - .data$vMu) / .data$Denominator),
         Numerator = .data$Metric * .data$Denominator
       ) %>%
       # Only positive percentages are meaningful bounds
@@ -107,16 +122,27 @@ Analyze_NormalApprox_PredictBounds <- function(
         "Metric"
       )
   } else if (strType == "rate") {
-    dfBounds <- tidyr::expand_grid(Threshold = vThreshold, Denominator = vRange) %>%
+    dfBounds <- tidyr::expand_grid(
+      Threshold = vThreshold,
+      Denominator = vRange
+    ) %>%
       filter(.data$Denominator > 0) %>%
       mutate(
         LogDenominator = log(.data$Denominator),
         # Calculate expected rate at given exposure.
         vMu = sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator),
-        phi = mean(((dfTransformed$Metric - sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator)) /
-          sqrt(sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator) / dfTransformed$Denominator))^2),
+        phi = mean(
+          ((dfTransformed$Metric -
+            sum(dfTransformed$Numerator) / sum(dfTransformed$Denominator)) /
+            sqrt(
+              sum(dfTransformed$Numerator) /
+                sum(dfTransformed$Denominator) /
+                dfTransformed$Denominator
+            ))^2
+        ),
         # Calculate lower and upper bounds of expected event count given specified threshold.
-        Metric = .data$vMu + .data$Threshold * sqrt(.data$phi * .data$vMu / .data$Denominator),
+        Metric = .data$vMu +
+          .data$Threshold * sqrt(.data$phi * .data$vMu / .data$Denominator),
         Numerator = .data$Metric * .data$Denominator
       ) %>%
       # Only positive counts are meaningful bounds

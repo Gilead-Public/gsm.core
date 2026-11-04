@@ -38,7 +38,10 @@ Analyze_Poisson_PredictBounds <- function(
   vThreshold = c(-5, 5),
   nStep = NULL
 ) {
-  rlang::check_installed("lamW", reason = "to run `Analyze_Poisson_PredictBounds()`")
+  rlang::check_installed(
+    "lamW",
+    reason = "to run `Analyze_Poisson_PredictBounds()`"
+  )
 
   if (is.null(vThreshold)) {
     vThreshold <- c(-5, 5)
@@ -91,10 +94,15 @@ Analyze_Poisson_PredictBounds <- function(
     by = nStep
   )
 
-  dfBounds <- tidyr::expand_grid(Threshold = vThreshold, LogDenominator = vRange) %>%
+  dfBounds <- tidyr::expand_grid(
+    Threshold = vThreshold,
+    LogDenominator = vRange
+  ) %>%
     mutate(
       # Calculate expected event count at given exposure.
-      vMu = as.numeric(exp(.data$LogDenominator * cModel$coefficients[2] + cModel$coefficients[1])),
+      vMu = as.numeric(exp(
+        .data$LogDenominator * cModel$coefficients[2] + cModel$coefficients[1]
+      )),
       # Calculate lower bound of expected event count given specified threshold.
       vEst = .data$Threshold^2 - 2 * .data$vMu,
       vWEst = .data$vEst / (2 * exp(1) * .data$vMu),

@@ -38,16 +38,22 @@ test_that("ParseThreshold with single value returns numeric vector with one elem
 
 # Test Case 5 - Negative Values
 test_that("ParseThreshold with negative values returns sorted numeric vector", {
-  expect_equal(suppressMessages({
-    ParseThreshold("-3,-1,-4,-2")
-  }), c(-4, -3, -2, -1))
+  expect_equal(
+    suppressMessages({
+      ParseThreshold("-3,-1,-4,-2")
+    }),
+    c(-4, -3, -2, -1)
+  )
 })
 
 # Test Case 6 - Floating Point Numbers
 test_that("ParseThreshold with floating point numbers returns sorted numeric vector", {
-  expect_equal(suppressMessages({
-    ParseThreshold("3.5,1.2,4.8,2.3")
-  }), c(1.2, 2.3, 3.5, 4.8))
+  expect_equal(
+    suppressMessages({
+      ParseThreshold("3.5,1.2,4.8,2.3")
+    }),
+    c(1.2, 2.3, 3.5, 4.8)
+  )
 })
 
 # Test Case 7 - Mixed Valid and Invalid Input

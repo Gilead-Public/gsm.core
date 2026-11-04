@@ -13,7 +13,15 @@ test_that("output created as expected and has correct structure", {
   expect_true(is.data.frame(ae_default))
   expect_equal(
     names(ae_default),
-    c("GroupID", "GroupLevel", "Numerator", "Denominator", "Metric", "Score", "Flag")
+    c(
+      "GroupID",
+      "GroupLevel",
+      "Numerator",
+      "Denominator",
+      "Metric",
+      "Score",
+      "Flag"
+    )
   )
   expect_equal(sort(unique(dfFlagged$GroupID)), sort(ae_default$GroupID))
 
@@ -21,7 +29,15 @@ test_that("output created as expected and has correct structure", {
   expect_true(is.data.frame(ae_finding))
   expect_equal(
     names(ae_finding),
-    c("GroupID", "GroupLevel", "Numerator", "Denominator", "Metric", "Score", "Flag")
+    c(
+      "GroupID",
+      "GroupLevel",
+      "Numerator",
+      "Denominator",
+      "Metric",
+      "Score",
+      "Flag"
+    )
   )
   expect_equal(sort(unique(dfFlagged$GroupID)), sort(ae_finding$GroupID))
 })
@@ -62,5 +78,8 @@ test_that("output is correctly sorted by Flag and Score", {
     Flag = c(rep(-1, 9), rep(0, 91))
   )
 
-  expect_equal(Summarize(sim2)$Score, c(6, 5, 5, 4, 4, 3, 3, 2, 1, rep(11, 89), 2, 1))
+  expect_equal(
+    Summarize(sim2)$Score,
+    c(6, 5, 5, 4, 4, 3, 3, 2, 1, rep(11, 89), 2, 1)
+  )
 })
