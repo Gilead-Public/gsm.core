@@ -56,16 +56,37 @@ Flag <- function(
   nAccrualThreshold = NULL,
   strAccrualMetric = NULL
 ) {
-  stop_if(cnd = !is.data.frame(dfAnalyzed), message = "dfAnalyzed is not a data frame")
-  stop_if(cnd = !is.character(strColumn), message = "strColumn is not character")
+  stop_if(
+    cnd = !is.data.frame(dfAnalyzed),
+    message = "dfAnalyzed is not a data frame"
+  )
+  stop_if(
+    cnd = !is.character(strColumn),
+    message = "strColumn is not character"
+  )
   stop_if(cnd = !is.numeric(vThreshold), message = "vThreshold is not numeric")
-  stop_if(cnd = !all(vThreshold == sort(vThreshold)), message = "vThreshold is not in ascending order")
+  stop_if(
+    cnd = !all(vThreshold == sort(vThreshold)),
+    message = "vThreshold is not in ascending order"
+  )
   stop_if(cnd = is.null(vThreshold), message = "vThreshold cannot be NULL")
-  stop_if(cnd = length(strColumn) != 1, message = "strColumn must be length of 1")
-  stop_if(cnd = !(strColumn %in% names(dfAnalyzed)), message = "strColumn not found in dfAnalyzed")
+  stop_if(
+    cnd = length(strColumn) != 1,
+    message = "strColumn must be length of 1"
+  )
+  stop_if(
+    cnd = !(strColumn %in% names(dfAnalyzed)),
+    message = "strColumn not found in dfAnalyzed"
+  )
   stop_if(cnd = !is.numeric(vFlag), message = "vFlag must be numeric")
-  stop_if(cnd = length(vFlag) != length(vThreshold) + 1, message = "Improper number of Flag values provided")
-  stop_if(cnd = !is.numeric(vFlagOrder) & !is.null(vFlagOrder), message = "vFlagOrder must be numeric or NULL")
+  stop_if(
+    cnd = length(vFlag) != length(vThreshold) + 1,
+    message = "Improper number of Flag values provided"
+  )
+  stop_if(
+    cnd = !is.numeric(vFlagOrder) & !is.null(vFlagOrder),
+    message = "vFlagOrder must be numeric or NULL"
+  )
 
   dfFlagged <- dfAnalyzed
 
@@ -180,15 +201,14 @@ Flag_Poisson <- Flag
 #' @param strAccrualMetric `character` Specifies the Metric to apply `nAccrualThreshold` to in order to determine the validity of a flag. Options are "Numerator", "Denominator" or "Difference". If "Difference" is specified, the threshold is based on the difference between the Denominator and the Numerator for a given Group. Default: `NULL`.
 #'
 #' @keywords internal
-Flag_Accrual <- function(dfFlagged,
-  nAccrualThreshold,
-  strAccrualMetric) {
+Flag_Accrual <- function(dfFlagged, nAccrualThreshold, strAccrualMetric) {
   if (strAccrualMetric == "Denominator") {
     Accrual_Flag <- dfFlagged$Denominator < nAccrualThreshold
   } else if (strAccrualMetric == "Numerator") {
     Accrual_Flag <- dfFlagged$Numerator < nAccrualThreshold
   } else if (strAccrualMetric == "Difference") {
-    Accrual_Flag <- (dfFlagged$Denominator - dfFlagged$Numerator) < nAccrualThreshold
+    Accrual_Flag <- (dfFlagged$Denominator - dfFlagged$Numerator) <
+      nAccrualThreshold
   }
   dfFlagged$Score[Accrual_Flag] <- NA
   dfFlagged$Flag[Accrual_Flag] <- NA

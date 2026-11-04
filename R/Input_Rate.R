@@ -75,7 +75,10 @@ Input_Rate <- function(
 ) {
   # Check if data frames are NULL
   stop_if(cnd = is.null(dfSubjects), message = "dfSubjects must be provided")
-  stop_if(cnd = is.null(dfDenominator), message = "dfDenominator, must be provided")
+  stop_if(
+    cnd = is.null(dfDenominator),
+    message = "dfDenominator, must be provided"
+  )
   stop_if(cnd = is.null(dfNumerator), message = "dfNumerator, must be provided")
 
   # must be eit
@@ -84,23 +87,47 @@ Input_Rate <- function(
 
   # Check if strNumeratorCol is Null when strNumeratorMethod is 'Sum'
   if (strNumeratorMethod == "Sum") {
-    stop_if(cnd = is.null(strNumeratorCol), message = "strNumeratorCol must be provided when strNumeratorMethod is 'Sum'")
-    stop_if(cnd = !is.numeric(dfNumerator[[strNumeratorCol]]), message = "strNumeratorCol must be numeric when strNumeratorMethod is `Sum`")
+    stop_if(
+      cnd = is.null(strNumeratorCol),
+      message = "strNumeratorCol must be provided when strNumeratorMethod is 'Sum'"
+    )
+    stop_if(
+      cnd = !is.numeric(dfNumerator[[strNumeratorCol]]),
+      message = "strNumeratorCol must be numeric when strNumeratorMethod is `Sum`"
+    )
   }
 
   # Check if strDenominatorCol is Null when strDenominatorMethod is 'Sum'
   if (strDenominatorMethod == "Sum") {
-    stop_if(cnd = is.null(strDenominatorCol), message = "strDenominatorCol must be provided when strDenominatorMethod is 'Sum'")
-    stop_if(cnd = !is.numeric(dfDenominator[[strDenominatorCol]]), message = "strDenominatorCol must be numeric when strDenominatorMethod is `Sum`")
+    stop_if(
+      cnd = is.null(strDenominatorCol),
+      message = "strDenominatorCol must be provided when strDenominatorMethod is 'Sum'"
+    )
+    stop_if(
+      cnd = !is.numeric(dfDenominator[[strDenominatorCol]]),
+      message = "strDenominatorCol must be numeric when strDenominatorMethod is `Sum`"
+    )
   }
 
   # check that "strSubjectCol" is in all dfs
-  stop_if(cnd = !(strSubjectCol %in% colnames(dfSubjects)), message = "`strSubjectCol` must be a column name of `dfSubjects`")
-  stop_if(cnd = !(strSubjectCol %in% colnames(dfNumerator)), message = "`strSubjectCol` must be a column name of `dfNumerator`")
-  stop_if(cnd = !(strSubjectCol %in% colnames(dfDenominator)), message = "`strSubjectCol` must be a column name of `dfDenominator`")
+  stop_if(
+    cnd = !(strSubjectCol %in% colnames(dfSubjects)),
+    message = "`strSubjectCol` must be a column name of `dfSubjects`"
+  )
+  stop_if(
+    cnd = !(strSubjectCol %in% colnames(dfNumerator)),
+    message = "`strSubjectCol` must be a column name of `dfNumerator`"
+  )
+  stop_if(
+    cnd = !(strSubjectCol %in% colnames(dfDenominator)),
+    message = "`strSubjectCol` must be a column name of `dfDenominator`"
+  )
 
   # check that "strGroupCol" is in dfSubjects
-  stop_if(cnd = !(strGroupCol %in% colnames(dfSubjects)), message = "`strGroupcol` must be a column name of `dfSubjects`")
+  stop_if(
+    cnd = !(strGroupCol %in% colnames(dfSubjects)),
+    message = "`strGroupcol` must be a column name of `dfSubjects`"
+  )
 
   # if `strGroupLevel` is null, use `strGroupCol`
   if (is.null(strGroupLevel)) {
@@ -120,18 +147,33 @@ Input_Rate <- function(
   # Calculate Numerator
   dfNumerator_subj <- dfNumerator %>%
     rename(SubjectID = {{ strSubjectCol }}) %>%
-    mutate(Numerator = if (strNumeratorMethod == "Count") 1 else .data[[strNumeratorCol]]) %>%
+    mutate(
+      Numerator = if (strNumeratorMethod == "Count") {
+        1
+      } else {
+        .data[[strNumeratorCol]]
+      }
+    ) %>%
     group_by(.data$SubjectID) %>%
     summarise(Numerator = sum(.data$Numerator, na.rm = TRUE))
 
   # Calculate Denominator
   dfDenominator_subj <- dfDenominator %>%
     rename(SubjectID = {{ strSubjectCol }}) %>%
-    mutate(Denominator = if (strDenominatorMethod == "Count") 1 else .data[[strDenominatorCol]]) %>%
+    mutate(
+      Denominator = if (strDenominatorMethod == "Count") {
+        1
+      } else {
+        .data[[strDenominatorCol]]
+      }
+    ) %>%
     group_by(.data$SubjectID) %>%
     summarise(Denominator = sum(.data$Denominator, na.rm = TRUE))
 
-  stop_if(cnd = all(dfDenominator_subj$Denominator == 0), message = "All denominator values are 0, please check `dfDenominator`")
+  stop_if(
+    cnd = all(dfDenominator_subj$Denominator == 0),
+    message = "All denominator values are 0, please check `dfDenominator`"
+  )
 
   # Merge Numerator and Denominator with Subject Data. Keep all data in Subject. Fill in missing numerator/denominators with 0
   dfInput <- dfSubjects %>%

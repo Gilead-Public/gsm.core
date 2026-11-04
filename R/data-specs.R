@@ -338,6 +338,6 @@ df_dim_desc <- function(df) {
     " rows and ",
     dim(df)[2],
     " columns:"
-  ) 
+  )
   # nocov end
 }

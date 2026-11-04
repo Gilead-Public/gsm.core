@@ -43,26 +43,40 @@ Analyze_NormalApprox <- function(
   dfTransformed,
   strType = "binary"
 ) {
-  stop_if(cnd = !is.data.frame(dfTransformed), message = "dfTransformed is not a data.frame")
   stop_if(
-    cnd = !all(c("GroupID", "GroupLevel", "Denominator", "Numerator", "Metric") %in% names(dfTransformed)),
+    cnd = !is.data.frame(dfTransformed),
+    message = "dfTransformed is not a data.frame"
+  )
+  stop_if(
+    cnd = !all(
+      c("GroupID", "GroupLevel", "Denominator", "Numerator", "Metric") %in%
+        names(dfTransformed)
+    ),
     message = "One or more of these columns not found: GroupID, GroupLevel, Denominator, Numerator, Metric"
   )
-  stop_if(cnd = !all(!is.na(dfTransformed[["GroupID"]])), message = "NA value(s) found in GroupID")
-  stop_if(cnd = !strType %in% c("binary", "rate"), message = "strType is not 'binary' or 'rate'")
+  stop_if(
+    cnd = !all(!is.na(dfTransformed[["GroupID"]])),
+    message = "NA value(s) found in GroupID"
+  )
+  stop_if(
+    cnd = !strType %in% c("binary", "rate"),
+    message = "strType is not 'binary' or 'rate'"
+  )
 
   # Caclulate Z-score with overdispersion --------------------------------------
   if (strType == "binary") {
     dfScore <- dfTransformed %>%
       mutate(
         vMu = sum(.data$Numerator) / sum(.data$Denominator),
-        z_0 = ifelse(.data$vMu == 0 | .data$vMu == 1,
+        z_0 = ifelse(
+          .data$vMu == 0 | .data$vMu == 1,
           0,
           (.data$Metric - .data$vMu) /
             sqrt(.data$vMu * (1 - .data$vMu) / .data$Denominator)
         ),
         phi = mean(.data$z_0^2),
-        z_i = ifelse(.data$vMu == 0 | .data$vMu == 1 | .data$phi == 0,
+        z_i = ifelse(
+          .data$vMu == 0 | .data$vMu == 1 | .data$phi == 0,
           0,
           (.data$Metric - .data$vMu) /
             sqrt(.data$phi * .data$vMu * (1 - .data$vMu) / .data$Denominator)
@@ -72,13 +86,15 @@ Analyze_NormalApprox <- function(
     dfScore <- dfTransformed %>%
       mutate(
         vMu = sum(.data$Numerator) / sum(.data$Denominator),
-        z_0 = ifelse(.data$vMu == 0,
+        z_0 = ifelse(
+          .data$vMu == 0,
           0,
           (.data$Metric - .data$vMu) /
             sqrt(.data$vMu / .data$Denominator)
         ),
         phi = mean(.data$z_0^2),
-        z_i = ifelse(.data$vMu == 0 | .data$phi == 0,
+        z_i = ifelse(
+          .data$vMu == 0 | .data$phi == 0,
           0,
           (.data$Metric - .data$vMu) /
             sqrt(.data$phi * .data$vMu / .data$Denominator)
@@ -105,7 +121,6 @@ Analyze_NormalApprox <- function(
     message = "`OverallMetric`, `Factor`, and `Score` columns created from normal approximation.",
     cli_detail = "inform"
   )
-
 
   return(dfAnalyzed)
 }

@@ -6,21 +6,54 @@ test_that("all input data frames must be non-null", {
 
 test_that("strNumeratorMethod and strDenominatorMethod must be 'Count' or 'Sum'", {
   test_df <- data.frame(SubjectID = 1:5)
-  expect_error(Input_Rate(test_df, test_df, test_df, strNumeratorMethod = "Invalid", strDenominatorMethod = "Count"))
-  expect_error(Input_Rate(test_df, test_df, test_df, strNumeratorMethod = "Sum", strDenominatorMethod = "Invalid"))
-  expect_error(Input_Rate(test_df, test_df, test_df, strNumeratorMethod = "Average", strDenominatorMethod = "Average"))
+  expect_error(Input_Rate(
+    test_df,
+    test_df,
+    test_df,
+    strNumeratorMethod = "Invalid",
+    strDenominatorMethod = "Count"
+  ))
+  expect_error(Input_Rate(
+    test_df,
+    test_df,
+    test_df,
+    strNumeratorMethod = "Sum",
+    strDenominatorMethod = "Invalid"
+  ))
+  expect_error(Input_Rate(
+    test_df,
+    test_df,
+    test_df,
+    strNumeratorMethod = "Average",
+    strDenominatorMethod = "Average"
+  ))
 })
 
 test_that("strNumeratorCol and strDenominatorCol must be provided when respective method is 'Sum'", {
   test_df <- data.frame(SubjectID = 1:5, Amount = 1:5)
-  expect_error(Input_Rate(test_df, test_df, test_df, strNumeratorMethod = "Sum"))
-  expect_error(Input_Rate(test_df, test_df, test_df, strDenominatorMethod = "Sum"))
+  expect_error(Input_Rate(
+    test_df,
+    test_df,
+    test_df,
+    strNumeratorMethod = "Sum"
+  ))
+  expect_error(Input_Rate(
+    test_df,
+    test_df,
+    test_df,
+    strDenominatorMethod = "Sum"
+  ))
 })
 
 test_that("strSubjectCol must exist in all data frames", {
   test_df_1 <- data.frame(SubjectID = 1:5)
   test_df_2 <- data.frame(DifferentID = 1:5)
-  expect_error(Input_Rate(test_df_1, test_df_1, test_df_2, strSubjectCol = "SubjectID"))
+  expect_error(Input_Rate(
+    test_df_1,
+    test_df_1,
+    test_df_2,
+    strSubjectCol = "SubjectID"
+  ))
 })
 
 test_that("basic functionality with count method works", {
@@ -67,7 +100,15 @@ test_that("test with method 'Sum' where columns are provided", {
     Amount = c(15, 5, 20)
   )
 
-  result <- Input_Rate(subjects, numerators, denominators, strNumeratorMethod = "Sum", strDenominatorMethod = "Sum", strNumeratorCol = "Amount", strDenominatorCol = "Amount")
+  result <- Input_Rate(
+    subjects,
+    numerators,
+    denominators,
+    strNumeratorMethod = "Sum",
+    strDenominatorMethod = "Sum",
+    strNumeratorCol = "Amount",
+    strDenominatorCol = "Amount"
+  )
   expected <- data.frame(
     SubjectID = 1:3,
     GroupID = 10:12,

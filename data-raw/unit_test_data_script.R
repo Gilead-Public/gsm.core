@@ -1,4 +1,3 @@
-
 # Create Unit Test Data ---------------------------------------------------
 # this is a helper script that can be used to (mostly) programatically update unit test data
 
@@ -9,12 +8,19 @@
 # 4. Check out the test data to make sure it is robust enough
 # 5. Use datapasta::tribble_paste() to update the data.R file used in unit testing
 
-
 # grab rawplus mappings
 # adam mappings will remain as-is since they haven't changed
 mappings <- c(
-  yaml::read_yaml(system.file("mappings", "mapping_rawplus.yaml", package = "gsm.core")),
-  yaml::read_yaml(system.file("mappings", "mapping_edc.yaml", package = "gsm.core"))
+  yaml::read_yaml(system.file(
+    "mappings",
+    "mapping_rawplus.yaml",
+    package = "gsm.core"
+  )),
+  yaml::read_yaml(system.file(
+    "mappings",
+    "mapping_edc.yaml",
+    package = "gsm.core"
+  ))
 )
 
 # clindata datasets to use to create test data
@@ -26,7 +32,8 @@ lData <- list(
   dfIE = clindata::rawplus_ie,
   dfLB = clindata::rawplus_lb,
   dfSTUDCOMP = clindata::rawplus_studcomp,
-  dfSDRGCOMP = clindata::rawplus_sdrgcomp %>% filter(.data$datapagename == "Blinded Study Drug Completion"),
+  dfSDRGCOMP = clindata::rawplus_sdrgcomp %>%
+    filter(.data$datapagename == "Blinded Study Drug Completion"),
   dfDATACHG = clindata::edc_data_change_rate,
   dfDATAENT = clindata::edc_data_entry_lag,
   dfQUERY = clindata::edc_queries
@@ -36,21 +43,25 @@ lData <- list(
 keepThesePpl <- c('0001', '0002', '0003')
 
 # subset dataframes to keep variables found in mapping
-reqVariables <- imap(mappings, ~{
-   allVars <- .x[grep("Col", names(.x))] %>%
-     map_chr(~.x) %>%
-     unname()
+reqVariables <- imap(
+  mappings,
+  ~ {
+    allVars <- .x[grep("Col", names(.x))] %>%
+      map_chr(~.x) %>%
+      unname()
 
-  # print(paste0(.y, ": ", allVars))
+    # print(paste0(.y, ": ", allVars))
 
-   lData[[.y]] %>%
-     select(all_of(allVars))
-}) %>%
-  map(~.x %>%
-        arrange(subjid) %>%
-        filter(subjid %in% keepThesePpl) %>%
-        as_tibble())
-
+    lData[[.y]] %>%
+      select(all_of(allVars))
+  }
+) %>%
+  map(
+    ~ .x %>%
+      arrange(subjid) %>%
+      filter(subjid %in% keepThesePpl) %>%
+      as_tibble()
+  )
 
 
 # create specific test data/issues ----------------------------------------
@@ -82,7 +93,6 @@ dfQUERY <- reqVariables$dfQUERY
 dfDATAENT <- reqVariables$dfDATAENT
 
 dfDATACHG <- reqVariables$dfDATACHG
-
 
 
 # Take a look -------------------------------------------------------------
@@ -118,7 +128,6 @@ dfDATACHG <- reqVariables$dfDATACHG
 #   LB_Assess()
 
 DataChg_Map_Raw(dfs = list(dfSUBJ = dfSUBJ, dfDATACHG = dfDATACHG))
-
 
 # datapasta::tribble_paste() ----------------------------------------------
 # if all looks good:
