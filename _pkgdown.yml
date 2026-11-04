@@ -72,6 +72,7 @@ reference:
       - reportingGroups
       - reportingMetrics
       - reportingResults
+      - reportingActionLog
       - reportingBounds_country
       - reportingGroups_country
       - reportingMetrics_country
