@@ -19,26 +19,44 @@ test_that(".testdata_channel() infers dev/prod and honours the override (#206)",
 })
 
 test_that(".testdata_is_outdated() compares versions, then SHAs (#206)", {
-  manifest <- list(package_versions = manifest_versions(
-    gsm.core = c("2.1.0", "aaa"),
-    gsm.kri = "1.7.0"
+  manifest <- list(
+    package_versions = manifest_versions(
+      gsm.core = c("2.1.0", "aaa"),
+      gsm.kri = "1.7.0"
+    )
+  )
+  expect_false(.testdata_is_outdated(
+    pkg_state(gsm.core = c("2.1.0", "aaa")),
+    manifest
   ))
-  expect_false(.testdata_is_outdated(pkg_state(gsm.core = c("2.1.0", "aaa")), manifest))
   expect_false(.testdata_is_outdated(pkg_state(gsm.core = "2.0.0"), manifest))
-  expect_true(.testdata_is_outdated(pkg_state(gsm.core = "2.1.0.9000"), manifest))
-  expect_true(.testdata_is_outdated(pkg_state(gsm.core = c("2.1.0", "bbb")), manifest))
+  expect_true(.testdata_is_outdated(
+    pkg_state(gsm.core = "2.1.0.9000"),
+    manifest
+  ))
+  expect_true(.testdata_is_outdated(
+    pkg_state(gsm.core = c("2.1.0", "bbb")),
+    manifest
+  ))
   # No SHA on either side: version match is enough.
   expect_false(.testdata_is_outdated(pkg_state(gsm.core = "2.1.0"), manifest))
-  expect_false(.testdata_is_outdated(pkg_state(gsm.kri = c("1.7.0", "zzz")), manifest))
+  expect_false(.testdata_is_outdated(
+    pkg_state(gsm.kri = c("1.7.0", "zzz")),
+    manifest
+  ))
   # Not installed, or not in the manifest: ignored.
-  expect_false(.testdata_is_outdated(pkg_state(gsm.core = NA_character_), manifest))
+  expect_false(.testdata_is_outdated(
+    pkg_state(gsm.core = NA_character_),
+    manifest
+  ))
   expect_false(.testdata_is_outdated(pkg_state(gsm.new = "9.9.9"), manifest))
 })
 
 test_that("cold cache resolves the pointer for the inferred channel (#206)", {
   server <- local_fake_releases()
   server$publish(
-    "testdata-prod-1", package_versions = manifest_versions(gsm.core = "2.1.0"),
+    "testdata-prod-1",
+    package_versions = manifest_versions(gsm.core = "2.1.0"),
     pointer_channel = "prod"
   )
   installed <- pkg_state(gsm.core = "2.1.0")
@@ -51,7 +69,8 @@ test_that("cold cache resolves the pointer for the inferred channel (#206)", {
 test_that("unchanged installed packages make no network calls (#206)", {
   server <- local_fake_releases()
   server$publish(
-    "testdata-prod-1", package_versions = manifest_versions(gsm.core = "2.1.0"),
+    "testdata-prod-1",
+    package_versions = manifest_versions(gsm.core = "2.1.0"),
     pointer_channel = "prod"
   )
   installed <- pkg_state(gsm.core = "2.1.0")
@@ -67,7 +86,8 @@ test_that("unchanged installed packages make no network calls (#206)", {
 test_that("changed but not newer packages keep the tag without the pointer (#206)", {
   server <- local_fake_releases()
   server$publish(
-    "testdata-prod-1", package_versions = manifest_versions(gsm.core = "2.1.0"),
+    "testdata-prod-1",
+    package_versions = manifest_versions(gsm.core = "2.1.0"),
     pointer_channel = "prod"
   )
   installed <- pkg_state(gsm.core = "2.1.0")
@@ -83,7 +103,8 @@ test_that("changed but not newer packages keep the tag without the pointer (#206
 test_that("a newer installed package switches to the new pointer tag (#206)", {
   server <- local_fake_releases()
   server$publish(
-    "testdata-prod-1", package_versions = manifest_versions(gsm.core = "2.1.0"),
+    "testdata-prod-1",
+    package_versions = manifest_versions(gsm.core = "2.1.0"),
     pointer_channel = "prod"
   )
   installed <- pkg_state(gsm.core = "2.1.0")
@@ -91,7 +112,8 @@ test_that("a newer installed package switches to the new pointer tag (#206)", {
   run_checker(cache)
 
   server$publish(
-    "testdata-prod-2", package_versions = manifest_versions(gsm.core = "2.2.0"),
+    "testdata-prod-2",
+    package_versions = manifest_versions(gsm.core = "2.2.0"),
     pointer_channel = "prod"
   )
   installed <- pkg_state(gsm.core = "2.2.0")
@@ -123,7 +145,8 @@ test_that("same version with a different RemoteSha triggers a pointer check (#20
 test_that("installed packages newer than the latest bundle produce a message (#206)", {
   server <- local_fake_releases()
   server$publish(
-    "testdata-dev-1", package_versions = manifest_versions(gsm.core = "2.1.0"),
+    "testdata-dev-1",
+    package_versions = manifest_versions(gsm.core = "2.1.0"),
     pointer_channel = "dev"
   )
   installed <- pkg_state(gsm.core = "2.1.0.9001")
@@ -200,7 +223,9 @@ test_that("bindings download, verify, and cache assets end to end (#206)", {
 test_that("a corrupted asset fails the checksum (#206)", {
   server <- local_fake_releases()
   server$publish(
-    "testdata-prod-1", assets = list(a.rds = mtcars), pointer_channel = "prod"
+    "testdata-prod-1",
+    assets = list(a.rds = mtcars),
+    pointer_channel = "prod"
   )
   saveRDS(iris, file.path(server$root, "testdata-prod-1", "a.rds"))
   installed <- pkg_state(gsm.core = "2.1.0")
@@ -215,7 +240,9 @@ test_that("a corrupted asset fails the checksum (#206)", {
 test_that("the gsm.testdata_cache option supplies the user's cache (#206)", {
   server <- local_fake_releases()
   server$publish(
-    "testdata-prod-1", assets = list(a.rds = mtcars), pointer_channel = "prod"
+    "testdata-prod-1",
+    assets = list(a.rds = mtcars),
+    pointer_channel = "prod"
   )
   installed <- pkg_state(gsm.core = "2.1.0")
   local_testdata_env(server, function() installed)
@@ -233,7 +260,9 @@ test_that("the gsm.testdata_cache option supplies the user's cache (#206)", {
 test_that("gsm_testdata(cache = ) swaps the cache and sets the option (#206)", {
   server <- local_fake_releases()
   server$publish(
-    "testdata-prod-1", assets = list(a.rds = mtcars), pointer_channel = "prod"
+    "testdata-prod-1",
+    assets = list(a.rds = mtcars),
+    pointer_channel = "prod"
   )
   installed <- pkg_state(gsm.core = "2.1.0")
   local_testdata_env(server, function() installed)
@@ -335,8 +364,16 @@ test_that("gsm_testdata_use_dir() errors clearly on bad folders (#206)", {
 
 test_that("setters return the old value and re-check on next access (#206)", {
   server <- local_fake_releases()
-  server$publish("testdata-prod-1", assets = list(a.rds = 1), pointer_channel = "prod")
-  server$publish("testdata-exp-1", assets = list(a.rds = 2), pointer_channel = "exp")
+  server$publish(
+    "testdata-prod-1",
+    assets = list(a.rds = 1),
+    pointer_channel = "prod"
+  )
+  server$publish(
+    "testdata-exp-1",
+    assets = list(a.rds = 2),
+    pointer_channel = "exp"
+  )
   installed <- pkg_state(gsm.core = "2.1.0")
   local_testdata_env(server, function() installed)
   local_mocked_bindings(.testdata_assets = c(x = "a.rds"))

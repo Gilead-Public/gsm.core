@@ -42,7 +42,12 @@ fetch_file <- function(url, dest, checksum = NULL, request = NULL) {
 #' @param request Passed to `fetch_file()`.
 #' @returns A `function(key)` suitable for `keep_fresh(setters = )`.
 #' @noRd
-download_setter <- function(url, read = readRDS, checksum = NULL, request = NULL) {
+download_setter <- function(
+  url,
+  read = readRDS,
+  checksum = NULL,
+  request = NULL
+) {
   force(url)
   force(read)
   force(checksum)

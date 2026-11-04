@@ -82,13 +82,15 @@
 #'
 #' handle$cache$destroy()
 #' @noRd
-keep_fresh <- function(checker,
-                       setters,
-                       env,
-                       cache = cachem::cache_mem(),
-                       state = state_memory(),
-                       check = "session",
-                       snapshot = NULL) {
+keep_fresh <- function(
+  checker,
+  setters,
+  env,
+  cache = cachem::cache_mem(),
+  state = state_memory(),
+  check = "session",
+  snapshot = NULL
+) {
   stopifnot(
     is.function(checker),
     is.list(setters),
@@ -154,11 +156,13 @@ FreshHandle <- R6::R6Class(
         private$value_for(name)
       }
     },
-    save_snapshot = function(dir,
-                             names = NULL,
-                             packages = NULL,
-                             key = NULL,
-                             metadata = NULL) {
+    save_snapshot = function(
+      dir,
+      names = NULL,
+      packages = NULL,
+      key = NULL,
+      metadata = NULL
+    ) {
       .fresh_save_snapshot(self, private, dir, names, packages, key, metadata)
     },
     use_snapshot = function(dir, check_packages = TRUE) {
@@ -279,8 +283,11 @@ FreshHandle <- R6::R6Class(
   if (is.numeric(check) && length(check) == 1 && check >= 0) {
     return(check)
   }
-  if (is.character(check) && length(check) == 1 &&
-      check %in% c("session", "access")) {
+  if (
+    is.character(check) &&
+      length(check) == 1 &&
+      check %in% c("session", "access")
+  ) {
     return(check)
   }
   cli::cli_abort(
@@ -445,7 +452,13 @@ FreshStateFile <- R6::R6Class(
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   tmp <- tempfile(tmpdir = dirname(path), fileext = ".tmp")
   on.exit(unlink(tmp))
-  jsonlite::write_json(value, tmp, auto_unbox = TRUE, pretty = TRUE, null = "null")
+  jsonlite::write_json(
+    value,
+    tmp,
+    auto_unbox = TRUE,
+    pretty = TRUE,
+    null = "null"
+  )
   .fresh_move(tmp, path)
 }
 

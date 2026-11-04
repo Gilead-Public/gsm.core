@@ -82,15 +82,19 @@ NULL
 .testdata_url <- function(tag, asset) {
   sprintf(
     "https://github.com/%s/releases/download/%s/%s",
-    .testdata_repo, tag, asset
+    .testdata_repo,
+    tag,
+    asset
   )
 }
 
-.register_testdata <- function(env,
-                               cache = getOption(
-                                 "gsm.testdata_cache",
-                                 .testdata_default_cache()
-                               )) {
+.register_testdata <- function(
+  env,
+  cache = getOption(
+    "gsm.testdata_cache",
+    .testdata_default_cache()
+  )
+) {
   setters <- lapply(.testdata_assets, function(asset) {
     remote <- download_setter(
       url = function(tag) .testdata_url(tag, asset),
@@ -231,7 +235,9 @@ gsm_testdata_use_tag <- function(tag = Sys.getenv("GSM_TESTDATA_TAG")) {
 
 #' @rdname gsm_testdata_use_dir
 #' @export
-gsm_testdata_use_channel <- function(channel = Sys.getenv("GSM_TESTDATA_CHANNEL")) {
+gsm_testdata_use_channel <- function(
+  channel = Sys.getenv("GSM_TESTDATA_CHANNEL")
+) {
   .testdata_set("testdata_channel", channel)
 }
 
@@ -285,8 +291,10 @@ gsm_testdata_use_channel <- function(channel = Sys.getenv("GSM_TESTDATA_CHANNEL"
   # Fast path: nothing installed changed, or nothing is newer than the bundle.
   if (!is.null(prev)) {
     unchanged <- identical(installed, prev$installed)
-    if (unchanged ||
-        !.testdata_is_outdated(installed, .testdata_manifest(prev$tag))) {
+    if (
+      unchanged ||
+        !.testdata_is_outdated(installed, .testdata_manifest(prev$tag))
+    ) {
       if (!unchanged) {
         prev$installed <- installed
         state$set(slot, prev)

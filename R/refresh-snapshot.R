@@ -47,7 +47,9 @@ read_snapshot <- function(dir) {
     ))
   }
   if (!rlang::is_string(info$key) || !is.list(info$objects)) {
-    cli::cli_abort("{.path {path}} needs a string {.field key} and {.field objects}.")
+    cli::cli_abort(
+      "{.path {path}} needs a string {.field key} and {.field objects}."
+    )
   }
   info$dir <- normalizePath(dir, winslash = "/")
   info
@@ -65,11 +67,13 @@ read_snapshot <- function(dir) {
 #' @param metadata Optional named list stored as-is.
 #' @returns The snapshot description, invisibly.
 #' @noRd
-write_snapshot_json <- function(dir,
-                                objects,
-                                key,
-                                packages = NULL,
-                                metadata = NULL) {
+write_snapshot_json <- function(
+  dir,
+  objects,
+  key,
+  packages = NULL,
+  metadata = NULL
+) {
   stopifnot(rlang::is_named(objects), rlang::is_string(key))
   objects <- lapply(as.list(objects), function(file) {
     path <- file.path(dir, file)
@@ -174,20 +178,24 @@ package_versions <- function(packages) {
 #' @returns Character vector of package names.
 #' @noRd
 packages_newer <- function(installed, recorded) {
-  is_newer <- vapply(names(installed), function(pkg) {
-    inst <- installed[[pkg]]
-    ref <- recorded[[pkg]]
-    if (is.na(inst$version %||% NA) || is.null(ref$version)) {
-      return(FALSE)
-    }
-    cmp <- utils::compareVersion(inst$version, ref$version)
-    if (cmp != 0) {
-      return(cmp > 0)
-    }
-    inst_sha <- inst$remote_sha %||% NA
-    ref_sha <- ref$remote_sha %||% NA
-    !is.na(inst_sha) && !is.na(ref_sha) && !identical(inst_sha, ref_sha)
-  }, logical(1))
+  is_newer <- vapply(
+    names(installed),
+    function(pkg) {
+      inst <- installed[[pkg]]
+      ref <- recorded[[pkg]]
+      if (is.na(inst$version %||% NA) || is.null(ref$version)) {
+        return(FALSE)
+      }
+      cmp <- utils::compareVersion(inst$version, ref$version)
+      if (cmp != 0) {
+        return(cmp > 0)
+      }
+      inst_sha <- inst$remote_sha %||% NA
+      ref_sha <- ref$remote_sha %||% NA
+      !is.na(inst_sha) && !is.na(ref_sha) && !identical(inst_sha, ref_sha)
+    },
+    logical(1)
+  )
   names(installed)[is_newer]
 }
 
@@ -214,8 +222,15 @@ packages_changed <- function(state, packages, slot = "packages") {
 #
 # FreshHandle (R/refresh.R) delegates to these so the snapshot logic lives here.
 
-.fresh_save_snapshot <- function(self, private, dir, names, packages, key,
-                                 metadata) {
+.fresh_save_snapshot <- function(
+  self,
+  private,
+  dir,
+  names,
+  packages,
+  key,
+  metadata
+) {
   all <- private$names
   names <- names %||% all
   unknown <- setdiff(names, all)

@@ -88,7 +88,10 @@ test_that("keep_fresh() validates cache and state (#206)", {
   env <- new.env()
   ok <- list(x = function(k) k)
   expect_error(keep_fresh(function(s) 1, ok, env, cache = list()), "cachem")
-  expect_error(keep_fresh(function(s) 1, ok, env, state = list()), "state store")
+  expect_error(
+    keep_fresh(function(s) 1, ok, env, state = list()),
+    "state store"
+  )
 })
 
 test_that("a disk cache and state file persist across keep_fresh() calls (#206)", {
@@ -106,7 +109,9 @@ test_that("a disk cache and state file persist across keep_fresh() calls (#206)"
 
   env1 <- new.env()
   keep_fresh(
-    checker, setters, env1,
+    checker,
+    setters,
+    env1,
     cache = cachem::cache_disk(file.path(dir, "values")),
     state = state_file(state_path)
   )
@@ -114,7 +119,9 @@ test_that("a disk cache and state file persist across keep_fresh() calls (#206)"
 
   env2 <- new.env()
   keep_fresh(
-    checker, setters, env2,
+    checker,
+    setters,
+    env2,
     cache = cachem::cache_disk(file.path(dir, "values")),
     state = state_file(state_path)
   )
@@ -227,7 +234,12 @@ test_that("fetch_file() verifies checksums and uses custom requests (#206)", {
   expect_equal(readLines(dest), "hello")
 
   expect_error(
-    fetch_file("https://example.com/f", dest, checksum = "bad", request = request),
+    fetch_file(
+      "https://example.com/f",
+      dest,
+      checksum = "bad",
+      request = request
+    ),
     "Checksum mismatch"
   )
   expect_error(
@@ -294,8 +306,12 @@ test_that("FreshState can be subclassed for other backends (#206)", {
   FreshStateEnv$new()$set("a", 1)
   expect_equal(FreshStateEnv$new()$get("a"), 1)
 
-  handle <- keep_fresh(function(s) "v1", list(x = function(k) k), new.env(),
-                       state = FreshStateEnv$new())
+  handle <- keep_fresh(
+    function(s) "v1",
+    list(x = function(k) k),
+    new.env(),
+    state = FreshStateEnv$new()
+  )
   expect_s3_class(handle, "FreshHandle")
   expect_s3_class(handle$state, "FreshState")
   expect_error(handle$state <- state_memory(), "read-only")

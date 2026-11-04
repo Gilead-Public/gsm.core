@@ -23,16 +23,28 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
 
 # Clear gsm.core's test data settings and handle for one test, restoring them
 # afterwards. Optional arguments set values for the test.
-local_testdata_settings <- function(dir = NULL, tag = NULL, channel = NULL,
-                                    env = parent.frame()) {
-  names <- c("testdata_dir", "testdata_tag", "testdata_channel",
-             "testdata_handle")
+local_testdata_settings <- function(
+  dir = NULL,
+  tag = NULL,
+  channel = NULL,
+  env = parent.frame()
+) {
+  names <- c(
+    "testdata_dir",
+    "testdata_tag",
+    "testdata_channel",
+    "testdata_handle"
+  )
   old <- mget(names, envir = gsm, ifnotfound = list(NULL))
   withr::defer(
-    for (n in names) assign(n, old[[n]], envir = gsm),
+    for (n in names) {
+      assign(n, old[[n]], envir = gsm)
+    },
     envir = env
   )
-  for (n in names) assign(n, NULL, envir = gsm)
+  for (n in names) {
+    assign(n, NULL, envir = gsm)
+  }
   gsm_testdata_use_dir(dir)
   gsm_testdata_use_tag(tag)
   gsm_testdata_use_channel(channel)

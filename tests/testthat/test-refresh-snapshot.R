@@ -109,8 +109,11 @@ test_that("use_snapshot() errors clearly on bad folders (#206)", {
   expect_error(h$handle$use_snapshot(withr::local_tempdir()), "snapshot.json")
 
   dir <- withr::local_tempdir()
-  jsonlite::write_json(list(refresh_snapshot = 99), file.path(dir, "snapshot.json"),
-                       auto_unbox = TRUE)
+  jsonlite::write_json(
+    list(refresh_snapshot = 99),
+    file.path(dir, "snapshot.json"),
+    auto_unbox = TRUE
+  )
   expect_error(h$handle$use_snapshot(dir), "newer version of refresh")
 })
 
@@ -140,7 +143,9 @@ test_that("objects can map to differently named files (#206)", {
   )
   env <- new.env()
   handle <- keep_fresh(
-    function(s) "x", list(cars = function(k) NULL), env,
+    function(s) "x",
+    list(cars = function(k) NULL),
+    env,
     snapshot = dir
   )
   expect_equal(env$cars, mtcars)
@@ -177,7 +182,9 @@ test_that("packages_newer() compares versions, then SHAs (#206)", {
 test_that("packages_changed() tracks installed packages in checker state (#206)", {
   state <- state_memory()
   installed <- pkg_state(a = "1.0.0")
-  local_mocked_bindings(package_versions = function(packages) installed[packages])
+  local_mocked_bindings(package_versions = function(packages) {
+    installed[packages]
+  })
 
   expect_true(packages_changed(state, "a"))
   expect_false(packages_changed(state, "a"))

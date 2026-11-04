@@ -4,8 +4,12 @@ local_fake_releases <- function(env = parent.frame()) {
   root <- withr::local_tempdir(.local_envir = env)
   requests <- character()
 
-  publish <- function(tag, assets = list(), package_versions = list(),
-                      pointer_channel = NULL) {
+  publish <- function(
+    tag,
+    assets = list(),
+    package_versions = list(),
+    pointer_channel = NULL
+  ) {
     dir <- file.path(root, tag)
     dir.create(dir, recursive = TRUE, showWarnings = FALSE)
     checksums <- list()
@@ -16,7 +20,9 @@ local_fake_releases <- function(env = parent.frame()) {
     }
     jsonlite::write_json(
       list(
-        schema_version = 1, tag = tag, fingerprint = tag,
+        schema_version = 1,
+        tag = tag,
+        fingerprint = tag,
         package_versions = package_versions,
         checksums = list(sha256 = checksums)
       ),
@@ -39,7 +45,9 @@ local_fake_releases <- function(env = parent.frame()) {
     requests <<- c(requests, url)
     rel <- sub("^.*/releases/download/", "", url)
     src <- file.path(root, rel)
-    if (!file.exists(src)) stop("404: ", url)
+    if (!file.exists(src)) {
+      stop("404: ", url)
+    }
     file.copy(src, dest, overwrite = TRUE)
     invisible(dest)
   }
@@ -55,14 +63,19 @@ local_fake_releases <- function(env = parent.frame()) {
 
 pkg_state <- function(...) {
   lapply(list(...), function(x) {
-    list(version = x[[1]], remote_sha = if (length(x) > 1) x[[2]] else NA_character_)
+    list(
+      version = x[[1]],
+      remote_sha = if (length(x) > 1) x[[2]] else NA_character_
+    )
   })
 }
 
 manifest_versions <- function(...) {
   lapply(list(...), function(x) {
     out <- list(version = x[[1]])
-    if (length(x) > 1) out$remote_sha <- x[[2]]
+    if (length(x) > 1) {
+      out$remote_sha <- x[[2]]
+    }
     out
   })
 }

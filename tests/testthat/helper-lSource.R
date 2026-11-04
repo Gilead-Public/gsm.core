@@ -6,7 +6,9 @@ is_null_value <- function(x) is.na(x) | x == ""
 # gsm.datasim dates it at month end (2012-03-31) and generates 28 days from there.
 as_of_date <- as.Date("2012-04-28")
 
-enrolled_subj <- function() lSource$Raw_SUBJ[lSource$Raw_SUBJ$enrollyn %in% "Y", ]
+enrolled_subj <- function() {
+  lSource$Raw_SUBJ[lSource$Raw_SUBJ$enrollyn %in% "Y", ]
+}
 
 # Enrolled subjects' STUDCOMP rows, with their IP non-starter status.
 enrolled_studcomp <- function() {
