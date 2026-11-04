@@ -9,6 +9,7 @@ kri_custom <- workr::MakeWorkflowList(
 )
 
 outputs <- map(kri_workflows, ~ map_vec(.x$steps, ~ .x$output))
+outputs_custom <- map(kri_custom, ~ map_vec(.x$steps, ~ .x$output))
 
 ## Test Code -------------------------------------------------------
 testthat::test_that("Qual: Given appropriate metadata (i.e. vThresholds), bounds are properly applied to generate flags (#116)", {
@@ -44,15 +45,15 @@ testthat::test_that("Qual: Given appropriate metadata (i.e. vThresholds), bounds
   test_custom <- map(kri_custom, ~ robust_runworkflow(.x, mapped_data))
 
   # verify outputs names exported
-  iwalk(test_custom, ~ expect_true(all(outputs[[.y]] %in% names(.x))))
+  iwalk(test_custom, ~ expect_true(all(outputs_custom[[.y]] %in% names(.x))))
 
   # verify output data expected as data.frames are in fact data.frames
   expect_true(
     all(
       imap_lgl(test_custom, function(kri, kri_name) {
         all(map_lgl(
-          kri[outputs[[kri_name]][str_detect(
-            outputs[[kri_name]],
+          kri[outputs_custom[[kri_name]][str_detect(
+            outputs_custom[[kri_name]],
             pattern = "Analysis_"
           )]],
           is.data.frame
