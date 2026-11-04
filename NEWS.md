@@ -1,5 +1,7 @@
 # gsm.core (development version)
 
+- `lSource$Raw_AE` carries AE outcome (`aeout`), derived relatedness (`aereldrv`) and serious-death flag (`aesdth`), with simulated fatal adverse events linked to `Raw_Death` for the Premature Deaths report; the bundled `analytics*` and `reporting*` datasets are regenerated to match (#179).
+
 # gsm.core v1.3.2
 
 This patch release refreshes the bundled `lSource` and reporting data for the IP Monitoring (IP non-starters and premature treatment discontinuation) and Repeat Measurements metrics, and moves workflow runtime tests to `{workr}`.

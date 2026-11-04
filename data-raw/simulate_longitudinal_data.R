@@ -171,6 +171,20 @@ lReporting_study$Reporting_Metrics <- all_reportingMetrics %>%
 
 # Output Raw data from last snapshot as gsm.core::lSource
 lSource <- basic_sim[[3]]
+
+# The premature-death report (gsm.kri#304) reads AE outcome, relatedness and
+# death flag from lSource. They need gsm.mapping#135 and gsm.datasim#142 on dev;
+# stop rather than ship an lSource without them.
+stopifnot(
+  "Raw_AE lacks aeout/aereldrv/aesdth: install gsm.mapping and gsm.datasim from dev" =
+    all(c("aeout", "aereldrv", "aesdth") %in% names(lSource$Raw_AE)),
+  "Raw_AE has no fatal AE linked to a Raw_Death participant" =
+    any(
+      lSource$Raw_AE$aeout %in% "Fatal" &
+        lSource$Raw_AE$subjid %in% lSource$Raw_Death$subjid
+    )
+)
+
 usethis::use_data(lSource, overwrite = TRUE)
 
 # write CSVs
