@@ -34,18 +34,25 @@ test_that("Raw_Death deathcls has no NA values (#153)", {
 
 test_that("lSource carries the upstream IP non-starter fields (#177)", {
   drv <- c(
-    "drv_enrollment_dt", "drv_ip_dosed", "drv_ip_first_dose_dt",
-    "drv_enrl_first_dose_days", "drv_days_lapsed_since_enrl",
+    "drv_enrollment_dt",
+    "drv_ip_dosed",
+    "drv_ip_first_dose_dt",
+    "drv_enrl_first_dose_days",
+    "drv_days_lapsed_since_enrl",
     "drv_ip_nonstarter_status"
   )
   expect_true(all(drv %in% names(lSource$Raw_SUBJ)))
 
   enrolled <- lSource$Raw_SUBJ[lSource$Raw_SUBJ$enrollyn == "Y", ]
-  expect_true(all(enrolled$drv_ip_nonstarter_status %in% c(
-    "Dosed", "Confirmed Non-Starter",
-    "Potential Non-Starter outside window",
-    "Potential Non-Starter within window"
-  )))
+  expect_true(all(
+    enrolled$drv_ip_nonstarter_status %in%
+      c(
+        "Dosed",
+        "Confirmed Non-Starter",
+        "Potential Non-Starter outside window",
+        "Potential Non-Starter within window"
+      )
+  ))
 })
 
 # ---- IP non-starter scenarios (#184) ----
@@ -53,7 +60,9 @@ test_that("lSource carries the upstream IP non-starter fields (#177)", {
 # gsm.datasim dates it at month end (2012-03-31) and generates 28 days from there.
 as_of_date <- as.Date("2012-04-28")
 is_blank <- function(x) is.na(x) | x == ""
-enrolled_subj <- function() lSource$Raw_SUBJ[lSource$Raw_SUBJ$enrollyn %in% "Y", ]
+enrolled_subj <- function() {
+  lSource$Raw_SUBJ[lSource$Raw_SUBJ$enrollyn %in% "Y", ]
+}
 enrolled_studcomp <- function() {
   subj <- enrolled_subj()
   sc <- lSource$Raw_STUDCOMP
@@ -73,16 +82,23 @@ test_that("drv_kit_assigned is NA for non-enrolled, Y for every dosed subject an
 })
 
 test_that("enrolled subjects cover all four IP non-starter statuses (#184)", {
-  expect_setequal(unique(enrolled_subj()$drv_ip_nonstarter_status), c(
-    "Dosed", "Confirmed Non-Starter",
-    "Potential Non-Starter outside window", "Potential Non-Starter within window"
-  ))
+  expect_setequal(
+    unique(enrolled_subj()$drv_ip_nonstarter_status),
+    c(
+      "Dosed",
+      "Confirmed Non-Starter",
+      "Potential Non-Starter outside window",
+      "Potential Non-Starter within window"
+    )
+  )
 })
 
 test_that("completion records agree with the IP non-starter status (#184)", {
   sc <- enrolled_studcomp()
   subj <- enrolled_subj()
-  confirmed <- subj$subjid[subj$drv_ip_nonstarter_status == "Confirmed Non-Starter"]
+  confirmed <- subj$subjid[
+    subj$drv_ip_nonstarter_status == "Confirmed Non-Starter"
+  ]
 
   expect_true(all(confirmed %in% sc$subjid[sc$compyn %in% "N"]))
   expect_false(any(grepl("^Potential", sc$status) & !is_blank(sc$compyn)))
@@ -93,14 +109,22 @@ test_that("completion records agree with the IP non-starter status (#184)", {
 test_that("some Confirmed non-starters withdrew consent and some dosed subjects completed (#184)", {
   sc <- enrolled_studcomp()
 
-  expect_gte(sum(sc$status == "Confirmed Non-Starter" & sc$compreas == "Withdrew Consent"), 3)
+  expect_gte(
+    sum(
+      sc$status == "Confirmed Non-Starter" & sc$compreas == "Withdrew Consent"
+    ),
+    3
+  )
   expect_gte(sum(sc$status == "Dosed" & sc$compyn %in% "Y"), 3)
 })
 
 test_that("completion records fall between the subject's anchor and the as-of date (#184)", {
   subj <- enrolled_subj()
   sc <- enrolled_studcomp()
-  anchor <- dplyr::coalesce(subj$drv_ip_first_dose_dt, subj$drv_enrollment_dt)[match(sc$subjid, subj$subjid)]
+  anchor <- dplyr::coalesce(
+    subj$drv_ip_first_dose_dt,
+    subj$drv_enrollment_dt
+  )[match(sc$subjid, subj$subjid)]
   created <- as.Date(sc$mincreated_dts)
 
   expect_true(all(created >= anchor & created <= as_of_date))
@@ -108,7 +132,8 @@ test_that("completion records fall between the subject's anchor and the as-of da
 
 test_that("a site has two or more counted non-starters, so kri0019 flags red (#184)", {
   subj <- enrolled_subj()
-  counted <- subj$drv_ip_nonstarter_status %in% c("Confirmed Non-Starter", "Potential Non-Starter outside window")
+  counted <- subj$drv_ip_nonstarter_status %in%
+    c("Confirmed Non-Starter", "Potential Non-Starter outside window")
 
   expect_gte(max(table(subj$invid[counted])), 2)
 })
@@ -180,11 +205,17 @@ test_that("lSource covers every premature discontinuation scenario (#176)", {
 test_that("split reasons come from the full gsm.datasim vocabulary (#176)", {
   # gsm.datasim R/Raw_SUBJ.R .ptd_reason_values, not only what this seed drew.
   vocabulary <- c(
-    "Adverse Event", "Lack of Efficacy", "Physician Decision",
-    "Withdrawal by Subject", "Protocol Deviation", "Progressive Disease",
+    "Adverse Event",
+    "Lack of Efficacy",
+    "Physician Decision",
+    "Withdrawal by Subject",
+    "Protocol Deviation",
+    "Progressive Disease",
     "Lost to Follow-up"
   )
-  reasons <- stats::na.omit(lSource$Raw_SUBJ$drv_premature_discontinuation_reason)
+  reasons <- stats::na.omit(
+    lSource$Raw_SUBJ$drv_premature_discontinuation_reason
+  )
 
   expect_true(all(trimws(unlist(strsplit(reasons, ","))) %in% vocabulary))
 })
@@ -194,14 +225,18 @@ test_that("Raw_SUBJ carries drv_drg_completion as character with Y, N, Potential
   value <- lSource$Raw_SUBJ$drv_drg_completion
 
   expect_type(value, "character")
-  expect_true(all(is_null_value(value) | value %in% c("Y", "N", "Potential No")))
+  expect_true(all(
+    is_null_value(value) | value %in% c("Y", "N", "Potential No")
+  ))
 })
 
 test_that("non-dosed subjects have a null drv_drg_completion (#201)", {
   subj <- lSource$Raw_SUBJ
 
   expect_length(subj$drv_drg_completion, nrow(subj))
-  expect_true(all(is_null_value(subj$drv_drg_completion[!subj$drv_ip_dosed %in% "Y"])))
+  expect_true(all(is_null_value(subj$drv_drg_completion[
+    !subj$drv_ip_dosed %in% "Y"
+  ])))
 })
 
 test_that("dosed subjects cover every drv_drg_completion value with and without a discontinuation date (#201)", {
@@ -245,16 +280,22 @@ test_that("Raw_VS has red, amber, and normal site bands of consecutive repeats (
     vs <- vs[order(vs$subjid, vs$vs_dt), ]
     subj_sites <- unique(lSource$Raw_SUBJ[, c("subjid", "invid")])
     by_subject <- split(vs[[measure]], vs$subjid)
-    counts <- vapply(by_subject, function(x) {
-      n_windows <- length(x) - window + 1
-      if (n_windows < 1) return(c(0, 0))
-      repeats <- vapply(
-        seq_len(n_windows),
-        function(i) length(unique(x[i:(i + window - 1)])) == 1,
-        logical(1)
-      )
-      c(sum(repeats), n_windows)
-    }, numeric(2))
+    counts <- vapply(
+      by_subject,
+      function(x) {
+        n_windows <- length(x) - window + 1
+        if (n_windows < 1) {
+          return(c(0, 0))
+        }
+        repeats <- vapply(
+          seq_len(n_windows),
+          function(i) length(unique(x[i:(i + window - 1)])) == 1,
+          logical(1)
+        )
+        c(sum(repeats), n_windows)
+      },
+      numeric(2)
+    )
     site <- subj_sites$invid[match(colnames(counts), subj_sites$subjid)]
     tapply(counts[1, ], site, sum) / tapply(counts[2, ], site, sum)
   }
@@ -276,6 +317,9 @@ test_that("Raw_SITE site IDs are unique and each site maps to one country (#186)
   expect_false(anyDuplicated(lSource$Raw_SITE$pi_number) > 0)
   subj_sites <- unique(lSource$Raw_SUBJ[, c("invid", "country")])
   expect_false(anyDuplicated(subj_sites$invid) > 0)
-  site_country <- lSource$Raw_SITE$country[match(subj_sites$invid, lSource$Raw_SITE$pi_number)]
+  site_country <- lSource$Raw_SITE$country[match(
+    subj_sites$invid,
+    lSource$Raw_SITE$pi_number
+  )]
   expect_identical(subj_sites$country, site_country)
 })

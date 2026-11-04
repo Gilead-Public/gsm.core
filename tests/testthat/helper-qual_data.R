@@ -195,7 +195,10 @@ mappings_wf <- NULL
 if (!is.null(mappings_workflow_path)) {
   delayedAssign("mapped_data", get_cached_mapped_data())
   delayedAssign("mapping_output", get_cached_mapping_output())
-  delayedAssign("mappings_wf", workr::MakeWorkflowList(strPath = GetYamlPathMappings()))
+  delayedAssign(
+    "mappings_wf",
+    workr::MakeWorkflowList(strPath = GetYamlPathMappings())
+  )
 }
 
 # ---- Robust workflow runner that handles errors gracefully -------------------
