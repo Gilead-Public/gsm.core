@@ -37,13 +37,16 @@ BugReports: https://github.com/Gilead-Public/gsm.core/issues
 Depends: 
     R (>= 4.0)
 Imports:
+    cachem,
     cli,
     dplyr,
     glue,
+    jsonlite,
     lifecycle,
     lifecycle,
     magrittr,
     purrr,
+    R6,
     rlang (>= 0.4.11),
     stats,
     tidyr,

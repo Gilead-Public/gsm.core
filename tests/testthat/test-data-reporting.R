@@ -10,8 +10,6 @@ test_that("reporting metrics carry the kri0019/cou0019 count config (#180)", {
 })
 
 # ---- Premature treatment discontinuation (#176) ----
-metric_row <- function(metrics, id) metrics[metrics$MetricID == id, ]
-
 test_that("kri0007-2/cou0007-2 read Premature Treatment Discontinuation Rate and are active (#176)", {
   kri <- metric_row(reportingMetrics, "Analysis_kri0007-2")
   cou <- metric_row(reportingMetrics_country, "Analysis_cou0007-2")
