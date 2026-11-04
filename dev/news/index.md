@@ -1,5 +1,7 @@
 # Changelog
 
+## gsm.core (development version)
+
 ## gsm.core v1.3.2
 
 This patch release refreshes the bundled `lSource` and reporting data
