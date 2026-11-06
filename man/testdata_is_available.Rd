@@ -4,11 +4,11 @@
 \alias{testdata_is_available}
 \title{Check whether test data can be loaded}
 \usage{
-testdata_is_available(objects = names(.testdata_objects))
+testdata_is_available(objects = testdata_object_names())
 }
 \arguments{
-\item{objects}{\code{character} Names of the objects to check. Defaults to all
-of them.}
+\item{objects}{\code{character} Names of the objects to check, from
+\code{\link[=testdata_object_names]{testdata_object_names()}}. Defaults to all of them.}
 }
 \value{
 \code{logical(1)} \code{TRUE} if every object in \code{objects} loaded,

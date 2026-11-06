@@ -167,6 +167,21 @@ gsm_testdata <- function(cache = getOption("gsm.testdata_cache")) {
   handle
 }
 
+#' List test data object names
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' Names of the test data objects (e.g. [lSource]) that gsm.core serves from
+#' gsm.datasim test data releases.
+#'
+#' @returns `character` Object names.
+#' @examples
+#' testdata_object_names()
+#' @export
+testdata_object_names <- function() {
+  names(.testdata_objects)
+}
+
 #' Check whether test data can be loaded
 #'
 #' `r lifecycle::badge("experimental")`
@@ -177,15 +192,15 @@ gsm_testdata <- function(cache = getOption("gsm.testdata_cache")) {
 #' `TRUE` offline. Otherwise they're downloaded, so the first call can be slow.
 #' Useful for skipping examples, tests, or vignettes that need the data.
 #'
-#' @param objects `character` Names of the objects to check. Defaults to all
-#'   of them.
+#' @param objects `character` Names of the objects to check, from
+#'   [testdata_object_names()]. Defaults to all of them.
 #' @returns `logical(1)` `TRUE` if every object in `objects` loaded,
 #'   otherwise `FALSE`.
 #' @examples
 #' testdata_is_available("lSource")
 #' @export
-testdata_is_available <- function(objects = names(.testdata_objects)) {
-  unknown <- setdiff(objects, names(.testdata_objects))
+testdata_is_available <- function(objects = testdata_object_names()) {
+  unknown <- setdiff(objects, testdata_object_names())
   if (length(unknown)) {
     cli::cli_abort("Unknown test data object{?s}: {.val {unknown}}.")
   }

@@ -462,3 +462,11 @@ test_that("use_testdata_cache_dir() sets the option and switches the cache (#206
   expect_error(use_testdata_cache_dir(""), "non-empty")
   expect_error(use_testdata_cache_dir(c("a", "b")), "non-empty")
 })
+
+test_that("testdata_object_names() lists the served objects (#206)", {
+  expect_type(testdata_object_names(), "character")
+  expect_true(length(testdata_object_names()) > 0)
+  expect_true(all(
+    testdata_object_names() %in% getNamespaceExports("gsm.core")
+  ))
+})

@@ -86,6 +86,7 @@ reference:
     desc: Control where sample data comes from and where it is cached
   - contents:
       - gsm_testdata
+      - testdata_object_names
       - testdata_is_available
       - use_testdata_snapshot
       - use_testdata_cache_dir
