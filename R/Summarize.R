@@ -24,7 +24,7 @@
 #' @return Simplified finding data.frame with columns for GroupID, GroupType,
 #'   Metric, Score, Flag when associated with a workflow.
 #'
-#' @examples
+#' @examplesIf testdata_is_available("analyticsInput")
 #'
 #' dfTransformed <- Transform_Rate(analyticsInput)
 #' dfAnalyzed <- Analyze_NormalApprox(dfTransformed)

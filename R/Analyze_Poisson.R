@@ -27,7 +27,7 @@
 #' @return `data.frame` with one row per site with columns: GroupID, Numerator,
 #'   Denominator, Metric, Score, and PredictedCount.
 #'
-#' @examplesIf rlang::is_installed("broom")
+#' @examplesIf rlang::is_installed("broom") && testdata_is_available("analyticsInput")
 #' dfTransformed <- Transform_Rate(analyticsInput)
 #'
 #' dfAnalyzed <- Analyze_Poisson(dfTransformed)

@@ -9,6 +9,7 @@ outputs <- map_vec(kri_workflows$steps, ~ .x$output)
 
 ## Test Code
 testthat::test_that("Qual: Given raw participant-level data, a properly specified Workflow for a KRI creates summarized and flagged data (#116)", {
+  skip_if_no_testdata()
   TestAtLogLevel("WARN")
   test <- robust_runworkflow(kri_workflows, mapped_data)
   # Transform_Rate drops groups whose total exposure is 0, so the analysis covers

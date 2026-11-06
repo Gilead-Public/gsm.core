@@ -23,6 +23,7 @@ Check if the data and spec are compatible by comparing the data.frames and
 columns in the spec with the data.
 }
 \examples{
+\dontshow{if (testdata_is_available(c("reportingBounds", "reportingResults"))) withAutoprint(\{ # examplesIf}
 lData <- list(
   reporting_bounds = gsm.core::reportingBounds,
   reporting_results = gsm.core::reportingResults
@@ -47,4 +48,5 @@ CheckSpec(lData, lSpec) # Prints message that everything is found
 lSpec$reporting_groups$NotACol <- list(type = "character")
 CheckSpec(lData, lSpec) # Throws error that NotACol is missing
 }
+\dontshow{\}) # examplesIf}
 }

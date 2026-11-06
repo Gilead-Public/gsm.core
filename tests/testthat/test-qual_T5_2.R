@@ -10,6 +10,7 @@ kri_workflows <- c(
   )
 )
 
+skip_if_no_testdata()
 TestAtLogLevel("WARN")
 partial_mapped_workflows <- map(
   kri_workflows,

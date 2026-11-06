@@ -38,7 +38,7 @@
 #'
 #' @return `data.frame` dfAnalyzed is returned with an additional `Flag` column.
 #'
-#' @examples
+#' @examplesIf testdata_is_available("analyticsInput")
 #'
 #' dfTransformed <- Transform_Rate(analyticsInput)
 #' dfAnalyzed <- Analyze_NormalApprox(dfTransformed)

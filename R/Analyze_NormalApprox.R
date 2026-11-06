@@ -28,7 +28,7 @@
 #' @return `data.frame` with one row per site with columns: GroupID, Numerator,
 #'   Denominator, Metric, OverallMetric, Factor, and Score.
 #'
-#' @examples
+#' @examplesIf testdata_is_available("analyticsInput")
 #' # Binary
 #' dfTransformed <- Transform_Rate(analyticsInput)
 #'

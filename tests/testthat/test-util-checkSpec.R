@@ -89,6 +89,7 @@ test_that("Multiple missing columns are correctly reported", {
 })
 
 test_that("Validate column type works (#22)", {
+  skip_if_no_testdata()
   lData <- list(reporting_results = gsm.core::reportingResults)
   lData$reporting_results$SnapshotDateTime <- paste0(
     lData$reporting_results$SnapshotDate,
