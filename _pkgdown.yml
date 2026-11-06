@@ -82,3 +82,11 @@ reference:
       - reportingResults_study
       - lSource
 
+  - title: Test Data Management
+    desc: Control where sample data comes from and where it is cached
+  - contents:
+      - gsm_testdata
+      - testdata_is_available
+      - use_testdata_snapshot
+      - use_testdata_cache_dir
+
