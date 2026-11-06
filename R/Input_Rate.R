@@ -44,7 +44,7 @@
 #' | Denominator  | The calculated denominator value     | Numeric  |
 #' | Metric       | The calculated input rate/metric     | Numeric  |
 #'
-#' @examples
+#' @examplesIf testdata_is_available("lSource")
 #' # Run for AE KRI
 #' dfInput <- Input_Rate(
 #'   dfSubjects = gsm.core::lSource$Raw_SUBJ,

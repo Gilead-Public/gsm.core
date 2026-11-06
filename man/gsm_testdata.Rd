@@ -7,46 +7,38 @@
 gsm_testdata(cache = getOption("gsm.testdata_cache"))
 }
 \arguments{
-\item{cache}{A \pkg{cachem} cache to use from now on. Defaults to the
-\code{gsm.testdata_cache} option; \code{NULL} keeps the current cache. A new cache
-is also stored in that option for the rest of the session. Objects
+\item{cache}{\code{cachem} A \pkg{cachem} cache to use from now on. Defaults to
+the \code{gsm.testdata_cache} option; \code{NULL} keeps the current cache. A new
+cache is also stored in that option for the rest of the session. Objects
 already loaded this session stay in memory; later loads use the new
 cache.}
 }
 \value{
-A \code{FreshHandle} R6 object with
+\code{FreshHandle} An R6 object with
 \itemize{
 \item \code{key()}: the release tag currently in use.
-\item \code{refresh()}: check for a newer release now.
-\item \code{reset()}: forget the release choice and recorded package versions, so
-the next access re-resolves everything. Cached values are kept.
+\item \code{refresh()}: choose the release again now.
+\item \code{reset()}: forget the release choice, so the next access re-resolves
+everything. Cached values are kept.
 \item \code{set_cache(cache)}: switch caches without changing the option.
 \item \code{cache}: the current cachem object. Use its methods directly, e.g.
 \code{gsm_testdata()$cache$size()}, \verb{$keys()}, \verb{$prune()}, \verb{$reset()}
 (delete all cached values), or \verb{$destroy()}.
-\item \code{state}: the store that records the chosen release and package
-versions; \code{state$path} shows where it's saved.
+\item \code{state}: the store that records the chosen release; \code{state$path} shows
+where it's saved.
+\item \code{snapshot}: the local folder in use (see \code{\link[=use_testdata_snapshot]{use_testdata_snapshot()}}), or
+\code{NULL}.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \details{
-The test data objects (e.g. \link{analyticsInput2}) are cached in a standard
+The test data objects (e.g. \link{analyticsInput}) are cached in a standard
 \pkg{cachem} cache. \code{gsm_testdata()} returns a handle for inspecting and
 managing it, and can switch to a different cache.
 
-By default the cache is \code{cachem::cache_disk()} in
-\code{tools::R_user_dir("gsm", "cache")} (set \code{R_USER_CACHE_DIR} to move it),
-with cachem's default size limit and no age limit. To use different
-settings, pass any cachem cache to \code{gsm_testdata(cache = )}, or set the
-\code{gsm.testdata_cache} option (e.g. in your \code{.Rprofile}) to apply it every
-session:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(gsm.testdata_cache = cachem::cache_disk(
-  "~/gsm-cache", max_size = 512 * 1024^2, max_age = 60 * 60 * 24 * 30
-))
-}\if{html}{\out{</div>}}
+To change where or how values are cached, see \code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
 }
 \examples{
 handle <- gsm_testdata()

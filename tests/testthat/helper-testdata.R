@@ -1,7 +1,130 @@
-# Helpers for test-testdata.R. The fake release server and pkg_state() /
-# manifest_versions() live in helper-refresh.R.
+# Helpers for test-testdata.R and tests that use the real test data.
 
-# Isolate cache, env vars, manifest memo, and network for one test.
+# Skip a test when gsm.datasim test data can't be loaded (e.g. offline with an
+# empty cache). The result is remembered for the rest of the run.
+skip_if_no_testdata <- function() {
+  if (is.null(.testdata_available$ok)) {
+    .testdata_available$ok <- testdata_is_available()
+  }
+  if (!.testdata_available$ok) {
+    testthat::skip("gsm.datasim test data is unavailable.")
+  }
+  invisible(TRUE)
+}
+.testdata_available <- new.env(parent = emptyenv())
+
+# Fake gsm.datasim for testdata tests. Release assets live in
+# `<root>/<tag>/<file>`, the data-index in `<root>/index.json`. Requests for
+# anything else fail like a 404.
+local_fake_releases <- function(env = parent.frame()) {
+  root <- withr::local_tempdir(.local_envir = env)
+  requests <- character()
+
+  # Publish a `data-<fp12>` release: one RDS per object plus snapshot.json.
+  # Returns the fingerprint.
+  release <- function(objects = list(), fingerprint = NULL) {
+    fingerprint <- fingerprint %||% digest::digest(objects, algo = "sha256")
+    tag <- paste0("data-", substr(fingerprint, 1, 12))
+    dir <- file.path(root, tag)
+    dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+    files <- rlang::set_names(paste0(names(objects), ".rds"), names(objects))
+    for (name in names(objects)) {
+      saveRDS(objects[[name]], file.path(dir, files[[name]]))
+    }
+    write_snapshot_json(
+      dir,
+      objects = as.list(files),
+      key = paste0("sha256:", fingerprint),
+      metadata = list(fingerprint = fingerprint)
+    )
+    invisible(fingerprint)
+  }
+
+  # Write index.json (format 2) from builds made with fake_build().
+  index <- function(...) {
+    builds <- list(...)
+    pkgs <- sort(unique(unlist(lapply(builds, function(b) names(b$packages)))))
+    fps <- unique(vapply(builds, `[[`, "", "fingerprint"))
+    entries <- lapply(builds, function(b) {
+      full <- lapply(rlang::set_names(pkgs), function(p) {
+        b$packages[[p]] %||% list(version = NA, remote_sha = NA)
+      })
+      list(
+        inputs_hash = .testdata_inputs_hash(full),
+        fingerprint = b$fingerprint,
+        tag = paste0("data-", substr(b$fingerprint, 1, 12)),
+        source = b$source,
+        built_at = b$built_at,
+        packages = unname(lapply(pkgs, function(p) {
+          na_null <- function(x) if (is.null(x) || is.na(x)) NULL else x
+          list(
+            package = p,
+            version = na_null(full[[p]]$version),
+            remote_sha = na_null(full[[p]]$remote_sha)
+          )
+        }))
+      )
+    })
+    jsonlite::write_json(
+      list(
+        format = 2,
+        packages = pkgs,
+        fingerprints = lapply(rlang::set_names(fps), function(fp) {
+          list(tag = paste0("data-", substr(fp, 1, 12)), first_built_at = "x")
+        }),
+        builds = entries
+      ),
+      file.path(root, "index.json"),
+      auto_unbox = TRUE,
+      null = "null",
+      pretty = TRUE
+    )
+    invisible(entries)
+  }
+
+  request <- function(url, dest) {
+    requests <<- c(requests, url)
+    rel <- if (grepl("/data-index/index\\.json$", url)) {
+      "index.json"
+    } else {
+      sub("^.*/releases/download/", "", url)
+    }
+    src <- file.path(root, rel)
+    if (!file.exists(src)) {
+      stop("404: ", url)
+    }
+    file.copy(src, dest, overwrite = TRUE)
+    invisible(dest)
+  }
+
+  list(
+    release = release,
+    index = index,
+    request = request,
+    requests = function() requests,
+    reset_requests = function() requests <<- character(),
+    root = root
+  )
+}
+
+# A build entry for the fake index. `packages` is from pkg_state() (in
+# helper-refresh.R).
+fake_build <- function(
+  fingerprint,
+  packages,
+  built_at = "2026-01-01T00:00:00Z",
+  source = "dev"
+) {
+  list(
+    fingerprint = fingerprint,
+    packages = packages,
+    built_at = built_at,
+    source = source
+  )
+}
+
+# Isolate cache, settings, snapshot memo, and network for one test.
+# `installed` is a function returning pkg_state() output.
 local_testdata_env <- function(server, installed, env = parent.frame()) {
   cache <- withr::local_tempdir(.local_envir = env)
   local_testdata_settings(env = env)
@@ -9,32 +132,27 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
   testthat::local_mocked_bindings(
     .testdata_dir = function() cache,
     .fresh_default_request = server$request,
-    .testdata_candidates = function(state) names(installed()),
-    .testdata_installed = function(pkgs) installed(),
+    .testdata_installed = function(pkgs) {
+      have <- installed()
+      lapply(rlang::set_names(pkgs), function(p) {
+        have[[p]] %||% list(version = NA_character_, remote_sha = NA_character_)
+      })
+    },
     .env = env
   )
-  rm(list = ls(.testdata_manifests), envir = .testdata_manifests)
-  withr::defer(
-    rm(list = ls(.testdata_manifests), envir = .testdata_manifests),
-    envir = env
-  )
+  clear_testdata_snapshots()
+  withr::defer(clear_testdata_snapshots(), envir = env)
   invisible(cache)
 }
 
+clear_testdata_snapshots <- function() {
+  rm(list = ls(.testdata_snapshots), envir = .testdata_snapshots)
+}
+
 # Clear gsm.core's test data settings and handle for one test, restoring them
-# afterwards. Optional arguments set values for the test.
-local_testdata_settings <- function(
-  dir = NULL,
-  tag = NULL,
-  channel = NULL,
-  env = parent.frame()
-) {
-  names <- c(
-    "testdata_dir",
-    "testdata_tag",
-    "testdata_channel",
-    "testdata_handle"
-  )
+# afterwards.
+local_testdata_settings <- function(env = parent.frame()) {
+  names <- c("testdata_dir", "testdata_tag", "testdata_handle")
   old <- mget(names, envir = gsm, ifnotfound = list(NULL))
   withr::defer(
     for (n in names) {
@@ -45,9 +163,6 @@ local_testdata_settings <- function(
   for (n in names) {
     assign(n, NULL, envir = gsm)
   }
-  gsm_testdata_use_dir(dir)
-  gsm_testdata_use_tag(tag)
-  gsm_testdata_use_channel(channel)
   invisible()
 }
 
@@ -56,9 +171,19 @@ run_checker <- function(cache) {
   .testdata_checker(state_file(file.path(cache, "testdata-state.rds")))
 }
 
-# Point gsm_testdata_use_dir() at a published fake bundle.
-local_bundle_dir <- function(server, tag) {
-  dir <- file.path(server$root, tag)
-  gsm_testdata_use_dir(dir)
-  dir
+# Parse a fake index the way .testdata_index() does.
+fake_index <- function(...) {
+  server <- local_fake_releases()
+  server$index(...)
+  .testdata_parse_index(
+    jsonlite::read_json(
+      file.path(server$root, "index.json"),
+      simplifyVector = TRUE
+    )
+  )
+}
+
+# Fingerprint chosen by .testdata_select().
+selected_fp <- function(index, installed) {
+  .testdata_select(index, installed)$build$fingerprint
 }

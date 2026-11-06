@@ -26,7 +26,7 @@
 #'
 #' @return `data.frame` with one row per site with columns `GroupID`, `TotalCount`, and `Metric.`
 #'
-#' @examples
+#' @examplesIf testdata_is_available("analyticsInput")
 #' dfTransformed <- Transform_Count(analyticsInput, strCountCol = "Numerator")
 #'
 #' @export

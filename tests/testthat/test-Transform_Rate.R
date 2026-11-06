@@ -1,4 +1,5 @@
 test_that("output is created as expected", {
+  skip_if_no_testdata()
   dfTransformed <- Transform_Rate(
     dfInput = analyticsInput
   ) %>%
@@ -32,6 +33,7 @@ test_that("output is created as expected", {
 # Count / Exposure
 
 test_that("incorrect inputs throw errors", {
+  skip_if_no_testdata()
   expect_error(
     Transform_Rate(list()),
     "dfInput is not a data frame"
@@ -78,6 +80,7 @@ test_that("incorrect inputs throw errors", {
 })
 
 test_that("rows with a denominator of 0 are removed", {
+  skip_if_no_testdata()
   testInput <- analyticsInput %>%
     dplyr::group_by(GroupID) %>%
     dplyr::mutate(

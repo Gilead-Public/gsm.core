@@ -10,6 +10,7 @@ outputs <- map_vec(ae_workflow$steps[steps], ~ .x$output)
 
 ## Test Code
 testthat::test_that("Qual: Given pre-processed input data, a properly specified Workflow for a KRI creates summarized and flagged data (#116)", {
+  skip_if_no_testdata()
   TestAtLogLevel("WARN")
   test <- robust_runworkflow(
     ae_workflow,

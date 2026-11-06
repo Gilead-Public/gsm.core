@@ -1,4 +1,5 @@
 test_that("output created as expected and has correct structure", {
+  skip_if_no_testdata()
   ae_prep <- Transform_Rate(analyticsInput)
   expect_message(
     {
@@ -33,6 +34,7 @@ test_that("incorrect inputs throw errors", {
 })
 
 test_that("error given if required column not found", {
+  skip_if_no_testdata()
   ae_prep <- Transform_Rate(analyticsInput)
 
   expect_error(Analyze_Poisson(ae_prep %>% select(-GroupID)))
@@ -43,6 +45,7 @@ test_that("error given if required column not found", {
 })
 
 test_that("NA values are caught", {
+  skip_if_no_testdata()
   createNA <- function(x) {
     df <- analyticsInput %>%
       Transform_Rate()

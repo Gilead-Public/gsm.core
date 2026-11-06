@@ -1,4 +1,7 @@
 test_that("gsm.core runtime wrappers warn and forward", {
+  # The rest of this file runs the metric workflows on the test data.
+  skip_if_no_testdata()
+
   wf_mapping <- workr::MakeWorkflowList(strPath = "testdata/mappings")
   workflow <- workr::MakeWorkflowList(strPath = "testdata/metrics")[[1]]
   lRaw <- list(
@@ -14,22 +17,22 @@ test_that("gsm.core runtime wrappers warn and forward", {
     bKeepInputData = FALSE
   ))
 
-  expect_warning(
-    gsm.core::MakeWorkflowList(strPath = "testdata/mappings"),
-    "deprecated"
+  lifecycle::expect_deprecated(
+    gsm.core::MakeWorkflowList(strPath = "testdata/mappings")
   )
-  expect_warning(
-    suppressMessages(gsm.core::RunWorkflows(wf_mapping[1:2], lRaw)),
-    "deprecated"
+  lifecycle::expect_deprecated(
+    gsm.core::MakeWorkflowList(strPath = "testdata/mappings")
   )
-  expect_warning(
+  lifecycle::expect_deprecated(
+    suppressMessages(gsm.core::RunWorkflows(wf_mapping[1:2], lRaw))
+  )
+  lifecycle::expect_deprecated(
     actual <- suppressMessages(gsm.core::RunWorkflow(
       workflow,
       mapped,
       bReturnResult = FALSE,
       bKeepInputData = FALSE
-    )),
-    "deprecated"
+    ))
   )
   expect_equal(actual, expected)
 })
@@ -45,8 +48,6 @@ wf_mapping$steps <- purrr::keep(
   wf_mapping$steps,
   ~ .x$output %in% used_params
 )
-# Source Data
-lSource <- gsm.core::lSource
 
 # Step 0 - Data Ingestion - standardize tables/columns names
 lRaw <- list(

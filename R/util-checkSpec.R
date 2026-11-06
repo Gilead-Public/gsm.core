@@ -13,7 +13,7 @@
 #' that all data.frames and columns in the spec are present in the data, or throws an error
 #' if any data.frame or column is missing.
 #'
-#' @examples
+#' @examplesIf testdata_is_available(c("reportingBounds", "reportingResults"))
 #' lData <- list(
 #'   reporting_bounds = gsm.core::reportingBounds,
 #'   reporting_results = gsm.core::reportingResults

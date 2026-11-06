@@ -226,7 +226,7 @@ test_that("fresh_exports() builds export directives (#206)", {
 test_that("fetch_file() verifies checksums and uses custom requests (#206)", {
   src <- withr::local_tempfile()
   writeLines("hello", src)
-  good <- unname(tools::sha256sum(src))
+  good <- .fresh_sha256(src)
   request <- function(url, dest) file.copy(src, dest, overwrite = TRUE)
   dest <- file.path(withr::local_tempdir(), "sub", "out.txt")
 
@@ -251,11 +251,12 @@ test_that("fetch_file() verifies checksums and uses custom requests (#206)", {
 })
 
 test_that("download_setter() fetches, verifies, and reads by key (#206)", {
-  server <- local_fake_releases()
-  server$publish("t1", assets = list(a.rds = mtcars))
-  sha <- unname(tools::sha256sum(file.path(server$root, "t1", "a.rds")))
+  server <- local_file_server()
+  dir.create(file.path(server$root, "t1"))
+  saveRDS(mtcars, file.path(server$root, "t1", "a.rds"))
+  sha <- .fresh_sha256(file.path(server$root, "t1", "a.rds"))
   setter <- download_setter(
-    url = function(key) paste0("https://x/releases/download/", key, "/a.rds"),
+    url = function(key) paste0("https://x/", key, "/a.rds"),
     checksum = function(key) sha,
     request = server$request
   )
@@ -315,26 +316,4 @@ test_that("FreshState can be subclassed for other backends (#206)", {
   expect_s3_class(handle, "FreshHandle")
   expect_s3_class(handle$state, "FreshState")
   expect_error(handle$state <- state_memory(), "read-only")
-})
-
-test_that("uncached() keys bypass the cache but stay in memory (#206)", {
-  env <- new.env()
-  calls <- 0
-  seen <- NULL
-  cache <- cachem::cache_mem()
-  handle <- keep_fresh(
-    function(s) uncached("local"),
-    list(x = function(k) {
-      calls <<- calls + 1
-      seen <<- k
-      "value"
-    }),
-    env,
-    cache = cache
-  )
-  expect_equal(env$x, "value")
-  expect_equal(env$x, "value")
-  expect_equal(calls, 1)
-  expect_equal(seen, "local")
-  expect_length(cache$keys(), 0)
 })

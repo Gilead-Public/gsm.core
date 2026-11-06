@@ -1,22 +1,32 @@
 set.seed(123)
 
 # ---- Source data setup -------------------------------------------------------
-lSource <- gsm.core::lSource
-lData <- list(
-  Raw_SUBJ = lSource$Raw_SUBJ,
-  Raw_AE = lSource$Raw_AE
-)
+# Lazy, so the test data is only downloaded (into setup-testdata.R's temporary
+# cache) by tests that use it.
+delayedAssign("lData", {
+  skip_if_no_testdata()
+  list(Raw_SUBJ = lSource$Raw_SUBJ, Raw_AE = lSource$Raw_AE)
+})
 
 # Data with missing values (15% NA's) - used in T2_2
-lData_missing_values <- purrr::map(lData, function(df) {
-  df %>%
-    dplyr::mutate(
-      dplyr::across(
-        !dplyr::contains("GroupID"),
-        ~ replace(., sample(dplyr::row_number(), size = .15 * dplyr::n()), NA)
-      )
-    )
-})
+delayedAssign(
+  "lData_missing_values",
+  withr::with_seed(123, {
+    purrr::map(lData, function(df) {
+      df %>%
+        dplyr::mutate(
+          dplyr::across(
+            !dplyr::contains("GroupID"),
+            ~ replace(
+              .,
+              sample(dplyr::row_number(), size = .15 * dplyr::n()),
+              NA
+            )
+          )
+        )
+    })
+  })
+)
 
 # ---- Workflow path helpers (local-first, remote-optional) --------------------
 
@@ -193,7 +203,10 @@ mapping_output <- NULL
 mappings_wf <- NULL
 
 if (!is.null(mappings_workflow_path)) {
-  delayedAssign("mapped_data", get_cached_mapped_data())
+  delayedAssign("mapped_data", {
+    skip_if_no_testdata()
+    get_cached_mapped_data()
+  })
   delayedAssign("mapping_output", get_cached_mapping_output())
   delayedAssign(
     "mappings_wf",

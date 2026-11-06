@@ -11,10 +11,23 @@ test_that("save_snapshot() writes every value plus snapshot.json (#206)", {
   expect_equal(json$metadata$note, "hi")
   expect_equal(
     json$objects$a$sha256,
-    unname(tools::sha256sum(file.path(dir, "a.rds")))
+    .fresh_sha256(file.path(dir, "a.rds"))
   )
   expect_equal(json$objects$a$file, "a.rds")
   expect_equal(info$key, "v1")
+})
+
+test_that("snapshot_names maps bindings to snapshot objects both ways (#206)", {
+  h <- new_counted_handle(snapshot_names = c(a = "alpha"))
+  dir <- withr::local_tempdir()
+  h$handle$save_snapshot(dir)
+  expect_setequal(list.files(dir), c("alpha.rds", "b.rds", "snapshot.json"))
+  expect_named(read_snapshot(dir)$objects, c("alpha", "b"))
+
+  h2 <- new_counted_handle(snapshot_names = c(a = "alpha"))
+  h2$handle$use_snapshot(dir)
+  expect_equal(h2$env$a, h$env$a)
+  expect_equal(h2$calls$n, 0)
 })
 
 test_that("save_snapshot() can save a subset and record package versions (#206)", {
@@ -78,11 +91,11 @@ test_that("use_snapshot(NULL) returns to normal operation (#206)", {
   expect_equal(h$env$b$k, "live")
 })
 
-test_that("keep_fresh(snapshot = ) starts in snapshot mode (#206)", {
+test_that("keep_fresh(snapshot_path = ) starts in snapshot mode (#206)", {
   src <- new_counted_handle()
   dir <- withr::local_tempdir()
   src$handle$save_snapshot(dir)
-  h <- new_counted_handle(key = "live", snapshot = dir)
+  h <- new_counted_handle(key = "live", snapshot_path = dir)
   expect_equal(h$env$b$k, "v1")
   expect_equal(h$calls$n, 0)
 })
@@ -146,7 +159,7 @@ test_that("objects can map to differently named files (#206)", {
     function(s) "x",
     list(cars = function(k) NULL),
     env,
-    snapshot = dir
+    snapshot_path = dir
   )
   expect_equal(env$cars, mtcars)
 })
@@ -159,12 +172,12 @@ test_that("package_versions() reads Version and RemoteSha (#206)", {
   expect_true(is.na(v$definitely.not.a.package$version))
 })
 
-test_that("packages_newer() compares versions, then SHAs (#206)", {
+test_that(".fresh_packages_newer() compares versions, then SHAs (#206)", {
   recorded <- pkg_state(
     gsm.core = c("2.1.0", "aaa"),
     gsm.kri = "1.7.0"
   )
-  newer <- function(...) packages_newer(pkg_state(...), recorded)
+  newer <- function(...) .fresh_packages_newer(pkg_state(...), recorded)
   expect_equal(newer(gsm.core = c("2.1.0", "aaa")), character())
   expect_equal(newer(gsm.core = "2.0.0"), character())
   expect_equal(newer(gsm.core = "2.1.0.9000"), "gsm.core")
@@ -179,18 +192,18 @@ test_that("packages_newer() compares versions, then SHAs (#206)", {
   )
 })
 
-test_that("packages_changed() tracks installed packages in checker state (#206)", {
+test_that(".fresh_packages_changed() tracks installed packages in checker state (#206)", {
   state <- state_memory()
   installed <- pkg_state(a = "1.0.0")
   local_mocked_bindings(package_versions = function(packages) {
     installed[packages]
   })
 
-  expect_true(packages_changed(state, "a"))
-  expect_false(packages_changed(state, "a"))
+  expect_true(.fresh_packages_changed(state, "a"))
+  expect_false(.fresh_packages_changed(state, "a"))
   installed <- pkg_state(a = "1.0.1")
-  expect_true(packages_changed(state, "a"))
-  expect_false(packages_changed(state, "a"))
+  expect_true(.fresh_packages_changed(state, "a"))
+  expect_false(.fresh_packages_changed(state, "a"))
   # Separate slots don't interfere.
-  expect_true(packages_changed(state, "a", slot = "other"))
+  expect_true(.fresh_packages_changed(state, "a", slot = "other"))
 })

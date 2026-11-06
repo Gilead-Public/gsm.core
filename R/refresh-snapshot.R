@@ -24,9 +24,9 @@
 
 #' Read a snapshot's description
 #'
-#' @param dir Snapshot folder.
-#' @returns The parsed `snapshot.json`, with `dir` (normalized) added.
-#' @noRd
+#' @param dir `character(1)` Snapshot folder containing `snapshot.json`.
+#' @returns `list` The parsed `snapshot.json`, with `dir` (normalized) added.
+#' @keywords internal
 read_snapshot <- function(dir) {
   if (!dir.exists(dir)) {
     cli::cli_abort("Snapshot folder {.path {dir}} does not exist.")
@@ -35,38 +35,55 @@ read_snapshot <- function(dir) {
   if (!file.exists(path)) {
     cli::cli_abort("No {.file snapshot.json} in {.path {dir}}.")
   }
-  info <- jsonlite::read_json(path)
+  info <- parse_snapshot(jsonlite::read_json(path), source = path)
+  info$dir <- normalizePath(dir, winslash = "/")
+  info
+}
+
+#' Validate a parsed snapshot.json
+#'
+#' @param info `list` `snapshot.json` parsed with [jsonlite::read_json()].
+#' @param source `character(1)` Where it came from, for error messages.
+#' @returns `list` `info`, unchanged.
+#' @keywords internal
+parse_snapshot <- function(info, source = "snapshot.json") {
   format <- info$refresh_snapshot
   if (is.null(format) || !is.numeric(format)) {
-    cli::cli_abort("{.path {path}} has no {.field refresh_snapshot} version.")
+    cli::cli_abort("{.file {source}} has no {.field refresh_snapshot} version.")
   }
   if (format > .snapshot_format) {
     cli::cli_abort(c(
-      "{.path {path}} uses snapshot format {format}.",
+      "{.file {source}} uses snapshot format {format}.",
       i = "It needs a newer version of refresh (this one reads format {(.snapshot_format)})."
     ))
   }
   if (!rlang::is_string(info$key) || !is.list(info$objects)) {
     cli::cli_abort(
-      "{.path {path}} needs a string {.field key} and {.field objects}."
+      "{.file {source}} needs a string {.field key} and {.field objects}."
     )
   }
-  info$dir <- normalizePath(dir, winslash = "/")
   info
+}
+
+#' Compute a file's sha256
+#'
+#' @param path `character(1)` Path to the file.
+#' @returns `character(1)` The lowercase hex sha256.
+#' @keywords internal
+.fresh_sha256 <- function(path) {
+  digest::digest(file = path, algo = "sha256")
 }
 
 #' Write snapshot.json for files already in a folder
 #'
-#' For producers that write the RDS files themselves (e.g. a build pipeline).
-#' Checksums are computed from the files.
-#'
-#' @param dir Snapshot folder containing the files.
-#' @param objects Named list or character vector: binding name -> file name.
-#' @param key Version key (a string).
-#' @param packages Optional output of `package_versions()`.
-#' @param metadata Optional named list stored as-is.
-#' @returns The snapshot description, invisibly.
-#' @noRd
+#' @param dir `character(1)` Snapshot folder containing the files.
+#' @param objects `character` or `list` Named; object name -> file name
+#'   (relative to `dir`). Checksums are computed from the files.
+#' @param key `character(1)` Version key.
+#' @param packages `list` Optional output of [package_versions()].
+#' @param metadata `list` Optional named list, stored as-is.
+#' @returns `list` The snapshot description, invisibly.
+#' @keywords internal
 write_snapshot_json <- function(
   dir,
   objects,
@@ -80,7 +97,7 @@ write_snapshot_json <- function(
     if (!file.exists(path)) {
       cli::cli_abort("{.path {path}} does not exist.")
     }
-    list(file = file, sha256 = unname(tools::sha256sum(path)))
+    list(file = file, sha256 = .fresh_sha256(path))
   })
   info <- list(
     refresh_snapshot = .snapshot_format,
@@ -90,9 +107,10 @@ write_snapshot_json <- function(
   )
   if (length(packages)) {
     info$packages <- lapply(packages, function(p) {
+      sha <- p$remote_sha
       list(
         version = p$version,
-        remote_sha = if (is.na(p$remote_sha %||% NA)) NULL else p$remote_sha
+        remote_sha = if (is.null(sha) || is.na(sha)) NULL else sha
       )
     })
   }
@@ -103,6 +121,12 @@ write_snapshot_json <- function(
   invisible(info)
 }
 
+#' Read and verify one object from a snapshot
+#'
+#' @param snapshot `list` Output of [read_snapshot()].
+#' @param name `character(1)` Object name in `snapshot$objects`.
+#' @returns The object read from its RDS file.
+#' @keywords internal
 .snapshot_read_object <- function(snapshot, name) {
   entry <- snapshot$objects[[name]]
   if (is.null(entry)) {
@@ -115,7 +139,7 @@ write_snapshot_json <- function(
     cli::cli_abort("Snapshot file {.path {path}} is missing.")
   }
   if (!is.null(entry$sha256)) {
-    actual <- unname(tools::sha256sum(path))
+    actual <- .fresh_sha256(path)
     if (!identical(tolower(actual), tolower(entry$sha256))) {
       cli::cli_abort(c(
         "Checksum mismatch for {.path {path}}.",
@@ -126,12 +150,17 @@ write_snapshot_json <- function(
   readRDS(path)
 }
 
+#' Tell the user if installed packages are newer than a snapshot's
+#'
+#' @inheritParams .snapshot_read_object
+#' @returns `character` Names of newer packages, invisibly.
+#' @keywords internal
 .snapshot_check_packages <- function(snapshot) {
   recorded <- snapshot$packages
   if (!length(recorded)) {
     return(invisible())
   }
-  newer <- packages_newer(package_versions(names(recorded)), recorded)
+  newer <- .fresh_packages_newer(package_versions(names(recorded)), recorded)
   if (length(newer)) {
     cli::cli_inform(c(
       "Installed {.pkg {newer}} {cli::qty(newer)}{?is/are} newer than the
@@ -146,10 +175,17 @@ write_snapshot_json <- function(
 
 #' Installed versions of packages
 #'
-#' @param packages Character vector of package names.
-#' @returns Named list; each element has `version` and `remote_sha` (both
-#'   `NA` when unknown or not installed).
-#' @noRd
+#' Records the version and `RemoteSha` (set when installed from GitHub, e.g.
+#' with pak or remotes) of each package. Pass the result to
+#' `write_snapshot_json(packages = )` to record which package versions built a
+#' snapshot, or call it from a [keep_fresh()] checker and store the result in
+#' its `state` to decide whether the data needs checking again (e.g. skip a
+#' remote lookup until installed packages change).
+#'
+#' @param packages `character` Package names.
+#' @returns `list` Named by package; each element has `version` and
+#'   `remote_sha` (both `NA` when unknown or not installed).
+#' @keywords internal
 package_versions <- function(packages) {
   lapply(rlang::set_names(unique(packages)), function(pkg) {
     desc <- suppressWarnings(
@@ -167,17 +203,14 @@ package_versions <- function(packages) {
 
 #' Which installed packages are newer than recorded versions?
 #'
-#' A package counts as newer if its version is higher, or if the versions
-#' match but both sides have a `remote_sha` and they differ (catches a missed
-#' version bump). Packages that aren't installed, aren't recorded, or are
-#' older are ignored.
-#'
-#' @param installed Output of `package_versions()`.
-#' @param recorded The same shape, e.g. from a snapshot or manifest.
-#'   `remote_sha` may be absent.
-#' @returns Character vector of package names.
-#' @noRd
-packages_newer <- function(installed, recorded) {
+#' @param installed `list` Output of [package_versions()].
+#' @param recorded `list` The same shape, e.g. from a snapshot. `remote_sha`
+#'   may be absent.
+#' @returns `character` Names of packages with a higher version, or the same
+#'   version but a different `remote_sha`. Packages that aren't installed or
+#'   recorded are ignored.
+#' @keywords internal
+.fresh_packages_newer <- function(installed, recorded) {
   is_newer <- vapply(
     names(installed),
     function(pkg) {
@@ -201,15 +234,15 @@ packages_newer <- function(installed, recorded) {
 
 #' Have these packages changed since the checker last looked?
 #'
-#' A cheap, offline test for checkers: compares installed versions with a
-#' snapshot stored in the checker's state, then updates the stored snapshot.
-#'
-#' @param state The checker's state store.
-#' @param packages Character vector of package names.
-#' @param slot State entry to use, so one checker can track several sets.
-#' @returns `TRUE` if anything changed (or on first use), else `FALSE`.
-#' @noRd
-packages_changed <- function(state, packages, slot = "packages") {
+#' @param state `FreshState` The checker's state store (see [state_file()]).
+#'   The installed versions are saved in it.
+#' @inheritParams package_versions
+#' @param slot `character(1)` State entry to use, so one checker can track
+#'   several sets.
+#' @returns `logical(1)` `TRUE` if anything changed (or on first use), else
+#'   `FALSE`.
+#' @keywords internal
+.fresh_packages_changed <- function(state, packages, slot = "packages") {
   installed <- package_versions(sort(unique(packages)))
   changed <- !identical(installed, state$get(slot))
   if (changed) {
@@ -222,6 +255,20 @@ packages_changed <- function(state, packages, slot = "packages") {
 #
 # FreshHandle (R/refresh.R) delegates to these so the snapshot logic lives here.
 
+#' Write a snapshot of a handle's values
+#'
+#' Body of `FreshHandle$save_snapshot()`.
+#'
+#' @param self,private `R6` The handle's `self` and `private`.
+#' @param dir `character(1)` Snapshot folder to write. Created if needed.
+#' @param names `character` Binding names to save. `NULL` saves all.
+#' @param packages `character` Package names whose installed versions are
+#'   recorded, or `NULL`.
+#' @param key `character(1)` Version key. `NULL` uses the handle's current
+#'   key.
+#' @inheritParams write_snapshot_json
+#' @returns `list` The snapshot description, invisibly.
+#' @keywords internal
 .fresh_save_snapshot <- function(
   self,
   private,
@@ -239,9 +286,6 @@ packages_changed <- function(state, packages, slot = "packages") {
   }
   values <- lapply(rlang::set_names(names), private$value_for)
   key <- key %||% private$key_
-  if (inherits(key, "fresh_uncached")) {
-    key <- key$key
-  }
   if (!rlang::is_string(key)) {
     cli::cli_abort(c(
       "The current version key isn't a single string.",
@@ -249,9 +293,10 @@ packages_changed <- function(state, packages, slot = "packages") {
     ))
   }
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
-  files <- rlang::set_names(paste0(names, ".rds"), names)
-  for (name in names) {
-    .fresh_write_rds(values[[name]], file.path(dir, files[[name]]))
+  objects <- unname(private$snapshot_names[names])
+  files <- rlang::set_names(paste0(objects, ".rds"), objects)
+  for (i in seq_along(names)) {
+    .fresh_write_rds(values[[names[[i]]]], file.path(dir, files[[i]]))
   }
   write_snapshot_json(
     dir,
@@ -262,6 +307,17 @@ packages_changed <- function(state, packages, slot = "packages") {
   )
 }
 
+#' Read a handle's values from a snapshot
+#'
+#' Body of `FreshHandle$use_snapshot()`.
+#'
+#' @inheritParams .fresh_save_snapshot
+#' @param dir `character(1)` Snapshot folder to read, or `NULL` to stop using
+#'   one.
+#' @param check_packages `logical(1)` Tell the user if installed packages are
+#'   newer than the snapshot's?
+#' @returns `FreshHandle` The handle, invisibly.
+#' @keywords internal
 .fresh_use_snapshot <- function(self, private, dir, check_packages) {
   snapshot <- if (!is.null(dir)) read_snapshot(dir)
   if (!is.null(snapshot) && isTRUE(check_packages)) {

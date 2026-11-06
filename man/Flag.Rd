@@ -69,9 +69,10 @@ The following column is considered optional:
 }
 
 \examples{
+\dontshow{if (testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 
 dfTransformed <- Transform_Rate(analyticsInput)
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed)
 dfFlagged <- Flag(dfAnalyzed)
-
+\dontshow{\}) # examplesIf}
 }
