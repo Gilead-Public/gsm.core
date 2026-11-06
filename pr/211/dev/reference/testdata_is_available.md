@@ -5,14 +5,16 @@
 ## Usage
 
 ``` r
-testdata_is_available(objects = names(.testdata_objects))
+testdata_is_available(objects = testdata_object_names())
 ```
 
 ## Arguments
 
 - objects:
 
-  `character` Names of the objects to check. Defaults to all of them.
+  `character` Names of the objects to check, from
+  [`testdata_object_names()`](https://gilead-public.github.io/gsm.core/dev/reference/testdata_object_names.md).
+  Defaults to all of them.
 
 ## Value
 

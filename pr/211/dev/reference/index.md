@@ -117,6 +117,8 @@ Control where sample data comes from and where it is cached
 
 - [`gsm_testdata()`](https://gilead-public.github.io/gsm.core/dev/reference/gsm_testdata.md)
   **\[experimental\]** : Inspect and manage the cached test data
+- [`testdata_object_names()`](https://gilead-public.github.io/gsm.core/dev/reference/testdata_object_names.md)
+  **\[experimental\]** : List test data object names
 - [`testdata_is_available()`](https://gilead-public.github.io/gsm.core/dev/reference/testdata_is_available.md)
   **\[experimental\]** : Check whether test data can be loaded
 - [`use_testdata_snapshot()`](https://gilead-public.github.io/gsm.core/dev/reference/use_testdata_snapshot.md)
