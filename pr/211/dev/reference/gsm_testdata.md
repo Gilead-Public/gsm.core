@@ -47,7 +47,8 @@ gsm_testdata(cache = getOption("gsm.testdata_cache"))
 The test data objects (e.g.
 [analyticsInput](https://gilead-public.github.io/gsm.core/dev/reference/analyticsInput.md))
 are cached in a standard cachem cache. `gsm_testdata()` returns a handle
-for inspecting and managing it, and can switch to a different cache.
+for inspecting and managing the cache, and can be used to switch to a
+different cache.
 
 To change where or how values are cached, see
 [`use_testdata_cache_dir()`](https://gilead-public.github.io/gsm.core/dev/reference/use_testdata_cache_dir.md).
@@ -84,7 +85,7 @@ handle$cache$info()
 #> $missing
 #> <quosure>
 #> expr: ^key_missing()
-#> env:  0x58ae1e04b0b8
+#> env:  0x5bdb7b384118
 #> 
 #> $prune_rate
 #> [1] 20
@@ -96,7 +97,7 @@ handle$cache$info()
 #> [1] 0
 #> 
 #> $prune_last_time
-#> [1] "2026-11-09 22:25:57 UTC"
+#> [1] "2026-11-09 22:40:29 UTC"
 #> 
 
 # Switch to a temporary in-memory cache, then back.
