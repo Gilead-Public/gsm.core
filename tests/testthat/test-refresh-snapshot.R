@@ -60,6 +60,11 @@ test_that("use_snapshot() serves values from disk, then NULL returns to live (#2
   expect_equal(h$calls$n, 0)
   expect_length(h$handle$cache$keys(), 0)
 
+  h$handle$reset()
+  copy <- withr::local_tempdir()
+  h$handle$save_snapshot(copy)
+  expect_equal(read_snapshot(copy)$key, "v1")
+
   h$handle$use_snapshot(NULL)
   expect_null(h$handle$snapshot)
   expect_equal(h$env$b$k, "live")

@@ -292,7 +292,7 @@ package_versions <- function(packages) {
     on.exit(private$check <- old_check, add = TRUE)
   }
   values <- lapply(rlang::set_names(names), private$value_for)
-  key <- key %||% private$key_
+  key <- key %||% private$snapshot_$key %||% private$key_
   if (!rlang::is_string(key)) {
     cli::cli_abort(c(
       "The current version key isn't a single string.",
