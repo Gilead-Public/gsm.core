@@ -41,6 +41,7 @@ Imports:
     cli,
     digest,
     dplyr,
+    fs,
     glue,
     jsonlite,
     lifecycle,

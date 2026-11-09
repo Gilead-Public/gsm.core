@@ -14,11 +14,16 @@ skip_if_no_testdata <- function() {
 .testdata_available <- new.env(parent = emptyenv())
 
 # Fake gsm.datasim for testdata tests. Release assets live in
-# `<root>/<tag>/<file>`, the data-index in `<root>/index.json`. Requests for
-# anything else fail like a 404.
+# `<root>/<tag>/<file>`, the data-index in `<root>/index.json`.
+#
+# `safely_fetch` stands in for refresh's safely_fetch() (see local_testdata_env()):
+# it copies from `root`, fails like a 404 for anything missing, and records
+# each URL and the checksum gsm.core asked for. Checksum verification itself
+# is refresh's job and is tested in test-refresh-download.R.
 local_fake_releases <- function(env = parent.frame()) {
   root <- withr::local_tempdir(.local_envir = env)
   requests <- character()
+  checksums <- list()
 
   # Publish a `data-<fp12>` release: one RDS per object plus snapshot.json.
   # Returns the fingerprint.
@@ -40,7 +45,7 @@ local_fake_releases <- function(env = parent.frame()) {
     invisible(fingerprint)
   }
 
-  # Write index.json (format 2) from builds made with fake_build().
+  # Write index.json (format 2) from builds made with helper_fake_build().
   index <- function(...) {
     builds <- list(...)
     pkgs <- sort(unique(unlist(lapply(builds, function(b) names(b$packages)))))
@@ -82,8 +87,14 @@ local_fake_releases <- function(env = parent.frame()) {
     invisible(entries)
   }
 
-  request <- function(url, dest) {
+  safely_fetch <- function(
+    url,
+    dest,
+    checksum = NULL,
+    downloader = fetch_binary
+  ) {
     requests <<- c(requests, url)
+    checksums[url] <<- list(checksum)
     rel <- if (grepl("/data-index/index\\.json$", url)) {
       "index.json"
     } else {
@@ -93,6 +104,7 @@ local_fake_releases <- function(env = parent.frame()) {
     if (!file.exists(src)) {
       stop("404: ", url)
     }
+    dir.create(dirname(dest), recursive = TRUE, showWarnings = FALSE)
     file.copy(src, dest, overwrite = TRUE)
     invisible(dest)
   }
@@ -100,16 +112,17 @@ local_fake_releases <- function(env = parent.frame()) {
   list(
     release = release,
     index = index,
-    request = request,
+    safely_fetch = safely_fetch,
     requests = function() requests,
+    checksums = function() checksums,
     reset_requests = function() requests <<- character(),
     root = root
   )
 }
 
-# A build entry for the fake index. `packages` is from pkg_state() (in
+# A build entry for the fake index. `packages` is from helper_pkg_state() (in
 # helper-refresh.R).
-fake_build <- function(
+helper_fake_build <- function(
   fingerprint,
   packages,
   built_at = "2026-01-01T00:00:00Z",
@@ -124,14 +137,14 @@ fake_build <- function(
 }
 
 # Isolate cache, settings, snapshot memo, and network for one test.
-# `installed` is a function returning pkg_state() output.
+# `installed` is a function returning helper_pkg_state() output.
 local_testdata_env <- function(server, installed, env = parent.frame()) {
   cache <- withr::local_tempdir(.local_envir = env)
   local_testdata_settings(env = env)
   withr::local_options(gsm.testdata_cache = NULL, .local_envir = env)
   testthat::local_mocked_bindings(
     .testdata_dir = function() cache,
-    .fresh_default_request = server$request,
+    safely_fetch = server$safely_fetch,
     .testdata_installed = function(pkgs) {
       have <- installed()
       lapply(rlang::set_names(pkgs), function(p) {
@@ -146,7 +159,7 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
 }
 
 clear_testdata_snapshots <- function() {
-  rm(list = ls(.testdata_snapshots), envir = .testdata_snapshots)
+  gsm$testdata_snapshots <- NULL
 }
 
 # Clear gsm.core's test data settings and handle for one test, restoring them
@@ -167,12 +180,12 @@ local_testdata_settings <- function(env = parent.frame()) {
 }
 
 # Run the gsm checker against the state file in a test cache dir.
-run_checker <- function(cache) {
+helper_run_checker <- function(cache) {
   .testdata_checker(state_file(file.path(cache, "testdata-state.rds")))
 }
 
 # Parse a fake index the way .testdata_index() does.
-fake_index <- function(...) {
+helper_fake_index <- function(...) {
   server <- local_fake_releases()
   server$index(...)
   .testdata_parse_index(
@@ -184,6 +197,6 @@ fake_index <- function(...) {
 }
 
 # Fingerprint chosen by .testdata_select().
-selected_fp <- function(index, installed) {
+helper_select_fingerprint <- function(index, installed) {
   .testdata_select(index, installed)$build$fingerprint
 }

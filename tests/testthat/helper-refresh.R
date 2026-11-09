@@ -2,7 +2,7 @@
 # `path` is everything after the host. Missing files fail like a 404.
 local_file_server <- function(env = parent.frame()) {
   root <- withr::local_tempdir(.local_envir = env)
-  request <- function(url, dest) {
+  downloader <- function(url, dest) {
     src <- file.path(root, sub("^[a-z]+://[^/]+/", "", url))
     if (!file.exists(src)) {
       stop("404: ", url)
@@ -10,10 +10,10 @@ local_file_server <- function(env = parent.frame()) {
     file.copy(src, dest, overwrite = TRUE)
     invisible(dest)
   }
-  list(root = root, request = request)
+  list(root = root, downloader = downloader)
 }
 
-pkg_state <- function(...) {
+helper_pkg_state <- function(...) {
   lapply(list(...), function(x) {
     list(
       version = x[[1]],

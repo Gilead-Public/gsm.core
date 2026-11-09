@@ -8,19 +8,22 @@
 #' @param dest `character(1)` Destination path. Written atomically.
 #' @param checksum `character(1)` Expected sha256 (hex), or `NULL` to skip
 #'   verification.
-#' @param request `function` `function(url, dest)` that performs the download.
-#'   Override for authentication, APIs, etc. `NULL` uses
-#'   [.fresh_default_request()].
+#' @param downloader `function` `function(url, dest)` that downloads `url` to
+#'   `dest` and errors on failure. Override for authentication, APIs, etc.
 #' @returns `dest`, invisibly.
 #' @keywords internal
-fetch_file <- function(url, dest, checksum = NULL, request = NULL) {
-  request <- request %||% .fresh_default_request
-  dir.create(dirname(dest), recursive = TRUE, showWarnings = FALSE)
+safely_fetch <- function(
+  url,
+  dest,
+  checksum = NULL,
+  downloader = fetch_binary
+) {
+  fs::dir_create(dirname(dest))
   tmp <- tempfile(tmpdir = dirname(dest), fileext = ".tmp")
   on.exit(unlink(tmp))
 
   tryCatch(
-    request(url, tmp),
+    downloader(url, tmp),
     error = function(e) {
       cli::cli_abort("Failed to download {.url {url}}.", parent = e)
     }
@@ -39,45 +42,52 @@ fetch_file <- function(url, dest, checksum = NULL, request = NULL) {
 
 #' Build a setter that downloads and reads a file
 #'
-#' @param url `function` `function(key)` returning the URL for version `key`.
-#' @param read `function` `function(path)` returning the value. Defaults to
+#' @param url_constructor `function` `function(key)` returning the URL for
+#'   version `key`.
+#' @param reader `function` `function(path)` returning the value. Defaults to
 #'   [readRDS()].
-#' @param checksum `function` `function(key)` returning the expected sha256,
-#'   or `NULL` to skip verification.
-#' @inheritParams fetch_file
+#' @param checksum_finder `function` `function(key)` returning the expected
+#'   sha256 for version `key`, or `NULL` to skip verification.
+#' @inheritParams safely_fetch
 #' @returns `function` A `function(key)` suitable for `keep_fresh(setters = )`.
 #' @keywords internal
-download_setter <- function(
-  url,
-  read = readRDS,
-  checksum = NULL,
-  request = NULL
+construct_fetcher <- function(
+  url_constructor,
+  reader = readRDS,
+  checksum_finder = NULL,
+  downloader = fetch_binary
 ) {
-  force(url)
-  force(read)
-  force(checksum)
-  force(request)
+  force(url_constructor)
+  force(reader)
+  force(checksum_finder)
+  force(downloader)
   function(key) {
-    # Resolve eagerly so errors from url()/checksum() aren't re-raised as
-    # interrupted promises inside fetch_file().
-    src <- url(key)
-    expected <- if (!is.null(checksum)) checksum(key)
+    # Resolve eagerly so errors from url_constructor()/checksum_finder() aren't
+    # re-raised as interrupted promises inside safely_fetch().
+    src <- url_constructor(key)
+    expected <- if (!is.null(checksum_finder)) checksum_finder(key)
     tmp <- tempfile()
     on.exit(unlink(tmp))
-    fetch_file(src, tmp, checksum = expected, request = request)
-    read(tmp)
+    safely_fetch(src, tmp, checksum = expected, downloader = downloader)
+    reader(tmp)
   }
 }
 
-#' Download a file with download.file()
+#' Download a file in binary mode, erroring on failure
 #'
-#' @inheritParams fetch_file
-#' @returns `dest`, invisibly. Errors on a non-zero status.
+#' A wrapper around [utils::download.file()] with `mode = "wb"` and
+#' `quiet = TRUE` that errors on a non-zero status instead of returning it.
+#'
+#' @param url `character(1)` URL to download.
+#' @param dest `character(1)` Destination path.
+#' @returns `dest`, invisibly.
 #' @keywords internal
-.fresh_default_request <- function(url, dest) {
+fetch_binary <- function(url, dest) {
+  # nocov start
   status <- utils::download.file(url, dest, mode = "wb", quiet = TRUE)
   if (status != 0) {
-    stop("download.file() returned status ", status, call. = FALSE)
+    cli::cli_abort("{.fn utils::download.file} returned status {status}.")
   }
   invisible(dest)
+  # nocov end
 }

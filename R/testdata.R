@@ -1,20 +1,22 @@
 # gsm.datasim test data served via keep_fresh() (see R/refresh*.R) -----------
 #
-# Data lives in gsm.datasim pre-releases tagged `data-<fp12>`, one per data
+# Data lives in gsm.datasim releases tagged `data-<fp12>`, one per data
 # fingerprint. Each has snapshot.json plus one asset per snapshot object.
-# The `data-index` branch's index.json (format 2) maps the package versions
-# that built each bundle to its fingerprint and release; .testdata_select()
-# picks the release matching the installed packages. See #206 and
+# The gsm.datasim `data-index` branch's index.json maps the package versions
+# that built each bundle to its fingerprint and release. See #206 and
 # Gilead-Public/gsm.datasim#153.
 #
-# Settings live in `gsm` (see use_testdata_snapshot() etc.). Their defaults read
-# GSM_TESTDATA_SNAPSHOT / GSM_TESTDATA_TAG; .onLoad calls them.
+# Settings live in `gsm` environment (created in R/gsm.core-package.R) See
+# `use_testdata_snapshot()` etc. Their defaults read GSM_TESTDATA_SNAPSHOT /
+# GSM_TESTDATA_TAG; .onLoad calls them.
 
-# Package-level state. Read as gsm$testdata_dir, gsm$testdata_handle, etc.
-gsm <- new.env(parent = emptyenv())
+# Tell NAMESPACE about the objects.
 
 #' @evalNamespace fresh_exports(names(.testdata_objects))
 NULL
+
+# reusable config objects ----
+
 # Binding name -> object name in the release's snapshot.json.
 .testdata_objects <- rlang::set_names(c(
   "lSource",
@@ -49,7 +51,7 @@ NULL
 #' @returns `character(1)` `tools::R_user_dir("gsm", "cache")`.
 #' @keywords internal
 .testdata_dir <- function() {
-  tools::R_user_dir("gsm", "cache")
+  tools::R_user_dir("gsm", "cache") # nocov
 }
 
 #' URL of a release asset
@@ -67,11 +69,12 @@ NULL
   )
 }
 
+# main entrypoint ----
+
 #' Create the test data bindings and handle
 #'
 #' @param env `environment` Namespace to create the bindings in.
-#' @param cache `cachem` Cache for downloaded values. Defaults to the
-#'   `gsm.testdata_cache` option, or [.testdata_default_cache()].
+#' @param cache `cachem` Cache for downloaded values.
 #' @returns `FreshHandle` The handle (also stored as `gsm$testdata_handle`),
 #'   invisibly.
 #' @keywords internal
@@ -80,11 +83,11 @@ NULL
   cache = getOption("gsm.testdata_cache", .testdata_default_cache())
 ) {
   setters <- lapply(.testdata_objects, function(object) {
-    download_setter(
-      url = function(tag) {
+    construct_fetcher(
+      url_constructor = function(tag) {
         .testdata_url(tag, .testdata_object_entry(tag, object)$file)
       },
-      checksum = function(tag) .testdata_object_entry(tag, object)$sha256
+      checksum_finder = function(tag) .testdata_object_entry(tag, object)$sha256
     )
   })
   gsm$testdata_handle <- keep_fresh(
@@ -461,7 +464,7 @@ use_testdata_cache_dir <- function(dir) {
 #' @returns `list` Output of [package_versions()].
 #' @keywords internal
 .testdata_installed <- function(packages) {
-  package_versions(packages)
+  package_versions(packages) # nocov
 }
 
 #' Choose the build whose data matches the installed packages
@@ -628,7 +631,7 @@ use_testdata_cache_dir <- function(dir) {
 .testdata_index <- function() {
   tmp <- tempfile(fileext = ".json")
   on.exit(unlink(tmp))
-  fetch_file(.testdata_index_url, tmp)
+  safely_fetch(.testdata_index_url, tmp)
   .testdata_parse_index(jsonlite::read_json(tmp, simplifyVector = TRUE))
 }
 
@@ -670,8 +673,6 @@ use_testdata_cache_dir <- function(dir) {
   )
 }
 
-.testdata_snapshots <- new.env(parent = emptyenv())
-
 #' A release's snapshot.json
 #'
 #' Releases are immutable, so this is cached in memory and on disk
@@ -681,13 +682,13 @@ use_testdata_cache_dir <- function(dir) {
 #' @returns `list` Output of [parse_snapshot()].
 #' @keywords internal
 .testdata_snapshot <- function(tag) {
-  if (!is.null(.testdata_snapshots[[tag]])) {
-    return(.testdata_snapshots[[tag]])
+  if (!is.null(gsm$testdata_snapshots[[tag]])) {
+    return(gsm$testdata_snapshots[[tag]])
   }
-  path <- file.path(.testdata_dir(), "snapshots", paste0(tag, ".json"))
+  path <- fs::path(.testdata_dir(), "snapshots", tag, ext = "json")
   if (!file.exists(path)) {
     tryCatch(
-      fetch_file(.testdata_url(tag, "snapshot.json"), path),
+      safely_fetch(.testdata_url(tag, "snapshot.json"), path),
       error = function(e) {
         cli::cli_abort(
           "Can't find test data release {.val {tag}}.",
@@ -697,7 +698,7 @@ use_testdata_cache_dir <- function(dir) {
     )
   }
   snapshot <- parse_snapshot(jsonlite::read_json(path), source = tag)
-  assign(tag, snapshot, envir = .testdata_snapshots)
+  gsm$testdata_snapshots[[tag]] <- snapshot
   snapshot
 }
 

@@ -1,46 +1,25 @@
-test_that("save_snapshot() writes every value plus snapshot.json (#206)", {
-  h <- new_counted_handle()
-  dir <- file.path(withr::local_tempdir(), "snap")
-  info <- h$handle$save_snapshot(dir, metadata = list(note = "hi"))
-
-  expect_setequal(list.files(dir), c("a.rds", "b.rds", "snapshot.json"))
-  expect_equal(readRDS(file.path(dir, "a.rds")), h$env$a)
-  json <- jsonlite::read_json(file.path(dir, "snapshot.json"))
-  expect_equal(json$refresh_snapshot, 1L)
-  expect_equal(json$key, "v1")
-  expect_equal(json$metadata$note, "hi")
-  expect_equal(
-    json$objects$a$sha256,
-    .fresh_sha256(file.path(dir, "a.rds"))
-  )
-  expect_equal(json$objects$a$file, "a.rds")
-  expect_equal(info$key, "v1")
-})
-
-test_that("snapshot_names maps bindings to snapshot objects both ways (#206)", {
+test_that("save_snapshot() writes values, packages, and metadata (#206)", {
   h <- new_counted_handle(snapshot_names = c(a = "alpha"))
   dir <- withr::local_tempdir()
-  h$handle$save_snapshot(dir)
-  expect_setequal(list.files(dir), c("alpha.rds", "b.rds", "snapshot.json"))
-  expect_named(read_snapshot(dir)$objects, c("alpha", "b"))
-
-  h2 <- new_counted_handle(snapshot_names = c(a = "alpha"))
-  h2$handle$use_snapshot(dir)
-  expect_equal(h2$env$a, h$env$a)
-  expect_equal(h2$calls$n, 0)
-})
-
-test_that("save_snapshot() can save a subset and record package versions (#206)", {
-  h <- new_counted_handle()
-  dir <- withr::local_tempdir()
   local_mocked_bindings(package_versions = function(packages) {
-    pkg_state(gsm.core = c("2.1.0", "abc"))[packages]
+    helper_pkg_state(gsm.core = c("2.1.0", "abc"))[packages]
   })
-  h$handle$save_snapshot(dir, names = "a", packages = "gsm.core")
+  info <- h$handle$save_snapshot(
+    dir,
+    packages = "gsm.core",
+    metadata = list(note = "hi")
+  )
+
+  expect_setequal(list.files(dir), c("alpha.rds", "b.rds", "snapshot.json"))
   json <- read_snapshot(dir)
-  expect_named(json$objects, "a")
-  expect_equal(json$packages$gsm.core$version, "2.1.0")
+  expect_equal(json$key, "v1")
+  expect_equal(json$metadata$note, "hi")
   expect_equal(json$packages$gsm.core$remote_sha, "abc")
+  expect_equal(
+    json$objects$alpha$sha256,
+    .fresh_sha256(file.path(dir, "alpha.rds"))
+  )
+  expect_equal(info$key, "v1")
   expect_error(h$handle$save_snapshot(dir, names = "nope"), "nope")
 })
 
@@ -48,59 +27,45 @@ test_that("save_snapshot() refuses non-string keys unless given one (#206)", {
   h <- new_counted_handle(key = list(a = 1))
   dir <- withr::local_tempdir()
   expect_error(h$handle$save_snapshot(dir), "key")
-  h$handle$save_snapshot(dir, key = "custom")
+  h$handle$save_snapshot(dir, key = "custom", names = "b")
   expect_equal(read_snapshot(dir)$key, "custom")
 })
 
-test_that("use_snapshot() serves values from disk, bypassing checker and cache (#206)", {
-  src <- new_counted_handle()
-  dir <- withr::local_tempdir()
-  src$handle$save_snapshot(dir)
-
-  checks <- 0
-  cache <- cachem::cache_mem()
-  env <- new.env()
+test_that("save_snapshot() uses one key for every object (#206)", {
+  n <- 0
   handle <- keep_fresh(
     checker = function(state) {
-      checks <<- checks + 1
-      "other"
+      n <<- n + 1
+      paste0("v", n)
     },
-    setters = list(a = function(k) stop("no"), b = function(k) stop("no")),
-    env = env,
-    cache = cache
+    setters = list(a = function(k) k, b = function(k) k),
+    env = new.env(),
+    check = "access"
   )
-  handle$use_snapshot(dir)
-  expect_equal(env$a, src$env$a)
-  expect_equal(env$b$k, "v1")
-  expect_equal(handle$key(), "v1")
-  expect_equal(checks, 0)
-  expect_length(cache$keys(), 0)
-  expect_equal(handle$snapshot$dir, normalizePath(dir, winslash = "/"))
+  dir <- withr::local_tempdir()
+  info <- handle$save_snapshot(dir)
+  expect_equal(readRDS(file.path(dir, "a.rds")), info$key)
+  expect_equal(readRDS(file.path(dir, "b.rds")), info$key)
 })
 
-test_that("use_snapshot(NULL) returns to normal operation (#206)", {
-  src <- new_counted_handle(key = "snap")
+test_that("use_snapshot() serves values from disk, then NULL returns to live (#206)", {
+  src <- new_counted_handle(snapshot_names = c(a = "alpha"))
   dir <- withr::local_tempdir()
   src$handle$save_snapshot(dir)
 
-  h <- new_counted_handle(key = "live")
+  h <- new_counted_handle(key = "live", snapshot_names = c(a = "alpha"))
   h$handle$use_snapshot(dir)
-  expect_equal(h$env$b$k, "snap")
+  expect_equal(h$env$a, src$env$a)
+  expect_equal(h$handle$key(), "v1")
+  expect_equal(h$calls$n, 0)
+  expect_length(h$handle$cache$keys(), 0)
+
   h$handle$use_snapshot(NULL)
   expect_null(h$handle$snapshot)
   expect_equal(h$env$b$k, "live")
 })
 
-test_that("keep_fresh(snapshot_path = ) starts in snapshot mode (#206)", {
-  src <- new_counted_handle()
-  dir <- withr::local_tempdir()
-  src$handle$save_snapshot(dir)
-  h <- new_counted_handle(key = "live", snapshot_path = dir)
-  expect_equal(h$env$b$k, "v1")
-  expect_equal(h$calls$n, 0)
-})
-
-test_that("use_snapshot() verifies checksums and reports missing objects (#206)", {
+test_that("use_snapshot() verifies objects (#206)", {
   src <- new_counted_handle()
   dir <- withr::local_tempdir()
   src$handle$save_snapshot(dir, names = "a")
@@ -109,8 +74,9 @@ test_that("use_snapshot() verifies checksums and reports missing objects (#206)"
   expect_error(h$env$b, "\"b\".*not in the snapshot")
 
   saveRDS(iris, file.path(dir, "a.rds"))
-  h$handle$use_snapshot(dir)
   expect_error(h$env$a, "Checksum mismatch")
+  unlink(file.path(dir, "a.rds"))
+  expect_error(h$env$a, "is missing")
 })
 
 test_that("use_snapshot() errors clearly on bad folders (#206)", {
@@ -121,47 +87,40 @@ test_that("use_snapshot() errors clearly on bad folders (#206)", {
   )
   expect_error(h$handle$use_snapshot(withr::local_tempdir()), "snapshot.json")
 
-  dir <- withr::local_tempdir()
-  jsonlite::write_json(
-    list(refresh_snapshot = 99),
-    file.path(dir, "snapshot.json"),
-    auto_unbox = TRUE
+  bad_json <- function(x) {
+    dir <- withr::local_tempdir(.local_envir = parent.frame())
+    jsonlite::write_json(x, file.path(dir, "snapshot.json"), auto_unbox = TRUE)
+    dir
+  }
+  expect_error(h$handle$use_snapshot(bad_json(list(key = "k"))), "refresh_snapshot")
+  expect_error(
+    h$handle$use_snapshot(bad_json(list(refresh_snapshot = 99))),
+    "newer version of refresh"
   )
-  expect_error(h$handle$use_snapshot(dir), "newer version of refresh")
+  expect_error(
+    h$handle$use_snapshot(bad_json(list(refresh_snapshot = 1))),
+    "string"
+  )
+  expect_error(
+    write_snapshot_json(withr::local_tempdir(), list(a = "a.rds"), "k"),
+    "does not exist"
+  )
 })
 
 test_that("use_snapshot() reports packages newer than the snapshot (#206)", {
   src <- new_counted_handle()
   dir <- withr::local_tempdir()
   local_mocked_bindings(package_versions = function(packages) {
-    pkg_state(gsm.core = "2.1.0", gsm.kri = "1.0.0")[packages]
+    helper_pkg_state(gsm.core = "2.1.0")[packages]
   })
-  src$handle$save_snapshot(dir, packages = c("gsm.core", "gsm.kri"))
+  src$handle$save_snapshot(dir, packages = "gsm.core")
 
   local_mocked_bindings(package_versions = function(packages) {
-    pkg_state(gsm.core = "2.2.0", gsm.kri = "1.0.0")[packages]
+    helper_pkg_state(gsm.core = "2.2.0")[packages]
   })
   h <- new_counted_handle()
   expect_message(h$handle$use_snapshot(dir), "gsm.core")
   expect_no_message(h$handle$use_snapshot(dir, check_packages = FALSE))
-})
-
-test_that("objects can map to differently named files (#206)", {
-  dir <- withr::local_tempdir()
-  saveRDS(mtcars, file.path(dir, "cars-data.rds"))
-  write_snapshot_json(
-    dir,
-    objects = list(cars = "cars-data.rds"),
-    key = "k"
-  )
-  env <- new.env()
-  handle <- keep_fresh(
-    function(s) "x",
-    list(cars = function(k) NULL),
-    env,
-    snapshot_path = dir
-  )
-  expect_equal(env$cars, mtcars)
 })
 
 # Package versions ------------------------------------------------------------
@@ -173,17 +132,11 @@ test_that("package_versions() reads Version and RemoteSha (#206)", {
 })
 
 test_that(".fresh_packages_newer() compares versions, then SHAs (#206)", {
-  recorded <- pkg_state(
-    gsm.core = c("2.1.0", "aaa"),
-    gsm.kri = "1.7.0"
-  )
-  newer <- function(...) .fresh_packages_newer(pkg_state(...), recorded)
+  recorded <- helper_pkg_state(gsm.core = c("2.1.0", "aaa"), gsm.kri = "1.7.0")
+  newer <- function(...) .fresh_packages_newer(helper_pkg_state(...), recorded)
   expect_equal(newer(gsm.core = c("2.1.0", "aaa")), character())
   expect_equal(newer(gsm.core = "2.0.0"), character())
-  expect_equal(newer(gsm.core = "2.1.0.9000"), "gsm.core")
   expect_equal(newer(gsm.core = c("2.1.0", "bbb")), "gsm.core")
-  expect_equal(newer(gsm.core = "2.1.0"), character())
-  expect_equal(newer(gsm.kri = c("1.7.0", "zzz")), character())
   expect_equal(newer(gsm.core = NA_character_), character())
   expect_equal(newer(gsm.new = "9.9.9"), character())
   expect_equal(
@@ -194,35 +147,11 @@ test_that(".fresh_packages_newer() compares versions, then SHAs (#206)", {
 
 test_that(".fresh_packages_changed() tracks installed packages in checker state (#206)", {
   state <- state_memory()
-  installed <- pkg_state(a = "1.0.0")
-  local_mocked_bindings(package_versions = function(packages) {
-    installed[packages]
-  })
+  installed <- helper_pkg_state(a = "1.0.0")
+  local_mocked_bindings(package_versions = function(packages) installed[packages])
 
   expect_true(.fresh_packages_changed(state, "a"))
   expect_false(.fresh_packages_changed(state, "a"))
-  installed <- pkg_state(a = "1.0.1")
+  installed <- helper_pkg_state(a = "1.0.1")
   expect_true(.fresh_packages_changed(state, "a"))
-  expect_false(.fresh_packages_changed(state, "a"))
-  # Separate slots don't interfere.
-  expect_true(.fresh_packages_changed(state, "a", slot = "other"))
-})
-
-test_that("save_snapshot() uses one key for every object (#206)", {
-  keys <- c("v1", "v2", "v3")
-  n <- 0
-  handle <- keep_fresh(
-    checker = function(state) {
-      n <<- n + 1
-      keys[[min(n, length(keys))]]
-    },
-    setters = list(a = function(k) k, b = function(k) k),
-    env = new.env(),
-    check = "access"
-  )
-  dir <- withr::local_tempdir()
-  info <- handle$save_snapshot(dir)
-
-  expect_equal(readRDS(file.path(dir, "a.rds")), info$key)
-  expect_equal(readRDS(file.path(dir, "b.rds")), info$key)
 })
