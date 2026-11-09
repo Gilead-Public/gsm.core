@@ -36,7 +36,7 @@ where it's saved.
 \details{
 The test data objects (e.g. \link{analyticsInput}) are cached in a standard
 \pkg{cachem} cache. \code{gsm_testdata()} returns a handle for inspecting and
-managing it, and can switch to a different cache.
+managing the cache, and can be used to switch to a different cache.
 
 To change where or how values are cached, see \code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
 }

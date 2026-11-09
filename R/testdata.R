@@ -129,7 +129,7 @@ NULL
 #'
 #' The test data objects (e.g. [analyticsInput]) are cached in a standard
 #' \pkg{cachem} cache. `gsm_testdata()` returns a handle for inspecting and
-#' managing it, and can switch to a different cache.
+#' managing the cache, and can be used to switch to a different cache.
 #'
 #' To change where or how values are cached, see [use_testdata_cache_dir()].
 #'
