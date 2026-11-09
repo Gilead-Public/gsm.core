@@ -9,7 +9,7 @@
 
 #' Set the active log level
 #'
-#' Validates `level` and sets `.le$log_level`. Called internally by
+#' Validates `level` and sets `gsm$log_level`. Called internally by
 #' [SetLogger()] methods and may be called directly when only the level (not a
 #' logger object) needs to change.
 #'
@@ -39,7 +39,7 @@ SetLogLevel.character <- function(level) {
       )
     )
   }
-  .le$log_level <- level
+  gsm$log_level <- level
   invisible(NULL)
 }
 
@@ -100,7 +100,7 @@ SetLogger.loglevel <- function(logger) {
 SetLogger.logger <- function(logger) {
   appender <- logger$appenders %||% logger$appender
   if (!is.null(appender)) {
-    .le$appender <- if (is.list(appender)) appender[[1L]] else appender
+    gsm$log_appender <- if (is.list(appender)) appender[[1L]] else appender
   }
   SetLogLevel(logger$threshold %||% "DEBUG")
 }
@@ -115,7 +115,7 @@ SetLogger.default <- function(logger) {
 #' @return Character string of the current log level.
 #' @export
 GetLogLevel <- function() {
-  .le$log_level %||% "DEBUG"
+  gsm$log_level %||% "DEBUG"
 }
 
 #' Set the active log appender
@@ -128,7 +128,7 @@ GetLogLevel <- function() {
 #' @returns `NULL`, invisibly.
 #' @export
 SetLogAppender <- function(appender = cli_fmt) {
-  .le$appender <- appender
+  gsm$log_appender <- appender
   invisible(NULL)
 }
 
@@ -136,5 +136,5 @@ SetLogAppender <- function(appender = cli_fmt) {
 #' @return A function used as the log appender. Defaults to [cli_fmt].
 #' @export
 GetLogAppender <- function() {
-  .le$appender %||% cli_fmt
+  gsm$log_appender %||% cli_fmt
 }

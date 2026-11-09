@@ -12,8 +12,7 @@
 \arguments{
 \item{env}{\code{environment} Namespace to create the bindings in.}
 
-\item{cache}{\code{cachem} Cache for downloaded values. Defaults to the
-\code{gsm.testdata_cache} option, or \code{\link[=.testdata_default_cache]{.testdata_default_cache()}}.}
+\item{cache}{\code{cachem} Cache for downloaded values.}
 }
 \value{
 \code{FreshHandle} The handle (also stored as \code{gsm$testdata_handle}),
