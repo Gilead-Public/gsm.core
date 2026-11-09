@@ -44,8 +44,8 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/analyticsSummary.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/cli_fmt.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/cli_fmt_inform.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/construct_fetcher.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_cache_id.html</loc></url>
-<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_default_request.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_move.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_needs_check.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_packages_changed.html</loc></url>
@@ -77,8 +77,7 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_snapshot.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_url.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_version_le.html</loc></url>
-<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/download_setter.html</loc></url>
-<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fetch_file.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fetch_binary.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_exports.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/gsm.core-package.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/gsm_testdata.html</loc></url>
@@ -101,6 +100,7 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/reportingResults.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/reportingResults_country.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/reportingResults_study.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/safely_fetch.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/shared-params.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/state_file.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/stop_if.html</loc></url>

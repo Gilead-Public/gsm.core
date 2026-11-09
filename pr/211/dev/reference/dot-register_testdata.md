@@ -19,9 +19,7 @@ Create the test data bindings and handle
 
 - cache:
 
-  `cachem` Cache for downloaded values. Defaults to the
-  `gsm.testdata_cache` option, or
-  [`.testdata_default_cache()`](https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_default_cache.md).
+  `cachem` Cache for downloaded values.
 
 ## Value
 
