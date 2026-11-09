@@ -207,3 +207,22 @@ test_that(".fresh_packages_changed() tracks installed packages in checker state 
   # Separate slots don't interfere.
   expect_true(.fresh_packages_changed(state, "a", slot = "other"))
 })
+
+test_that("save_snapshot() uses one key for every object (#206)", {
+  keys <- c("v1", "v2", "v3")
+  n <- 0
+  handle <- keep_fresh(
+    checker = function(state) {
+      n <<- n + 1
+      keys[[min(n, length(keys))]]
+    },
+    setters = list(a = function(k) k, b = function(k) k),
+    env = new.env(),
+    check = "access"
+  )
+  dir <- withr::local_tempdir()
+  info <- handle$save_snapshot(dir)
+
+  expect_equal(readRDS(file.path(dir, "a.rds")), info$key)
+  expect_equal(readRDS(file.path(dir, "b.rds")), info$key)
+})

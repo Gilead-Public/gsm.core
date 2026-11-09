@@ -5,8 +5,14 @@ withr::local_envvar(
   R_USER_CACHE_DIR = file.path(output_dir, "user-cache"),
   .local_envir = teardown_env()
 )
+# Restore the handle's own cache object, not a fresh default: a default made
+# during teardown would point into the temporary R_USER_CACHE_DIR.
+old_handle_cache <- gsm_testdata()$cache
 old_testdata_cache <- use_testdata_cache_dir(file.path(output_dir, "testdata"))
 withr::defer(
-  use_testdata_cache_dir(old_testdata_cache),
+  {
+    options(gsm.testdata_cache = old_testdata_cache)
+    gsm_testdata()$set_cache(old_handle_cache)
+  },
   envir = teardown_env()
 )

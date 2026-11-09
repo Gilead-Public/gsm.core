@@ -284,6 +284,13 @@ package_versions <- function(packages) {
   if (length(unknown)) {
     cli::cli_abort("Unknown object{?s}: {.val {unknown}}.")
   }
+  if (is.null(private$snapshot_)) {
+    # Check once, then hold the key so every object comes from one version.
+    private$current_key()
+    old_check <- private$check
+    private$check <- "session"
+    on.exit(private$check <- old_check, add = TRUE)
+  }
   values <- lapply(rlang::set_names(names), private$value_for)
   key <- key %||% private$key_
   if (!rlang::is_string(key)) {
