@@ -570,7 +570,9 @@ FreshStateFile <- R6::R6Class(
   if (file.exists(to)) {
     unlink(to)
   }
-  if (!file.rename(from, to) && !file.copy(from, to, overwrite = TRUE)) {
+  if (
+    !file.rename(from, to) && !isTRUE(file.copy(from, to, overwrite = TRUE))
+  ) {
     stop("Failed to write ", to, call. = FALSE)
   }
   invisible(to)

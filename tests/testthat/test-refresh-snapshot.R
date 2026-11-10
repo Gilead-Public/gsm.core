@@ -97,7 +97,10 @@ test_that("use_snapshot() errors clearly on bad folders (#206)", {
     jsonlite::write_json(x, file.path(dir, "snapshot.json"), auto_unbox = TRUE)
     dir
   }
-  expect_error(h$handle$use_snapshot(bad_json(list(key = "k"))), "refresh_snapshot")
+  expect_error(
+    h$handle$use_snapshot(bad_json(list(key = "k"))),
+    "refresh_snapshot"
+  )
   expect_error(
     h$handle$use_snapshot(bad_json(list(refresh_snapshot = 99))),
     "newer version of refresh"
@@ -153,7 +156,9 @@ test_that(".fresh_packages_newer() compares versions, then SHAs (#206)", {
 test_that(".fresh_packages_changed() tracks installed packages in checker state (#206)", {
   state <- state_memory()
   installed <- helper_pkg_state(a = "1.0.0")
-  local_mocked_bindings(package_versions = function(packages) installed[packages])
+  local_mocked_bindings(package_versions = function(packages) {
+    installed[packages]
+  })
 
   expect_true(.fresh_packages_changed(state, "a"))
   expect_false(.fresh_packages_changed(state, "a"))
