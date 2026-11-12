@@ -4,9 +4,8 @@
   in work-item URLs. Reporting values, states and dates are unchanged.
 
 - Refreshed `reportingActionLog` with deterministic review scenarios generated
-  by `gsm.datasim::simulate_action_log_reviews()`. Added the separate
-  `reportingActionLogExcludedSignals` dataset for a missing-KRI quarantine
-  example. Actual reporting snapshots and flags remain unchanged; snapshot
+  by `gsm.datasim::simulate_action_log_reviews()`. Actual reporting snapshots
+  and flags remain unchanged; snapshot
   dates provide proxies rather than verified user-action timestamps.
 
 # gsm.core v1.3.2

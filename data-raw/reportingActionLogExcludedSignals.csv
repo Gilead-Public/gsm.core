@@ -1,2 +1,0 @@
-"StudyID","SnapshotDate","GroupLevel","GroupID","MetricID","RiskSignalID","ExclusionReason"
-"AA-AA-000-0000",2025-02-01,"Site","0X1347",,"900003-MISSING-KRI","Synthetic signal has missing MetricID"

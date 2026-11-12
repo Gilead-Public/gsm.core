@@ -67,8 +67,7 @@ extractions <- lapply(seq_along(extraction_dates), function(index) {
       work_item_id_start = 900001L
     )
   })
-reportingActionLog <- do.call(rbind, lapply(extractions, `[[`, "action_log"))
-reportingActionLogExcludedSignals <- extractions[[length(extractions)]]$excluded_signals
+reportingActionLog <- do.call(rbind, extractions)
 
 group_labels <- unique(eligible[c("GroupID", "GroupLabel")])
 reportingActionLog$GroupLabel <- group_labels$GroupLabel[
@@ -82,5 +81,3 @@ write.csv(
   na = ""
 )
 save(reportingActionLog, file = "data/reportingActionLog.rda", compress = "xz")
-write.csv(reportingActionLogExcludedSignals, "data-raw/reportingActionLogExcludedSignals.csv", row.names = FALSE, na = "")
-save(reportingActionLogExcludedSignals, file = "data/reportingActionLogExcludedSignals.rda", compress = "xz")
