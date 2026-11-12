@@ -1,5 +1,8 @@
 # gsm.core (development version)
 
+- Bundled ActionLog examples now use the synthetic `example-org` organization
+  in work-item URLs. Reporting values, states and dates are unchanged.
+
 - Refreshed `reportingActionLog` with deterministic review scenarios generated
   by `gsm.datasim::simulate_action_log_reviews()`. Added the separate
   `reportingActionLogExcludedSignals` dataset for a missing-KRI quarantine

@@ -10,6 +10,19 @@ test_that("reportingActionLog has unique identities within frozen extractions", 
   expect_type(reportingActionLog$ActionID, "character")
 })
 
+test_that("reportingActionLog uses synthetic organization URLs", {
+  urls <- stats::na.omit(c(
+    reportingActionLog$RiskSignalURL,
+    reportingActionLog$ActionURL
+  ))
+
+  expect_gt(length(urls), 0L)
+  expect_true(all(
+    startsWith(urls, "https://dev.azure.com/example-org/") |
+      startsWith(urls, "https://example.invalid/")
+  ))
+})
+
 test_that("reportingActionLog aligns with flagged site KRI results", {
   key <- c("StudyID", "SnapshotDate", "GroupLevel", "GroupID", "MetricID")
   expected <- reportingResults[
