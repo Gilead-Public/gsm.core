@@ -45,10 +45,11 @@ Required columns include:
 }
 
 \examples{
+\dontshow{if (testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 dfTransformed <- Transform_Rate(
   analyticsInput,
   strNumeratorCol = "Numerator",
   strDenominatorCol = "Denominator"
 )
-
+\dontshow{\}) # examplesIf}
 }

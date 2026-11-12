@@ -35,7 +35,7 @@
 #'   Numerator_Other, Denominator, Denominator_Other, Prop, Prop_Other, Metric,
 #'   Estimate, and Score.
 #'
-#' @examplesIf rlang::is_installed("broom")
+#' @examplesIf rlang::is_installed("broom") && testdata_is_available("analyticsInput")
 #' dfTransformed <- Transform_Rate(
 #'   analyticsInput[1:20, ]
 #' )

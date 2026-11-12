@@ -46,7 +46,7 @@ choice.
 }
 
 \examples{
-\dontshow{if (rlang::is_installed("broom")) withAutoprint(\{ # examplesIf}
+\dontshow{if (rlang::is_installed("broom") && testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 dfTransformed <- Transform_Rate(
   analyticsInput[1:20, ]
 )

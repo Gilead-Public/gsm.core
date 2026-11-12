@@ -24,7 +24,7 @@
 #'
 #' @return `data.frame` with one row per site with columns `GroupID`, `GroupLevel`, `Numerator`, `Denominator`, and `Metric`.
 #'
-#' @examples
+#' @examplesIf testdata_is_available("analyticsInput")
 #' dfTransformed <- Transform_Rate(
 #'   analyticsInput,
 #'   strNumeratorCol = "Numerator",
