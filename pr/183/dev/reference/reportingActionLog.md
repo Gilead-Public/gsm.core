@@ -6,7 +6,10 @@ KRI rows in
 Each extraction is a complete frozen read of signals known at that
 snapshot. Multiple actions and unactioned signals follow the
 source-neutral grail Action Log schema; the result key is not unique
-without extraction, signal, and action identifiers.
+without extraction, signal, and action identifiers. States vary across
+site/KRI pairs; earlier flags on currently green findings are closed.
+Snapshot dates are labelled proxies, not verified decision dates. The
+reporting history spans 59 days and does not demonstrate 90-day expiry.
 
 ## Usage
 
@@ -16,7 +19,7 @@ reportingActionLog
 
 ## Format
 
-A data frame with 1520 rows and 33 columns:
+A data frame with 1406 rows and 33 columns:
 
 - StudyID:
 
@@ -98,5 +101,5 @@ A data frame with 1520 rows and 33 columns:
 
 ## Source
 
-Generated through `gsm.datasim::simulate_action_log()` by
+Generated through `gsm.datasim::simulate_action_log_reviews()` by
 `data-raw/generate_action_log_fixture.R`.

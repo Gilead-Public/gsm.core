@@ -3,11 +3,17 @@
 rows in reportingResults. Each extraction is a complete frozen read of
 signals known at that snapshot. Multiple actions and unactioned signals
 follow the source-neutral grail Action Log schema; the result key is not
-unique without extraction, signal, and action identifiers."><meta property="og:description" content="Deterministic longitudinal ActionLog records aligned with flagged site KRI
+unique without extraction, signal, and action identifiers.
+States vary across site/KRI pairs; earlier flags on currently green findings
+are closed. Snapshot dates are labelled proxies, not verified decision dates.
+The reporting history spans 59 days and does not demonstrate 90-day expiry."><meta property="og:description" content="Deterministic longitudinal ActionLog records aligned with flagged site KRI
 rows in reportingResults. Each extraction is a complete frozen read of
 signals known at that snapshot. Multiple actions and unactioned signals
 follow the source-neutral grail Action Log schema; the result key is not
-unique without extraction, signal, and action identifiers."><meta name="robots" content="noindex"><link href="pkgdown/extra.css" rel="stylesheet"></head><body>
+unique without extraction, signal, and action identifiers.
+States vary across site/KRI pairs; earlier flags on currently green findings
+are closed. Snapshot dates are labelled proxies, not verified decision dates.
+The reporting history spans 59 days and does not demonstrate 90-day expiry."><meta name="robots" content="noindex"><link href="pkgdown/extra.css" rel="stylesheet"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -47,7 +53,10 @@ unique without extraction, signal, and action identifiers."><meta name="robots" 
 rows in <a href="reportingResults.html">reportingResults</a>. Each extraction is a complete frozen read of
 signals known at that snapshot. Multiple actions and unactioned signals
 follow the source-neutral grail Action Log schema; the result key is not
-unique without extraction, signal, and action identifiers.</p>
+unique without extraction, signal, and action identifiers.
+States vary across site/KRI pairs; earlier flags on currently green findings
+are closed. Snapshot dates are labelled proxies, not verified decision dates.
+The reporting history spans 59 days and does not demonstrate 90-day expiry.</p>
     </div>
 
     <div class="section level2">
@@ -57,7 +66,7 @@ unique without extraction, signal, and action identifiers.</p>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 1520 rows and 33 columns:</p><dl><dt>StudyID</dt>
+    <p>A data frame with 1406 rows and 33 columns:</p><dl><dt>StudyID</dt>
 <dd><p>unique study identifier</p></dd>
 
 <dt>SnapshotDate</dt>
@@ -120,7 +129,7 @@ MetricAbbreviation,Country</dt>
 </dl></div>
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
-    <p>Generated through <code>gsm.datasim::simulate_action_log()</code> by
+    <p>Generated through <code>gsm.datasim::simulate_action_log_reviews()</code> by
 <code>data-raw/generate_action_log_fixture.R</code>.</p>
     </div>
 
