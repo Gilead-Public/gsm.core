@@ -197,7 +197,7 @@ NULL
 #' are closed. Snapshot dates are labelled proxies, not verified decision dates.
 #' The reporting history spans 59 days and does not demonstrate 90-day expiry.
 #'
-#' @format `r df_dim_desc(reportingActionLog)`
+#' @format A data frame with 1406 rows and 33 columns:
 #' \describe{
 #'   \item{StudyID}{unique study identifier}
 #'   \item{SnapshotDate}{date of the KRI snapshot}
