@@ -94,8 +94,6 @@ data used for examples and testing
   **\[stable\]** : reportingResults Dataset
 - [`reportingActionLog`](https://gilead-public.github.io/gsm.core/dev/reference/reportingActionLog.md)
   : reportingActionLog Dataset
-- [`reportingActionLogExcludedSignals`](https://gilead-public.github.io/gsm.core/dev/reference/reportingActionLogExcludedSignals.md)
-  : Synthetic ActionLog quarantine audit
 - [`reportingBounds_country`](https://gilead-public.github.io/gsm.core/dev/reference/reportingBounds_country.md)
   **\[stable\]** : reportingBounds_country Dataset
 - [`reportingGroups_country`](https://gilead-public.github.io/gsm.core/dev/reference/reportingGroups_country.md)
