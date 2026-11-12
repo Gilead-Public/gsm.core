@@ -45,7 +45,7 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with 24 rows and 27 columns:</p><dl><dt>MetricID</dt>
+    <p>A data frame with about 24 rows and 27 columns:</p><dl><dt>MetricID</dt>
 <dd><p>unique metric identifier</p></dd>
 
 <dt>GroupLevel</dt>
@@ -130,7 +130,36 @@
 </dl></div>
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
-    <p>Generated from <code>reportingMetrics.csv</code> dataset in the <code>gsm.core</code> package.</p>
+    <p><code>reportingMetrics.rds</code> from a <code>data-*</code> release of
+<a href="https://github.com/Gilead-Public/gsm.datasim/releases" class="external-link">https://github.com/Gilead-Public/gsm.datasim/releases</a>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Downloaded on first use from a gsm.datasim test data release and cached
+locally. The release is automatically chosen to match the installed gsm
+packages. To change where or how the data is cached, see
+<code><a href="use_testdata_cache_dir.html">use_testdata_cache_dir()</a></code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="release-selection">Release selection<a class="anchor" aria-label="anchor" href="#release-selection"></a></h2>
+
+
+<p>The data comes from, in order of priority:</p><ul><li><p><code><a href="use_testdata_snapshot.html">use_testdata_snapshot()</a></code>: a local snapshot folder. Nothing is downloaded
+or cached.</p></li>
+<li><p><code><a href="use_testdata_snapshot.html">use_testdata_tag()</a></code>: an exact <code>data-*</code> release tag.</p></li>
+<li><p>Otherwise, the release built with the gsm packages you have installed,
+looked up in gsm.datasim's test data index:</p><ol><li><p>If gsm.datasim built the data with exactly your installed versions,
+that data is used.</p></li>
+<li><p>Otherwise, each installed package narrows the candidates: by its
+GitHub commit (<code>RemoteSha</code>) if that commit was built, else by the
+same version, else by the newest built version no higher than yours.
+Packages that aren't installed don't narrow anything.</p></li>
+<li><p>Among the remaining candidates, the most recently built is used.</p></li>
+</ol><p>If nothing matches, an error names the package that ruled out every
+build. Usually that means updating it (or the other gsm packages) to a
+compatible set.</p></li>
+</ul><p>Each override can also be set with an environment variable before gsm.core
+loads; see <code><a href="use_testdata_snapshot.html">use_testdata_snapshot()</a></code>.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
