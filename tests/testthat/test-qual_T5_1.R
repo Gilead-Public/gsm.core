@@ -9,6 +9,7 @@ ae_workflow_default <- flatten(workr::MakeWorkflowList(
 ))
 
 # define Data ------------------------------------------------------
+skip_if_no_testdata()
 TestAtLogLevel("WARN")
 test_custom <- robust_runworkflow(ae_workflow_custom, mapped_data)
 test_default <- robust_runworkflow(ae_workflow_default, mapped_data)

@@ -44,8 +44,9 @@ TODO: Add link.
 }
 
 \examples{
+\dontshow{if (testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 dfTransformed <- Transform_Rate(analyticsInput)
 
 dfBounds <- Analyze_Poisson_PredictBounds(dfTransformed, c(-5, 5))
-
+\dontshow{\}) # examplesIf}
 }

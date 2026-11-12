@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.github$
 ^codecov\.yml$
+^data-raw$
 ^doc$
 ^Meta$
 ^vignettes/articles$
@@ -10,7 +11,6 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^data-raw$
 ^LICENSE\.md$
 ^inst/snapshots$
 ^inst/demo$

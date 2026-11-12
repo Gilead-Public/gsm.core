@@ -1,21 +1,10 @@
 # Generate a deterministic ActionLog fixture aligned with reportingResults.
 
-results <- read.csv(
-  "data-raw/reportingResults.csv",
-  colClasses = c(GroupID = "character"),
-  stringsAsFactors = FALSE
-)
+results <- gsm.core::reportingResults
 results$SnapshotDate <- as.Date(results$SnapshotDate)
 
-metrics <- read.csv(
-  "data-raw/reportingMetrics.csv",
-  stringsAsFactors = FALSE
-)
-groups <- read.csv(
-  "data-raw/reportingGroups.csv",
-  colClasses = c(GroupID = "character"),
-  stringsAsFactors = FALSE
-)
+metrics <- gsm.core::reportingMetrics
+groups <- gsm.core::reportingGroups
 
 if (!requireNamespace("gsm.datasim", quietly = TRUE)) {
   stop(

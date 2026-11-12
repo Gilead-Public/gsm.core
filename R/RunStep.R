@@ -13,7 +13,7 @@
 #'  [gsm Extensions article](https://gilead-public.github.io/gsm.core/articles/gsmExtensions.html).
 #' @param lMeta `list` a named list of meta data.
 #'
-#' @examples
+#' @examplesIf testdata_is_available("lSource")
 #' wf_mapping <- workr::MakeWorkflowList(
 #'   strNames = c("AE", "SUBJ"),
 #'   strPath = "example_workflow/1_mappings",

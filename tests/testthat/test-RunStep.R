@@ -8,9 +8,8 @@ test_that("gsm.core::RunStep forwards to workr with a deprecation warning", {
 
   expected <- suppressMessages(workr::RunStep(lStep, lData, lMeta))
 
-  expect_warning(
-    result <- suppressMessages(gsm.core::RunStep(lStep, lData, lMeta)),
-    "deprecated"
+  lifecycle::expect_deprecated(
+    result <- suppressMessages(gsm.core::RunStep(lStep, lData, lMeta))
   )
   expect_equal(result, expected)
 })

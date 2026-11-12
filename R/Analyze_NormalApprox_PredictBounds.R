@@ -29,7 +29,7 @@
 #' @return `data.frame` containing predicted boundary values with upper and
 #'   lower bounds across the range of observed values.
 #'
-#' @examples
+#' @examplesIf testdata_is_available("analyticsInput")
 #' # Binary
 #' dfTransformed <- Transform_Rate(analyticsInput)
 #'

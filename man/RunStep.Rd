@@ -28,6 +28,7 @@ parameter with results from \code{is_mapping_vald} for each domain in \code{lSte
 backward compatibility in \code{{gsm.core}}.
 }
 \examples{
+\dontshow{if (testdata_is_available("lSource")) withAutoprint(\{ # examplesIf}
 wf_mapping <- workr::MakeWorkflowList(
   strNames = c("AE", "SUBJ"),
   strPath = "example_workflow/1_mappings",
@@ -49,5 +50,5 @@ lRaw <- list(
 
 mapped <- workr::RunWorkflows(wf_mapping, lRaw)
 ae_step <- workr::RunStep(lStep = lStep, lData = mapped, lMeta = lMeta)
-
+\dontshow{\}) # examplesIf}
 }

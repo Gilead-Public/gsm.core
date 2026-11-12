@@ -37,13 +37,17 @@ BugReports: https://github.com/Gilead-Public/gsm.core/issues
 Depends: 
     R (>= 4.0)
 Imports:
+    cachem,
     cli,
+    digest,
     dplyr,
+    fs,
     glue,
-    lifecycle,
+    jsonlite,
     lifecycle,
     magrittr,
     purrr,
+    R6,
     rlang (>= 0.4.11),
     stats,
     tidyr,
@@ -71,13 +75,12 @@ Remotes:
     workr=Gilead-Public/workr@main
 VignetteBuilder: 
     knitr
+LazyData: true
 Config/Needs/website: DT, here, pkgdown, devtools
 Config/Needs/data-raw: Gilead-Public/gsm.datasim@issue-134-actionlog-domains
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
 Language: en-US
-LazyData: true
-LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.1.1

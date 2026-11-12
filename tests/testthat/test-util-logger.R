@@ -95,8 +95,8 @@ test_that("SetLogLevel defaults to DEBUG for character() (via .character) (#159)
 })
 
 test_that("SetLogAppender sets and GetLogAppender retrieves an appender (#159)", {
-  old_appender <- .le$appender
-  withr::defer(.le$appender <- old_appender)
+  old_appender <- gsm$log_appender
+  withr::defer(gsm$log_appender <- old_appender)
 
   my_appender <- function(level, ...) NULL
   SetLogAppender(my_appender)
@@ -104,35 +104,35 @@ test_that("SetLogAppender sets and GetLogAppender retrieves an appender (#159)",
 })
 
 test_that("SetLogAppender defaults to cli_fmt (#159)", {
-  old_appender <- .le$appender
-  withr::defer(.le$appender <- old_appender)
+  old_appender <- gsm$log_appender
+  withr::defer(gsm$log_appender <- old_appender)
 
   SetLogAppender()
   expect_identical(GetLogAppender(), cli_fmt)
 })
 
 test_that("GetLogLevel returns DEBUG when unset (#159)", {
-  old <- .le$log_level
-  withr::defer(.le$log_level <- old)
+  old <- gsm$log_level
+  withr::defer(gsm$log_level <- old)
 
-  .le$log_level <- NULL
+  gsm$log_level <- NULL
   expect_equal(GetLogLevel(), "DEBUG")
 })
 
 test_that("GetLogAppender returns cli_fmt by default (#159)", {
-  old <- .le$appender
-  withr::defer(.le$appender <- old)
+  old <- gsm$log_appender
+  withr::defer(gsm$log_appender <- old)
 
-  .le$appender <- NULL
+  gsm$log_appender <- NULL
   expect_identical(GetLogAppender(), cli_fmt)
 })
 
 test_that("SetLogger extracts appender from log4r logger with appenders list (#159)", {
   old_level <- GetLogLevel()
-  old_appender <- .le$appender
+  old_appender <- gsm$log_appender
   withr::defer({
     SetLogger(old_level)
-    .le$appender <- old_appender
+    gsm$log_appender <- old_appender
   })
 
   my_appender <- function(level, ...) NULL
@@ -147,10 +147,10 @@ test_that("SetLogger extracts appender from log4r logger with appenders list (#1
 
 test_that("SetLogger extracts single appender from log4r logger (#159)", {
   old_level <- GetLogLevel()
-  old_appender <- .le$appender
+  old_appender <- gsm$log_appender
   withr::defer({
     SetLogger(old_level)
-    .le$appender <- old_appender
+    gsm$log_appender <- old_appender
   })
 
   my_appender <- function(level, ...) NULL
@@ -165,10 +165,10 @@ test_that("SetLogger extracts single appender from log4r logger (#159)", {
 
 test_that("SetLogger extracts appender from logger without threshold (#159)", {
   old_level <- GetLogLevel()
-  old_appender <- .le$appender
+  old_appender <- gsm$log_appender
   withr::defer({
     SetLogger(old_level)
-    .le$appender <- old_appender
+    gsm$log_appender <- old_appender
   })
 
   my_appender <- function(level, ...) NULL
@@ -183,17 +183,17 @@ test_that("SetLogger extracts appender from logger without threshold (#159)", {
 
 test_that("LogMessage uses custom appender (#159)", {
   old_level <- GetLogLevel()
-  old_appender <- .le$appender
+  old_appender <- gsm$log_appender
   withr::defer({
     SetLogger(old_level)
-    .le$appender <- old_appender
+    gsm$log_appender <- old_appender
   })
 
   captured <- list()
   my_appender <- function(level, ...) {
     captured[[length(captured) + 1L]] <<- list(level = level, ...)
   }
-  .le$appender <- my_appender
+  gsm$log_appender <- my_appender
   SetLogger("DEBUG")
 
   LogMessage("INFO", "hello", cli_detail = "alert")

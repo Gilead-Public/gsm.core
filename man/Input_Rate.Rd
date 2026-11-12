@@ -72,6 +72,7 @@ All other columns are dropped from the output data frame. Note that if no values
 found in dfNumerator/dfDenominator numerator and denominator values are filled with 0 in the output data frame.
 }
 \examples{
+\dontshow{if (testdata_is_available("lSource")) withAutoprint(\{ # examplesIf}
 # Run for AE KRI
 dfInput <- Input_Rate(
   dfSubjects = gsm.core::lSource$Raw_SUBJ,
@@ -84,6 +85,6 @@ dfInput <- Input_Rate(
   strDenominatorMethod = "Sum",
   strDenominatorCol = "timeontreatment"
 )
-
+\dontshow{\}) # examplesIf}
 }
 \keyword{internal}

@@ -43,6 +43,7 @@ test_that("binary output created as expected and has correct structure", {
 })
 
 test_that("rate output created as expected and has correct structure (#21)", {
+  skip_if_no_testdata()
   dfTransformed <- Transform_Rate(analyticsInput)
 
   rate <- quiet_Analyze_NormalApprox(dfTransformed, strType = "rate")
