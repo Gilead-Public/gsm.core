@@ -1,6 +1,6 @@
 # Set the active log level
 
-Validates `level` and sets `.le$log_level`. Called internally by
+Validates `level` and sets `gsm$log_level`. Called internally by
 [`SetLogger()`](https://gilead-public.github.io/gsm.core/dev/reference/SetLogger.md)
 methods and may be called directly when only the level (not a logger
 object) needs to change.
