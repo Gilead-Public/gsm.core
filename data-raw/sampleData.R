@@ -44,6 +44,14 @@ for (column in c(
 usethis::use_data(reportingActionLog, overwrite = TRUE, compress = "xz")
 rm(reportingActionLog)
 
+reportingActionLogExcludedSignals <- read.csv(
+  "data-raw/reportingActionLogExcludedSignals.csv",
+  colClasses = c(GroupID = "character", MetricID = "character", RiskSignalID = "character")
+)
+reportingActionLogExcludedSignals$SnapshotDate <- as.Date(reportingActionLogExcludedSignals$SnapshotDate)
+usethis::use_data(reportingActionLogExcludedSignals, overwrite = TRUE, compress = "xz")
+rm(reportingActionLogExcludedSignals)
+
 analyticsSummary <- read.csv(
   "data-raw/analyticsSummary.csv",
   colClasses = c(GroupID = "character")

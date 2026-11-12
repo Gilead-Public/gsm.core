@@ -25,6 +25,23 @@ test_that("reportingActionLog aligns with flagged site KRI results", {
   expect_setequal(make_key(reportingActionLog), make_key(expected))
 })
 
+test_that("reportingActionLog demonstrates proxy reviews and scoped quarantine", {
+  expect_false("ActionedDate" %in% names(reportingActionLog))
+  latest <- reportingResults[reportingResults$SnapshotDate == max(reportingResults$SnapshotDate), ]
+  green <- latest[!is.na(latest$Flag) & latest$Flag == 0, ]
+  reviewed <- merge(green, reportingActionLog[reportingActionLog$ExtractionDate == max(reportingActionLog$ExtractionDate), ],
+    by = c("StudyID", "GroupLevel", "GroupID", "MetricID"), suffixes = c("_current", "_signal"))
+  expect_gt(nrow(reviewed), 0L)
+  expect_true(all(reviewed$State == "Closed Action"))
+  expect_true(all(reviewed$SnapshotDate_signal < reviewed$SnapshotDate_current))
+  audit <- reportingActionLogExcludedSignals
+  expect_gt(nrow(audit), 0L)
+  expect_type(audit$GroupID, "character")
+  expect_true(all(is.na(audit$MetricID)))
+  expect_s3_class(audit$SnapshotDate, "Date")
+  expect_true(all(audit$GroupID %in% reportingActionLog$GroupID[reportingActionLog$State == "No Action"]))
+})
+
 test_that("reportingActionLog contains valid longitudinal action metadata", {
   expect_s3_class(reportingActionLog$SnapshotDate, "Date")
   expect_s3_class(reportingActionLog$ExtractionDate, "Date")

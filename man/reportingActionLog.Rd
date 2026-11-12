@@ -5,7 +5,7 @@
 \alias{reportingActionLog}
 \title{reportingActionLog Dataset}
 \format{
-A data frame with 1520 rows and 33 columns:
+A data frame with 1406 rows and 33 columns:
 \describe{
 \item{StudyID}{unique study identifier}
 \item{SnapshotDate}{date of the KRI snapshot}
@@ -31,7 +31,7 @@ MetricAbbreviation,Country}{ActionLog display and action metadata}
 }
 }
 \source{
-Generated through \code{gsm.datasim::simulate_action_log()} by
+Generated through \code{gsm.datasim::simulate_action_log_reviews()} by
 \code{data-raw/generate_action_log_fixture.R}.
 }
 \usage{
@@ -43,5 +43,8 @@ rows in \link{reportingResults}. Each extraction is a complete frozen read of
 signals known at that snapshot. Multiple actions and unactioned signals
 follow the source-neutral grail Action Log schema; the result key is not
 unique without extraction, signal, and action identifiers.
+States vary across site/KRI pairs; earlier flags on currently green findings
+are closed. Snapshot dates are labelled proxies, not verified decision dates.
+The reporting history spans 59 days and does not demonstrate 90-day expiry.
 }
 \keyword{datasets}

@@ -1,5 +1,11 @@
 # gsm.core (development version)
 
+- Refreshed `reportingActionLog` with deterministic review scenarios generated
+  by `gsm.datasim::simulate_action_log_reviews()`. Added the separate
+  `reportingActionLogExcludedSignals` dataset for a missing-KRI quarantine
+  example. Actual reporting snapshots and flags remain unchanged; snapshot
+  dates provide proxies rather than verified user-action timestamps.
+
 # gsm.core v1.3.2
 
 This patch release refreshes the bundled `lSource` and reporting data for the IP Monitoring (IP non-starters and premature treatment discontinuation) and Repeat Measurements metrics, and moves workflow runtime tests to `{workr}`.
