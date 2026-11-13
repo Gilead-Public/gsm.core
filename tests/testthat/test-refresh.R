@@ -43,7 +43,10 @@ test_that("keep_fresh() validates its arguments (#206)", {
   ok <- list(x = function(k) k)
   expect_error(keep_fresh(function(s) 1, ok, env, check = "never"), "check")
   expect_error(keep_fresh(function(s) 1, ok, env, cache = list()), "cachem")
-  expect_error(keep_fresh(function(s) 1, ok, env, state = list()), "state store")
+  expect_error(
+    keep_fresh(function(s) 1, ok, env, state = list()),
+    "state store"
+  )
 })
 
 test_that("a disk cache and state file persist across keep_fresh() calls (#206)", {

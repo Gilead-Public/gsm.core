@@ -14,6 +14,9 @@ package_versions(packages)
 \code{remote_sha} (both \code{NA} when unknown or not installed).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Records the version and \code{RemoteSha} (set when installed from GitHub, e.g.
 with pak or remotes) of each package. Pass the result to
 \code{write_snapshot_json(packages = )} to record which package versions built a
@@ -21,4 +24,15 @@ snapshot, or call it from a \code{\link[=keep_fresh]{keep_fresh()}} checker and 
 its \code{state} to decide whether the data needs checking again (e.g. skip a
 remote lookup until installed packages change).
 }
-\keyword{internal}
+\examples{
+package_versions(c("gsm.core", "not.a.package"))
+}
+\seealso{
+Other refresh:
+\code{\link[=fresh_digest]{fresh_digest()}},
+\code{\link[=fresh_fingerprint]{fresh_fingerprint()}},
+\code{\link[=fresh_inputs_hash]{fresh_inputs_hash()}},
+\code{\link[=read_snapshot]{read_snapshot()}},
+\code{\link[=write_snapshot_json]{write_snapshot_json()}}
+}
+\concept{refresh}

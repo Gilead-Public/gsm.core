@@ -47,7 +47,11 @@ safely_fetch <- function(
 #' @param reader `function` `function(path)` returning the value. Defaults to
 #'   [readRDS()].
 #' @param checksum_finder `function` `function(key)` returning the expected
-#'   sha256 for version `key`, or `NULL` to skip verification.
+#'   sha256 of the downloaded file for version `key`, or `NULL` to skip
+#'   verification.
+#' @param digest_finder `function` `function(key)` returning the expected
+#'   [fresh_digest()] of the value `reader` returns for version `key`, or
+#'   `NULL` to skip verification.
 #' @inheritParams safely_fetch
 #' @returns `function` A `function(key)` suitable for `keep_fresh(setters = )`.
 #' @keywords internal
@@ -55,21 +59,24 @@ construct_fetcher <- function(
   url_constructor,
   reader = readRDS,
   checksum_finder = NULL,
+  digest_finder = NULL,
   downloader = fetch_binary
 ) {
   force(url_constructor)
   force(reader)
   force(checksum_finder)
+  force(digest_finder)
   force(downloader)
   function(key) {
-    # Resolve eagerly so errors from url_constructor()/checksum_finder() aren't
+    # Resolve eagerly so errors from url_constructor() and the finders aren't
     # re-raised as interrupted promises inside safely_fetch().
     src <- url_constructor(key)
     expected <- if (!is.null(checksum_finder)) checksum_finder(key)
+    digest <- if (!is.null(digest_finder)) digest_finder(key)
     tmp <- tempfile()
     on.exit(unlink(tmp))
     safely_fetch(src, tmp, checksum = expected, downloader = downloader)
-    reader(tmp)
+    .fresh_verify_digest(reader(tmp), digest, src)
   }
 }
 
