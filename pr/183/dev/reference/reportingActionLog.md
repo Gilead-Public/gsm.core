@@ -1,10 +1,11 @@
 # reportingActionLog Dataset
 
 Deterministic longitudinal ActionLog records aligned with flagged site
-KRI rows in
-[reportingResults](https://gilead-public.github.io/gsm.core/dev/reference/reportingResults.md).
-Each extraction is a complete frozen read of signals known at that
-snapshot. Multiple actions and unactioned signals follow the
+KRI rows in the matching reporting inputs returned by
+[`action_log_testdata()`](https://gilead-public.github.io/gsm.core/dev/reference/action_log_testdata.md).
+These inputs are independent of the currently selected test data
+release. Each extraction is a complete frozen read of signals known at
+that snapshot. Multiple actions and unactioned signals follow the
 source-neutral grail Action Log schema; the result key is not unique
 without extraction, signal, and action identifiers. States vary across
 site/KRI pairs; earlier flags on currently green findings are closed.

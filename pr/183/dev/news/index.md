@@ -4,6 +4,10 @@
 
 - Added synthetic `reportingActionLog` review scenarios for action-aware
   scoring and reporting examples.
+- Added
+  [`action_log_testdata()`](https://gilead-public.github.io/gsm.core/dev/reference/action_log_testdata.md)
+  for the fixture’s matching reporting inputs.
+- Fixed lifecycle dates across frozen ActionLog extractions.
 
 ## gsm.core v1.3.2
 
