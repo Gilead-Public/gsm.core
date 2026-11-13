@@ -278,3 +278,27 @@ b 1.0.0 NA",
     )
   )
 })
+
+test_that("format 2 snapshots require a digest for every object (#216)", {
+  dir <- withr::local_tempdir()
+  write_json <- function(objects) {
+    jsonlite::write_json(
+      list(refresh_snapshot = 2, key = "k", objects = objects),
+      file.path(dir, "snapshot.json"),
+      auto_unbox = TRUE,
+      null = "null"
+    )
+  }
+  write_json(list(a = list(file = "a.rds")))
+  expect_error(read_snapshot(dir), "digest.*\"a\"")
+  write_json(list(a = list(file = "a.rds", digest = NULL)))
+  expect_error(read_snapshot(dir), "digest")
+  write_json(list(a = list(file = "a.rds", sha256 = strrep("a", 64))))
+  expect_error(read_snapshot(dir), "digest")
+  write_json(list(a = list(file = "a.rds", digest = "abc")))
+  expect_error(read_snapshot(dir), "digest")
+  write_json(list(a = list(digest = strrep("a", 64))))
+  expect_error(read_snapshot(dir), "file")
+  write_json(list(a = list(file = "a.rds", digest = strrep("a", 64))))
+  expect_no_error(read_snapshot(dir))
+})

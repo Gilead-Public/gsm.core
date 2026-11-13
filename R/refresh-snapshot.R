@@ -81,6 +81,21 @@ parse_snapshot <- function(info, source = "snapshot.json") {
       "{.file {source}} needs a string {.field key} and {.field objects}."
     )
   }
+  bad <- names(Filter(
+    function(entry) {
+      !is.list(entry) ||
+        !rlang::is_string(entry$file) ||
+        !rlang::is_string(entry$digest) ||
+        !grepl("^[0-9a-fA-F]{64}$", entry$digest)
+    },
+    info$objects
+  ))
+  if (length(bad)) {
+    cli::cli_abort(
+      "{.file {source}} needs a {.field file} and a 64-character hex
+       {.field digest} for object{?s} {.val {bad}}."
+    )
+  }
   info
 }
 
