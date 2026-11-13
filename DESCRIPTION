@@ -45,7 +45,6 @@ Imports:
     glue,
     jsonlite,
     lifecycle,
-    lifecycle,
     magrittr,
     purrr,
     R6,
@@ -76,7 +75,9 @@ Remotes:
     workr=Gilead-Public/workr@main
 VignetteBuilder: 
     knitr
+LazyData: true
 Config/Needs/website: DT, here, pkgdown, devtools
+Config/Needs/data-raw: Gilead-Public/gsm.datasim@issue-134-actionlog-domains
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8

@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.github$
 ^codecov\.yml$
+^data-raw$
 ^doc$
 ^Meta$
 ^vignettes/articles$

@@ -13,6 +13,16 @@ skip_if_no_testdata <- function() {
 }
 .testdata_available <- new.env(parent = emptyenv())
 
+action_log_test_results <- function() {
+  if (identical(Sys.getenv("CI"), "true")) {
+    return(action_log_testdata()$reportingResults)
+  }
+  tryCatch(
+    action_log_testdata()$reportingResults,
+    error = function(error) testthat::skip("Matching ActionLog test data is unavailable.")
+  )
+}
+
 # Fake gsm.datasim for testdata tests. Release assets live in
 # `<root>/<tag>/<file>`, the data-index in `<root>/index.json`.
 #
