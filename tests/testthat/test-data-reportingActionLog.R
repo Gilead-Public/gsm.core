@@ -111,8 +111,9 @@ test_that("frozen ActionLog reads retain identities and lifecycle dates", {
 
 test_that("ActionLog inputs use their own immutable release", {
   selected <- gsm$testdata_tag
+  snapshot <- NULL
   testthat::local_mocked_bindings(
-    gsm_testdata = function(...) list(cache = cachem::cache_mem(), snapshot = NULL),
+    gsm_testdata = function(...) list(cache = cachem::cache_mem(), snapshot = snapshot),
     .testdata_object_entry = function(tag, object) list(file = paste0(object, ".rds")),
     construct_fetcher = function(url_constructor, checksum_finder) {
       force(url_constructor)
@@ -123,5 +124,19 @@ test_that("ActionLog inputs use their own immutable release", {
   inputs <- action_log_testdata()
   expect_named(inputs, c("reportingResults", "reportingGroups", "reportingMetrics", "reportingBounds"))
   expect_true(all(grepl("/data-8cde53949d4d/", unlist(inputs), fixed = TRUE)))
+  snapshot <- list(key = "unrelated-snapshot", dir = "not-used")
+  expect_identical(action_log_testdata(), inputs)
+  directory <- withr::local_tempdir()
+  files <- stats::setNames(paste0(names(inputs), ".rds"), names(inputs))
+  expected <- lapply(names(inputs), function(object) {
+    value <- paste("matching", object)
+    saveRDS(value, file.path(directory, files[[object]]))
+    value
+  })
+  names(expected) <- names(inputs)
+  write_snapshot_json(directory, objects = as.list(files),
+    key = "sha256:8cde53949d4d7e1dcf3741905dbf42303a35ca96e662ea129306016c3a55572d")
+  snapshot <- read_snapshot(directory)
+  expect_identical(action_log_testdata(), expected)
   expect_identical(gsm$testdata_tag, selected)
 })
