@@ -1,12 +1,7 @@
 # gsm.core (development version)
 
-- Bundled ActionLog examples now use the synthetic `example-org` organization
-  in work-item URLs. Reporting values, states and dates are unchanged.
-
-- Refreshed `reportingActionLog` with deterministic review scenarios generated
-  by `gsm.datasim::simulate_action_log_reviews()`. Actual reporting snapshots
-  and flags remain unchanged; snapshot
-  dates provide proxies rather than verified user-action timestamps.
+- Added synthetic `reportingActionLog` review scenarios for action-aware
+  scoring and reporting examples.
 
 # gsm.core v1.3.2
 
@@ -22,11 +17,7 @@ This patch release refreshes the bundled `lSource` and reporting data for the IP
 - Regenerated the packaged `lSource` and `reporting*` datasets against the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are replaced by `kri0019`/`cou0019` (#177).
 - Added a deterministic longitudinal `reportingActionLog` fixture aligned with
   flagged site KRI rows in `reportingResults` for action-weighted Site Risk
-  Score examples and qualification tests. The fixture is generated through
-  `gsm.datasim::simulate_action_log()`. It now retains one complete frozen
-  extraction per snapshot and follows grail's source-neutral 33-column schema,
-  including character IDs, unactioned signals, multiple actions, independent
-  states, and action lifecycle metadata.
+  Score examples and qualification tests.
 - Removed unit tests for the workflow runtime (`RunQuery`, `RunStep`, `RunWorkflow`, `MakeWorkflowList`), which now lives in `{workr}` and is tested there, including by qualification tests (Gilead-Public/workr#96). The tests of the deprecated `{gsm.core}` wrappers remain. Also fixed qualification test T4_2, whose custom-threshold output checks were not running.
 - Documentation has been updated including vignettes, roxygen and org migration to `Gilead-Public`
 
