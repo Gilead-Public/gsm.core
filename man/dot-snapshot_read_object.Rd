@@ -12,7 +12,7 @@
 \item{name}{\code{character(1)} Object name in \code{snapshot$objects}.}
 }
 \value{
-The object read from its RDS file.
+The object read from its RDS file, verified against its digest.
 }
 \description{
 Read and verify one object from a snapshot

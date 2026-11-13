@@ -57,3 +57,33 @@ test_that("construct_fetcher() fetches, verifies, and reads by key (#206)", {
   )
   expect_equal(setter("t1"), mtcars)
 })
+
+test_that("construct_fetcher() verifies the value's digest (#216)", {
+  server <- local_file_server()
+  dir.create(file.path(server$root, "t1"))
+  saveRDS(mtcars, file.path(server$root, "t1", "a.rds"))
+  setter <- function(digest) {
+    construct_fetcher(
+      url_constructor = function(key) paste0("https://x/", key, "/a.rds"),
+      digest_finder = function(key) digest,
+      downloader = server$downloader
+    )
+  }
+  expect_equal(setter(fresh_digest(mtcars))("t1"), mtcars)
+  expect_error(setter(fresh_digest(iris))("t1"), "Digest mismatch")
+})
+
+test_that("safely_fetch() accepts a download converted to CRLF (#215)", {
+  src <- withr::local_tempfile()
+  writeBin(charToRaw("a,b\r\n1,2\r\n"), src)
+  lf <- withr::local_tempfile()
+  writeBin(charToRaw("a,b\n1,2\n"), lf)
+  dest <- file.path(withr::local_tempdir(), "out.csv")
+  safely_fetch(
+    "https://example.com/f",
+    dest,
+    checksum = digest::digest(file = lf, algo = "sha256"),
+    downloader = function(url, dest) file.copy(src, dest, overwrite = TRUE)
+  )
+  expect_true(file.exists(dest))
+})

@@ -1,4 +1,4 @@
-test_that(".testdata_inputs_hash() hashes packages (#206)", {
+test_that("fresh_inputs_hash() hashes packages (#206)", {
   # From data-index builds/71ba4400...json (gsm.datasim#153).
   pkgs <- helper_pkg_state(
     workr = c("1.1.1", "f8346be02ed3e10971d96441ac82e13a49c0cd4f"),
@@ -10,7 +10,7 @@ test_that(".testdata_inputs_hash() hashes packages (#206)", {
     gsm.reporting = c("1.1.8.9000", "c33bceb984f986879b2715833254e138e4f858a0")
   )
   expect_equal(
-    .testdata_inputs_hash(pkgs),
+    fresh_inputs_hash(pkgs),
     "71ba44000382e6e98b60e2a0ebd495927cbe26f83a75f6d741f91c164f79dc4b"
   )
 })

@@ -87,7 +87,7 @@ NULL
       url_constructor = function(tag) {
         .testdata_url(tag, .testdata_object_entry(tag, object)$file)
       },
-      checksum_finder = function(tag) .testdata_object_entry(tag, object)$sha256
+      digest_finder = function(tag) .testdata_object_entry(tag, object)$digest
     )
   })
   gsm$testdata_handle <- keep_fresh(
@@ -499,7 +499,7 @@ use_testdata_cache_dir <- function(dir) {
   versions <- vapply(installed, function(p) p$version %||% NA_character_, "")
 
   if (!anyNA(versions)) {
-    hit <- which(builds$inputs_hash == .testdata_inputs_hash(installed))
+    hit <- which(builds$inputs_hash == fresh_inputs_hash(installed))
     if (length(hit)) {
       return(list(build = builds[hit[[1]], , drop = FALSE], match = "exact"))
     }
@@ -590,38 +590,6 @@ use_testdata_cache_dir <- function(dir) {
   )
 }
 
-#' Hash of the packages that built a bundle
-#'
-#' Must match `gsm.datasim:::.inputs_hash()`: SHA-256 of one
-#' `"<package> <version> <remote_sha>"` line per package (missing SHA as
-#' `NA`), sorted by name in C-locale order and joined with `"\n"`.
-#'
-#' @param packages `list` Named by package; each element has `version`
-#'   and `remote_sha`, as from [package_versions()].
-#' @returns `character(1)` A 64-character hex string.
-#' @keywords internal
-.testdata_inputs_hash <- function(packages) {
-  pkgs <- names(packages)[order(names(packages), method = "radix")]
-  lines <- vapply(
-    pkgs,
-    function(pkg) {
-      p <- packages[[pkg]]
-      sha <- p$remote_sha
-      if (is.null(sha) || is.na(sha)) {
-        sha <- "NA"
-      }
-      paste(pkg, p$version, sha)
-    },
-    character(1),
-    USE.NAMES = FALSE
-  )
-  digest::digest(
-    enc2utf8(paste(lines, collapse = "\n")),
-    algo = "sha256",
-    serialize = FALSE
-  )
-}
-
 # Release metadata ------------------------------------------------------------
 
 #' Download and parse the test data index
@@ -706,7 +674,7 @@ use_testdata_cache_dir <- function(dir) {
 #'
 #' @inheritParams .testdata_url
 #' @param object `character(1)` Object name.
-#' @returns `list` With `file` and `sha256`.
+#' @returns `list` With `file` and `digest`.
 #' @keywords internal
 .testdata_object_entry <- function(tag, object) {
   entry <- .testdata_snapshot(tag)$objects[[object]]

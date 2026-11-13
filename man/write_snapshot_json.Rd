@@ -9,8 +9,8 @@ write_snapshot_json(dir, objects, key, packages = NULL, metadata = NULL)
 \arguments{
 \item{dir}{\code{character(1)} Snapshot folder containing the files.}
 
-\item{objects}{\code{character} or \code{list} Named; object name -> file name
-(relative to \code{dir}). Checksums are computed from the files.}
+\item{objects}{\code{character} or \code{list} Named; object name -> RDS file name
+(relative to \code{dir}).}
 
 \item{key}{\code{character(1)} Version key.}
 
@@ -22,6 +22,32 @@ write_snapshot_json(dir, objects, key, packages = NULL, metadata = NULL)
 \code{list} The snapshot description, invisibly.
 }
 \description{
-Write snapshot.json for files already in a folder
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
-\keyword{internal}
+\details{
+Describes RDS files already in a snapshot folder, reading each one to
+record its object's \code{\link[=fresh_digest]{fresh_digest()}}. Part of gsm.core's "refresh" tools,
+exported for other gsm packages (e.g. gsm.datasim).
+}
+\examples{
+dir <- file.path(tempdir(), "snapshot-example")
+dir.create(dir)
+saveRDS(mtcars, file.path(dir, "cars.rds"))
+digests <- list(cars = fresh_digest(mtcars))
+write_snapshot_json(
+  dir,
+  objects = c(cars = "cars.rds"),
+  key = paste0("sha256:", fresh_fingerprint(digests))
+)
+read_snapshot(dir)$objects
+unlink(dir, recursive = TRUE)
+}
+\seealso{
+Other refresh:
+\code{\link[=fresh_digest]{fresh_digest()}},
+\code{\link[=fresh_fingerprint]{fresh_fingerprint()}},
+\code{\link[=fresh_inputs_hash]{fresh_inputs_hash()}},
+\code{\link[=package_versions]{package_versions()}},
+\code{\link[=read_snapshot]{read_snapshot()}}
+}
+\concept{refresh}
