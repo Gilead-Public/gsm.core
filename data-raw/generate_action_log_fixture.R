@@ -1,10 +1,36 @@
 # Generate a deterministic ActionLog fixture aligned with reportingResults.
 
-results <- gsm.core::reportingResults
+freeze_action_log_lifecycle <- function(action_log) {
+  extraction_order <- order(action_log$ExtractionDate)
+  for (field in c("CreatedDate", "ResolvedDate", "ActionCreatedDate", "ActionResolvedDate")) {
+    identifiers <- if (field == "CreatedDate") {
+      action_log$RiskSignalID
+    } else if (field == "ResolvedDate") {
+      ifelse(is.na(action_log$ActionID), action_log$RiskSignalID, action_log$ActionID)
+    } else {
+      action_log$ActionID
+    }
+    keys <- paste(action_log$StudyID, identifiers, sep = "\r")
+    present <- !is.na(identifiers) & !is.na(action_log[[field]])
+    observed <- extraction_order[present[extraction_order]]
+    first <- observed[!duplicated(keys[observed])]
+    action_log[[field]][present] <- action_log[[field]][first][
+      match(keys[present], keys[first])
+    ]
+  }
+  end_date <- action_log$ExtractionDate
+  resolved <- action_log$State %in% c("No Action", "Closed Action")
+  end_date[resolved] <- action_log$ResolvedDate[resolved]
+  action_log$RiskSignalAge <- as.numeric(end_date - action_log$SnapshotDate) + 1
+  action_log
+}
+
+inputs <- gsm.core::action_log_testdata()
+results <- inputs$reportingResults
 results$SnapshotDate <- as.Date(results$SnapshotDate)
 
-metrics <- gsm.core::reportingMetrics
-groups <- gsm.core::reportingGroups
+metrics <- inputs$reportingMetrics
+groups <- inputs$reportingGroups
 
 if (!requireNamespace("gsm.datasim", quietly = TRUE)) {
   stop(
@@ -67,7 +93,7 @@ extractions <- lapply(seq_along(extraction_dates), function(index) {
       work_item_id_start = 900001L
     )
   })
-reportingActionLog <- do.call(rbind, extractions)
+reportingActionLog <- freeze_action_log_lifecycle(do.call(rbind, extractions))
 
 group_labels <- unique(eligible[c("GroupID", "GroupLabel")])
 reportingActionLog$GroupLabel <- group_labels$GroupLabel[

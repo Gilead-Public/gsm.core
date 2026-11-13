@@ -46,6 +46,44 @@ NULL
 
 .testdata_index_format <- 2L
 
+#' Matching reporting inputs for the bundled ActionLog
+#'
+#' Loads the reporting results, groups, metrics and bounds from the immutable
+#' test data release used to generate [reportingActionLog]. Uses the normal
+#' test data cache, or a matching local snapshot, without changing the release
+#' selected for other test data objects.
+#'
+#' @returns A named list containing `reportingResults`, `reportingGroups`,
+#'   `reportingMetrics` and `reportingBounds`.
+#' @export
+action_log_testdata <- function() {
+  tag <- "data-8cde53949d4d"
+  objects <- c("reportingResults", "reportingGroups", "reportingMetrics", "reportingBounds")
+  setters <- lapply(objects, function(object) {
+    force(object)
+    construct_fetcher(
+      url_constructor = function(key) {
+        .testdata_url(key, .testdata_object_entry(key, object)$file)
+      },
+      checksum_finder = function(key) .testdata_object_entry(key, object)$sha256
+    )
+  })
+  names(setters) <- objects
+  inputs <- new.env(parent = emptyenv())
+  current <- gsm_testdata()
+  handle <- keep_fresh(
+    checker = function(state) tag,
+    setters = setters,
+    env = inputs,
+    cache = current$cache
+  )
+  fingerprint <- "sha256:8cde53949d4d7e1dcf3741905dbf42303a35ca96e662ea129306016c3a55572d"
+  if (!is.null(current$snapshot) && identical(current$snapshot$key, fingerprint)) {
+    handle$use_snapshot(current$snapshot$dir)
+  }
+  mget(objects, envir = inputs, inherits = FALSE)
+}
+
 #' Folder for test data state and downloads
 #'
 #' @returns `character(1)` `tools::R_user_dir("gsm", "cache")`.

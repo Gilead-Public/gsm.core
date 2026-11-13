@@ -1,0 +1,65 @@
+name: ActionLog review fixture
+on:
+  push:
+    branches: [actionlog-report-fixture]
+    paths:
+      - data-raw/generate_action_log_fixture.R
+      - .github/workflows/actionlog-review-fixture.yaml
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+      - name: Validate and regenerate frozen fixture
+        shell: Rscript {0}
+        run: |
+          check <- new.env(parent = baseenv())
+          eval(parse("data-raw/generate_action_log_fixture.R")[[1L]], check)
+          load("data/reportingActionLog.rda", envir = check)
+          before <- check$reportingActionLog
+          after <- check$freeze_action_log_lifecycle(before)
+          stopifnot(identical(dim(before), dim(after)), identical(names(before), names(after)))
+          unchanged <- setdiff(names(before), c(
+            "CreatedDate", "ResolvedDate", "ActionCreatedDate", "ActionResolvedDate", "RiskSignalAge"
+          ))
+          stopifnot(identical(before[unchanged], after[unchanged]))
+          for (field in c("CreatedDate", "ActionCreatedDate", "ActionResolvedDate")) {
+            identifiers <- if (field == "CreatedDate") after$RiskSignalID else after$ActionID
+            present <- !is.na(identifiers) & !is.na(after[[field]])
+            keys <- paste(after$StudyID[present], identifiers[present])
+            stopifnot(all(vapply(split(after[[field]][present], keys),
+              function(values) length(unique(values)) == 1L, logical(1))))
+          }
+          stopifnot(identical(check$freeze_action_log_lifecycle(after), after))
+          stopifnot(all(after$CreatedDate <= after$ExtractionDate))
+          stopifnot(all(is.na(after$ActionCreatedDate) |
+            after$ActionCreatedDate <= after$ExtractionDate))
+          signal_keys <- with(after, paste(StudyID, SnapshotDate, GroupLevel, GroupID, MetricID))
+          stopifnot(all(vapply(split(after$RiskSignalID, signal_keys),
+            function(values) length(unique(values)) == 1L, logical(1))))
+          for (path in c("R/testdata.R", "R/data-specs.R", "tests/testthat/helper-testdata.R",
+            "tests/testthat/test-data-reportingActionLog.R")) parse(path)
+          tools::parse_Rd("man/action_log_testdata.Rd")
+          tools::parse_Rd("man/reportingActionLog.Rd")
+          reportingActionLog <- after
+          write.csv(reportingActionLog, "data-raw/reportingActionLog.csv", row.names = FALSE, na = "")
+          save(reportingActionLog, file = "data/reportingActionLog.rda", compress = "xz")
+          csv <- read.csv("data-raw/reportingActionLog.csv", colClasses = "character", na.strings = "")
+          stopifnot(identical(dim(csv), dim(after)), identical(names(csv), names(after)))
+          for (field in names(after)) {
+            expected <- as.character(after[[field]])
+            expected[!is.na(expected) & expected == ""] <- NA_character_
+            stopifnot(identical(csv[[field]], expected))
+          }
+          cat("Frozen lifecycle, stable identities, unchanged states/schema, idempotence, CSV parity and syntax: PASS\n")
+      - uses: actions/upload-artifact@v4
+        with:
+          name: actionlog-review-fixture
+          path: |
+            data-raw/reportingActionLog.csv
+            data/reportingActionLog.rda

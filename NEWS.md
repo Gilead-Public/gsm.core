@@ -2,6 +2,8 @@
 
 - Added synthetic `reportingActionLog` review scenarios for action-aware
   scoring and reporting examples.
+- Added `action_log_testdata()` for the fixture's matching reporting inputs.
+- Fixed lifecycle dates across frozen ActionLog extractions.
 
 # gsm.core v1.3.2
 

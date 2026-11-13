@@ -24,12 +24,13 @@ test_that("reportingActionLog uses synthetic organization URLs", {
 })
 
 test_that("reportingActionLog aligns with flagged site KRI results", {
+  results <- action_log_test_results()
   key <- c("StudyID", "SnapshotDate", "GroupLevel", "GroupID", "MetricID")
-  expected <- reportingResults[
-    reportingResults$GroupLevel == "Site" &
-      grepl("^Analysis_kri", reportingResults$MetricID) &
-      !is.na(reportingResults$Flag) &
-      reportingResults$Flag != 0,
+  expected <- results[
+    results$GroupLevel == "Site" &
+      grepl("^Analysis_kri", results$MetricID) &
+      !is.na(results$Flag) &
+      results$Flag != 0,
     key,
     drop = FALSE
   ]
@@ -39,8 +40,9 @@ test_that("reportingActionLog aligns with flagged site KRI results", {
 })
 
 test_that("reportingActionLog demonstrates proxy reviews", {
+  results <- action_log_test_results()
   expect_false("ActionedDate" %in% names(reportingActionLog))
-  latest <- reportingResults[reportingResults$SnapshotDate == max(reportingResults$SnapshotDate), ]
+  latest <- results[results$SnapshotDate == max(results$SnapshotDate), ]
   green <- latest[!is.na(latest$Flag) & latest$Flag == 0, ]
   reviewed <- merge(green, reportingActionLog[reportingActionLog$ExtractionDate == max(reportingActionLog$ExtractionDate), ],
     by = c("StudyID", "GroupLevel", "GroupID", "MetricID"), suffixes = c("_current", "_signal"))
@@ -50,6 +52,7 @@ test_that("reportingActionLog demonstrates proxy reviews", {
 })
 
 test_that("reportingActionLog contains valid longitudinal action metadata", {
+  results <- action_log_test_results()
   expect_s3_class(reportingActionLog$SnapshotDate, "Date")
   expect_s3_class(reportingActionLog$ExtractionDate, "Date")
   expect_true(all(
@@ -63,7 +66,7 @@ test_that("reportingActionLog contains valid longitudinal action metadata", {
   expect_true(length(unique(reportingActionLog$SnapshotDate)) > 1L)
   expect_equal(
     sort(unique(reportingActionLog$ExtractionDate)),
-    sort(unique(reportingResults$SnapshotDate))
+    sort(unique(results$SnapshotDate))
   )
   expect_true(anyNA(reportingActionLog$ActionID))
   expect_type(reportingActionLog$ActionCriticality, "logical")
@@ -86,4 +89,39 @@ test_that("reportingActionLog contains valid longitudinal action metadata", {
       reportingActionLog$ActionState
     )
   )
+})
+
+test_that("frozen ActionLog reads retain identities and lifecycle dates", {
+  signal_key <- with(reportingActionLog,
+    paste(StudyID, SnapshotDate, GroupLevel, GroupID, MetricID))
+  expect_true(all(vapply(split(reportingActionLog$RiskSignalID, signal_key),
+    function(values) length(unique(values)) == 1L, logical(1))))
+  for (field in c("CreatedDate", "ActionCreatedDate", "ActionResolvedDate")) {
+    identifiers <- if (field == "CreatedDate") reportingActionLog$RiskSignalID else reportingActionLog$ActionID
+    present <- !is.na(identifiers) & !is.na(reportingActionLog[[field]])
+    keys <- paste(reportingActionLog$StudyID[present], identifiers[present])
+    expect_true(all(vapply(split(reportingActionLog[[field]][present], keys),
+      function(values) length(unique(values)) == 1L, logical(1))))
+  }
+  expect_true(all(is.na(reportingActionLog$CreatedDate) |
+    reportingActionLog$CreatedDate <= reportingActionLog$ExtractionDate))
+  expect_true(all(is.na(reportingActionLog$ActionCreatedDate) |
+    reportingActionLog$ActionCreatedDate <= reportingActionLog$ExtractionDate))
+})
+
+test_that("ActionLog inputs use their own immutable release", {
+  selected <- gsm$testdata_tag
+  testthat::local_mocked_bindings(
+    gsm_testdata = function(...) list(cache = cachem::cache_mem(), snapshot = NULL),
+    .testdata_object_entry = function(tag, object) list(file = paste0(object, ".rds")),
+    construct_fetcher = function(url_constructor, checksum_finder) {
+      force(url_constructor)
+      function(key) url_constructor(key)
+    },
+    .package = "gsm.core"
+  )
+  inputs <- action_log_testdata()
+  expect_named(inputs, c("reportingResults", "reportingGroups", "reportingMetrics", "reportingBounds"))
+  expect_true(all(grepl("/data-8cde53949d4d/", unlist(inputs), fixed = TRUE)))
+  expect_identical(gsm$testdata_tag, selected)
 })

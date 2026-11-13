@@ -39,7 +39,9 @@ reportingActionLog
 }
 \description{
 Deterministic longitudinal ActionLog records aligned with flagged site KRI
-rows in \link{reportingResults}. Each extraction is a complete frozen read of
+rows in the matching reporting inputs returned by \code{\link[=action_log_testdata]{action_log_testdata()}}.
+These inputs are independent of the currently selected test data release.
+Each extraction is a complete frozen read of
 signals known at that snapshot. Multiple actions and unactioned signals
 follow the source-neutral grail Action Log schema; the result key is not
 unique without extraction, signal, and action identifiers.
