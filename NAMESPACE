@@ -67,6 +67,7 @@ export(use_testdata_tag)
 export(write_snapshot_json)
 import(dplyr)
 import(purrr)
+importFrom(R6,R6Class)
 importFrom(cli,
   cli_abort,
   cli_alert,
