@@ -1,0 +1,109 @@
+meta:
+  Type: Metric
+  ID: kri0001_dist_custom
+  File: kri0001_dist_custom.yaml
+  GroupLevel: Site
+  Abbreviation: AE
+  Metric: Adverse Event Rate
+  Numerator: Adverse Events
+  Denominator: Enrolled Participants
+  Model: Normal Approximation
+  Score: Adjusted Z-Score
+  AnalysisType: rate
+  Threshold: -3,-2,2,3
+spec:
+  Mapped_AE:
+    subjid:
+      required: true
+      type: character
+    aeser:
+      required: true
+      type: character
+    aerel:
+      required: true
+      type: character
+    aeongo:
+      required: true
+      type: character
+  Mapped_SUBJ:
+    subjid:
+      required: true
+      type: character
+    invid:
+      required: true
+      type: character
+    drv_ip_nonstarter_status:
+      required: true
+      type: character
+steps:
+  - name: ParseThreshold
+    output: vThreshold
+    params:
+      strThreshold: Threshold
+  # Multi-value category column: each AE lists its flags, e.g. "Serious|Related".
+  # AEs with no flags get an empty string ("Not recorded").
+  - name: workr::RunQuery
+    output: Temp_AE
+    params:
+      df: Mapped_AE
+      strQuery: >-
+        SELECT *, concat_ws('|',
+          CASE WHEN aeser = 'Y' THEN 'Serious' END,
+          CASE WHEN aerel = 'Y' THEN 'Related' END,
+          CASE WHEN aeongo = 'Y' THEN 'Ongoing' END
+        ) AS ae_flags FROM df
+  - name: Input_Rate
+    output: Analysis_Input
+    params:
+      dfSubjects: Mapped_SUBJ
+      dfNumerator: Temp_AE
+      dfDenominator: Mapped_SUBJ
+      strSubjectCol: subjid
+      strGroupCol: invid
+      strGroupLevel: GroupLevel
+      strNumeratorMethod: Count
+      strDenominatorMethod: Count
+  - name: Input_Rate_Dist
+    output: Analysis_Distributions
+    params:
+      dfSubjects: Mapped_SUBJ
+      dfNumerator: Temp_AE
+      dfDenominator: Mapped_SUBJ
+      strSubjectCol: subjid
+      strGroupCol: invid
+      strGroupLevel: GroupLevel
+      strNumeratorMethod: Count
+      strDenominatorMethod: Count
+      strNumeratorCatCols:
+        - aeser
+        - ae_flags
+      strDenominatorCatCols: drv_ip_nonstarter_status
+      strCatDelim: "|"
+  - name: Transform_Rate
+    output: Analysis_Transformed
+    params:
+      dfInput: Analysis_Input
+  - name: Analyze_NormalApprox
+    output: Analysis_Analyzed
+    params:
+      dfTransformed: Analysis_Transformed
+      strType: AnalysisType
+  - name: Flag_NormalApprox
+    output: Analysis_Flagged
+    params:
+      dfAnalyzed: Analysis_Analyzed
+      vThreshold: vThreshold
+  - name: Summarize
+    output: Analysis_Summary
+    params:
+      dfFlagged: Analysis_Flagged
+  - name: list
+    output: lAnalysis
+    params:
+      ID: ID
+      Analysis_Input: Analysis_Input
+      Analysis_Distributions: Analysis_Distributions
+      Analysis_Transformed: Analysis_Transformed
+      Analysis_Analyzed: Analysis_Analyzed
+      Analysis_Flagged: Analysis_Flagged
+      Analysis_Summary: Analysis_Summary
