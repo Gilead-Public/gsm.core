@@ -18,8 +18,8 @@ skip_if_no_testdata <- function() {
 #
 # `safely_fetch` stands in for refresh's safely_fetch() (see local_testdata_env()):
 # it copies from `root`, fails like a 404 for anything missing, and records
-# each URL and the checksum gsm.core asked for. Checksum verification itself
-# is refresh's job and is tested in test-refresh-download.R.
+# each URL and the checksum gsm.core asked for. Verification itself is
+# refresh's job and is tested in test-refresh-download.R.
 local_fake_releases <- function(env = parent.frame()) {
   root <- withr::local_tempdir(.local_envir = env)
   requests <- character()
@@ -28,7 +28,8 @@ local_fake_releases <- function(env = parent.frame()) {
   # Publish a `data-<fp12>` release: one RDS per object plus snapshot.json.
   # Returns the fingerprint.
   release <- function(objects = list(), fingerprint = NULL) {
-    fingerprint <- fingerprint %||% digest::digest(objects, algo = "sha256")
+    fingerprint <- fingerprint %||%
+      fresh_fingerprint(lapply(objects, fresh_digest))
     tag <- paste0("data-", substr(fingerprint, 1, 12))
     dir <- file.path(root, tag)
     dir.create(dir, recursive = TRUE, showWarnings = FALSE)
@@ -55,7 +56,7 @@ local_fake_releases <- function(env = parent.frame()) {
         b$packages[[p]] %||% list(version = NA, remote_sha = NA)
       })
       list(
-        inputs_hash = .testdata_inputs_hash(full),
+        inputs_hash = fresh_inputs_hash(full),
         fingerprint = b$fingerprint,
         tag = paste0("data-", substr(b$fingerprint, 1, 12)),
         source = b$source,

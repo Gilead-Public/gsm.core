@@ -91,3 +91,8 @@ reference:
       - use_testdata_snapshot
       - use_testdata_cache_dir
 
+  - title: Snapshot Tools
+    desc: Shared helpers for writing and verifying data snapshots (used by gsm.datasim)
+  - contents:
+      - has_concept("refresh")
+
