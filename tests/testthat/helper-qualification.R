@@ -253,3 +253,83 @@ qualification_flag_identity <- function(
     select(-median) %>%
     arrange(match(Flag, c(2, -2, 1, -1, 0)))
 }
+
+# Distributions (T21) ----------------------------------------------------------
+# Independent derivation of Input_Rate_Dist() output for record counts
+# (strNumeratorMethod/strDenominatorMethod = "Count"). Does not call
+# Input_Rate() or Input_Rate_Dist().
+qualification_input_rate_dist <- function(
+  dfSubjects,
+  dfNumerator,
+  dfDenominator,
+  strGroupCol,
+  strSubjectCol,
+  strNumeratorCatCols = NULL,
+  strDenominatorCatCols = NULL,
+  strCatDelim = NULL
+) {
+  dfSubjectGroups <- dfSubjects %>%
+    transmute(
+      SubjectID = .data[[strSubjectCol]],
+      GroupID = .data[[strGroupCol]]
+    ) %>%
+    filter(!is.na(GroupID))
+  vGroups <- unique(dfSubjectGroups$GroupID)
+
+  group_totals <- function(df) {
+    df %>%
+      count(SubjectID = .data[[strSubjectCol]], name = "Records") %>%
+      inner_join(dfSubjectGroups, by = "SubjectID") %>%
+      group_by(GroupID) %>%
+      summarise(Total = sum(Records), .groups = "drop") %>%
+      right_join(tibble(GroupID = vGroups), by = "GroupID") %>%
+      mutate(Total = as.numeric(coalesce(Total, 0L)))
+  }
+
+  one_variable <- function(df, strSource, strCatCol) {
+    dfLong <- df %>%
+      transmute(
+        SubjectID = .data[[strSubjectCol]],
+        RecordID = row_number(),
+        Category = as.character(.data[[strCatCol]])
+      )
+    if (!is.null(strCatDelim)) {
+      dfLong <- tidyr::separate_longer_delim(dfLong, Category, delim = strCatDelim)
+    }
+    dfLong <- dfLong %>%
+      mutate(Category = na_if(trimws(Category), "")) %>%
+      group_by(RecordID) %>%
+      filter(!is.na(Category) | all(is.na(Category))) %>%
+      ungroup() %>%
+      mutate(Category = coalesce(Category, "Not recorded")) %>%
+      distinct(SubjectID, RecordID, Category) %>%
+      inner_join(dfSubjectGroups, by = "SubjectID")
+
+    dfCounts <- dfLong %>%
+      group_by(GroupID, Category) %>%
+      summarise(
+        Count = as.numeric(n()),
+        Participants = n_distinct(SubjectID),
+        .groups = "drop"
+      )
+
+    tidyr::crossing(GroupID = vGroups, Category = unique(dfLong$Category)) %>%
+      left_join(dfCounts, by = c("GroupID", "Category")) %>%
+      left_join(group_totals(df), by = "GroupID") %>%
+      transmute(
+        GroupID,
+        Source = strSource,
+        Variable = strCatCol,
+        Category,
+        Count = coalesce(Count, 0),
+        Participants = coalesce(Participants, 0L),
+        Total,
+        Percent = ifelse(Total == 0, NA_real_, Count / Total)
+      )
+  }
+
+  bind_rows(
+    map(strNumeratorCatCols, ~ one_variable(dfNumerator, "Numerator", .x)),
+    map(strDenominatorCatCols, ~ one_variable(dfDenominator, "Denominator", .x))
+  )
+}
