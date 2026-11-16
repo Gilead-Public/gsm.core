@@ -83,7 +83,7 @@ managing the cache, and can be used to switch to a different cache.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">handle</span> <span class="op">&lt;-</span> <span class="fu">gsm_testdata</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">handle</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> A fresh handle</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Current key: <span style="color: #0000BB;">"data-023685f21a1a"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Current key: <span style="color: #0000BB;">"data-af3057dea9d4"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Cache: <span style="color: #0000BB;">&lt;cache_disk/cachem&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> State: <span style="color: #0000BB;">/home/runner/.cache/R/gsm/testdata-state.rds</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Snapshot: '<span style="color: #0000BB;">(none)</span>'</span>
@@ -109,7 +109,7 @@ managing the cache, and can be used to switch to a different cache.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $missing</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^key_missing()</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x589bf425c870</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x57fcf375fd08</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $prune_rate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 20</span>
@@ -121,20 +121,20 @@ managing the cache, and can be used to switch to a different cache.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $prune_last_time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-11-13 17:11:41 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-11-16 20:53:47 UTC"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Switch to a temporary in-memory cache, then back.</span></span></span>
 <span class="r-in"><span><span class="va">old</span> <span class="op">&lt;-</span> <span class="va">handle</span><span class="op">$</span><span class="va">cache</span></span></span>
 <span class="r-in"><span><span class="fu">gsm_testdata</span><span class="op">(</span>cache <span class="op">=</span> <span class="fu">cachem</span><span class="fu">::</span><span class="fu"><a href="https://cachem.r-lib.org/reference/cache_mem.html" class="external-link">cache_mem</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> A fresh handle</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Current key: <span style="color: #0000BB;">"data-023685f21a1a"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Current key: <span style="color: #0000BB;">"data-af3057dea9d4"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Cache: <span style="color: #0000BB;">&lt;cache_mem/cachem&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> State: <span style="color: #0000BB;">/home/runner/.cache/R/gsm/testdata-state.rds</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Snapshot: '<span style="color: #0000BB;">(none)</span>'</span>
 <span class="r-in"><span><span class="fu">gsm_testdata</span><span class="op">(</span>cache <span class="op">=</span> <span class="va">old</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> A fresh handle</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Current key: <span style="color: #0000BB;">"data-023685f21a1a"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Current key: <span style="color: #0000BB;">"data-af3057dea9d4"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Cache: <span style="color: #0000BB;">&lt;cache_disk/cachem&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> State: <span style="color: #0000BB;">/home/runner/.cache/R/gsm/testdata-state.rds</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> Snapshot: '<span style="color: #0000BB;">(none)</span>'</span>

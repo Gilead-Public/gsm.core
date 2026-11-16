@@ -57,6 +57,7 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_validate_cache.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_validate_check.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_validate_state.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_verify_digest.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_write_json.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-fresh_write_rds.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-register_testdata.html</loc></url>
@@ -69,7 +70,6 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_default_cache.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_dir.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_index.html</loc></url>
-<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_inputs_hash.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_installed.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_object_entry.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_parse_index.html</loc></url>
@@ -79,7 +79,10 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_url.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_version_le.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fetch_binary.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_digest.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_exports.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_fingerprint.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_inputs_hash.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/gsm.core-package.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/gsm_testdata.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/index.html</loc></url>

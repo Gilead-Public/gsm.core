@@ -9,6 +9,7 @@ construct_fetcher(
   url_constructor,
   reader = readRDS,
   checksum_finder = NULL,
+  digest_finder = NULL,
   downloader = fetch_binary
 )
 ```
@@ -26,8 +27,15 @@ construct_fetcher(
 
 - checksum_finder:
 
-  `function` `function(key)` returning the expected sha256 for version
-  `key`, or `NULL` to skip verification.
+  `function` `function(key)` returning the expected sha256 of the
+  downloaded file for version `key`, or `NULL` to skip verification.
+
+- digest_finder:
+
+  `function` `function(key)` returning the expected
+  [`fresh_digest()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_digest.md)
+  of the value `reader` returns for version `key`, or `NULL` to skip
+  verification.
 
 - downloader:
 
