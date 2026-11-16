@@ -57,6 +57,6 @@ to inspect or clear the cache.
 ``` r
 old <- use_testdata_cache_dir(file.path(tempdir(), "gsm-cache"))
 gsm_testdata()$cache$info()$dir
-#> [1] "/tmp/RtmpbCdtwz/gsm-cache"
+#> [1] "/tmp/RtmpdNusbp/gsm-cache"
 use_testdata_cache_dir(old)
 ```

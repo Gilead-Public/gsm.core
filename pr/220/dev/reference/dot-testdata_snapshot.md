@@ -9,7 +9,7 @@ so objects are copied from it rather than downloaded.
 ## Usage
 
 ``` r
-.testdata_snapshot(tag)
+.testdata_snapshot(tag, local = TRUE)
 ```
 
 ## Arguments
@@ -17,6 +17,10 @@ so objects are copied from it rather than downloaded.
 - tag:
 
   `character(1)` Release tag, e.g. `"data-8cde53949d4d"`.
+
+- local:
+
+  `logical(1)` Use a matching local build if there is one?
 
 ## Value
 
