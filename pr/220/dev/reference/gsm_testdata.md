@@ -85,7 +85,7 @@ handle$cache$info()
 #> $missing
 #> <quosure>
 #> expr: ^key_missing()
-#> env:  0x61c6624ad040
+#> env:  0x5a7e6a0181b8
 #> 
 #> $prune_rate
 #> [1] 20
@@ -97,7 +97,7 @@ handle$cache$info()
 #> [1] 0
 #> 
 #> $prune_last_time
-#> [1] "2026-11-16 20:34:00 UTC"
+#> [1] "2026-11-16 20:51:45 UTC"
 #> 
 
 # Switch to a temporary in-memory cache, then back.
