@@ -13,6 +13,19 @@ read_snapshot(dir)
 \code{list} The parsed \code{snapshot.json}, with \code{dir} (normalized) added.
 }
 \description{
-Read a snapshot's description
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
-\keyword{internal}
+\details{
+Reads and validates \code{snapshot.json} in a snapshot folder, such as one
+written by \code{\link[=write_snapshot_json]{write_snapshot_json()}}. Part of gsm.core's "refresh" tools,
+exported for other gsm packages (e.g. gsm.datasim).
+}
+\seealso{
+Other refresh:
+\code{\link[=fresh_digest]{fresh_digest()}},
+\code{\link[=fresh_fingerprint]{fresh_fingerprint()}},
+\code{\link[=fresh_inputs_hash]{fresh_inputs_hash()}},
+\code{\link[=package_versions]{package_versions()}},
+\code{\link[=write_snapshot_json]{write_snapshot_json()}}
+}
+\concept{refresh}

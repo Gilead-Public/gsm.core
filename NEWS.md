@@ -1,5 +1,8 @@
 # gsm.core (development version)
 
+- Exported experimental snapshot tools for other gsm packages: `fresh_digest()`, `fresh_fingerprint()`, `fresh_inputs_hash()`, `write_snapshot_json()`, `read_snapshot()`, and `package_versions()`. Snapshots now verify each object by the digest of the loaded R object (snapshot format 2), so files written by different R versions or with different compression still verify. Format 1 snapshots are no longer read (#216).
+- File checksums treat CRLF as LF in text files, so downloads whose line endings were converted still verify (#215).
+
 # gsm.core v1.3.2
 
 This patch release refreshes the bundled `lSource` and reporting data for the IP Monitoring (IP non-starters and premature treatment discontinuation) and Repeat Measurements metrics, and moves workflow runtime tests to `{workr}`.
