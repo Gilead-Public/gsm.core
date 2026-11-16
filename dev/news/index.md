@@ -2,6 +2,22 @@
 
 ## gsm.core (development version)
 
+- Exported experimental snapshot tools for other gsm packages:
+  [`fresh_digest()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_digest.md),
+  [`fresh_fingerprint()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_fingerprint.md),
+  [`fresh_inputs_hash()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_inputs_hash.md),
+  [`write_snapshot_json()`](https://gilead-public.github.io/gsm.core/dev/reference/write_snapshot_json.md),
+  [`read_snapshot()`](https://gilead-public.github.io/gsm.core/dev/reference/read_snapshot.md),
+  and
+  [`package_versions()`](https://gilead-public.github.io/gsm.core/dev/reference/package_versions.md).
+  Snapshots now verify each object by the digest of the loaded R object
+  (snapshot format 2), so files written by different R versions or with
+  different compression still verify. Format 1 snapshots are no longer
+  read ([\#216](https://github.com/Gilead-Public/gsm.core/issues/216)).
+- File checksums treat CRLF as LF in text files, so downloads whose line
+  endings were converted still verify
+  ([\#215](https://github.com/Gilead-Public/gsm.core/issues/215)).
+
 ## gsm.core v1.3.2
 
 This patch release refreshes the bundled `lSource` and reporting data

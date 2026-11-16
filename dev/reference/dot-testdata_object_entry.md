@@ -20,4 +20,4 @@ One object's entry in a release's snapshot.json
 
 ## Value
 
-`list` With `file` and `sha256`.
+`list` With `file` and `digest`.

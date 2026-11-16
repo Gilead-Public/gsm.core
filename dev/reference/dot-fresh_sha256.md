@@ -1,6 +1,10 @@
-# Compute a file's sha256
+# Compute a file's sha256, treating CRLF as LF in text files
 
-Compute a file's sha256
+Text files (no NUL bytes, the same heuristic Git uses) are hashed with
+CRLF normalized to LF, so a copy whose line endings were converted (e.g.
+by a Windows checkout or download tool) still verifies. Other files are
+hashed byte for byte. For LF text and binary files this equals the plain
+file sha256 (#215).
 
 ## Usage
 

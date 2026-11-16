@@ -21,4 +21,4 @@ Read and verify one object from a snapshot
 
 ## Value
 
-The object read from its RDS file.
+The object read from its RDS file, verified against its digest.
