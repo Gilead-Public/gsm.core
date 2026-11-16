@@ -14,6 +14,8 @@
 }
 \description{
 Releases are immutable, so this is cached in memory and on disk
-indefinitely.
+indefinitely. If a local build (see \code{\link[=rebuild_local_testdata]{rebuild_local_testdata()}}) has the
+same fingerprint, its snapshot is used instead, with \code{dir} set, so objects
+are copied from it rather than downloaded.
 }
 \keyword{internal}

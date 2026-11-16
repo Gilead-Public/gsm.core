@@ -8,4 +8,5 @@
       ! No published gsm test data matches gsm.kri 1.0.0 (k9) together with your other installed gsm packages.
       i gsm.kri is probably out of step with the other gsm packages. Updating it (or them) to a compatible set usually fixes this.
       i To use specific data anyway, see `use_testdata_tag()` or `use_testdata_snapshot()`.
+      i To build test data from your local packages instead, set `options(gsm.testdata_builder = "gsm.datasim::build_testdata_bundle")`.
 

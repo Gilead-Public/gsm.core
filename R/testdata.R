@@ -83,12 +83,22 @@ NULL
   cache = getOption("gsm.testdata_cache", .testdata_default_cache())
 ) {
   setters <- lapply(.testdata_objects, function(object) {
-    construct_fetcher(
+    fetch <- construct_fetcher(
       url_constructor = function(tag) {
         .testdata_url(tag, .testdata_object_entry(tag, object)$file)
       },
       digest_finder = function(tag) .testdata_object_entry(tag, object)$digest
     )
+    function(tag) {
+      # A local build with the same fingerprint holds the same data, so copy
+      # from it instead of downloading.
+      snapshot <- .testdata_snapshot(tag)
+      if (!is.null(snapshot$dir)) {
+        .testdata_object_entry(tag, object)
+        return(.snapshot_read_object(snapshot, object))
+      }
+      fetch(tag)
+    }
   })
   gsm$testdata_handle <- keep_fresh(
     checker = .testdata_checker,
@@ -402,13 +412,19 @@ use_testdata_cache_dir <- function(dir) {
     return(pinned)
   }
 
-  # Fast path: an exact match stays exact until installed packages change.
+  # Fast path: an exact match stays exact until installed packages change, and
+  # so does a local build (until it's rebuilt or removed).
   prev <- state$get("lookup")
   if (
-    identical(prev$match, "exact") &&
+    isTRUE(prev$match %in% c("exact", "local")) &&
       identical(.testdata_installed(prev$packages), prev$installed)
   ) {
-    return(prev$tag)
+    if (identical(prev$match, "exact")) {
+      return(prev$tag)
+    }
+    if (!is.null(.testdata_builder()) && .testdata_local_exists(prev$dir)) {
+      return(.testdata_use_local(state, prev$packages, prev$installed))
+    }
   }
 
   index <- tryCatch(.testdata_index(), error = function(e) {
@@ -432,7 +448,18 @@ use_testdata_cache_dir <- function(dir) {
   }
 
   installed <- .testdata_installed(index$packages)
-  pick <- .testdata_select(index, installed)
+  builder <- .testdata_builder()
+  if (!is.null(builder) && .testdata_has_local_pkg(installed)) {
+    pick <- tryCatch(
+      .testdata_select(index, installed),
+      gsm_testdata_no_match = function(e) NULL
+    )
+    if (!identical(pick$match, "exact")) {
+      return(.testdata_use_local(state, index$packages, installed, builder))
+    }
+  } else {
+    pick <- .testdata_select(index, installed)
+  }
   fingerprint <- pick$build$fingerprint
   tag <- index$fingerprints[[fingerprint]]$tag %||% pick$build$tag
 
@@ -551,7 +578,14 @@ use_testdata_cache_dir <- function(dir) {
       i = "{.pkg {pkg}} is probably out of step with the other gsm packages.
            Updating it (or them) to a compatible set usually fixes this.",
       i = "To use specific data anyway, see {.fn use_testdata_tag} or
-           {.fn use_testdata_snapshot}."
+           {.fn use_testdata_snapshot}.",
+      if (is.null(getOption("gsm.testdata_builder"))) {
+        c(
+          i = "To build test data from your local packages instead, set
+               {.code options(gsm.testdata_builder =
+               \"gsm.datasim::build_testdata_bundle\")}."
+        )
+      }
     ),
     class = "gsm_testdata_no_match"
   )
@@ -644,7 +678,9 @@ use_testdata_cache_dir <- function(dir) {
 #' A release's snapshot.json
 #'
 #' Releases are immutable, so this is cached in memory and on disk
-#' indefinitely.
+#' indefinitely. If a local build (see [rebuild_local_testdata()]) has the
+#' same fingerprint, its snapshot is used instead, with `dir` set, so objects
+#' are copied from it rather than downloaded.
 #'
 #' @inheritParams .testdata_url
 #' @returns `list` Output of [parse_snapshot()].
@@ -652,6 +688,11 @@ use_testdata_cache_dir <- function(dir) {
 .testdata_snapshot <- function(tag) {
   if (!is.null(gsm$testdata_snapshots[[tag]])) {
     return(gsm$testdata_snapshots[[tag]])
+  }
+  local <- .testdata_local_find(tag)
+  if (!is.null(local)) {
+    gsm$testdata_snapshots[[tag]] <- local
+    return(local)
   }
   path <- fs::path(.testdata_dir(), "snapshots", tag, ext = "json")
   if (!file.exists(path)) {
