@@ -9,8 +9,8 @@
   don’t exactly match a published test data build, gsm.core builds test
   data from them and reuses that build in later sessions. Call the new
   [`rebuild_local_testdata()`](https://gilead-public.github.io/gsm.core/dev/reference/rebuild_local_testdata.md)
-  after changing code. A release with the same data as a local build is
-  copied from it instead of downloaded
+  after changing code to rebuild the local snapshot. A release with the
+  same data as a local build is copied from it instead of downloaded
   ([\#219](https://github.com/Gilead-Public/gsm.core/issues/219)).
 
 - Exported experimental snapshot tools for other gsm packages:
