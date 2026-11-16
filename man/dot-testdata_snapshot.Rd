@@ -4,10 +4,12 @@
 \alias{.testdata_snapshot}
 \title{A release's snapshot.json}
 \usage{
-.testdata_snapshot(tag)
+.testdata_snapshot(tag, local = TRUE)
 }
 \arguments{
 \item{tag}{\code{character(1)} Release tag, e.g. \code{"data-8cde53949d4d"}.}
+
+\item{local}{\code{logical(1)} Use a matching local build if there is one?}
 }
 \value{
 \code{list} Output of \code{\link[=parse_snapshot]{parse_snapshot()}}.

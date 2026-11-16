@@ -207,3 +207,57 @@ test_that("a rebuild evicts snapshots memoized for the old data (#219)", {
   # The old tag no longer resolves to the rebuilt folder.
   expect_null(.testdata_local_find(old_tag))
 })
+
+test_that("a damaged local copy of a release falls back to downloading (#219)", {
+  objects <- list(lSource = list(x = "same"))
+  builder <- local_fake_builder(objects)
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_fake_releases()
+  fp <- server$release(objects)
+  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = c("1.0.0", "s1"))))
+  installed <- helper_pkg_state(gsm.core = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  suppressMessages(helper_run_checker(cache))
+  local_dir <- file.path(cache, "local", fresh_inputs_hash(installed))
+  saveRDS(list(x = "corrupt"), file.path(local_dir, "lSource.rds"))
+
+  withr::local_options(gsm.testdata_builder = NULL)
+  installed <- helper_pkg_state(gsm.core = c("1.0.0", "s1"))
+  clear_testdata_snapshots()
+  server$reset_requests()
+  env <- new.env()
+  .register_testdata(env)
+  expect_equal(env$lSource$x, "same")
+  expect_true(any(grepl("releases/download", server$requests())))
+})
+
+test_that("a damaged local-only build still errors (#219)", {
+  builder <- local_fake_builder()
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  local_testdata_env(server, function() installed)
+  env <- new.env()
+  .register_testdata(env)
+  suppressMessages(env$lSource)
+  dir <- gsm_testdata()$state$get("lookup")$dir
+  saveRDS("corrupt", file.path(dir, "lSource.rds"))
+  clear_testdata_snapshots()
+  env2 <- new.env()
+  .register_testdata(env2, cache = cachem::cache_mem())
+  expect_error(suppressMessages(env2$lSource), "Digest mismatch")
+})
+
+test_that("an index with no builds builds locally (#219)", {
+  builder <- local_fake_builder()
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_fake_releases()
+  jsonlite::write_json(
+    list(format = 2, packages = "gsm.core", fingerprints = setNames(list(), character()), builds = list()),
+    file.path(server$root, "index.json"),
+    auto_unbox = TRUE
+  )
+  cache <- local_testdata_env(server, function() helper_pkg_state(gsm.core = "1.0.0"))
+  expect_match(suppressMessages(helper_run_checker(cache)), "^data-")
+  expect_equal(builder$calls(), 1)
+})

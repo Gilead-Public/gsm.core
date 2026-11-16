@@ -93,11 +93,28 @@ NULL
       # A local build with the same fingerprint holds the same data, so copy
       # from it instead of downloading.
       snapshot <- .testdata_snapshot(tag)
-      if (!is.null(snapshot$dir)) {
-        .testdata_object_entry(tag, object)
-        return(.snapshot_read_object(snapshot, object))
+      if (is.null(snapshot$dir)) {
+        return(fetch(tag))
       }
-      fetch(tag)
+      tryCatch(
+        {
+          .testdata_object_entry(tag, object)
+          .snapshot_read_object(snapshot, object)
+        },
+        error = function(e) {
+          # Damaged local copy: download the release instead, if there is one.
+          gsm$testdata_snapshots[[tag]] <- NULL
+          release <- tryCatch(
+            .testdata_snapshot(tag, local = FALSE),
+            error = function(e2) NULL
+          )
+          if (is.null(release)) {
+            gsm$testdata_snapshots[[tag]] <- snapshot
+            rlang::cnd_signal(e)
+          }
+          fetch(tag)
+        }
+      )
     }
   })
   gsm$testdata_handle <- keep_fresh(
@@ -457,10 +474,12 @@ use_testdata_cache_dir <- function(dir) {
     !is.null(getOption("gsm.testdata_builder")) &&
       .testdata_has_local_pkg(installed)
   ) {
-    pick <- tryCatch(
-      .testdata_select(index, installed),
-      gsm_testdata_no_match = function(e) NULL
-    )
+    pick <- if (nrow(index$builds)) {
+      tryCatch(
+        .testdata_select(index, installed),
+        gsm_testdata_no_match = function(e) NULL
+      )
+    }
     if (!identical(pick$match, "exact")) {
       return(.testdata_use_local(state, index$packages, installed))
     }
@@ -690,13 +709,14 @@ use_testdata_cache_dir <- function(dir) {
 #' are copied from it rather than downloaded.
 #'
 #' @inheritParams .testdata_url
+#' @param local `logical(1)` Use a matching local build if there is one?
 #' @returns `list` Output of [parse_snapshot()].
 #' @keywords internal
-.testdata_snapshot <- function(tag) {
+.testdata_snapshot <- function(tag, local = TRUE) {
   if (!is.null(gsm$testdata_snapshots[[tag]])) {
     return(gsm$testdata_snapshots[[tag]])
   }
-  local <- .testdata_local_find(tag)
+  local <- if (local) .testdata_local_find(tag)
   if (!is.null(local)) {
     gsm$testdata_snapshots[[tag]] <- local
     return(local)
