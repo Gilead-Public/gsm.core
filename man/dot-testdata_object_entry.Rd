@@ -12,7 +12,7 @@
 \item{object}{\code{character(1)} Object name.}
 }
 \value{
-\code{list} With \code{file} and \code{sha256}.
+\code{list} With \code{file} and \code{digest}.
 }
 \description{
 One object's entry in a release's snapshot.json

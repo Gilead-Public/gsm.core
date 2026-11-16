@@ -1,4 +1,4 @@
-test_that(".testdata_inputs_hash() hashes packages (#206)", {
+test_that("fresh_inputs_hash() hashes packages (#206)", {
   # From data-index builds/71ba4400...json (gsm.datasim#153).
   pkgs <- helper_pkg_state(
     workr = c("1.1.1", "f8346be02ed3e10971d96441ac82e13a49c0cd4f"),
@@ -10,7 +10,7 @@ test_that(".testdata_inputs_hash() hashes packages (#206)", {
     gsm.reporting = c("1.1.8.9000", "c33bceb984f986879b2715833254e138e4f858a0")
   )
   expect_equal(
-    .testdata_inputs_hash(pkgs),
+    fresh_inputs_hash(pkgs),
     "71ba44000382e6e98b60e2a0ebd495927cbe26f83a75f6d741f91c164f79dc4b"
   )
 })
@@ -67,7 +67,10 @@ test_that(".testdata_select() filters by SHA, then version (#206)", {
   expect_equal(pick$build$fingerprint, fp_b)
   # gsm.kri not installed: no filter, newest SHA match wins.
   expect_equal(
-    helper_select_fingerprint(index, helper_pkg_state(gsm.core = c("1.0.0", "s1"))),
+    helper_select_fingerprint(
+      index,
+      helper_pkg_state(gsm.core = c("1.0.0", "s1"))
+    ),
     fp_a
   )
 })
@@ -77,9 +80,21 @@ test_that("an unbuilt version falls back to the newest build at or below it (#20
   fp_b <- strrep("b", 64)
   fp_c <- strrep("c", 64)
   index <- helper_fake_index(
-    helper_fake_build(fp_a, helper_pkg_state(gsm.core = "1.0.0"), "2026-01-03T00:00:00Z"),
-    helper_fake_build(fp_b, helper_pkg_state(gsm.core = "1.1.0"), "2026-01-02T00:00:00Z"),
-    helper_fake_build(fp_c, helper_pkg_state(gsm.core = "1.3.0"), "2026-01-04T00:00:00Z")
+    helper_fake_build(
+      fp_a,
+      helper_pkg_state(gsm.core = "1.0.0"),
+      "2026-01-03T00:00:00Z"
+    ),
+    helper_fake_build(
+      fp_b,
+      helper_pkg_state(gsm.core = "1.1.0"),
+      "2026-01-02T00:00:00Z"
+    ),
+    helper_fake_build(
+      fp_c,
+      helper_pkg_state(gsm.core = "1.3.0"),
+      "2026-01-04T00:00:00Z"
+    )
   )
   expect_equal(
     helper_select_fingerprint(index, helper_pkg_state(gsm.core = "1.2.0.9000")),
@@ -102,7 +117,10 @@ test_that("no surviving build errors, naming the blocking package (#206)", {
     error = TRUE
   )
   expect_error(
-    .testdata_select(index, helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")),
+    .testdata_select(
+      index,
+      helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+    ),
     class = "gsm_testdata_no_match"
   )
 })
@@ -110,7 +128,11 @@ test_that("no surviving build errors, naming the blocking package (#206)", {
 test_that(".testdata_parse_index() drops overrides and validates format (#206)", {
   fp_a <- strrep("a", 64)
   index <- helper_fake_index(
-    helper_fake_build(fp_a, helper_pkg_state(gsm.core = "1.0.0"), "2026-01-02T00:00:00Z"),
+    helper_fake_build(
+      fp_a,
+      helper_pkg_state(gsm.core = "1.0.0"),
+      "2026-01-02T00:00:00Z"
+    ),
     helper_fake_build(
       strrep("b", 64),
       helper_pkg_state(gsm.core = "1.0.0"),
@@ -195,16 +217,24 @@ test_that("an unreachable index falls back to the last release (#206)", {
   tag <- helper_run_checker(cache)
 
   unlink(file.path(server$root, "index.json"))
-  expect_message(expect_equal(helper_run_checker(cache), tag), "last chosen release")
+  expect_message(
+    expect_equal(helper_run_checker(cache), tag),
+    "last chosen release"
+  )
 
   fresh <- withr::local_tempdir()
-  expect_error(helper_run_checker(fresh), "Can't read the gsm.datasim test data index")
+  expect_error(
+    helper_run_checker(fresh),
+    "Can't read the gsm.datasim test data index"
+  )
 })
 
 test_that("use_testdata_tag() pins a release without the index (#206)", {
   server <- local_fake_releases()
   fp <- server$release(list(lSource = 1))
-  cache <- local_testdata_env(server, function() helper_pkg_state(gsm.core = "1.0.0"))
+  cache <- local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0")
+  })
   tag <- paste0("data-", substr(fp, 1, 12))
   use_testdata_tag(tag)
 
@@ -223,7 +253,9 @@ test_that("bindings load release objects, with state and cache in .testdata_dir(
   server <- local_fake_releases()
   fp <- server$release(list(analyticsInput = mtcars, lSource = list(x = 1)))
   server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = "1.0.0")))
-  cache <- local_testdata_env(server, function() helper_pkg_state(gsm.core = "1.0.0"))
+  cache <- local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0")
+  })
 
   env <- new.env()
   handle <- .register_testdata(env)
@@ -258,7 +290,10 @@ test_that("use_testdata_snapshot() reads a snapshot with no network or cache (#2
 
   env <- new.env()
   handle <- .register_testdata(env)
-  use_testdata_snapshot(file.path(server$root, paste0("data-", substr(fp, 1, 12))))
+  use_testdata_snapshot(file.path(
+    server$root,
+    paste0("data-", substr(fp, 1, 12))
+  ))
   # Takes priority over a pinned tag.
   use_testdata_tag("data-nope")
 
@@ -299,7 +334,9 @@ test_that("setter defaults read environment variables (#206)", {
 
 test_that("use_testdata_cache_dir() sets the option and switches the cache (#206)", {
   server <- local_fake_releases()
-  cache <- local_testdata_env(server, function() helper_pkg_state(gsm.core = "1.0.0"))
+  cache <- local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0")
+  })
   handle <- .register_testdata(new.env(), cache = cachem::cache_mem())
 
   dir <- file.path(withr::local_tempdir(), "cache")

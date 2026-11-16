@@ -8,6 +8,7 @@ construct_fetcher(
   url_constructor,
   reader = readRDS,
   checksum_finder = NULL,
+  digest_finder = NULL,
   downloader = fetch_binary
 )
 }
@@ -19,7 +20,12 @@ version \code{key}.}
 \code{\link[=readRDS]{readRDS()}}.}
 
 \item{checksum_finder}{\code{function} \verb{function(key)} returning the expected
-sha256 for version \code{key}, or \code{NULL} to skip verification.}
+sha256 of the downloaded file for version \code{key}, or \code{NULL} to skip
+verification.}
+
+\item{digest_finder}{\code{function} \verb{function(key)} returning the expected
+\code{\link[=fresh_digest]{fresh_digest()}} of the value \code{reader} returns for version \code{key}, or
+\code{NULL} to skip verification.}
 
 \item{downloader}{\code{function} \verb{function(url, dest)} that downloads \code{url} to
 \code{dest} and errors on failure. Override for authentication, APIs, etc.}
