@@ -105,6 +105,9 @@ test_that("a local package builds once, then reuses the build (#219)", {
   expect_equal(lSource$x, "local")
   expect_equal(builder$calls(), 1)
   expect_length(server$requests(), 0)
+
+  # Later checks in the same session don't repeat the message.
+  expect_no_message(gsm_testdata()$refresh())
 })
 
 test_that("a no-match with a local package builds instead of erroring (#219)", {

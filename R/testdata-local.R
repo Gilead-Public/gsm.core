@@ -146,13 +146,15 @@ rebuild_local_testdata <- function() {
   dir <- .testdata_local_dir(installed)
   if (rebuild || !.testdata_local_exists(dir)) {
     .testdata_local_build(dir, builder)
-  } else {
+  } else if (!dir %in% gsm$testdata_local_informed) {
     cli::cli_inform(c(
       "Using local gsm test data from {.path {dir}}.",
       i = "After changing code, rebuild with
            {.run gsm.core::rebuild_local_testdata()}."
     ))
   }
+  # The checker can run many times a session; say where data comes from once.
+  gsm$testdata_local_informed <- union(gsm$testdata_local_informed, dir)
   snapshot <- read_snapshot(dir)
   fingerprint <- .testdata_local_fingerprint(snapshot)
   .testdata_local_register(fingerprint, basename(dir))
