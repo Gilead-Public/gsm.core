@@ -202,3 +202,36 @@ helper_fake_index <- function(...) {
 helper_select_fingerprint <- function(index, installed) {
   .testdata_select(index, installed)$build$fingerprint
 }
+
+# Local test data builds (#219) ----
+
+# A fake builder that writes a bundle of `objects` and counts its calls.
+local_fake_builder <- function(objects = list(lSource = list(x = 1))) {
+  calls <- 0L
+  fn <- function(output_dir, overwrite = FALSE, allow_local = FALSE) {
+    stopifnot(isTRUE(overwrite), isTRUE(allow_local))
+    calls <<- calls + 1L
+    dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+    files <- rlang::set_names(paste0(names(objects), ".rds"), names(objects))
+    for (name in names(objects)) {
+      saveRDS(objects[[name]], file.path(output_dir, files[[name]]))
+    }
+    write_snapshot_json(output_dir, as.list(files), key = "local")
+  }
+  list(
+    fn = fn,
+    calls = function() calls,
+    set_objects = function(x) objects <<- x
+  )
+}
+
+# One published build at gsm.core 1.0.0 (sha s1) plus gsm.kri 1.0.0 (k1).
+local_published <- function(env = parent.frame()) {
+  server <- local_fake_releases(env)
+  fp <- server$release(list(lSource = list(x = "published")))
+  server$index(helper_fake_build(
+    fp,
+    helper_pkg_state(gsm.core = c("1.0.0", "s1"), gsm.kri = c("1.0.0", "k1"))
+  ))
+  server
+}
