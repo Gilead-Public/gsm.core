@@ -261,3 +261,20 @@ test_that("an index with no builds builds locally (#219)", {
   expect_match(suppressMessages(helper_run_checker(cache)), "^data-")
   expect_equal(builder$calls(), 1)
 })
+
+test_that("a build finished by another session first is kept (#219)", {
+  dir <- file.path(withr::local_tempdir(), "local", "abc")
+  other <- local_fake_builder(list(lSource = list(x = "other")))
+  mine <- local_fake_builder(list(lSource = list(x = "mine")))
+  racing <- function(output_dir, ...) {
+    # Another session publishes while this one builds.
+    other$fn(dir, overwrite = TRUE, allow_local = TRUE)
+    mine$fn(output_dir, ...)
+  }
+  suppressMessages(.testdata_local_build(dir, racing))
+  expect_equal(readRDS(file.path(dir, "lSource.rds"))$x, "other")
+
+  suppressMessages(.testdata_local_build(dir, racing, rebuild = TRUE))
+  expect_equal(readRDS(file.path(dir, "lSource.rds"))$x, "mine")
+  expect_equal(list.files(dirname(dir)), "abc")
+})

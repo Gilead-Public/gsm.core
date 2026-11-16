@@ -145,7 +145,7 @@ rebuild_local_testdata <- function() {
 ) {
   dir <- .testdata_local_dir(installed)
   if (rebuild || !.testdata_local_exists(dir)) {
-    .testdata_local_build(dir, builder)
+    .testdata_local_build(dir, builder, rebuild)
   } else if (!dir %in% gsm$testdata_local_informed) {
     cli::cli_inform(c(
       "Using local gsm test data from {.path {dir}}.",
@@ -186,13 +186,15 @@ rebuild_local_testdata <- function() {
 #' Run the builder into a local build folder
 #'
 #' Builds into a temporary sibling folder, then replaces `dir`, so a failed
-#' build leaves any previous one intact.
+#' build leaves any previous one intact. Concurrent sessions don't lock each
+#' other out: if another session finishes the same automatic build first, its
+#' result is kept, and the swap never leaves `dir` missing while it's in use.
 #'
 #' @param dir `character(1)` The build folder.
 #' @inheritParams .testdata_use_local
 #' @returns `dir`, invisibly.
 #' @keywords internal
-.testdata_local_build <- function(dir, builder) {
+.testdata_local_build <- function(dir, builder, rebuild = FALSE) {
   cli::cli_inform("Building local gsm test data in {.path {dir}} ...")
   fs::dir_create(dirname(dir))
   tmp <- tempfile("build-", tmpdir = dirname(dir))
@@ -207,8 +209,18 @@ rebuild_local_testdata <- function() {
       cli::cli_abort("Failed to build local gsm test data.", parent = e)
     }
   )
-  unlink(dir, recursive = TRUE)
-  if (!file.rename(tmp, dir)) {
+  # Another session may have finished the same build meanwhile; for an
+  # automatic build, keep theirs. Swap folders by renaming, so a reader never
+  # sees `dir` deleted before its replacement is in place.
+  if (!rebuild && .testdata_local_exists(dir)) {
+    return(invisible(dir))
+  }
+  old <- tempfile("old-", tmpdir = dirname(dir))
+  on.exit(unlink(old, recursive = TRUE), add = TRUE)
+  if (dir.exists(dir)) {
+    file.rename(dir, old)
+  }
+  if (!file.rename(tmp, dir) && !.testdata_local_exists(dir)) {
     cli::cli_abort("Can't move the local test data build to {.path {dir}}.") # nocov
   }
   invisible(dir)
