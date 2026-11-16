@@ -160,6 +160,14 @@ rebuild_local_testdata <- function() {
   .testdata_local_register(fingerprint, basename(dir))
   tag <- paste0("data-", substr(fingerprint, 1, 12))
   snapshot$key <- paste0("sha256:", fingerprint)
+  # A rebuild can change the folder's data, so forget snapshots memoized for
+  # it under other tags; they'd fail digest checks instead of downloading.
+  stale <- vapply(
+    gsm$testdata_snapshots %||% list(),
+    function(s) identical(s$dir, snapshot$dir),
+    logical(1)
+  )
+  gsm$testdata_snapshots[names(stale)[stale]] <- NULL
   gsm$testdata_snapshots[[tag]] <- snapshot
   state$set(
     "lookup",

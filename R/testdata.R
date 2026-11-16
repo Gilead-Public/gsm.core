@@ -422,7 +422,12 @@ use_testdata_cache_dir <- function(dir) {
     if (identical(prev$match, "exact")) {
       return(prev$tag)
     }
-    if (!is.null(.testdata_builder()) && .testdata_local_exists(prev$dir)) {
+    # Check the raw option, so an unavailable builder package can't block
+    # reuse; the builder is only resolved if a build is needed.
+    if (
+      !is.null(getOption("gsm.testdata_builder")) &&
+        .testdata_local_exists(prev$dir)
+    ) {
       return(.testdata_use_local(state, prev$packages, prev$installed))
     }
   }
@@ -448,14 +453,16 @@ use_testdata_cache_dir <- function(dir) {
   }
 
   installed <- .testdata_installed(index$packages)
-  builder <- .testdata_builder()
-  if (!is.null(builder) && .testdata_has_local_pkg(installed)) {
+  if (
+    !is.null(getOption("gsm.testdata_builder")) &&
+      .testdata_has_local_pkg(installed)
+  ) {
     pick <- tryCatch(
       .testdata_select(index, installed),
       gsm_testdata_no_match = function(e) NULL
     )
     if (!identical(pick$match, "exact")) {
-      return(.testdata_use_local(state, index$packages, installed, builder))
+      return(.testdata_use_local(state, index$packages, installed))
     }
   } else {
     pick <- .testdata_select(index, installed)

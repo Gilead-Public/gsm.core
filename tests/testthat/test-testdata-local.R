@@ -171,3 +171,39 @@ test_that("a release matching a local build is copied, not downloaded (#219)", {
   expect_equal(env$lSource$x, "same")
   expect_false(any(grepl("releases/download", server$requests())))
 })
+
+test_that("an unavailable builder doesn't block published or cached data (#219)", {
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = c("1.0.0", "s1"), gsm.kri = c("1.0.0", "k1"))
+  cache <- local_testdata_env(server, function() installed)
+  withr::local_options(gsm.testdata_builder = "notapkg123::fn")
+  # Exact match: published data, builder never resolved.
+  expect_match(helper_run_checker(cache), "^data-")
+
+  # Cached local build: reused without resolving the builder.
+  builder <- local_fake_builder()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  tag <- suppressMessages(helper_run_checker(cache))
+  withr::local_options(gsm.testdata_builder = "notapkg123::fn")
+  expect_equal(suppressMessages(helper_run_checker(cache)), tag)
+  expect_equal(builder$calls(), 1)
+})
+
+test_that("a rebuild evicts snapshots memoized for the old data (#219)", {
+  builder <- local_fake_builder(list(lSource = list(x = "v1")))
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  cache <- local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  })
+  old_tag <- suppressMessages(helper_run_checker(cache))
+  expect_false(is.null(gsm$testdata_snapshots[[old_tag]]))
+
+  builder$set_objects(list(lSource = list(x = "v2")))
+  .register_testdata(new.env(), cache = cachem::cache_mem())
+  suppressMessages(rebuild_local_testdata())
+  expect_null(gsm$testdata_snapshots[[old_tag]])
+  # The old tag no longer resolves to the rebuilt folder.
+  expect_null(.testdata_local_find(old_tag))
+})
