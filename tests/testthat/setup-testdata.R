@@ -5,6 +5,12 @@ withr::local_envvar(
   R_USER_CACHE_DIR = file.path(output_dir, "user-cache"),
   .local_envir = teardown_env()
 )
+# Never build real test data in tests, even if the user's session (or
+# .Rprofile) sets a builder. Tests that need one set a fake builder.
+withr::local_options(
+  gsm.testdata_builder = NULL,
+  .local_envir = teardown_env()
+)
 # Restore the handle's own cache object, not a fresh default: a default made
 # during teardown would point into the temporary R_USER_CACHE_DIR.
 old_handle_cache <- gsm_testdata()$cache

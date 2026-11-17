@@ -57,7 +57,7 @@ NULL
 #'   `reportingMetrics` and `reportingBounds`.
 #' @export
 action_log_testdata <- function() {
-  tag <- "data-8cde53949d4d"
+  tag <- "data-af3057dea9d4"
   objects <- c("reportingResults", "reportingGroups", "reportingMetrics", "reportingBounds")
   setters <- lapply(objects, function(object) {
     force(object)
@@ -77,7 +77,7 @@ action_log_testdata <- function() {
     env = inputs,
     cache = current$cache
   )
-  fingerprint <- "sha256:8cde53949d4d7e1dcf3741905dbf42303a35ca96e662ea129306016c3a55572d"
+  fingerprint <- "sha256:af3057dea9d43993359d61307658400150102cb595df93a7b504e5d43c31d072"
   if (!is.null(current$snapshot) && identical(current$snapshot$key, fingerprint)) {
     handle$use_snapshot(current$snapshot$dir)
   }
@@ -121,12 +121,39 @@ action_log_testdata <- function() {
   cache = getOption("gsm.testdata_cache", .testdata_default_cache())
 ) {
   setters <- lapply(.testdata_objects, function(object) {
-    construct_fetcher(
+    fetch <- construct_fetcher(
       url_constructor = function(tag) {
         .testdata_url(tag, .testdata_object_entry(tag, object)$file)
       },
-      checksum_finder = function(tag) .testdata_object_entry(tag, object)$sha256
+      digest_finder = function(tag) .testdata_object_entry(tag, object)$digest
     )
+    function(tag) {
+      # A local build with the same fingerprint holds the same data, so copy
+      # from it instead of downloading.
+      snapshot <- .testdata_snapshot(tag)
+      if (is.null(snapshot$dir)) {
+        return(fetch(tag))
+      }
+      tryCatch(
+        {
+          .testdata_object_entry(tag, object)
+          .snapshot_read_object(snapshot, object)
+        },
+        error = function(e) {
+          # Damaged local copy: download the release instead, if there is one.
+          gsm$testdata_snapshots[[tag]] <- NULL
+          release <- tryCatch(
+            .testdata_snapshot(tag, local = FALSE),
+            error = function(e2) NULL
+          )
+          if (is.null(release)) {
+            gsm$testdata_snapshots[[tag]] <- snapshot
+            rlang::cnd_signal(e)
+          }
+          fetch(tag)
+        }
+      )
+    }
   })
   gsm$testdata_handle <- keep_fresh(
     checker = .testdata_checker,
@@ -440,13 +467,24 @@ use_testdata_cache_dir <- function(dir) {
     return(pinned)
   }
 
-  # Fast path: an exact match stays exact until installed packages change.
+  # Fast path: an exact match stays exact until installed packages change, and
+  # so does a local build (until it's rebuilt or removed).
   prev <- state$get("lookup")
   if (
-    identical(prev$match, "exact") &&
+    isTRUE(prev$match %in% c("exact", "local")) &&
       identical(.testdata_installed(prev$packages), prev$installed)
   ) {
-    return(prev$tag)
+    if (identical(prev$match, "exact")) {
+      return(prev$tag)
+    }
+    # Check the raw option, so an unavailable builder package can't block
+    # reuse; the builder is only resolved if a build is needed.
+    if (
+      !is.null(getOption("gsm.testdata_builder")) &&
+        .testdata_local_exists(prev$dir)
+    ) {
+      return(.testdata_use_local(state, prev$packages, prev$installed))
+    }
   }
 
   index <- tryCatch(.testdata_index(), error = function(e) {
@@ -470,7 +508,22 @@ use_testdata_cache_dir <- function(dir) {
   }
 
   installed <- .testdata_installed(index$packages)
-  pick <- .testdata_select(index, installed)
+  if (
+    !is.null(getOption("gsm.testdata_builder")) &&
+      .testdata_has_local_pkg(installed)
+  ) {
+    pick <- if (nrow(index$builds)) {
+      tryCatch(
+        .testdata_select(index, installed),
+        gsm_testdata_no_match = function(e) NULL
+      )
+    }
+    if (!identical(pick$match, "exact")) {
+      return(.testdata_use_local(state, index$packages, installed))
+    }
+  } else {
+    pick <- .testdata_select(index, installed)
+  }
   fingerprint <- pick$build$fingerprint
   tag <- index$fingerprints[[fingerprint]]$tag %||% pick$build$tag
 
@@ -537,7 +590,7 @@ use_testdata_cache_dir <- function(dir) {
   versions <- vapply(installed, function(p) p$version %||% NA_character_, "")
 
   if (!anyNA(versions)) {
-    hit <- which(builds$inputs_hash == .testdata_inputs_hash(installed))
+    hit <- which(builds$inputs_hash == fresh_inputs_hash(installed))
     if (length(hit)) {
       return(list(build = builds[hit[[1]], , drop = FALSE], match = "exact"))
     }
@@ -589,7 +642,14 @@ use_testdata_cache_dir <- function(dir) {
       i = "{.pkg {pkg}} is probably out of step with the other gsm packages.
            Updating it (or them) to a compatible set usually fixes this.",
       i = "To use specific data anyway, see {.fn use_testdata_tag} or
-           {.fn use_testdata_snapshot}."
+           {.fn use_testdata_snapshot}.",
+      if (is.null(getOption("gsm.testdata_builder"))) {
+        c(
+          i = "To build test data from your local packages instead, set
+               {.code options(gsm.testdata_builder =
+               \"gsm.datasim::build_testdata_bundle\")}."
+        )
+      }
     ),
     class = "gsm_testdata_no_match"
   )
@@ -625,38 +685,6 @@ use_testdata_cache_dir <- function(dir) {
     function(v) !is.na(v) && utils::compareVersion(v, max) <= 0,
     logical(1),
     USE.NAMES = FALSE
-  )
-}
-
-#' Hash of the packages that built a bundle
-#'
-#' Must match `gsm.datasim:::.inputs_hash()`: SHA-256 of one
-#' `"<package> <version> <remote_sha>"` line per package (missing SHA as
-#' `NA`), sorted by name in C-locale order and joined with `"\n"`.
-#'
-#' @param packages `list` Named by package; each element has `version`
-#'   and `remote_sha`, as from [package_versions()].
-#' @returns `character(1)` A 64-character hex string.
-#' @keywords internal
-.testdata_inputs_hash <- function(packages) {
-  pkgs <- names(packages)[order(names(packages), method = "radix")]
-  lines <- vapply(
-    pkgs,
-    function(pkg) {
-      p <- packages[[pkg]]
-      sha <- p$remote_sha
-      if (is.null(sha) || is.na(sha)) {
-        sha <- "NA"
-      }
-      paste(pkg, p$version, sha)
-    },
-    character(1),
-    USE.NAMES = FALSE
-  )
-  digest::digest(
-    enc2utf8(paste(lines, collapse = "\n")),
-    algo = "sha256",
-    serialize = FALSE
   )
 }
 
@@ -714,14 +742,22 @@ use_testdata_cache_dir <- function(dir) {
 #' A release's snapshot.json
 #'
 #' Releases are immutable, so this is cached in memory and on disk
-#' indefinitely.
+#' indefinitely. If a local build (see [rebuild_local_testdata()]) has the
+#' same fingerprint, its snapshot is used instead, with `dir` set, so objects
+#' are copied from it rather than downloaded.
 #'
 #' @inheritParams .testdata_url
+#' @param local `logical(1)` Use a matching local build if there is one?
 #' @returns `list` Output of [parse_snapshot()].
 #' @keywords internal
-.testdata_snapshot <- function(tag) {
+.testdata_snapshot <- function(tag, local = TRUE) {
   if (!is.null(gsm$testdata_snapshots[[tag]])) {
     return(gsm$testdata_snapshots[[tag]])
+  }
+  local <- if (local) .testdata_local_find(tag)
+  if (!is.null(local)) {
+    gsm$testdata_snapshots[[tag]] <- local
+    return(local)
   }
   path <- fs::path(.testdata_dir(), "snapshots", tag, ext = "json")
   if (!file.exists(path)) {
@@ -744,7 +780,7 @@ use_testdata_cache_dir <- function(dir) {
 #'
 #' @inheritParams .testdata_url
 #' @param object `character(1)` Object name.
-#' @returns `list` With `file` and `sha256`.
+#' @returns `list` With `file` and `digest`.
 #' @keywords internal
 .testdata_object_entry <- function(tag, object) {
   entry <- .testdata_snapshot(tag)$objects[[object]]

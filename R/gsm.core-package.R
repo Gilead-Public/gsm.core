@@ -17,6 +17,7 @@
 #' @importFrom glue glue
 #' @importFrom glue glue_collapse
 #' @importFrom lifecycle deprecated
+#' @importFrom R6 R6Class
 #' @importFrom rlang %||%
 #' @importFrom rlang .data
 #' @importFrom rlang check_installed

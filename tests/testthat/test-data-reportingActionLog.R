@@ -123,7 +123,7 @@ test_that("ActionLog inputs use their own immutable release", {
   )
   inputs <- action_log_testdata()
   expect_named(inputs, c("reportingResults", "reportingGroups", "reportingMetrics", "reportingBounds"))
-  expect_true(all(grepl("/data-8cde53949d4d/", unlist(inputs), fixed = TRUE)))
+  expect_true(all(grepl("/data-af3057dea9d4/", unlist(inputs), fixed = TRUE)))
   snapshot <- list(key = "unrelated-snapshot", dir = "not-used")
   expect_identical(action_log_testdata(), inputs)
   directory <- withr::local_tempdir()
@@ -135,7 +135,7 @@ test_that("ActionLog inputs use their own immutable release", {
   })
   names(expected) <- names(inputs)
   write_snapshot_json(directory, objects = as.list(files),
-    key = "sha256:8cde53949d4d7e1dcf3741905dbf42303a35ca96e662ea129306016c3a55572d")
+    key = "sha256:af3057dea9d43993359d61307658400150102cb595df93a7b504e5d43c31d072")
   snapshot <- read_snapshot(directory)
   expect_identical(action_log_testdata(), expected)
   expect_identical(gsm$testdata_tag, selected)

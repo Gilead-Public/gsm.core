@@ -28,8 +28,8 @@ action_log_test_results <- function() {
 #
 # `safely_fetch` stands in for refresh's safely_fetch() (see local_testdata_env()):
 # it copies from `root`, fails like a 404 for anything missing, and records
-# each URL and the checksum gsm.core asked for. Checksum verification itself
-# is refresh's job and is tested in test-refresh-download.R.
+# each URL and the checksum gsm.core asked for. Verification itself is
+# refresh's job and is tested in test-refresh-download.R.
 local_fake_releases <- function(env = parent.frame()) {
   root <- withr::local_tempdir(.local_envir = env)
   requests <- character()
@@ -38,7 +38,8 @@ local_fake_releases <- function(env = parent.frame()) {
   # Publish a `data-<fp12>` release: one RDS per object plus snapshot.json.
   # Returns the fingerprint.
   release <- function(objects = list(), fingerprint = NULL) {
-    fingerprint <- fingerprint %||% digest::digest(objects, algo = "sha256")
+    fingerprint <- fingerprint %||%
+      fresh_fingerprint(lapply(objects, fresh_digest))
     tag <- paste0("data-", substr(fingerprint, 1, 12))
     dir <- file.path(root, tag)
     dir.create(dir, recursive = TRUE, showWarnings = FALSE)
@@ -65,7 +66,7 @@ local_fake_releases <- function(env = parent.frame()) {
         b$packages[[p]] %||% list(version = NA, remote_sha = NA)
       })
       list(
-        inputs_hash = .testdata_inputs_hash(full),
+        inputs_hash = fresh_inputs_hash(full),
         fingerprint = b$fingerprint,
         tag = paste0("data-", substr(b$fingerprint, 1, 12)),
         source = b$source,
@@ -170,6 +171,7 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
 
 clear_testdata_snapshots <- function() {
   gsm$testdata_snapshots <- NULL
+  gsm$testdata_local_informed <- NULL
 }
 
 # Clear gsm.core's test data settings and handle for one test, restoring them
@@ -209,4 +211,37 @@ helper_fake_index <- function(...) {
 # Fingerprint chosen by .testdata_select().
 helper_select_fingerprint <- function(index, installed) {
   .testdata_select(index, installed)$build$fingerprint
+}
+
+# Local test data builds (#219) ----
+
+# A fake builder that writes a bundle of `objects` and counts its calls.
+local_fake_builder <- function(objects = list(lSource = list(x = 1))) {
+  calls <- 0L
+  fn <- function(output_dir, overwrite = FALSE, allow_local = FALSE) {
+    stopifnot(isTRUE(overwrite), isTRUE(allow_local))
+    calls <<- calls + 1L
+    dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+    files <- rlang::set_names(paste0(names(objects), ".rds"), names(objects))
+    for (name in names(objects)) {
+      saveRDS(objects[[name]], file.path(output_dir, files[[name]]))
+    }
+    write_snapshot_json(output_dir, as.list(files), key = "local")
+  }
+  list(
+    fn = fn,
+    calls = function() calls,
+    set_objects = function(x) objects <<- x
+  )
+}
+
+# One published build at gsm.core 1.0.0 (sha s1) plus gsm.kri 1.0.0 (k1).
+local_published <- function(env = parent.frame()) {
+  server <- local_fake_releases(env)
+  fp <- server$release(list(lSource = list(x = "published")))
+  server$index(helper_fake_build(
+    fp,
+    helper_pkg_state(gsm.core = c("1.0.0", "s1"), gsm.kri = c("1.0.0", "k1"))
+  ))
+  server
 }
