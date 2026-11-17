@@ -13,7 +13,7 @@ parse_snapshot(info, source = "snapshot.json")
 - info:
 
   `list` `snapshot.json` parsed with
-  [`jsonlite::read_json()`](https://jeroen.r-universe.dev/jsonlite/reference/read_json.html).
+  [`jsonlite::read_json()`](https://rdrr.io/pkg/jsonlite/man/read_json.html).
 
 - source:
 

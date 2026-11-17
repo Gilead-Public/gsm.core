@@ -44,6 +44,7 @@
 <span>  <span class="va">url_constructor</span>,</span>
 <span>  reader <span class="op">=</span> <span class="va">readRDS</span>,</span>
 <span>  checksum_finder <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  digest_finder <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  downloader <span class="op">=</span> <span class="va">fetch_binary</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -64,7 +65,14 @@ version <code>key</code>.</p></dd>
 
 <dt id="arg-checksum-finder">checksum_finder<a class="anchor" aria-label="anchor" href="#arg-checksum-finder"></a></dt>
 <dd><p><code>function</code> <code>function(key)</code> returning the expected
-sha256 for version <code>key</code>, or <code>NULL</code> to skip verification.</p></dd>
+sha256 of the downloaded file for version <code>key</code>, or <code>NULL</code> to skip
+verification.</p></dd>
+
+
+<dt id="arg-digest-finder">digest_finder<a class="anchor" aria-label="anchor" href="#arg-digest-finder"></a></dt>
+<dd><p><code>function</code> <code>function(key)</code> returning the expected
+<code><a href="fresh_digest.html">fresh_digest()</a></code> of the value <code>reader</code> returns for version <code>key</code>, or
+<code>NULL</code> to skip verification.</p></dd>
 
 
 <dt id="arg-downloader">downloader<a class="anchor" aria-label="anchor" href="#arg-downloader"></a></dt>

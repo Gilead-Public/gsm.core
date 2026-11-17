@@ -130,3 +130,24 @@ Control where sample data comes from and where it is cached
   **\[experimental\]** : Choose which test data gsm.core uses
 - [`use_testdata_cache_dir()`](https://gilead-public.github.io/gsm.core/dev/reference/use_testdata_cache_dir.md)
   **\[experimental\]** : Choose where the test data is cached
+- [`rebuild_local_testdata()`](https://gilead-public.github.io/gsm.core/dev/reference/rebuild_local_testdata.md)
+  **\[experimental\]** : Rebuild local test data
+
+## Snapshot Tools
+
+Shared helpers for writing and verifying data snapshots (used by
+gsm.datasim)
+
+- [`fresh_digest()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_digest.md)
+  **\[experimental\]** : Digest an R object
+- [`fresh_fingerprint()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_fingerprint.md)
+  **\[experimental\]** : Fingerprint a set of object digests
+- [`fresh_inputs_hash()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_inputs_hash.md)
+  **\[experimental\]** : Hash the package versions that built something
+- [`package_versions()`](https://gilead-public.github.io/gsm.core/dev/reference/package_versions.md)
+  **\[experimental\]** : Installed versions of packages
+- [`read_snapshot()`](https://gilead-public.github.io/gsm.core/dev/reference/read_snapshot.md)
+  **\[experimental\]** : Read a snapshot's description
+- [`write_snapshot_json()`](https://gilead-public.github.io/gsm.core/dev/reference/write_snapshot_json.md)
+  **\[experimental\]** : Write snapshot.json for files already in a
+  folder

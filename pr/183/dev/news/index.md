@@ -4,10 +4,40 @@
 
 - Added synthetic `reportingActionLog` review scenarios for action-aware
   scoring and reporting examples.
+
 - Added
   [`action_log_testdata()`](https://gilead-public.github.io/gsm.core/dev/reference/action_log_testdata.md)
   for the fixture’s matching reporting inputs.
+
 - Fixed lifecycle dates across frozen ActionLog extractions.
+
+- New `gsm.testdata_builder` option
+  (e.g. `"gsm.datasim::build_testdata_bundle"`): when local gsm packages
+  (e.g. from
+  [`devtools::load_all()`](https://devtools.r-lib.org/reference/load_all.html))
+  don’t exactly match a published test data build, gsm.core builds test
+  data from them and reuses that build in later sessions. Call the new
+  [`rebuild_local_testdata()`](https://gilead-public.github.io/gsm.core/dev/reference/rebuild_local_testdata.md)
+  after changing code to rebuild the local snapshot. A release with the
+  same data as a local build is copied from it instead of downloaded
+  ([\#219](https://github.com/Gilead-Public/gsm.core/issues/219)).
+
+- Exported experimental snapshot tools for other gsm packages:
+  [`fresh_digest()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_digest.md),
+  [`fresh_fingerprint()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_fingerprint.md),
+  [`fresh_inputs_hash()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_inputs_hash.md),
+  [`write_snapshot_json()`](https://gilead-public.github.io/gsm.core/dev/reference/write_snapshot_json.md),
+  [`read_snapshot()`](https://gilead-public.github.io/gsm.core/dev/reference/read_snapshot.md),
+  and
+  [`package_versions()`](https://gilead-public.github.io/gsm.core/dev/reference/package_versions.md).
+  Snapshots now verify each object by the digest of the loaded R object
+  (snapshot format 2), so files written by different R versions or with
+  different compression still verify. Format 1 snapshots are no longer
+  read ([\#216](https://github.com/Gilead-Public/gsm.core/issues/216)).
+
+- File checksums treat CRLF as LF in text files, so downloads whose line
+  endings were converted still verify
+  ([\#215](https://github.com/Gilead-Public/gsm.core/issues/215)).
 
 ## gsm.core v1.3.2
 
