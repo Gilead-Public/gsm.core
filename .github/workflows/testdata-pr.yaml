@@ -1,0 +1,37 @@
+# name: testdata-pr.yaml
+# version: 1.0.0
+# Description: On PRs to dev/main in a package that feeds the shared gsm test
+#   data, build one test data bundle from the PR's head commit. Every other
+#   test workflow in the repo waits for this run (wait-for-bundle) and uses its
+#   bundle, so the data is built once per commit. Repos that don't feed the
+#   data skip the build. Copy to .github/workflows/ in every gsm repo.
+on:
+  pull_request:
+    branches: [main, dev]
+
+name: testdata-pr
+# wait-for-bundle finds this run by its title; keep in sync.
+run-name: build-pr-bundle pr${{ github.event.pull_request.number }} ${{ github.event.pull_request.head.sha || github.sha }}
+
+permissions:
+  contents: read
+  # write: Required to delete this PR's superseded bundles.
+  actions: write
+  # read: Required to check whether the PR closed during the build.
+  pull-requests: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      needed: ${{ steps.needs.outputs.needed }}
+    steps:
+      - id: needs
+        uses: gilead-public/gsm.datasim/needs-testdata@actions
+  build:
+    needs: check
+    if: needs.check.outputs.needed == 'true'
+    uses: gilead-public/gsm.datasim/.github/workflows/build-pr-bundle.yaml@actions
+    secrets:
+      CM_BOT_APP_ID: ${{ secrets.CM_BOT_APP_ID }}
+      CM_BOT_PRIVATE_KEY: ${{ secrets.CM_BOT_PRIVATE_KEY }}
