@@ -27,11 +27,11 @@ jobs:
       needed: ${{ steps.needs.outputs.needed }}
     steps:
       - id: needs
-        uses: gilead-public/gsm.datasim/needs-testdata@actions
+        uses: gilead-public/gsm.datasim/needs-testdata@fix-200-bundle-suggests
   build:
     needs: check
     if: needs.check.outputs.needed == 'true'
-    uses: gilead-public/gsm.datasim/.github/workflows/build-pr-bundle.yaml@actions
+    uses: gilead-public/gsm.datasim/.github/workflows/build-pr-bundle.yaml@fix-200-bundle-suggests
     secrets:
       CM_BOT_APP_ID: ${{ secrets.CM_BOT_APP_ID }}
       CM_BOT_PRIVATE_KEY: ${{ secrets.CM_BOT_PRIVATE_KEY }}
