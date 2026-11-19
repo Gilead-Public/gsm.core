@@ -284,6 +284,15 @@ test_that("an unreachable index with changed packages warns (#223)", {
     expect_equal(helper_run_checker(cache), tag),
     class = "gsm_testdata_fallback"
   )
+
+  # Silent in R CMD INSTALL/check, but still detectable.
+  withr::local_envvar(R_INSTALL_PKG = "gsm.core")
+  expect_no_warning(cnd <- rlang::catch_cnd(
+    helper_run_checker(cache),
+    classes = "gsm_testdata_fallback"
+  ))
+  expect_s3_class(cnd, "gsm_testdata_fallback")
+  expect_no_warning(expect_equal(helper_run_checker(cache), tag))
 })
 
 test_that("an unreachable index uses a matching local build (#223)", {

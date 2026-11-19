@@ -44,6 +44,20 @@ test_that("a failed check isn't retried until refresh (#223)", {
   expect_equal(checks, 2)
 })
 
+test_that("a check exited by a handler reruns next time (#223)", {
+  checks <- 0
+  checker <- function(state) {
+    checks <<- checks + 1
+    warning("stale")
+    "v1"
+  }
+  env <- new.env()
+  keep_fresh(checker, list(a = function(k) k), env)
+  tryCatch(env$a, warning = function(w) NULL)
+  expect_equal(suppressWarnings(env$a), "v1")
+  expect_equal(checks, 2)
+})
+
 test_that("check modes control when the checker reruns (#206)", {
   key <- "v1"
   checks <- 0

@@ -2,17 +2,16 @@
 
 # Skip a test when gsm.datasim test data can't be loaded (e.g. offline with an
 # empty cache), or when only a fallback that may not match the installed
-# packages is available. The result is remembered for the rest of the run. The
-# first load never runs a real builder (e.g. from the user's .Rprofile), which
-# is slow; an existing matching local build is still used.
-skip_if_no_testdata <- function() {
+# packages is available. The result is remembered for the rest of the run.
+# Never runs a real builder (e.g. from the user's .Rprofile), which is slow:
+# the option is unset for the calling test, not just the first check. An
+# existing matching local build is still used.
+skip_if_no_testdata <- function(env = parent.frame()) {
+  withr::local_options(gsm.testdata_builder = NULL, .local_envir = env)
   if (is.null(.testdata_available$ok)) {
-    .testdata_available$ok <- withr::with_options(
-      list(gsm.testdata_builder = NULL),
-      tryCatch(
-        testdata_is_available(),
-        gsm_testdata_fallback = function(w) FALSE
-      )
+    .testdata_available$ok <- tryCatch(
+      testdata_is_available(),
+      gsm_testdata_fallback = function(w) FALSE
     )
   }
   if (!.testdata_available$ok) {

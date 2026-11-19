@@ -277,10 +277,12 @@ FreshHandle <- R6::R6Class(
       if (.fresh_needs_check(private$checked_at, private$check)) {
         # Remember a failed check like a successful one, so every binding
         # doesn't retry it (e.g. R CMD INSTALL reads them all); `refresh()` or
-        # `invalidate()` retries.
-        private$checked_at <- Sys.time()
+        # `invalidate()` retries. The timestamp is set only once the check
+        # completes or errors, so a check interrupted another way (e.g. a
+        # calling handler exiting on a warning) reruns next time.
         key <- tryCatch(private$checker(private$state_), error = function(e) {
           private$check_error <- e
+          private$checked_at <- Sys.time()
           rlang::cnd_signal(e)
         })
         private$check_error <- NULL
@@ -288,6 +290,7 @@ FreshHandle <- R6::R6Class(
           private$key_ <- key
           private$values <- new.env(parent = emptyenv())
         }
+        private$checked_at <- Sys.time()
       } else if (!is.null(private$check_error)) {
         rlang::cnd_signal(private$check_error)
       }

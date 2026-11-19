@@ -473,18 +473,40 @@ use_testdata_cache_dir <- function(dir) {
       if (is.null(prev$tag)) {
         rlang::cnd_signal(e)
       }
-      cli::cli_warn(
-        c(
-          "Can't find gsm test data matching your installed packages.",
-          i = "Using the last chosen release, {.val {prev$tag}}, which may not
-               match them."
-        ),
-        parent = e,
-        class = "gsm_testdata_fallback"
-      )
+      .testdata_fallback_warn(prev$tag, e)
       prev$tag
     }
   )
+}
+
+#' Warn that test data fell back to the last release
+#'
+#' A silent condition of the same class in R CMD INSTALL/check, so it can't
+#' add warnings to their logs but can still be caught.
+#'
+#' @param tag `character(1)` The release used.
+#' @param cnd `condition` Why the lookup failed.
+#' @returns `NULL`, invisibly.
+#' @keywords internal
+.testdata_fallback_warn <- function(tag, cnd) {
+  if (.testdata_quiet_context()) {
+    rlang::signal(
+      "Using the last chosen gsm test data release.",
+      class = "gsm_testdata_fallback",
+      parent = cnd
+    )
+    return(invisible())
+  }
+  cli::cli_warn(
+    c(
+      "Can't find gsm test data matching your installed packages.",
+      i = "Using the last chosen release, {.val {tag}}, which may not
+           match them."
+    ),
+    parent = cnd,
+    class = "gsm_testdata_fallback"
+  )
+  invisible()
 }
 
 #' Look up the test data release for the installed packages
