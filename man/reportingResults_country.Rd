@@ -5,19 +5,7 @@
 \alias{reportingResults_country}
 \title{reportingResults_country Dataset}
 \format{
-A data frame with about 207 rows and 10 columns:
-\describe{
-\item{GroupID}{grouping variable}
-\item{GroupLevel}{level of grouping variable}
-\item{Numerator}{number of flags in group}
-\item{Denominator}{total subjects in group}
-\item{Metric}{calculated rate/metric value}
-\item{Score}{statistical score}
-\item{Flag}{ordinal flag to be applied}
-\item{MetricID}{unique metric identifier}
-\item{StudyID}{unique study identifier}
-\item{SnapshotDate}{date of the snapshot}
-}
+A data frame.
 }
 \source{
 \code{reportingResults_country.rds} from a \verb{data-*} release of
@@ -35,6 +23,23 @@ locally. The release is automatically chosen to match the installed gsm
 packages. To change where or how the data is cached, see
 \code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
 }
+\section{Columns}{
+
+Columns may vary between test data releases. Typical columns:
+\describe{
+\item{GroupID}{grouping variable}
+\item{GroupLevel}{level of grouping variable}
+\item{Numerator}{number of flags in group}
+\item{Denominator}{total subjects in group}
+\item{Metric}{calculated rate/metric value}
+\item{Score}{statistical score}
+\item{Flag}{ordinal flag to be applied}
+\item{MetricID}{unique metric identifier}
+\item{StudyID}{unique study identifier}
+\item{SnapshotDate}{date of the snapshot}
+}
+}
+
 \section{Release selection}{
 
 The data comes from, in order of priority:

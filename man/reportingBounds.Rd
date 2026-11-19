@@ -5,17 +5,7 @@
 \alias{reportingBounds}
 \title{reportingBounds Dataset}
 \format{
-A data frame with about 33804 rows and 8 columns:
-\describe{
-\item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
-\item{Denominator}{calculated denominator value}
-\item{LogDenominator}{calculated log denominator value}
-\item{Numerator}{calculated numerator value}
-\item{Metric}{calculated rate/metric value}
-\item{MetricID}{unique metric identifier}
-\item{StudyID}{unique study identifier}
-\item{SnapshotDate}{date of the snapshot}
-}
+A data frame.
 }
 \source{
 \code{reportingBounds.rds} from a \verb{data-*} release of
@@ -33,6 +23,21 @@ locally. The release is automatically chosen to match the installed gsm
 packages. To change where or how the data is cached, see
 \code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
 }
+\section{Columns}{
+
+Columns may vary between test data releases. Typical columns:
+\describe{
+\item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
+\item{Denominator}{calculated denominator value}
+\item{LogDenominator}{calculated log denominator value}
+\item{Numerator}{calculated numerator value}
+\item{Metric}{calculated rate/metric value}
+\item{MetricID}{unique metric identifier}
+\item{StudyID}{unique study identifier}
+\item{SnapshotDate}{date of the snapshot}
+}
+}
+
 \section{Release selection}{
 
 The data comes from, in order of priority:

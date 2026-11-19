@@ -5,13 +5,7 @@
 \alias{reportingGroups_study}
 \title{reportingGroups_study Dataset}
 \format{
-A data frame with about 23 rows and 4 columns:
-\describe{
-\item{GroupID}{grouping variable}
-\item{GroupLevel}{level of grouping variable}
-\item{Param}{Parameter of interest for the group}
-\item{Value}{Value of specified Param}
-}
+A data frame.
 }
 \source{
 \code{reportingGroups_study.rds} from a \verb{data-*} release of
@@ -29,6 +23,17 @@ locally. The release is automatically chosen to match the installed gsm
 packages. To change where or how the data is cached, see
 \code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
 }
+\section{Columns}{
+
+Columns may vary between test data releases. Typical columns:
+\describe{
+\item{GroupID}{grouping variable}
+\item{GroupLevel}{level of grouping variable}
+\item{Param}{Parameter of interest for the group}
+\item{Value}{Value of specified Param}
+}
+}
+
 \section{Release selection}{
 
 The data comes from, in order of priority:

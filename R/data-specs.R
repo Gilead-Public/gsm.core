@@ -7,7 +7,9 @@
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 754 rows and 6 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{SubjectID}{unique subject identifier}
 #'   \item{GroupID}{grouping variable}
@@ -24,7 +26,6 @@
 #' @usage analyticsInput
 #' @keywords datasets
 NULL
-
 #' analyticsSummary Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -34,7 +35,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 141 rows and 7 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{GroupID}{grouping variable}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -52,7 +55,6 @@ NULL
 #' @usage analyticsSummary
 #' @keywords datasets
 NULL
-
 #' reportingGroups Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -62,7 +64,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 1655 rows and 4 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{GroupID}{grouping variable}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -77,7 +81,6 @@ NULL
 #' @usage reportingGroups
 #' @keywords datasets
 NULL
-
 #' reportingMetrics Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -87,7 +90,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 24 rows and 27 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{MetricID}{unique metric identifier}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -125,7 +130,6 @@ NULL
 #' @usage reportingMetrics
 #' @keywords datasets
 NULL
-
 #' reportingBounds Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -135,7 +139,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 33804 rows and 8 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
 #'   \item{Denominator}{calculated denominator value}
@@ -154,7 +160,6 @@ NULL
 #' @usage reportingBounds
 #' @keywords datasets
 NULL
-
 #' reportingResults Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -164,7 +169,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 5880 rows and 10 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{GroupID}{grouping variable}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -185,7 +192,6 @@ NULL
 #' @usage reportingResults
 #' @keywords datasets
 NULL
-
 #' reportingGroups_country Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -195,7 +201,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 29 rows and 4 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{GroupID}{grouping variable}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -210,7 +218,6 @@ NULL
 #' @usage reportingGroups_country
 #' @keywords datasets
 NULL
-
 #' reportingMetrics_country Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -220,7 +227,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 23 rows and 27 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{MetricID}{unique metric identifier}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -258,7 +267,6 @@ NULL
 #' @usage reportingMetrics_country
 #' @keywords datasets
 NULL
-
 #' reportingBounds_country Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -268,7 +276,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 37191 rows and 8 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
 #'   \item{Denominator}{calculated denominator value}
@@ -287,7 +297,6 @@ NULL
 #' @usage reportingBounds_country
 #' @keywords datasets
 NULL
-
 #' reportingResults_country Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -297,7 +306,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 207 rows and 10 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{GroupID}{grouping variable}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -318,7 +329,6 @@ NULL
 #' @usage reportingResults_country
 #' @keywords datasets
 NULL
-
 #' reportingGroups_study Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -328,7 +338,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 23 rows and 4 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{GroupID}{grouping variable}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -343,7 +355,6 @@ NULL
 #' @usage reportingGroups_study
 #' @keywords datasets
 NULL
-
 #' reportingMetrics_study Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -353,7 +364,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 2 rows and 27 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{MetricID}{unique metric identifier}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -391,7 +404,6 @@ NULL
 #' @usage reportingMetrics_study
 #' @keywords datasets
 NULL
-
 #' reportingBounds_study Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -401,7 +413,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 90 rows and 8 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
 #'   \item{Denominator}{calculated denominator value}
@@ -420,7 +434,6 @@ NULL
 #' @usage reportingBounds_study
 #' @keywords datasets
 NULL
-
 #' reportingResults_study Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -430,7 +443,9 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A data frame with about 6 rows and 10 columns:
+#' @format A data frame.
+#' @section Columns:
+#' Columns may vary between test data releases. Typical columns:
 #' \describe{
 #'   \item{GroupID}{grouping variable}
 #'   \item{GroupLevel}{level of grouping variable}
@@ -451,7 +466,6 @@ NULL
 #' @usage reportingResults_study
 #' @keywords datasets
 NULL
-
 #' lSource Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -461,8 +475,10 @@ NULL
 #' packages. To change where or how the data is cached, see
 #' [use_testdata_cache_dir()].
 #'
-#' @format A named list of 19 data frames, one per raw source
-#'   domain, representing a single study snapshot:
+#' @format A named list of data frames, one per raw source domain,
+#'   representing a single study snapshot.
+#' @section Data frames:
+#' Data frames may vary between test data releases. Typical entries:
 #' \describe{
 #'   \item{"Raw_AE"}{AE Source dataset}
 #'   \item{"Raw_DATACHG"}{DATACHG Source dataset}

@@ -5,7 +5,27 @@
 \alias{reportingMetrics_country}
 \title{reportingMetrics_country Dataset}
 \format{
-A data frame with about 23 rows and 27 columns:
+A data frame.
+}
+\source{
+\code{reportingMetrics_country.rds} from a \verb{data-*} release of
+\url{https://github.com/Gilead-Public/gsm.datasim/releases}.
+}
+\usage{
+reportingMetrics_country
+}
+\description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
+Downloaded on first use from a gsm.datasim test data release and cached
+locally. The release is automatically chosen to match the installed gsm
+packages. To change where or how the data is cached, see
+\code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
+}
+\section{Columns}{
+
+Columns may vary between test data releases. Typical columns:
 \describe{
 \item{MetricID}{unique metric identifier}
 \item{GroupLevel}{level of grouping variable}
@@ -36,22 +56,7 @@ A data frame with about 23 rows and 27 columns:
 \item{DenominatorCol}{column used as the denominator by repeat-measure metrics}
 }
 }
-\source{
-\code{reportingMetrics_country.rds} from a \verb{data-*} release of
-\url{https://github.com/Gilead-Public/gsm.datasim/releases}.
-}
-\usage{
-reportingMetrics_country
-}
-\description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
-}
-\details{
-Downloaded on first use from a gsm.datasim test data release and cached
-locally. The release is automatically chosen to match the installed gsm
-packages. To change where or how the data is cached, see
-\code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
-}
+
 \section{Release selection}{
 
 The data comes from, in order of priority:

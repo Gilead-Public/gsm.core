@@ -5,15 +5,7 @@
 \alias{analyticsInput}
 \title{analyticsInput Dataset}
 \format{
-A data frame with about 754 rows and 6 columns:
-\describe{
-\item{SubjectID}{unique subject identifier}
-\item{GroupID}{grouping variable}
-\item{GroupLevel}{level of grouping variable}
-\item{Numerator}{number of flags in group}
-\item{Denominator}{total subjects in group}
-\item{Metric}{calculated rate/metric value}
-}
+A data frame.
 }
 \source{
 \code{analyticsInput.rds} from a \verb{data-*} release of
@@ -31,6 +23,19 @@ locally. The release is automatically chosen to match the installed gsm
 packages. To change where or how the data is cached, see
 \code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
 }
+\section{Columns}{
+
+Columns may vary between test data releases. Typical columns:
+\describe{
+\item{SubjectID}{unique subject identifier}
+\item{GroupID}{grouping variable}
+\item{GroupLevel}{level of grouping variable}
+\item{Numerator}{number of flags in group}
+\item{Denominator}{total subjects in group}
+\item{Metric}{calculated rate/metric value}
+}
+}
+
 \section{Release selection}{
 
 The data comes from, in order of priority:
