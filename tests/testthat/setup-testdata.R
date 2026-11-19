@@ -1,3 +1,8 @@
+# Find a local build (#219) in the user's real cache that matches the installed
+# packages, before the cache is redirected below. Checked unconditionally, since
+# the gsm.testdata_builder option isn't reliably passed to test processes.
+local_build <- .find_local_testdata_build()
+
 # Test data for the whole run: a temporary cache and state, removed afterwards,
 # so tests never touch the user's real gsm cache.
 output_dir <- withr::local_tempdir(.local_envir = teardown_env())
@@ -22,3 +27,14 @@ withr::defer(
   },
   envir = teardown_env()
 )
+
+# Serve the local build as a snapshot folder for the run, unless a folder or
+# tag is already set explicitly.
+if (
+  !is.null(local_build) &&
+    !nzchar(gsm$testdata_dir %||% "") &&
+    !nzchar(gsm$testdata_tag %||% "")
+) {
+  old_snapshot <- use_testdata_snapshot(local_build)
+  withr::defer(use_testdata_snapshot(old_snapshot), envir = teardown_env())
+}
