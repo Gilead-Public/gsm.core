@@ -91,6 +91,7 @@ reference:
       - testdata_is_available
       - use_testdata_snapshot
       - use_testdata_cache_dir
+      - rebuild_local_testdata
 
   - title: Snapshot Tools
     desc: Shared helpers for writing and verifying data snapshots (used by gsm.datasim)
