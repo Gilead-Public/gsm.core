@@ -208,7 +208,10 @@ test_that("a release matching a local build is copied, not downloaded (#219)", {
   withr::local_options(gsm.testdata_builder = builder$fn)
   server <- local_fake_releases()
   fp <- server$release(objects)
-  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = c("1.0.0", "s1"))))
+  server$index(helper_fake_build(
+    fp,
+    helper_pkg_state(gsm.core = c("1.0.0", "s1"))
+  ))
   installed <- helper_pkg_state(gsm.core = "1.0.0")
   cache <- local_testdata_env(server, function() installed)
 
@@ -232,7 +235,10 @@ test_that("a release matching a local build is copied, not downloaded (#219)", {
 
 test_that("an unavailable builder doesn't block published or cached data (#219)", {
   server <- local_published()
-  installed <- helper_pkg_state(gsm.core = c("1.0.0", "s1"), gsm.kri = c("1.0.0", "k1"))
+  installed <- helper_pkg_state(
+    gsm.core = c("1.0.0", "s1"),
+    gsm.kri = c("1.0.0", "k1")
+  )
   cache <- local_testdata_env(server, function() installed)
   withr::local_options(gsm.testdata_builder = "notapkg123::fn")
   # Exact match: published data, builder never resolved.
@@ -272,7 +278,10 @@ test_that("a damaged local copy of a release falls back to downloading (#219)", 
   withr::local_options(gsm.testdata_builder = builder$fn)
   server <- local_fake_releases()
   fp <- server$release(objects)
-  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = c("1.0.0", "s1"))))
+  server$index(helper_fake_build(
+    fp,
+    helper_pkg_state(gsm.core = c("1.0.0", "s1"))
+  ))
   installed <- helper_pkg_state(gsm.core = "1.0.0")
   cache <- local_testdata_env(server, function() installed)
   suppressMessages(helper_run_checker(cache))
@@ -311,11 +320,18 @@ test_that("an index with no builds builds locally (#219)", {
   withr::local_options(gsm.testdata_builder = builder$fn)
   server <- local_fake_releases()
   jsonlite::write_json(
-    list(format = 2, packages = "gsm.core", fingerprints = setNames(list(), character()), builds = list()),
+    list(
+      format = 2,
+      packages = "gsm.core",
+      fingerprints = setNames(list(), character()),
+      builds = list()
+    ),
     file.path(server$root, "index.json"),
     auto_unbox = TRUE
   )
-  cache <- local_testdata_env(server, function() helper_pkg_state(gsm.core = "1.0.0"))
+  cache <- local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0")
+  })
   expect_match(suppressMessages(helper_run_checker(cache)), "^data-")
   expect_equal(builder$calls(), 1)
 })

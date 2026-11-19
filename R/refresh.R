@@ -50,7 +50,7 @@
 #'   different name. Unlisted bindings use their own name.
 #' @param on_error `function` A function to call when the reading of
 #'   a binding generates an error. The result of `on_error(cnd, name)` is
-#'   returned instead (where `name` is the name of the binding). The default, 
+#'   returned instead (where `name` is the name of the binding). The default,
 #'   `fresh_rethrow()`, signals the error.
 #' @returns `FreshHandle` An R6 object (invisibly) with `key()` (the
 #'   current version key), `refresh()` (re-run the checker now),
