@@ -7,6 +7,20 @@ test_that("keep_fresh() creates read-only bindings that call setters lazily (#20
   expect_error(assign("b", 1, envir = h$env), "read-only")
 })
 
+test_that("on_error replaces binding errors (#223)", {
+  env <- new.env()
+  setters <- list(x = function(k) stop("boom"))
+  keep_fresh(function(s) 1, setters, env)
+  expect_error(env$x, "boom")
+
+  env <- new.env()
+  keep_fresh(function(s) 1, setters, env, on_error = function(cnd, name) {
+    paste(name, conditionMessage(cnd))
+  })
+  expect_equal(env$x, "x boom")
+  expect_error(keep_fresh(function(s) 1, setters, env, on_error = 1))
+})
+
 test_that("check modes control when the checker reruns (#206)", {
   key <- "v1"
   checks <- 0

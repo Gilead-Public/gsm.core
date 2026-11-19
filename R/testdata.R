@@ -125,7 +125,8 @@ NULL
     state = state_file(function() {
       file.path(.testdata_dir(), "testdata-state.rds")
     }),
-    snapshot_names = .testdata_objects
+    snapshot_names = .testdata_objects,
+    on_error = .testdata_on_error
   )
   # Apply a folder set before the handle existed (e.g. GSM_TESTDATA_SNAPSHOT at
   # load). Never fail package loading over it.
@@ -139,6 +140,27 @@ NULL
     }
   )
   invisible(gsm$testdata_handle)
+}
+
+#' Turn a failed test data read into a warning
+#'
+#' Test data is a development convenience, so a failure shouldn't stop work
+#' (or package installation, which reads every binding).
+#'
+#' @param cnd `condition` The error.
+#' @param name `character(1)` The binding name.
+#' @returns `NULL`, with a `gsm_testdata_unavailable` warning.
+#' @keywords internal
+.testdata_on_error <- function(cnd, name) {
+  cli::cli_warn(
+    c(
+      "gsm test data {.val {name}} is unavailable; returning {.code NULL}.",
+      i = "See {.help gsm.core::lSource} for how test data is chosen."
+    ),
+    parent = cnd,
+    class = "gsm_testdata_unavailable"
+  )
+  NULL
 }
 
 #' Default test data cache
@@ -244,6 +266,7 @@ testdata_is_available <- function(objects = testdata_object_names()) {
       )
       TRUE
     },
+    gsm_testdata_unavailable = function(w) FALSE,
     error = function(e) FALSE
   )
 }
@@ -432,6 +455,37 @@ use_testdata_cache_dir <- function(dir) {
   # Fast path: an exact match stays exact until installed packages change, and
   # so does a local build (until it's rebuilt or removed).
   prev <- state$get("lookup")
+  tryCatch(
+    .testdata_lookup(state, prev),
+    error = function(e) {
+      # Dev tooling shouldn't stop work over a lookup problem: fall back to the
+      # last data used, if any.
+      if (is.null(prev$tag)) {
+        rlang::cnd_signal(e)
+      }
+      cli::cli_warn(
+        c(
+          "Can't find gsm test data matching your installed packages.",
+          i = "Using the last chosen release, {.val {prev$tag}}, which may not
+               match them."
+        ),
+        parent = e,
+        class = "gsm_testdata_fallback"
+      )
+      prev$tag
+    }
+  )
+}
+
+#' Look up the test data release for the installed packages
+#'
+#' The body of [.testdata_checker()], without its fallback.
+#'
+#' @inheritParams .testdata_checker
+#' @param prev `list` The previous `"lookup"` state entry, or `NULL`.
+#' @returns `character(1)` The release tag.
+#' @keywords internal
+.testdata_lookup <- function(state, prev) {
   if (
     isTRUE(prev$match %in% c("exact", "local")) &&
       identical(.testdata_installed(prev$packages), prev$installed)

@@ -48,6 +48,9 @@
 #' @param snapshot_names `character` Named vector mapping binding names to
 #'   object names in snapshots, for bindings whose snapshot object has a
 #'   different name. Unlisted bindings use their own name.
+#' @param on_error `function` Optional `function(cnd, name)` called when
+#'   reading a binding errors; its result is returned instead. `NULL` (the
+#'   default) lets the error through.
 #' @returns `FreshHandle` An R6 object (invisibly) with `key()` (the
 #'   current version key), `refresh()` (re-run the checker now),
 #'   `invalidate()` (re-run the checker on the next access), `reset()`
@@ -67,7 +70,8 @@ keep_fresh <- function(
   state = state_memory(),
   check = "session",
   snapshot_path = NULL,
-  snapshot_names = NULL
+  snapshot_names = NULL,
+  on_error = NULL
 ) {
   stopifnot(
     is.function(checker),
@@ -76,7 +80,8 @@ keep_fresh <- function(
     all(vapply(setters, is.function, logical(1))),
     is.environment(env),
     is.null(snapshot_names) ||
-      (is.character(snapshot_names) && rlang::is_named(snapshot_names))
+      (is.character(snapshot_names) && rlang::is_named(snapshot_names)),
+    is.null(on_error) || is.function(on_error)
   )
   .fresh_validate_cache(cache)
   .fresh_validate_state(state)
@@ -88,7 +93,8 @@ keep_fresh <- function(
     cache,
     state,
     check,
-    snapshot_names
+    snapshot_names,
+    on_error
   )
   for (name in names(setters)) {
     makeActiveBinding(name, handle$binding(name), env)
@@ -108,7 +114,7 @@ FreshHandle <- R6::R6Class(
   "FreshHandle",
   public = list(
     #' @description Create a handle. Use [keep_fresh()] instead.
-    #' @param checker,setters,check,snapshot_names See [keep_fresh()].
+    #' @param checker,setters,check,snapshot_names,on_error See [keep_fresh()].
     #' @param state `FreshState` See [keep_fresh()].
     initialize = function(
       checker,
@@ -116,9 +122,11 @@ FreshHandle <- R6::R6Class(
       cache,
       state,
       check,
-      snapshot_names = NULL
+      snapshot_names = NULL,
+      on_error = NULL
     ) {
       private$checker <- checker
+      private$on_error <- on_error
       private$setters <- setters
       private$names <- names(setters)
       private$snapshot_names <- rlang::set_names(private$names)
@@ -172,7 +180,13 @@ FreshHandle <- R6::R6Class(
         if (!missing(v)) {
           cli::cli_abort("{.field {name}} is read-only.")
         }
-        private$value_for(name)
+        if (is.null(private$on_error)) {
+          return(private$value_for(name))
+        }
+        tryCatch(
+          private$value_for(name),
+          error = function(e) private$on_error(e, name)
+        )
       }
     },
     #' @description Write a hard copy of the values to a snapshot folder.
@@ -237,6 +251,7 @@ FreshHandle <- R6::R6Class(
   ),
   private = list(
     checker = NULL,
+    on_error = NULL,
     setters = NULL,
     snapshot_ = NULL,
     cache_ = NULL,

@@ -529,8 +529,10 @@ NULL
 #'      Packages that aren't installed don't narrow anything.
 #'   3. Among the remaining candidates, the most recently built is used.
 #'
-#'   If nothing matches, an error names the package that ruled out every
-#'   build. Usually that means updating it (or the other gsm packages) to a
+#'   If nothing matches, gsm.core warns and falls back to the release it used
+#'   last. If there's none (or the data can't be read), the object is `NULL`
+#'   with a warning. The warning names the package that ruled out every
+#'   build; usually that means updating it (or the other gsm packages) to a
 #'   compatible set.
 #'
 #' Each override can also be set with an environment variable before gsm.core

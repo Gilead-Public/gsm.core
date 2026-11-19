@@ -229,6 +229,35 @@ test_that("an unreachable index falls back to the last release (#206)", {
   )
 })
 
+test_that("a failed lookup falls back to the last release with a warning (#223)", {
+  server <- local_fake_releases()
+  fp <- server$release(list(lSource = list(x = 1)))
+  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = "1.0.0")))
+  installed <- helper_pkg_state(gsm.core = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  tag <- helper_run_checker(cache)
+
+  installed <- helper_pkg_state(gsm.core = "0.5.0")
+  expect_warning(
+    expect_equal(helper_run_checker(cache), tag),
+    class = "gsm_testdata_fallback"
+  )
+})
+
+test_that("unavailable test data warns and returns NULL (#223)", {
+  server <- local_published()
+  local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "0.5.0")
+  })
+  env <- new.env()
+  .register_testdata(env)
+  w <- expect_warning(
+    expect_null(env$lSource),
+    class = "gsm_testdata_unavailable"
+  )
+  expect_s3_class(w$parent, "gsm_testdata_no_match")
+})
+
 test_that("use_testdata_tag() pins a release without the index (#206)", {
   server <- local_fake_releases()
   fp <- server$release(list(lSource = 1))
@@ -261,7 +290,10 @@ test_that("bindings load release objects, with state and cache in .testdata_dir(
   handle <- .register_testdata(env)
   expect_equal(env$analyticsInput, mtcars)
   expect_equal(env$lSource$x, 1)
-  expect_error(env$reportingGroups, "has no .*reportingGroups")
+  expect_warning(
+    expect_null(env$reportingGroups),
+    class = "gsm_testdata_unavailable"
+  )
   expect_s3_class(handle$cache, "cache_disk")
   expect_equal(
     normalizePath(handle$cache$info()$dir),

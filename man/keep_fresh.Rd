@@ -12,7 +12,8 @@ keep_fresh(
   state = state_memory(),
   check = "session",
   snapshot_path = NULL,
-  snapshot_names = NULL
+  snapshot_names = NULL,
+  on_error = NULL
 )
 }
 \arguments{
@@ -47,6 +48,10 @@ checker and setters until \verb{$use_snapshot(NULL)}.}
 \item{snapshot_names}{\code{character} Named vector mapping binding names to
 object names in snapshots, for bindings whose snapshot object has a
 different name. Unlisted bindings use their own name.}
+
+\item{on_error}{\code{function} Optional \verb{function(cnd, name)} called when
+reading a binding errors; its result is returned instead. \code{NULL} (the
+default) lets the error through.}
 }
 \value{
 \code{FreshHandle} An R6 object (invisibly) with \code{key()} (the
