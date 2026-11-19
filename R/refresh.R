@@ -269,17 +269,27 @@ FreshHandle <- R6::R6Class(
     check = NULL,
     key_ = NULL,
     checked_at = NULL,
+    check_error = NULL,
     names = NULL,
     snapshot_names = NULL,
     values = NULL,
     current_key = function() {
       if (.fresh_needs_check(private$checked_at, private$check)) {
-        key <- private$checker(private$state_)
+        # Remember a failed check like a successful one, so every binding
+        # doesn't retry it (e.g. R CMD INSTALL reads them all); `refresh()` or
+        # `invalidate()` retries.
+        private$checked_at <- Sys.time()
+        key <- tryCatch(private$checker(private$state_), error = function(e) {
+          private$check_error <- e
+          rlang::cnd_signal(e)
+        })
+        private$check_error <- NULL
         if (!identical(key, private$key_)) {
           private$key_ <- key
           private$values <- new.env(parent = emptyenv())
         }
-        private$checked_at <- Sys.time()
+      } else if (!is.null(private$check_error)) {
+        rlang::cnd_signal(private$check_error)
       }
       private$key_
     },

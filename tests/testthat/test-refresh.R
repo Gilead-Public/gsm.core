@@ -21,6 +21,29 @@ test_that("on_error replaces binding errors (#223)", {
   expect_error(keep_fresh(function(s) 1, setters, env, on_error = 1))
 })
 
+test_that("a failed check isn't retried until refresh (#223)", {
+  checks <- 0
+  fail <- TRUE
+  checker <- function(state) {
+    checks <<- checks + 1
+    if (fail) stop("offline")
+    "v1"
+  }
+  env <- new.env()
+  setters <- list(a = function(k) k, b = function(k) k)
+  handle <- keep_fresh(checker, setters, env, on_error = function(cnd, name) {
+    conditionMessage(cnd)
+  })
+  expect_equal(env$a, "offline")
+  expect_equal(env$b, "offline")
+  expect_equal(checks, 1)
+
+  fail <- FALSE
+  handle$refresh()
+  expect_equal(env$a, "v1")
+  expect_equal(checks, 2)
+})
+
 test_that("check modes control when the checker reruns (#206)", {
   key <- "v1"
   checks <- 0

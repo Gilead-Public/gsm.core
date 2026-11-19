@@ -258,6 +258,63 @@ test_that("unavailable test data warns and returns NULL (#223)", {
     class = "gsm_testdata_unavailable"
   )
   expect_s3_class(w$parent, "gsm_testdata_no_match")
+
+  # Silent in R CMD INSTALL/check, but still detectable.
+  withr::local_envvar(R_INSTALL_PKG = "gsm.core")
+  gsm_testdata()$invalidate()
+  expect_no_warning(cnd <- rlang::catch_cnd(
+    env$lSource,
+    classes = "gsm_testdata_unavailable"
+  ))
+  expect_s3_class(cnd, "gsm_testdata_unavailable")
+  expect_no_warning(expect_null(env$lSource))
+})
+
+test_that("an unreachable index with changed packages warns (#223)", {
+  server <- local_fake_releases()
+  fp <- server$release(list(lSource = 1))
+  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = "1.0.0")))
+  installed <- helper_pkg_state(gsm.core = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  tag <- helper_run_checker(cache)
+
+  unlink(file.path(server$root, "index.json"))
+  installed <- helper_pkg_state(gsm.core = "1.1.0")
+  expect_warning(
+    expect_equal(helper_run_checker(cache), tag),
+    class = "gsm_testdata_fallback"
+  )
+})
+
+test_that("an unreachable index uses a matching local build (#223)", {
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  builder <- local_fake_builder(list(lSource = list(x = "local")), installed)
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  cache <- local_testdata_env(server, function() installed)
+  suppressMessages(helper_run_checker(cache))
+
+  # Fresh state, no builder, and no index.
+  withr::local_options(gsm.testdata_builder = NULL)
+  unlink(file.path(cache, "testdata-state.rds"))
+  clear_testdata_snapshots()
+  unlink(file.path(server$root, "index.json"))
+  env <- new.env()
+  .register_testdata(env)
+  expect_equal(suppressMessages(env$lSource$x), "local")
+})
+
+test_that("a malformed local build doesn't block published data (#223)", {
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  dir <- file.path(cache, "local", fresh_inputs_hash(installed))
+  dir.create(dir, recursive = TRUE)
+  writeLines("{not json", file.path(dir, "snapshot.json"))
+
+  env <- new.env()
+  .register_testdata(env)
+  expect_equal(env$lSource$x, "published")
 })
 
 test_that("use_testdata_tag() pins a release without the index (#206)", {

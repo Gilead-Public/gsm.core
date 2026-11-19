@@ -160,13 +160,16 @@ rebuild_local_testdata <- function() {
   NULL
 }
 
-#' Does a folder hold a local build?
+#' Does a folder hold a readable local build?
 #'
 #' @param dir `character(1)` or `NULL`.
-#' @returns `logical(1)`
+#' @returns `logical(1)` `TRUE` if `dir` has a valid `snapshot.json`, so a
+#'   damaged build can't take priority over usable published data.
 #' @keywords internal
 .testdata_local_exists <- function(dir) {
-  rlang::is_string(dir) && file.exists(file.path(dir, "snapshot.json"))
+  rlang::is_string(dir) &&
+    file.exists(file.path(dir, "snapshot.json")) &&
+    !is.null(tryCatch(read_snapshot(dir), error = function(e) NULL))
 }
 
 #' Use (building if needed) the local build for the installed packages

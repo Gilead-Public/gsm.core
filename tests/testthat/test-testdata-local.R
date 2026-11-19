@@ -196,7 +196,9 @@ test_that("a no-match with a local package builds instead of erroring (#219)", {
 })
 
 test_that("builder errors are surfaced with the parent condition (#219)", {
-  withr::local_options(gsm.testdata_builder = function(...) stop("boom"))
+  withr::local_options(
+    gsm.testdata_builder = as_fake_builder(function(...) stop("boom"))
+  )
   server <- local_published()
   cache <- local_testdata_env(server, function() {
     helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")

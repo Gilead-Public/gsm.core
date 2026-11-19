@@ -149,9 +149,19 @@ NULL
 #'
 #' @param cnd `condition` The error.
 #' @param name `character(1)` The binding name.
-#' @returns `NULL`, with a `gsm_testdata_unavailable` warning.
+#' @returns `NULL`, with a `gsm_testdata_unavailable` warning (a silent
+#'   condition of the same class in R CMD INSTALL/check, so it can't add
+#'   warnings to their logs).
 #' @keywords internal
 .testdata_on_error <- function(cnd, name) {
+  if (.testdata_quiet_context()) {
+    rlang::signal(
+      "gsm test data is unavailable.",
+      class = "gsm_testdata_unavailable",
+      parent = cnd
+    )
+    return(NULL)
+  }
   cli::cli_warn(
     c(
       "gsm test data {.val {name}} is unavailable; returning {.code NULL}.",
@@ -502,23 +512,38 @@ use_testdata_cache_dir <- function(dir) {
   }
 
   index <- tryCatch(.testdata_index(), error = function(e) {
-    if (is.null(prev)) {
-      cli::cli_abort(
-        c(
-          "Can't read the gsm.datasim test data index.",
-          i = "Check your connection, or use {.fn use_testdata_snapshot}."
-        ),
-        parent = e
-      )
+    # Without the index, a local build matching the installed packages is the
+    # best data available.
+    local <- .testdata_local_match()
+    if (!is.null(local)) {
+      return(structure(list(dir = local), class = "gsm_local_match"))
     }
-    cli::cli_inform(c(
-      "Can't read the gsm.datasim test data index.",
-      i = "Using the last chosen release, {.val {prev$tag}}."
-    ))
-    NULL
+    # The last choice is still right if no package changed since; otherwise
+    # the checker falls back to it with a warning.
+    if (
+      !is.null(prev$tag) &&
+        identical(.testdata_installed(prev$packages), prev$installed)
+    ) {
+      cli::cli_inform(c(
+        "Can't read the gsm.datasim test data index.",
+        i = "Using the last chosen release, {.val {prev$tag}}."
+      ))
+      return(NULL)
+    }
+    cli::cli_abort(
+      c(
+        "Can't read the gsm.datasim test data index.",
+        i = "Check your connection, or use {.fn use_testdata_snapshot}."
+      ),
+      parent = e
+    )
   })
   if (is.null(index)) {
     return(prev$tag)
+  }
+  if (inherits(index, "gsm_local_match")) {
+    packages <- names(read_snapshot(index$dir)$packages)
+    return(.testdata_use_local(state, packages, .testdata_installed(packages)))
   }
 
   installed <- .testdata_installed(index$packages)

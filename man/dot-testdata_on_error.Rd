@@ -12,7 +12,9 @@
 \item{name}{\code{character(1)} The binding name.}
 }
 \value{
-\code{NULL}, with a \code{gsm_testdata_unavailable} warning.
+\code{NULL}, with a \code{gsm_testdata_unavailable} warning (a silent
+condition of the same class in R CMD INSTALL/check, so it can't add
+warnings to their logs).
 }
 \description{
 Test data is a development convenience, so a failure shouldn't stop work

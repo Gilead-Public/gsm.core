@@ -117,7 +117,10 @@ GetYamlPathMappings <- function() {
 # ---- Data caching functions --------------------------------------------------
 
 get_data_cache_dir <- function() {
-  cache_dir <- file.path(tools::R_user_dir("gsm", "cache"), "processed_data")
+  # Per R session, not persistent: mapped data depends on the input data, the
+  # mapping workflows, and the code that runs them (gsm.core, workr), and
+  # locally edited code can't be reliably fingerprinted.
+  cache_dir <- file.path(tempdir(), "gsm-processed_data")
   if (!dir.exists(cache_dir)) {
     dir.create(cache_dir, recursive = TRUE)
   }
@@ -126,8 +129,8 @@ get_data_cache_dir <- function() {
 
 get_cached_mapped_data <- function(force_refresh = FALSE) {
   cache_dir <- get_data_cache_dir()
-  # Keyed on the input data, so a different test data release (e.g. a new
-  # snapshot or local build) doesn't reuse stale results.
+  # Keyed on the input data, so a different test data release in the same
+  # session doesn't reuse stale results.
   cache_file <- file.path(
     cache_dir,
     paste0("mapped_data-", digest::digest(lData, algo = "xxhash64"), ".rds")
