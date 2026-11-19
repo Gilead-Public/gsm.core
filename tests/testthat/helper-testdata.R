@@ -1,10 +1,15 @@
 # Helpers for test-testdata.R and tests that use the real test data.
 
 # Skip a test when gsm.datasim test data can't be loaded (e.g. offline with an
-# empty cache). The result is remembered for the rest of the run.
+# empty cache). The result is remembered for the rest of the run. The first
+# load never runs a real builder (e.g. from the user's .Rprofile), which is
+# slow; an existing matching local build is still used.
 skip_if_no_testdata <- function() {
   if (is.null(.testdata_available$ok)) {
-    .testdata_available$ok <- testdata_is_available()
+    .testdata_available$ok <- withr::with_options(
+      list(gsm.testdata_builder = NULL),
+      suppressWarnings(testdata_is_available())
+    )
   }
   if (!.testdata_available$ok) {
     testthat::skip("gsm.datasim test data is unavailable.")
@@ -155,8 +160,7 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
   )
   # Never run a real builder (e.g. a "pkg::fn" string from the user's
   # .Rprofile): it's slow and not under test. Fake builders are functions set
-  # by the test before calling this helper. setup-testdata.R also unsets the
-  # option, but it doesn't run for single-file runs like test coverage.
+  # by the test before calling this helper.
   if (!is.function(getOption("gsm.testdata_builder"))) {
     withr::local_options(gsm.testdata_builder = NULL, .local_envir = env)
   }
