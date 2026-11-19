@@ -153,6 +153,13 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
     gsm.testdata_local_informed = NULL,
     .local_envir = env
   )
+  # Never run a real builder (e.g. a "pkg::fn" string from the user's
+  # .Rprofile): it's slow and not under test. Fake builders are functions set
+  # by the test before calling this helper. setup-testdata.R also unsets the
+  # option, but it doesn't run for single-file runs like test coverage.
+  if (!is.function(getOption("gsm.testdata_builder"))) {
+    withr::local_options(gsm.testdata_builder = NULL, .local_envir = env)
+  }
   testthat::local_mocked_bindings(
     .testdata_dir = function() cache,
     safely_fetch = server$safely_fetch,

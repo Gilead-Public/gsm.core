@@ -199,7 +199,7 @@ rebuild_local_testdata <- function() {
     ))
   }
   # The checker can run many times a session, and devtools::load_all() resets
-  # package state, so remember in an option that the user has been told.
+  # package state, so use an option to remember that the user has been told.
   options(gsm.testdata_local_informed = TRUE)
   snapshot <- read_snapshot(dir)
   fingerprint <- .testdata_local_fingerprint(snapshot)
