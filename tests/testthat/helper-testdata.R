@@ -148,7 +148,11 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
     R_INSTALL_PKG = NA,
     .local_envir = env
   )
-  withr::local_options(gsm.testdata_cache = NULL, .local_envir = env)
+  withr::local_options(
+    gsm.testdata_cache = NULL,
+    gsm.testdata_local_informed = NULL,
+    .local_envir = env
+  )
   testthat::local_mocked_bindings(
     .testdata_dir = function() cache,
     safely_fetch = server$safely_fetch,
@@ -167,7 +171,7 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
 
 clear_testdata_snapshots <- function() {
   gsm$testdata_snapshots <- NULL
-  gsm$testdata_local_informed <- NULL
+  options(gsm.testdata_local_informed = NULL)
 }
 
 # Clear gsm.core's test data settings and handle for one test, restoring them

@@ -77,6 +77,13 @@ test_that("a local package builds once, then reuses the build (#219)", {
 
   # Later checks in the same session don't repeat the message.
   expect_no_message(gsm_testdata()$refresh())
+
+  # Nor does reloading the package (e.g. devtools::load_all()), which resets
+  # package state but not options.
+  gsm$testdata_snapshots <- NULL
+  env3 <- new.env()
+  .register_testdata(env3)
+  expect_no_message(env3$lSource)
 })
 
 test_that("an existing local build is used without the builder option (#223)", {
