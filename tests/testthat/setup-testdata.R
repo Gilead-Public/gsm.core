@@ -1,7 +1,7 @@
 # Find a local build (#219) in the user's real cache that matches the installed
 # packages, before the cache is redirected below. Checked unconditionally, since
 # the gsm.testdata_builder option isn't reliably passed to test processes.
-local_build <- .find_local_testdata_build()
+local_build <- .testdata_local_match()
 
 # Test data for the whole run: a temporary cache and state, removed afterwards,
 # so tests never touch the user's real gsm cache.

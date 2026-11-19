@@ -439,12 +439,10 @@ use_testdata_cache_dir <- function(dir) {
     if (identical(prev$match, "exact")) {
       return(prev$tag)
     }
-    # Check the raw option, so an unavailable builder package can't block
-    # reuse; the builder is only resolved if a build is needed.
-    if (
-      !is.null(getOption("gsm.testdata_builder")) &&
-        .testdata_local_exists(prev$dir)
-    ) {
+    # Reuse an existing build even without the builder option (e.g. in
+    # non-interactive processes like R CMD INSTALL); the builder is only
+    # resolved if a build is needed.
+    if (.testdata_local_exists(prev$dir)) {
       return(.testdata_use_local(state, prev$packages, prev$installed))
     }
   }
@@ -470,9 +468,12 @@ use_testdata_cache_dir <- function(dir) {
   }
 
   installed <- .testdata_installed(index$packages)
+  # A matching local build is used even without the builder option, which is
+  # only needed to make a new one.
   if (
-    !is.null(getOption("gsm.testdata_builder")) &&
-      .testdata_has_local_pkg(installed)
+    .testdata_has_local_pkg(installed) &&
+      (.testdata_local_exists(.testdata_local_dir(installed)) ||
+        !is.null(getOption("gsm.testdata_builder")))
   ) {
     pick <- if (nrow(index$builds)) {
       tryCatch(

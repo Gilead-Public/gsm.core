@@ -26,6 +26,7 @@
 #' @usage analyticsInput
 #' @keywords datasets
 NULL
+
 #' analyticsSummary Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -55,6 +56,7 @@ NULL
 #' @usage analyticsSummary
 #' @keywords datasets
 NULL
+
 #' reportingGroups Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -81,6 +83,7 @@ NULL
 #' @usage reportingGroups
 #' @keywords datasets
 NULL
+
 #' reportingMetrics Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -130,6 +133,7 @@ NULL
 #' @usage reportingMetrics
 #' @keywords datasets
 NULL
+
 #' reportingBounds Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -160,6 +164,7 @@ NULL
 #' @usage reportingBounds
 #' @keywords datasets
 NULL
+
 #' reportingResults Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -192,6 +197,7 @@ NULL
 #' @usage reportingResults
 #' @keywords datasets
 NULL
+
 #' reportingGroups_country Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -218,6 +224,7 @@ NULL
 #' @usage reportingGroups_country
 #' @keywords datasets
 NULL
+
 #' reportingMetrics_country Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -267,6 +274,7 @@ NULL
 #' @usage reportingMetrics_country
 #' @keywords datasets
 NULL
+
 #' reportingBounds_country Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -297,6 +305,7 @@ NULL
 #' @usage reportingBounds_country
 #' @keywords datasets
 NULL
+
 #' reportingResults_country Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -329,6 +338,7 @@ NULL
 #' @usage reportingResults_country
 #' @keywords datasets
 NULL
+
 #' reportingGroups_study Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -355,6 +365,7 @@ NULL
 #' @usage reportingGroups_study
 #' @keywords datasets
 NULL
+
 #' reportingMetrics_study Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -404,6 +415,7 @@ NULL
 #' @usage reportingMetrics_study
 #' @keywords datasets
 NULL
+
 #' reportingBounds_study Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -434,6 +446,7 @@ NULL
 #' @usage reportingBounds_study
 #' @keywords datasets
 NULL
+
 #' reportingResults_study Dataset
 #'
 #' `r lifecycle::badge("stable")`
@@ -466,6 +479,7 @@ NULL
 #' @usage reportingResults_study
 #' @keywords datasets
 NULL
+
 #' lSource Dataset
 #'
 #' `r lifecycle::badge("stable")`

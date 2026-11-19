@@ -79,6 +79,46 @@ test_that("a local package builds once, then reuses the build (#219)", {
   expect_no_message(gsm_testdata()$refresh())
 })
 
+test_that("an existing local build is used without the builder option (#223)", {
+  builder <- local_fake_builder(list(lSource = list(x = "local")))
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  env <- new.env()
+  .register_testdata(env)
+  suppressMessages(env$lSource)
+
+  # New process without the option (e.g. R CMD INSTALL), fresh state.
+  withr::local_options(gsm.testdata_builder = NULL)
+  clear_testdata_snapshots()
+  unlink(file.path(cache, "testdata-state.rds"))
+  env2 <- new.env()
+  .register_testdata(env2)
+  expect_message(lSource <- env2$lSource, "Using local gsm test data")
+  expect_equal(lSource$x, "local")
+  expect_equal(builder$calls(), 1)
+})
+
+test_that(".testdata_local_match() finds builds for the installed packages (#223)", {
+  root <- withr::local_tempdir()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  local_mocked_bindings(.testdata_installed = function(pkgs) installed[pkgs])
+  expect_null(.testdata_local_match(file.path(root, "missing")))
+
+  write_build <- function(name) {
+    dir <- file.path(root, name)
+    dir.create(dir)
+    saveRDS(1, file.path(dir, "x.rds"))
+    write_snapshot_json(dir, list(x = "x.rds"), key = "k", packages = installed)
+    dir
+  }
+  write_build("stale")
+  expect_null(.testdata_local_match(root))
+  dir <- write_build(fresh_inputs_hash(installed))
+  expect_identical(.testdata_local_match(root), dir)
+})
+
 test_that("a no-match with a local package builds instead of erroring (#219)", {
   builder <- local_fake_builder()
   withr::local_options(gsm.testdata_builder = builder$fn)

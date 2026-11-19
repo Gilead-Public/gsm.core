@@ -118,6 +118,36 @@ rebuild_local_testdata <- function() {
   file.path(.testdata_local_root(), fresh_inputs_hash(installed))
 }
 
+#' Find a local build matching the installed packages
+#'
+#' Scans `root` for builds whose folder name is the `fresh_inputs_hash()` of
+#' the packages listed in their own snapshot, as installed now. Works without
+#' the test data index (e.g. offline, or before the cache is redirected).
+#'
+#' @param root `character(1)` Folder holding local builds.
+#' @returns `character(1)` The matching build folder, or `NULL`.
+#' @keywords internal
+.testdata_local_match <- function(root = .testdata_local_root()) {
+  for (dir in list.dirs(root, recursive = FALSE)) {
+    if (!.testdata_local_exists(dir)) {
+      next
+    }
+    packages <- names(
+      tryCatch(read_snapshot(dir)$packages, error = function(e) NULL)
+    )
+    if (
+      length(packages) &&
+        identical(
+          fresh_inputs_hash(.testdata_installed(packages)),
+          basename(dir)
+        )
+    ) {
+      return(dir)
+    }
+  }
+  NULL
+}
+
 #' Does a folder hold a local build?
 #'
 #' @param dir `character(1)` or `NULL`.
