@@ -128,6 +128,8 @@ Control where sample data comes from and where it is cached
   **\[experimental\]** : Choose which test data gsm.core uses
 - [`use_testdata_cache_dir()`](https://gilead-public.github.io/gsm.core/dev/reference/use_testdata_cache_dir.md)
   **\[experimental\]** : Choose where the test data is cached
+- [`rebuild_local_testdata()`](https://gilead-public.github.io/gsm.core/dev/reference/rebuild_local_testdata.md)
+  **\[experimental\]** : Rebuild local test data
 
 ## Snapshot Tools
 
