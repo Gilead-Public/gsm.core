@@ -61,7 +61,7 @@ function.</p>
 <span>  check <span class="op">=</span> <span class="st">"session"</span>,</span>
 <span>  snapshot_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  snapshot_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  on_error <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  on_error <span class="op">=</span> <span class="va">fresh_rethrow</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -118,9 +118,9 @@ different name. Unlisted bindings use their own name.</p></dd>
 
 
 <dt id="arg-on-error">on_error<a class="anchor" aria-label="anchor" href="#arg-on-error"></a></dt>
-<dd><p><code>function</code> Optional <code>function(cnd, name)</code> called when
-reading a binding errors; its result is returned instead. <code>NULL</code> (the
-default) lets the error through.</p></dd>
+<dd><p><code>function</code> <code>function(cnd, name)</code> called when reading a
+binding errors, with the error and the binding name; its result is
+returned instead. The default, <code><a href="fresh_rethrow.html">fresh_rethrow()</a></code>, re-signals the error.</p></dd>
 
 </dl></div>
     <div class="section level2">

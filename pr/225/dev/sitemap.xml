@@ -27,6 +27,7 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/GetLogLevel.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/GetStrFunctionIfNamespaced.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/Input_Rate.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/Input_Rate_Dist.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/LogMessage.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/MakeWorkflowList.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/ParseThreshold.html</loc></url>
@@ -97,6 +98,7 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_exports.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_fingerprint.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_inputs_hash.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_rethrow.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/gsm.core-package.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/gsm_testdata.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/index.html</loc></url>

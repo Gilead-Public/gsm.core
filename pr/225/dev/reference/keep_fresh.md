@@ -18,7 +18,7 @@ keep_fresh(
   check = "session",
   snapshot_path = NULL,
   snapshot_names = NULL,
-  on_error = NULL
+  on_error = fresh_rethrow
 )
 ```
 
@@ -81,9 +81,11 @@ keep_fresh(
 
 - on_error:
 
-  `function` Optional `function(cnd, name)` called when reading a
-  binding errors; its result is returned instead. `NULL` (the default)
-  lets the error through.
+  `function` `function(cnd, name)` called when reading a binding errors,
+  with the error and the binding name; its result is returned instead.
+  The default,
+  [`fresh_rethrow()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_rethrow.md),
+  re-signals the error.
 
 ## Value
 

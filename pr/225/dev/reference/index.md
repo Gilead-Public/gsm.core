@@ -25,6 +25,8 @@ Create site-level summary, analyzed, and flagged data for an assessment
 
 - [`Input_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Input_Rate.md)
   **\[stable\]** : Input_Rate
+- [`Input_Rate_Dist()`](https://gilead-public.github.io/gsm.core/dev/reference/Input_Rate_Dist.md)
+  **\[experimental\]** : Input_Rate_Dist
 - [`Transform_Count()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Count.md)
   **\[stable\]** : Transform Count
 - [`Transform_Rate()`](https://gilead-public.github.io/gsm.core/dev/reference/Transform_Rate.md)

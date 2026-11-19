@@ -62,7 +62,7 @@ instead.
       state,
       check,
       snapshot_names = NULL,
-      on_error = NULL
+      on_error = fresh_rethrow
     )
 
 #### Arguments
