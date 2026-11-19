@@ -564,7 +564,7 @@ use_testdata_cache_dir <- function(dir) {
     return(prev$tag)
   }
   if (inherits(index, "gsm_local_match")) {
-    packages <- names(read_snapshot(index$dir)$packages)
+    packages <- .testdata_local_packages(index$dir)
     return(.testdata_use_local(state, packages, .testdata_installed(packages)))
   }
 

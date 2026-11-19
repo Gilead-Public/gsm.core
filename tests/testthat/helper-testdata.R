@@ -9,6 +9,11 @@
 skip_if_no_testdata <- function(env = parent.frame()) {
   withr::local_options(gsm.testdata_builder = NULL, .local_envir = env)
   if (is.null(.testdata_available$ok)) {
+    # A binding read before the tests may have already warned about a
+    # fallback, and the handle would return it silently; recheck.
+    if (!is.null(gsm$testdata_handle)) {
+      gsm$testdata_handle$invalidate()
+    }
     .testdata_available$ok <- tryCatch(
       testdata_is_available(),
       gsm_testdata_fallback = function(w) FALSE

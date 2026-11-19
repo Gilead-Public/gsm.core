@@ -10,10 +10,12 @@
 \item{dir}{\code{character(1)} or \code{NULL}.}
 }
 \value{
-\code{logical(1)} \code{TRUE} if \code{dir} has a valid \code{snapshot.json}, so a
-damaged build can't take priority over usable published data.
+\code{logical(1)} \code{TRUE} if \code{dir} looks complete, so a damaged build
+can't take priority over usable published data.
 }
 \description{
-Does a folder hold a readable local build?
+Checks \code{snapshot.json} and that every object file it lists exists. Digests
+are verified when objects are read, not here, since that would read the
+whole bundle on every lookup.
 }
 \keyword{internal}

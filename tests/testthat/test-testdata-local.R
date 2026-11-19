@@ -146,6 +146,37 @@ test_that(".testdata_local_match() finds builds for the installed packages (#223
   expect_identical(.testdata_local_match(root), dir)
 })
 
+test_that("local builds without package metadata are matched offline (#223)", {
+  # The fake builder writes no `packages` to snapshot.json by default.
+  builder <- local_fake_builder()
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  env <- new.env()
+  .register_testdata(env)
+  suppressMessages(env$lSource)
+  dir <- file.path(cache, "local", fresh_inputs_hash(installed))
+  expect_null(read_snapshot(dir)$packages)
+  expect_setequal(.testdata_local_packages(dir), c("gsm.core", "gsm.kri"))
+  expect_identical(.testdata_local_match(file.path(cache, "local")), dir)
+
+  # A damaged inputs.json falls back to (empty) snapshot packages.
+  writeLines("{", file.path(dir, "inputs.json"))
+  expect_identical(.testdata_local_packages(dir), character())
+})
+
+test_that(".testdata_local_exists() needs every object file (#223)", {
+  dir <- withr::local_tempdir()
+  expect_false(.testdata_local_exists(NULL))
+  expect_false(.testdata_local_exists(dir))
+  saveRDS(1, file.path(dir, "x.rds"))
+  write_snapshot_json(dir, list(x = "x.rds"), key = "k")
+  expect_true(.testdata_local_exists(dir))
+  unlink(file.path(dir, "x.rds"))
+  expect_false(.testdata_local_exists(dir))
+})
+
 test_that("rebuild_local_testdata() works before the handle exists (#219)", {
   builder <- local_fake_builder()
   withr::local_options(gsm.testdata_builder = builder$fn)
