@@ -21,4 +21,6 @@ Test data is a development convenience, so a failure shouldn't stop work
 
 ## Value
 
-`NULL`, with a `gsm_testdata_unavailable` warning.
+`NULL`, with a `gsm_testdata_unavailable` warning (a silent condition of
+the same class in R CMD INSTALL/check, so it can't add warnings to their
+logs).

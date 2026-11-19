@@ -1,6 +1,6 @@
-# Does a folder hold a local build?
+# Does a folder hold a readable local build?
 
-Does a folder hold a local build?
+Does a folder hold a readable local build?
 
 ## Usage
 
@@ -16,4 +16,5 @@ Does a folder hold a local build?
 
 ## Value
 
-`logical(1)`
+`logical(1)` `TRUE` if `dir` has a valid `snapshot.json`, so a damaged
+build can't take priority over usable published data.
