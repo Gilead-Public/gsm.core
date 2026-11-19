@@ -1,0 +1,41 @@
+# name: testdata.yaml
+# version: 1.0.0
+# Description: On merges to dev/main, ask gsm.datasim to rebuild the shared gsm
+#   test data bundle at the same branch. The build, its logs, and its queue live
+#   in gsm.datasim (testdata-build.yaml); this repo only dispatches it. Repos
+#   that don't feed the data skip the dispatch.
+on:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+    inputs:
+      enabled:
+        description: Dispatch a build? "auto" dispatches only if this repo is a test data input (listed in gsm.datasim's data-index).
+        type: choice
+        options: [auto, 'true', 'false']
+        default: auto
+      wait:
+        description: Wait for the gsm.datasim build and fail if it fails.
+        type: boolean
+        default: false
+
+name: testdata
+
+permissions:
+  # read: Required to read the commit being built.
+  contents: read
+  # write: Required for gsm.datasim to dispatch its own build with the default
+  # token when no app credentials are available.
+  actions: write
+
+jobs:
+  testdata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: gilead-public/gsm.datasim/trigger-build@actions
+        with:
+          app-id: ${{ secrets.CM_BOT_APP_ID }}
+          app-private-key: ${{ secrets.CM_BOT_PRIVATE_KEY }}
+          # Configuration variables for controlling workflow behavior
+          enabled: ${{ inputs.enabled || 'auto' }}
+          wait: ${{ inputs.wait || false }}

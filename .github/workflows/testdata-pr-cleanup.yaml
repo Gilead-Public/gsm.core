@@ -1,0 +1,39 @@
+# name: testdata-pr-cleanup.yaml
+# version: 1.0.0
+# Description: When a PR closes (merged or not), delete the test data bundles
+#   that testdata-pr.yaml built for it. Repos that don't feed the shared gsm
+#   test data skip this. Copy to .github/workflows/ in every gsm repo.
+on:
+  # pull_request_target, not pull_request: fork PRs get a read-only token
+  # under pull_request, so they couldn't delete their bundles. This is safe
+  # because the job never checks out or runs PR code.
+  pull_request_target:
+    types: [closed]
+
+name: testdata-pr-cleanup
+
+permissions:
+  # write: Required to delete artifacts.
+  actions: write
+  # write: Required to comment if bundles couldn't be deleted.
+  pull-requests: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - id: needs
+        uses: gilead-public/gsm.datasim/needs-testdata@actions
+      - id: delete
+        if: steps.needs.outputs.needed == 'true'
+        uses: gilead-public/gsm.datasim/delete-pr-bundles@actions
+      - name: Report leftover bundles
+        if: steps.needs.outputs.needed == 'true' && (failure() || steps.delete.outputs.failed != '0')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh pr comment "$PR" -R "$GITHUB_REPOSITORY" --body "@$AUTHOR The test data bundles built for this PR (artifacts named \`testdata-pr$PR-*\`) couldn't all be deleted; see $RUN. A maintainer can delete them from the Actions tab; otherwise they expire after 90 days."
