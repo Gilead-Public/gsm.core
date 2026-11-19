@@ -48,9 +48,10 @@
 #' @param snapshot_names `character` Named vector mapping binding names to
 #'   object names in snapshots, for bindings whose snapshot object has a
 #'   different name. Unlisted bindings use their own name.
-#' @param on_error `function` `function(cnd, name)` called when reading a
-#'   binding errors, with the error and the binding name; its result is
-#'   returned instead. The default, `fresh_rethrow()`, re-signals the error.
+#' @param on_error `function` A function to call when the reading of
+#'   a binding generates an error. The result of `on_error(cnd, name)` is
+#'   returned instead (where `name` is the name of the binding). The default, 
+#'   `fresh_rethrow()`, signals the error.
 #' @returns `FreshHandle` An R6 object (invisibly) with `key()` (the
 #'   current version key), `refresh()` (re-run the checker now),
 #'   `invalidate()` (re-run the checker on the next access), `reset()`

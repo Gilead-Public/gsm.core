@@ -49,9 +49,10 @@ checker and setters until \verb{$use_snapshot(NULL)}.}
 object names in snapshots, for bindings whose snapshot object has a
 different name. Unlisted bindings use their own name.}
 
-\item{on_error}{\code{function} \verb{function(cnd, name)} called when reading a
-binding errors, with the error and the binding name; its result is
-returned instead. The default, \code{fresh_rethrow()}, re-signals the error.}
+\item{on_error}{\code{function} A function to call when the reading of
+a binding generates an error. The result of \code{on_error(cnd, name)} is
+returned instead (where \code{name} is the name of the binding). The default,
+\code{fresh_rethrow()}, signals the error.}
 }
 \value{
 \code{FreshHandle} An R6 object (invisibly) with \code{key()} (the
