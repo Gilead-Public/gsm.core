@@ -142,6 +142,12 @@ helper_fake_build <- function(
 local_testdata_env <- function(server, installed, env = parent.frame()) {
   cache <- withr::local_tempdir(.local_envir = env)
   local_testdata_settings(env = env)
+  # Tests run inside R CMD check, where messages are otherwise suppressed.
+  withr::local_envvar(
+    `_R_CHECK_PACKAGE_NAME_` = NA,
+    R_INSTALL_PKG = NA,
+    .local_envir = env
+  )
   withr::local_options(gsm.testdata_cache = NULL, .local_envir = env)
   testthat::local_mocked_bindings(
     .testdata_dir = function() cache,

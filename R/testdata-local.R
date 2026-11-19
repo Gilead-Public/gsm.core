@@ -118,6 +118,18 @@ rebuild_local_testdata <- function() {
   file.path(.testdata_local_root(), fresh_inputs_hash(installed))
 }
 
+#' Are we inside R CMD INSTALL or R CMD check?
+#'
+#' Messages in these processes show up as check WARNINGs or NOTEs, so
+#' informational messages are skipped there.
+#'
+#' @returns `logical(1)`
+#' @keywords internal
+.testdata_quiet_context <- function() {
+  nzchar(Sys.getenv("_R_CHECK_PACKAGE_NAME_")) ||
+    nzchar(Sys.getenv("R_INSTALL_PKG"))
+}
+
 #' Find a local build matching the installed packages
 #'
 #' Scans `root` for builds whose folder name is the `fresh_inputs_hash()` of
@@ -176,7 +188,9 @@ rebuild_local_testdata <- function() {
   dir <- .testdata_local_dir(installed)
   if (rebuild || !.testdata_local_exists(dir)) {
     .testdata_local_build(dir, builder, rebuild)
-  } else if (!dir %in% gsm$testdata_local_informed) {
+  } else if (
+    is.null(gsm$testdata_local_informed) && !.testdata_quiet_context()
+  ) {
     cli::cli_inform(c(
       "Using local gsm test data from {.path {dir}}.",
       i = "After changing code, rebuild with

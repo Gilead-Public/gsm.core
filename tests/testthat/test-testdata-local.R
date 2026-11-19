@@ -100,6 +100,24 @@ test_that("an existing local build is used without the builder option (#223)", {
   expect_equal(builder$calls(), 1)
 })
 
+test_that("the local data message is skipped in R CMD check (#223)", {
+  builder <- local_fake_builder()
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  cache <- local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  })
+  env <- new.env()
+  .register_testdata(env)
+  suppressMessages(env$lSource)
+  clear_testdata_snapshots()
+  unlink(file.path(cache, "testdata-state.rds"))
+  withr::local_envvar(`_R_CHECK_PACKAGE_NAME_` = "gsm.core")
+  env2 <- new.env()
+  .register_testdata(env2)
+  expect_no_message(env2$lSource)
+})
+
 test_that(".testdata_local_match() finds builds for the installed packages (#223)", {
   root <- withr::local_tempdir()
   installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
