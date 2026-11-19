@@ -81,11 +81,11 @@ keep_fresh(
 
 - on_error:
 
-  `function` `function(cnd, name)` called when reading a binding errors,
-  with the error and the binding name; its result is returned instead.
-  The default,
+  `function` A function to call when the reading of a binding generates
+  an error. The result of `on_error(cnd, name)` is returned instead
+  (where `name` is the name of the binding). The default,
   [`fresh_rethrow()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_rethrow.md),
-  re-signals the error.
+  signals the error.
 
 ## Value
 

@@ -118,9 +118,10 @@ different name. Unlisted bindings use their own name.</p></dd>
 
 
 <dt id="arg-on-error">on_error<a class="anchor" aria-label="anchor" href="#arg-on-error"></a></dt>
-<dd><p><code>function</code> <code>function(cnd, name)</code> called when reading a
-binding errors, with the error and the binding name; its result is
-returned instead. The default, <code><a href="fresh_rethrow.html">fresh_rethrow()</a></code>, re-signals the error.</p></dd>
+<dd><p><code>function</code> A function to call when the reading of
+a binding generates an error. The result of <code>on_error(cnd, name)</code> is
+returned instead (where <code>name</code> is the name of the binding). The default,
+<code><a href="fresh_rethrow.html">fresh_rethrow()</a></code>, signals the error.</p></dd>
 
 </dl></div>
     <div class="section level2">
