@@ -13,7 +13,7 @@ keep_fresh(
   check = "session",
   snapshot_path = NULL,
   snapshot_names = NULL,
-  on_error = NULL
+  on_error = fresh_rethrow
 )
 }
 \arguments{
@@ -49,9 +49,9 @@ checker and setters until \verb{$use_snapshot(NULL)}.}
 object names in snapshots, for bindings whose snapshot object has a
 different name. Unlisted bindings use their own name.}
 
-\item{on_error}{\code{function} Optional \verb{function(cnd, name)} called when
-reading a binding errors; its result is returned instead. \code{NULL} (the
-default) lets the error through.}
+\item{on_error}{\code{function} \verb{function(cnd, name)} called when reading a
+binding errors, with the error and the binding name; its result is
+returned instead. The default, \code{fresh_rethrow()}, re-signals the error.}
 }
 \value{
 \code{FreshHandle} An R6 object (invisibly) with \code{key()} (the

@@ -49,7 +49,7 @@ Created by \code{\link[=keep_fresh]{keep_fresh()}}.
   state,
   check,
   snapshot_names = NULL,
-  on_error = NULL
+  on_error = fresh_rethrow
 )}
     \if{html}{\out{</div>}}
   }

@@ -48,9 +48,9 @@
 #' @param snapshot_names `character` Named vector mapping binding names to
 #'   object names in snapshots, for bindings whose snapshot object has a
 #'   different name. Unlisted bindings use their own name.
-#' @param on_error `function` Optional `function(cnd, name)` called when
-#'   reading a binding errors; its result is returned instead. `NULL` (the
-#'   default) lets the error through.
+#' @param on_error `function` `function(cnd, name)` called when reading a
+#'   binding errors, with the error and the binding name; its result is
+#'   returned instead. The default, `fresh_rethrow()`, re-signals the error.
 #' @returns `FreshHandle` An R6 object (invisibly) with `key()` (the
 #'   current version key), `refresh()` (re-run the checker now),
 #'   `invalidate()` (re-run the checker on the next access), `reset()`
@@ -71,7 +71,7 @@ keep_fresh <- function(
   check = "session",
   snapshot_path = NULL,
   snapshot_names = NULL,
-  on_error = NULL
+  on_error = fresh_rethrow
 ) {
   stopifnot(
     is.function(checker),
@@ -81,7 +81,7 @@ keep_fresh <- function(
     is.environment(env),
     is.null(snapshot_names) ||
       (is.character(snapshot_names) && rlang::is_named(snapshot_names)),
-    is.null(on_error) || is.function(on_error)
+    is.function(on_error)
   )
   .fresh_validate_cache(cache)
   .fresh_validate_state(state)
@@ -105,6 +105,18 @@ keep_fresh <- function(
   invisible(handle)
 }
 
+#' Re-signal a binding error
+#'
+#' The default `on_error` for [keep_fresh()].
+#'
+#' @param cnd `condition` The error.
+#' @param name `character(1)` The binding name (unused).
+#' @returns Doesn't return; signals `cnd`.
+#' @keywords internal
+fresh_rethrow <- function(cnd, name) {
+  rlang::cnd_signal(cnd)
+}
+
 #' Handle for a set of fresh bindings
 #'
 #' Created by [keep_fresh()].
@@ -123,7 +135,7 @@ FreshHandle <- R6::R6Class(
       state,
       check,
       snapshot_names = NULL,
-      on_error = NULL
+      on_error = fresh_rethrow
     ) {
       private$checker <- checker
       private$on_error <- on_error
@@ -179,9 +191,6 @@ FreshHandle <- R6::R6Class(
       function(v) {
         if (!missing(v)) {
           cli::cli_abort("{.field {name}} is read-only.")
-        }
-        if (is.null(private$on_error)) {
-          return(private$value_for(name))
         }
         tryCatch(
           private$value_for(name),
