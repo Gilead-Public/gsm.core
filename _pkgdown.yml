@@ -35,6 +35,7 @@ reference:
     desc: Create site-level summary, analyzed, and flagged data for an assessment
   - contents:
       - Input_Rate
+      - Input_Rate_Dist
       - Transform_Count
       - Transform_Rate
       - Flag
