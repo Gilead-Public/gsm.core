@@ -55,11 +55,19 @@ instead.
 
 #### Usage
 
-    FreshHandle$new(checker, setters, cache, state, check, snapshot_names = NULL)
+    FreshHandle$new(
+      checker,
+      setters,
+      cache,
+      state,
+      check,
+      snapshot_names = NULL,
+      on_error = fresh_rethrow
+    )
 
 #### Arguments
 
-- `checker, setters, check, snapshot_names`:
+- `checker, setters, check, snapshot_names, on_error`:
 
   See
   [`keep_fresh()`](https://gilead-public.github.io/gsm.core/dev/reference/keep_fresh.md).

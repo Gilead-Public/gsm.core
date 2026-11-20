@@ -76,10 +76,18 @@
 <h3 id="freshhandle-new-"><code>FreshHandle$new()</code><a class="anchor" aria-label="anchor" href="#freshhandle-new-"></a></h3>
 <p>Create a handle. Use <code><a href="keep_fresh.html">keep_fresh()</a></code> instead.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/FreshHandle.html">FreshHandle</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">checker</span>, <span class="va">setters</span>, <span class="va">cache</span>, <span class="va">state</span>, <span class="va">check</span>, snapshot_names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/FreshHandle.html">FreshHandle</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  <span class="va">checker</span>,</span>
+<span>  <span class="va">setters</span>,</span>
+<span>  <span class="va">cache</span>,</span>
+<span>  <span class="va">state</span>,</span>
+<span>  <span class="va">check</span>,</span>
+<span>  snapshot_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_error <span class="op">=</span> <span class="va">fresh_rethrow</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>checker, setters, check, snapshot_names</code></dt>
+<p></p><div class="arguments"><dl><dt><code>checker, setters, check, snapshot_names, on_error</code></dt>
 <dd><p>See <code><a href="keep_fresh.html">keep_fresh()</a></code>.</p></dd>
 
       <dt><code>cache</code></dt>

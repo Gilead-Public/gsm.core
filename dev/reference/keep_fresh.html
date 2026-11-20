@@ -60,7 +60,8 @@ function.</p>
 <span>  state <span class="op">=</span> <span class="fu"><a href="state_file.html">state_memory</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  check <span class="op">=</span> <span class="st">"session"</span>,</span>
 <span>  snapshot_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  snapshot_names <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  snapshot_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_error <span class="op">=</span> <span class="va">fresh_rethrow</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -114,6 +115,13 @@ checker and setters until <code>$use_snapshot(NULL)</code>.</p></dd>
 <dd><p><code>character</code> Named vector mapping binding names to
 object names in snapshots, for bindings whose snapshot object has a
 different name. Unlisted bindings use their own name.</p></dd>
+
+
+<dt id="arg-on-error">on_error<a class="anchor" aria-label="anchor" href="#arg-on-error"></a></dt>
+<dd><p><code>function</code> A function to call when the reading of
+a binding generates an error. The result of <code>on_error(cnd, name)</code> is
+returned instead (where <code>name</code> is the name of the binding). The default,
+<code><a href="fresh_rethrow.html">fresh_rethrow()</a></code>, signals the error.</p></dd>
 
 </dl></div>
     <div class="section level2">

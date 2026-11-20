@@ -45,7 +45,25 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A data frame with about 23 rows and 27 columns:</p><dl><dt>MetricID</dt>
+    <p>A data frame.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
+    <p><code>reportingMetrics_country.rds</code> from a <code>data-*</code> release of
+<a href="https://github.com/Gilead-Public/gsm.datasim/releases" class="external-link">https://github.com/Gilead-Public/gsm.datasim/releases</a>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Downloaded on first use from a gsm.datasim test data release and cached
+locally. The release is automatically chosen to match the installed gsm
+packages. To change where or how the data is cached, see
+<code><a href="use_testdata_cache_dir.html">use_testdata_cache_dir()</a></code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="columns">Columns<a class="anchor" aria-label="anchor" href="#columns"></a></h2>
+
+
+<p>Columns may vary between test data releases. Typical columns:</p><dl><dt>MetricID</dt>
 <dd><p>unique metric identifier</p></dd>
 
 <dt>GroupLevel</dt>
@@ -129,18 +147,6 @@
 
 </dl></div>
     <div class="section level2">
-    <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
-    <p><code>reportingMetrics_country.rds</code> from a <code>data-*</code> release of
-<a href="https://github.com/Gilead-Public/gsm.datasim/releases" class="external-link">https://github.com/Gilead-Public/gsm.datasim/releases</a>.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Downloaded on first use from a gsm.datasim test data release and cached
-locally. The release is automatically chosen to match the installed gsm
-packages. To change where or how the data is cached, see
-<code><a href="use_testdata_cache_dir.html">use_testdata_cache_dir()</a></code>.</p>
-    </div>
-    <div class="section level2">
     <h2 id="release-selection">Release selection<a class="anchor" aria-label="anchor" href="#release-selection"></a></h2>
 
 
@@ -155,8 +161,10 @@ GitHub commit (<code>RemoteSha</code>) if that commit was built, else by the
 same version, else by the newest built version no higher than yours.
 Packages that aren't installed don't narrow anything.</p></li>
 <li><p>Among the remaining candidates, the most recently built is used.</p></li>
-</ol><p>If nothing matches, an error names the package that ruled out every
-build. Usually that means updating it (or the other gsm packages) to a
+</ol><p>If nothing matches, gsm.core warns and falls back to the release it used
+last. If there's none (or the data can't be read), the object is <code>NULL</code>
+with a warning. The warning names the package that ruled out every
+build; usually that means updating it (or the other gsm packages) to a
 compatible set.</p></li>
 </ul><p>Each override can also be set with an environment variable before gsm.core
 loads; see <code><a href="use_testdata_snapshot.html">use_testdata_snapshot()</a></code>.</p>
