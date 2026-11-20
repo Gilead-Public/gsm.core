@@ -1,5 +1,5 @@
 # name: test-coverage.yaml
-# version: 1.0.0
+# version: 1.1.0
 # Description: Compute test coverage and publish coverage-summary.json artifact
 name: test-coverage
 on:
@@ -16,9 +16,15 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  # read: Required to download PR test data bundles.
+  actions: read
 jobs:
   call-test-coverage-core:
-    uses: gilead-public/gsm.utils/.github/workflows/test-coverage-core.yaml@actions-v1
+    # data-* releases publish test data, not code; skip coverage for them.
+    if: >-
+      github.event_name != 'release' ||
+      !startsWith(github.event.release.tag_name, 'data-')
+    uses: gilead-public/gsm.utils/.github/workflows/test-coverage-core.yaml@feat-156-157-158-testdata
     secrets:
       token: ${{ secrets.GITHUB_TOKEN }}
       app-id: ${{ secrets.CM_BOT_APP_ID }}
