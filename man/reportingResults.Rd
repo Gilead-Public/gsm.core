@@ -5,19 +5,7 @@
 \alias{reportingResults}
 \title{reportingResults Dataset}
 \format{
-A data frame with about 5880 rows and 10 columns:
-\describe{
-\item{GroupID}{grouping variable}
-\item{GroupLevel}{level of grouping variable}
-\item{Numerator}{number of flags in group}
-\item{Denominator}{total subjects in group}
-\item{Metric}{calculated rate/metric value}
-\item{Score}{statistical score}
-\item{Flag}{ordinal flag to be applied}
-\item{MetricID}{unique metric identifier}
-\item{StudyID}{unique study identifier}
-\item{SnapshotDate}{date of the snapshot}
-}
+A data frame.
 }
 \source{
 \code{reportingResults.rds} from a \verb{data-*} release of
@@ -35,6 +23,23 @@ locally. The release is automatically chosen to match the installed gsm
 packages. To change where or how the data is cached, see
 \code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
 }
+\section{Columns}{
+
+Columns may vary between test data releases. Typical columns:
+\describe{
+\item{GroupID}{grouping variable}
+\item{GroupLevel}{level of grouping variable}
+\item{Numerator}{number of flags in group}
+\item{Denominator}{total subjects in group}
+\item{Metric}{calculated rate/metric value}
+\item{Score}{statistical score}
+\item{Flag}{ordinal flag to be applied}
+\item{MetricID}{unique metric identifier}
+\item{StudyID}{unique study identifier}
+\item{SnapshotDate}{date of the snapshot}
+}
+}
+
 \section{Release selection}{
 
 The data comes from, in order of priority:
@@ -54,8 +59,10 @@ Packages that aren't installed don't narrow anything.
 \item Among the remaining candidates, the most recently built is used.
 }
 
-If nothing matches, an error names the package that ruled out every
-build. Usually that means updating it (or the other gsm packages) to a
+If nothing matches, gsm.core warns and falls back to the release it used
+last. If there's none (or the data can't be read), the object is \code{NULL}
+with a warning. The warning names the package that ruled out every
+build; usually that means updating it (or the other gsm packages) to a
 compatible set.
 }
 

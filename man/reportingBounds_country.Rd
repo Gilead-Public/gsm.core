@@ -5,17 +5,7 @@
 \alias{reportingBounds_country}
 \title{reportingBounds_country Dataset}
 \format{
-A data frame with about 37191 rows and 8 columns:
-\describe{
-\item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
-\item{Denominator}{calculated denominator value}
-\item{LogDenominator}{calculated log denominator value}
-\item{Numerator}{calculated numerator value}
-\item{Metric}{calculated rate/metric value}
-\item{MetricID}{unique metric identifier}
-\item{StudyID}{unique study identifier}
-\item{SnapshotDate}{date of the snapshot}
-}
+A data frame.
 }
 \source{
 \code{reportingBounds_country.rds} from a \verb{data-*} release of
@@ -33,6 +23,21 @@ locally. The release is automatically chosen to match the installed gsm
 packages. To change where or how the data is cached, see
 \code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
 }
+\section{Columns}{
+
+Columns may vary between test data releases. Typical columns:
+\describe{
+\item{Threshold}{number of standard deviations that the upper and lower bounds are based on}
+\item{Denominator}{calculated denominator value}
+\item{LogDenominator}{calculated log denominator value}
+\item{Numerator}{calculated numerator value}
+\item{Metric}{calculated rate/metric value}
+\item{MetricID}{unique metric identifier}
+\item{StudyID}{unique study identifier}
+\item{SnapshotDate}{date of the snapshot}
+}
+}
+
 \section{Release selection}{
 
 The data comes from, in order of priority:
@@ -52,8 +57,10 @@ Packages that aren't installed don't narrow anything.
 \item Among the remaining candidates, the most recently built is used.
 }
 
-If nothing matches, an error names the package that ruled out every
-build. Usually that means updating it (or the other gsm packages) to a
+If nothing matches, gsm.core warns and falls back to the release it used
+last. If there's none (or the data can't be read), the object is \code{NULL}
+with a warning. The warning names the package that ruled out every
+build; usually that means updating it (or the other gsm packages) to a
 compatible set.
 }
 

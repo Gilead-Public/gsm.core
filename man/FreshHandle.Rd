@@ -42,13 +42,21 @@ Created by \code{\link[=keep_fresh]{keep_fresh()}}.
   Create a handle. Use \code{\link[=keep_fresh]{keep_fresh()}} instead.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{FreshHandle$new(checker, setters, cache, state, check, snapshot_names = NULL)}
+    \preformatted{FreshHandle$new(
+  checker,
+  setters,
+  cache,
+  state,
+  check,
+  snapshot_names = NULL,
+  on_error = fresh_rethrow
+)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{checker, setters, check, snapshot_names}}{See \code{\link[=keep_fresh]{keep_fresh()}}.}
+      \item{\code{checker, setters, check, snapshot_names, on_error}}{See \code{\link[=keep_fresh]{keep_fresh()}}.}
       \item{\code{cache}}{\code{cachem} The current cache (read-only; see \verb{$set_cache()}).}
       \item{\code{state}}{\code{FreshState} See \code{\link[=keep_fresh]{keep_fresh()}}.}
     }
