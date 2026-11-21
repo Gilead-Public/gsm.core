@@ -1,0 +1,24 @@
+flowchart LR
+  subgraph sources ["Source data"]
+    direction TB
+    clinical[("Clinical data<br>(EDC, labs, ...)")]
+    ctms[("CTMS data<br>(study, site)")]
+    workflows[("Metric workflows<br>(YAML meta)")]
+  end
+
+  mapped[("Mapped data")]
+  analysis[("Analysis data")]
+  reporting[("Reporting data")]
+  reports@{ shape: docs, label: "Reports" }
+
+  clinical -->|"gsm.mapping"| mapped
+  ctms -->|"gsm.mapping"| mapped
+  mapped -->|"gsm.core / gsm.kri"| analysis
+  analysis -->|"gsm.reporting"| reporting
+  mapped -->|"group metadata"| reporting
+  workflows -->|"metric metadata"| reporting
+  reporting -->|"gsm.kri report modules"| reports
+
+  classDef source fill:#dcdcf7,stroke:#333;
+  class clinical,ctms,workflows source
+  style sources fill:#f6f6fd,stroke:#999

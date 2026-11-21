@@ -19,6 +19,9 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r child = "_mermaid.Rmd"}
+```
+
 # Introduction
 
 The `{gsm}` suite of packages provides a standardized data pipeline for conducting study-level Risk Based Quality Management (RBQM) for clinical trials. There are four main types of data used in the `{gsm}` suite of packages:  
@@ -34,7 +37,8 @@ This vignette provides a high-level overview of how each type of data is used, a
 
 In general, the `{gsm}` suite of packages is designed to be flexible and customizable, allowing users to build custom data pipelines that support many types of raw study data. As shown below, raw clinical data is transformed into mapped data, which is then analyzed to calculate desired metrics. The analysis data is then combined and formatted for reporting with additional data, including CTMS data (mapped via `{gsm.mapping}`) and metric workflow metadata (from the `{gsm.kri}` metric workflow YAML files), which provides relevant metadata for reports.
 
-![](data_model_simple.png){width="100%"}
+```{mermaid data-model-overview, file = "diagrams/data-model-overview.mmd"}
+```
 
 # Raw and Mapped Data
 
@@ -46,7 +50,8 @@ There is not a single data standard for raw or mapped data in `{gsm.mapping}`. T
 
 In `{gsm.kri}` analysis data is used to capture key metrics associated with the conduct of a clinical trial. A set of standard Key Risk Indicator (KRI) metrics is included in `{gsm.kri}` along with automated workflows that allow them to be run for all sites or countries in a study. Examples of KRIs include the rate of adverse events or amount of missing data at a site or across sites. Defining and deploying KRIs during study conduct allows study teams to continually monitor risks to the integrity of the trial and take corrective actions accordingly. 
 
-![](data_analysis.png){width="100%"}
+```{mermaid analysis-pipeline, file = "diagrams/analysis-pipeline.mmd"}
+```
 
 The image above provides an overview of the default KRI analysis pipeline. The pipeline is a standardized five-step process for assessing data issues by going from participant-level input data to a standardized site-level summary of model results. The functions used in each step of the data pipeline along with the input and output datasets are described in more detail below.
 
@@ -66,7 +71,10 @@ Since there are rigid data requirements for each component of the analysis data 
 
 Note that each step in these workflows can be customized based on the requirements for a specific KRI. The graphic below shows four such workflows. Note that `Flag()` is the flagging function for every model (`Flag_NormalApprox()` and `Flag_Poisson()` are aliases of `Flag()`; there is no `Flag_Fisher()`). Because `Analyze_Fisher()` returns two-sided p-values as `Score`, Fisher workflows need p-value thresholds, e.g. `Flag(dfAnalyzed, vThreshold = c(0.01, 0.05), vFlag = c(2, 1, 0), vFlagOrder = c(2, 1, 0))`; the p-value carries no direction, so compare `Prop` with `Prop_Other` to see whether a group is high or low. Also note that `Summarize()` requires `GroupID`, `GroupLevel`, `Flag` and `Score` columns; the output of `Analyze_Fisher()` (and of `Transform_Count()`) has no `GroupLevel` column, so one must be added (e.g. with `dplyr::mutate(GroupLevel = "Site")`) before calling `Summarize()`.
 
-![](data_analysis_combined.png){width="100%"}
+```{mermaid analysis-methods, file = "diagrams/analysis-methods.mmd"}
+```
+
+\* `Transform_Count()` and `Analyze_Fisher()` do not return a `GroupLevel` column, which `Summarize()` requires; add it (e.g. `dplyr::mutate(GroupLevel = "Site")`) before calling `Summarize()`.
 
 More details about analysis data pipelines can be found in the [Data Analysis article](https://gilead-public.github.io/gsm.core/articles/DataAnalysis.html).
 
@@ -84,7 +92,8 @@ Similar to Analysis Workflows, reporting data pipelines can be run as R scripts 
 # Appendix 1 - Data Model
 
 # Overview 
-![](data_model_detailed.png){width="100%"}
+```{mermaid data-model-detailed, file = "diagrams/data-model-detailed.mmd"}
+```
 
 # Analytics data model
 
