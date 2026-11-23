@@ -1,5 +1,9 @@
 # gsm.core (development version)
 
+- Added synthetic `reportingActionLog` review scenarios for action-aware
+  scoring and reporting examples.
+- Added `action_log_testdata()` for the fixture's matching reporting inputs.
+- Fixed lifecycle dates across frozen ActionLog extractions.
 - New `gsm.testdata_builder` option (e.g. `"gsm.datasim::build_testdata_bundle"`): when local gsm packages (e.g. from `devtools::load_all()`) don't exactly match a published test data build, gsm.core builds test data from them and reuses that build in later sessions. Call the new `rebuild_local_testdata()` after changing code to rebuild the local snapshot. A release with the same data as a local build is copied from it instead of downloaded (#219).
 
 - Exported experimental snapshot tools for other gsm packages: `fresh_digest()`, `fresh_fingerprint()`, `fresh_inputs_hash()`, `write_snapshot_json()`, `read_snapshot()`, and `package_versions()`. Snapshots now verify each object by the digest of the loaded R object (snapshot format 2), so files written by different R versions or with different compression still verify. Format 1 snapshots are no longer read (#216).
@@ -17,6 +21,9 @@ This patch release refreshes the bundled `lSource` and reporting data for the IP
 - Bundled reporting data include the `kri0007-2`/`cou0007-2` Premature Treatment Discontinuation Rate metrics as active and keep `kri0007`/`cou0007` as inactive (#176).
 - Bundled reporting data count `kri0007-2`/`cou0007-2` premature treatment discontinuation from `drv_drg_completion` (#201).
 - Regenerated the packaged `lSource` and `reporting*` datasets against the reset IP non-starter pipeline: `Raw_SUBJ` now carries the six upstream `drv_*` fields, and the `kri0016`/`cou0016` metrics are replaced by `kri0019`/`cou0019` (#177).
+- Added a deterministic longitudinal `reportingActionLog` fixture aligned with
+  flagged site KRI rows in `reportingResults` for action-weighted Site Risk
+  Score examples and qualification tests.
 - Removed unit tests for the workflow runtime (`RunQuery`, `RunStep`, `RunWorkflow`, `MakeWorkflowList`), which now lives in `{workr}` and is tested there, including by qualification tests (Gilead-Public/workr#96). The tests of the deprecated `{gsm.core}` wrappers remain. Also fixed qualification test T4_2, whose custom-threshold output checks were not running.
 - Documentation has been updated including vignettes, roxygen and org migration to `Gilead-Public`
 
