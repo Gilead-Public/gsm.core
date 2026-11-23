@@ -59,10 +59,11 @@ To change where or how values are cached, see
 handle <- gsm_testdata()
 handle
 #> A fresh handle
-#> • Current key: "data-a66e28dbfe07"
+#> • Current key:
+#>   "sha256:9644a9490b2a0cdfcd351789464608e98a4a5c9548845d6f0bddc3e3917a2049"
 #> • Cache: <cache_disk/cachem>
 #> • State: /home/runner/.cache/R/gsm/testdata-state.rds
-#> • Snapshot: '(none)'
+#> • Snapshot: /home/runner/work/_temp/testdata
 handle$cache$info()
 #> $dir
 #> [1] "/home/runner/.cache/R/gsm/values"
@@ -85,7 +86,7 @@ handle$cache$info()
 #> $missing
 #> <quosure>
 #> expr: ^key_missing()
-#> env:  0x63fcbe26e420
+#> env:  0x5eaa4dd8d8c0
 #> 
 #> $prune_rate
 #> [1] 20
@@ -94,24 +95,26 @@ handle$cache$info()
 #> NULL
 #> 
 #> $prune_throttle_counter
-#> [1] 0
+#> [1] 18
 #> 
 #> $prune_last_time
-#> [1] "2026-11-23 17:09:40 UTC"
+#> [1] "2026-11-23 17:23:23 UTC"
 #> 
 
 # Switch to a temporary in-memory cache, then back.
 old <- handle$cache
 gsm_testdata(cache = cachem::cache_mem())
 #> A fresh handle
-#> • Current key: "data-a66e28dbfe07"
+#> • Current key:
+#>   "sha256:9644a9490b2a0cdfcd351789464608e98a4a5c9548845d6f0bddc3e3917a2049"
 #> • Cache: <cache_mem/cachem>
 #> • State: /home/runner/.cache/R/gsm/testdata-state.rds
-#> • Snapshot: '(none)'
+#> • Snapshot: /home/runner/work/_temp/testdata
 gsm_testdata(cache = old)
 #> A fresh handle
-#> • Current key: "data-a66e28dbfe07"
+#> • Current key:
+#>   "sha256:9644a9490b2a0cdfcd351789464608e98a4a5c9548845d6f0bddc3e3917a2049"
 #> • Cache: <cache_disk/cachem>
 #> • State: /home/runner/.cache/R/gsm/testdata-state.rds
-#> • Snapshot: '(none)'
+#> • Snapshot: /home/runner/work/_temp/testdata
 ```
