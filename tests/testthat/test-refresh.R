@@ -7,6 +7,57 @@ test_that("keep_fresh() creates read-only bindings that call setters lazily (#20
   expect_error(assign("b", 1, envir = h$env), "read-only")
 })
 
+test_that("on_error replaces binding errors (#223)", {
+  env <- new.env()
+  setters <- list(x = function(k) stop("boom"))
+  keep_fresh(function(s) 1, setters, env)
+  expect_error(env$x, "boom")
+
+  env <- new.env()
+  keep_fresh(function(s) 1, setters, env, on_error = function(cnd, name) {
+    paste(name, conditionMessage(cnd))
+  })
+  expect_equal(env$x, "x boom")
+  expect_error(keep_fresh(function(s) 1, setters, env, on_error = 1))
+})
+
+test_that("a failed check isn't retried until refresh (#223)", {
+  checks <- 0
+  fail <- TRUE
+  checker <- function(state) {
+    checks <<- checks + 1
+    if (fail) stop("offline")
+    "v1"
+  }
+  env <- new.env()
+  setters <- list(a = function(k) k, b = function(k) k)
+  handle <- keep_fresh(checker, setters, env, on_error = function(cnd, name) {
+    conditionMessage(cnd)
+  })
+  expect_equal(env$a, "offline")
+  expect_equal(env$b, "offline")
+  expect_equal(checks, 1)
+
+  fail <- FALSE
+  handle$refresh()
+  expect_equal(env$a, "v1")
+  expect_equal(checks, 2)
+})
+
+test_that("a check exited by a handler reruns next time (#223)", {
+  checks <- 0
+  checker <- function(state) {
+    checks <<- checks + 1
+    warning("stale")
+    "v1"
+  }
+  env <- new.env()
+  keep_fresh(checker, list(a = function(k) k), env)
+  tryCatch(env$a, warning = function(w) NULL)
+  expect_equal(suppressWarnings(env$a), "v1")
+  expect_equal(checks, 2)
+})
+
 test_that("check modes control when the checker reruns (#206)", {
   key <- "v1"
   checks <- 0

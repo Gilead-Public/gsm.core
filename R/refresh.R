@@ -48,6 +48,10 @@
 #' @param snapshot_names `character` Named vector mapping binding names to
 #'   object names in snapshots, for bindings whose snapshot object has a
 #'   different name. Unlisted bindings use their own name.
+#' @param on_error `function` A function to call when the reading of
+#'   a binding generates an error. The result of `on_error(cnd, name)` is
+#'   returned instead (where `name` is the name of the binding). The default,
+#'   `fresh_rethrow()`, signals the error.
 #' @returns `FreshHandle` An R6 object (invisibly) with `key()` (the
 #'   current version key), `refresh()` (re-run the checker now),
 #'   `invalidate()` (re-run the checker on the next access), `reset()`
@@ -67,7 +71,8 @@ keep_fresh <- function(
   state = state_memory(),
   check = "session",
   snapshot_path = NULL,
-  snapshot_names = NULL
+  snapshot_names = NULL,
+  on_error = fresh_rethrow
 ) {
   stopifnot(
     is.function(checker),
@@ -76,7 +81,8 @@ keep_fresh <- function(
     all(vapply(setters, is.function, logical(1))),
     is.environment(env),
     is.null(snapshot_names) ||
-      (is.character(snapshot_names) && rlang::is_named(snapshot_names))
+      (is.character(snapshot_names) && rlang::is_named(snapshot_names)),
+    is.function(on_error)
   )
   .fresh_validate_cache(cache)
   .fresh_validate_state(state)
@@ -88,7 +94,8 @@ keep_fresh <- function(
     cache,
     state,
     check,
-    snapshot_names
+    snapshot_names,
+    on_error
   )
   for (name in names(setters)) {
     makeActiveBinding(name, handle$binding(name), env)
@@ -97,6 +104,18 @@ keep_fresh <- function(
     handle$use_snapshot(snapshot_path)
   }
   invisible(handle)
+}
+
+#' Re-signal a binding error
+#'
+#' The default `on_error` for [keep_fresh()].
+#'
+#' @param cnd `condition` The error.
+#' @param name `character(1)` The binding name (unused).
+#' @returns Doesn't return; signals `cnd`.
+#' @keywords internal
+fresh_rethrow <- function(cnd, name) {
+  rlang::cnd_signal(cnd)
 }
 
 #' Handle for a set of fresh bindings
@@ -108,7 +127,7 @@ FreshHandle <- R6::R6Class(
   "FreshHandle",
   public = list(
     #' @description Create a handle. Use [keep_fresh()] instead.
-    #' @param checker,setters,check,snapshot_names See [keep_fresh()].
+    #' @param checker,setters,check,snapshot_names,on_error See [keep_fresh()].
     #' @param state `FreshState` See [keep_fresh()].
     initialize = function(
       checker,
@@ -116,9 +135,11 @@ FreshHandle <- R6::R6Class(
       cache,
       state,
       check,
-      snapshot_names = NULL
+      snapshot_names = NULL,
+      on_error = fresh_rethrow
     ) {
       private$checker <- checker
+      private$on_error <- on_error
       private$setters <- setters
       private$names <- names(setters)
       private$snapshot_names <- rlang::set_names(private$names)
@@ -172,7 +193,10 @@ FreshHandle <- R6::R6Class(
         if (!missing(v)) {
           cli::cli_abort("{.field {name}} is read-only.")
         }
-        private$value_for(name)
+        tryCatch(
+          private$value_for(name),
+          error = function(e) private$on_error(e, name)
+        )
       }
     },
     #' @description Write a hard copy of the values to a snapshot folder.
@@ -237,6 +261,7 @@ FreshHandle <- R6::R6Class(
   ),
   private = list(
     checker = NULL,
+    on_error = NULL,
     setters = NULL,
     snapshot_ = NULL,
     cache_ = NULL,
@@ -244,17 +269,30 @@ FreshHandle <- R6::R6Class(
     check = NULL,
     key_ = NULL,
     checked_at = NULL,
+    check_error = NULL,
     names = NULL,
     snapshot_names = NULL,
     values = NULL,
     current_key = function() {
       if (.fresh_needs_check(private$checked_at, private$check)) {
-        key <- private$checker(private$state_)
+        # Remember a failed check like a successful one, so every binding
+        # doesn't retry it (e.g. R CMD INSTALL reads them all); `refresh()` or
+        # `invalidate()` retries. The timestamp is set only once the check
+        # completes or errors, so a check interrupted another way (e.g. a
+        # calling handler exiting on a warning) reruns next time.
+        key <- tryCatch(private$checker(private$state_), error = function(e) {
+          private$check_error <- e
+          private$checked_at <- Sys.time()
+          rlang::cnd_signal(e)
+        })
+        private$check_error <- NULL
         if (!identical(key, private$key_)) {
           private$key_ <- key
           private$values <- new.env(parent = emptyenv())
         }
         private$checked_at <- Sys.time()
+      } else if (!is.null(private$check_error)) {
+        rlang::cnd_signal(private$check_error)
       }
       private$key_
     },

@@ -118,13 +118,88 @@ rebuild_local_testdata <- function() {
   file.path(.testdata_local_root(), fresh_inputs_hash(installed))
 }
 
-#' Does a folder hold a local build?
+#' Are we inside R CMD INSTALL or R CMD check?
 #'
-#' @param dir `character(1)` or `NULL`.
+#' Messages in these processes show up as check WARNINGs or NOTEs, so
+#' informational messages are skipped there.
+#'
 #' @returns `logical(1)`
 #' @keywords internal
+.testdata_quiet_context <- function() {
+  nzchar(Sys.getenv("_R_CHECK_PACKAGE_NAME_")) ||
+    nzchar(Sys.getenv("R_INSTALL_PKG"))
+}
+
+#' Find a local build matching the installed packages
+#'
+#' Scans `root` for builds whose folder name is the `fresh_inputs_hash()` of
+#' the packages listed in their own snapshot, as installed now. Works without
+#' the test data index (e.g. offline, or before the cache is redirected).
+#'
+#' @param root `character(1)` Folder holding local builds.
+#' @returns `character(1)` The matching build folder, or `NULL`.
+#' @keywords internal
+.testdata_local_match <- function(root = .testdata_local_root()) {
+  for (dir in list.dirs(root, recursive = FALSE)) {
+    if (!.testdata_local_exists(dir)) {
+      next
+    }
+    packages <- .testdata_local_packages(dir)
+    if (
+      length(packages) &&
+        identical(
+          fresh_inputs_hash(.testdata_installed(packages)),
+          basename(dir)
+        )
+    ) {
+      return(dir)
+    }
+  }
+  NULL
+}
+
+#' Package names a local build was keyed by
+#'
+#' Read from `inputs.json`, written when the build is first used, falling
+#' back to the packages in `snapshot.json` (optional for builders).
+#'
+#' @param dir `character(1)` The build folder.
+#' @returns `character` Package names; empty if unknown.
+#' @keywords internal
+.testdata_local_packages <- function(dir) {
+  path <- file.path(dir, "inputs.json")
+  packages <- if (file.exists(path)) {
+    tryCatch(
+      as.character(unlist(jsonlite::read_json(path)$packages)),
+      error = function(e) NULL
+    )
+  }
+  packages %||%
+    names(tryCatch(read_snapshot(dir)$packages, error = function(e) NULL)) %||%
+    character()
+}
+
+#' Does a folder hold a readable local build?
+#'
+#' Checks `snapshot.json` and that every object file it lists exists. Digests
+#' are verified when objects are read, not here, since that would read the
+#' whole bundle on every lookup.
+#'
+#' @param dir `character(1)` or `NULL`.
+#' @returns `logical(1)` `TRUE` if `dir` looks complete, so a damaged build
+#'   can't take priority over usable published data.
+#' @keywords internal
 .testdata_local_exists <- function(dir) {
-  rlang::is_string(dir) && file.exists(file.path(dir, "snapshot.json"))
+  if (!rlang::is_string(dir) || !file.exists(file.path(dir, "snapshot.json"))) {
+    return(FALSE)
+  }
+  snapshot <- tryCatch(read_snapshot(dir), error = function(e) NULL)
+  !is.null(snapshot) &&
+    all(vapply(
+      snapshot$objects,
+      function(o) file.exists(file.path(dir, o$file)),
+      logical(1)
+    ))
 }
 
 #' Use (building if needed) the local build for the installed packages
@@ -146,15 +221,25 @@ rebuild_local_testdata <- function() {
   dir <- .testdata_local_dir(installed)
   if (rebuild || !.testdata_local_exists(dir)) {
     .testdata_local_build(dir, builder, rebuild)
-  } else if (!dir %in% gsm$testdata_local_informed) {
+  } else if (
+    !isTRUE(getOption("gsm.testdata_local_informed")) &&
+      !.testdata_quiet_context()
+  ) {
     cli::cli_inform(c(
       "Using local gsm test data from {.path {dir}}.",
       i = "After changing code, rebuild with
            {.run gsm.core::rebuild_local_testdata()}."
     ))
   }
-  # The checker can run many times a session; say where data comes from once.
-  gsm$testdata_local_informed <- union(gsm$testdata_local_informed, dir)
+  # The checker can run many times a session, and devtools::load_all() resets
+  # package state, so use an option to remember that the user has been told.
+  options(gsm.testdata_local_informed = TRUE)
+  # Record the packages that key this build, so it can be matched offline
+  # even if the builder didn't list them in snapshot.json.
+  inputs <- file.path(dir, "inputs.json")
+  if (!identical(.testdata_local_packages(dir), as.character(packages))) {
+    .fresh_write_json(list(packages = as.list(packages)), inputs)
+  }
   snapshot <- read_snapshot(dir)
   fingerprint <- .testdata_local_fingerprint(snapshot)
   .testdata_local_register(fingerprint, basename(dir))

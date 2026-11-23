@@ -77,6 +77,141 @@ test_that("a local package builds once, then reuses the build (#219)", {
 
   # Later checks in the same session don't repeat the message.
   expect_no_message(gsm_testdata()$refresh())
+
+  # Nor does reloading the package (e.g. devtools::load_all()), which resets
+  # package state but not options.
+  gsm$testdata_snapshots <- NULL
+  env3 <- new.env()
+  .register_testdata(env3)
+  expect_no_message(env3$lSource)
+})
+
+test_that("an existing local build is used without the builder option (#223)", {
+  builder <- local_fake_builder(list(lSource = list(x = "local")))
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  env <- new.env()
+  .register_testdata(env)
+  suppressMessages(env$lSource)
+
+  # New process without the option (e.g. R CMD INSTALL), fresh state.
+  withr::local_options(gsm.testdata_builder = NULL)
+  clear_testdata_snapshots()
+  unlink(file.path(cache, "testdata-state.rds"))
+  env2 <- new.env()
+  .register_testdata(env2)
+  expect_message(lSource <- env2$lSource, "Using local gsm test data")
+  expect_equal(lSource$x, "local")
+  expect_equal(builder$calls(), 1)
+})
+
+test_that("the local data message is skipped in R CMD check (#223)", {
+  builder <- local_fake_builder()
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  cache <- local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  })
+  env <- new.env()
+  .register_testdata(env)
+  suppressMessages(env$lSource)
+  clear_testdata_snapshots()
+  unlink(file.path(cache, "testdata-state.rds"))
+  withr::local_envvar(`_R_CHECK_PACKAGE_NAME_` = "gsm.core")
+  env2 <- new.env()
+  .register_testdata(env2)
+  expect_no_message(env2$lSource)
+})
+
+test_that(".testdata_local_match() finds builds for the installed packages (#223)", {
+  root <- withr::local_tempdir()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  local_mocked_bindings(.testdata_installed = function(pkgs) installed[pkgs])
+  expect_null(.testdata_local_match(file.path(root, "missing")))
+
+  write_build <- function(name) {
+    dir <- file.path(root, name)
+    dir.create(dir)
+    saveRDS(1, file.path(dir, "x.rds"))
+    write_snapshot_json(dir, list(x = "x.rds"), key = "k", packages = installed)
+    dir
+  }
+  write_build("stale")
+  expect_null(.testdata_local_match(root))
+  dir.create(file.path(root, "not-a-build"))
+  expect_null(.testdata_local_match(root))
+  dir <- write_build(fresh_inputs_hash(installed))
+  expect_identical(.testdata_local_match(root), dir)
+})
+
+test_that("local builds without package metadata are matched offline (#223)", {
+  # The fake builder writes no `packages` to snapshot.json by default.
+  builder <- local_fake_builder()
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  env <- new.env()
+  .register_testdata(env)
+  suppressMessages(env$lSource)
+  dir <- file.path(cache, "local", fresh_inputs_hash(installed))
+  expect_null(read_snapshot(dir)$packages)
+  expect_setequal(.testdata_local_packages(dir), c("gsm.core", "gsm.kri"))
+  expect_identical(.testdata_local_match(file.path(cache, "local")), dir)
+
+  # A damaged inputs.json falls back to (empty) snapshot packages.
+  writeLines("{", file.path(dir, "inputs.json"))
+  expect_identical(.testdata_local_packages(dir), character())
+})
+
+test_that(".testdata_local_exists() needs every object file (#223)", {
+  dir <- withr::local_tempdir()
+  expect_false(.testdata_local_exists(NULL))
+  expect_false(.testdata_local_exists(dir))
+  saveRDS(1, file.path(dir, "x.rds"))
+  write_snapshot_json(dir, list(x = "x.rds"), key = "k")
+  expect_true(.testdata_local_exists(dir))
+  unlink(file.path(dir, "x.rds"))
+  expect_false(.testdata_local_exists(dir))
+})
+
+test_that("rebuild_local_testdata() works before the handle exists (#219)", {
+  builder <- local_fake_builder()
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  expect_null(gsm$testdata_handle)
+  dir <- suppressMessages(rebuild_local_testdata())
+  expect_equal(builder$calls(), 1)
+  expect_equal(dir, file.path(cache, "local", fresh_inputs_hash(installed)))
+})
+
+test_that(".testdata_local_find() ignores tags that aren't data-<fp12> (#219)", {
+  expect_null(.testdata_local_find("v1.0.0"))
+})
+
+test_that(".testdata_local_find() returns indexed builds that still match (#219)", {
+  root <- withr::local_tempdir()
+  local_mocked_bindings(.testdata_local_root = function() root)
+  dir <- file.path(root, "build")
+  dir.create(dir)
+  saveRDS(1, file.path(dir, "x.rds"))
+  write_snapshot_json(dir, list(x = "x.rds"), key = "k")
+  fp <- .testdata_local_fingerprint(read_snapshot(dir))
+  .testdata_local_register(fp, "build")
+  tag <- paste0("data-", substr(fp, 1, 12))
+
+  expect_equal(.testdata_local_find(tag)$key, paste0("sha256:", fp))
+  # Rebuilt with different data since it was indexed.
+  saveRDS(2, file.path(dir, "x.rds"))
+  write_snapshot_json(dir, list(x = "x.rds"), key = "k")
+  expect_null(.testdata_local_find(tag))
+  # Removed since it was indexed.
+  unlink(dir, recursive = TRUE)
+  expect_null(.testdata_local_find(tag))
 })
 
 test_that("a no-match with a local package builds instead of erroring (#219)", {
@@ -92,7 +227,9 @@ test_that("a no-match with a local package builds instead of erroring (#219)", {
 })
 
 test_that("builder errors are surfaced with the parent condition (#219)", {
-  withr::local_options(gsm.testdata_builder = function(...) stop("boom"))
+  withr::local_options(
+    gsm.testdata_builder = as_fake_builder(function(...) stop("boom"))
+  )
   server <- local_published()
   cache <- local_testdata_env(server, function() {
     helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
@@ -144,37 +281,12 @@ test_that("a pinned tag or snapshot folder takes priority (#219)", {
   expect_equal(builder$calls(), 0)
 })
 
-test_that("a release matching a local build is copied, not downloaded (#219)", {
-  objects <- list(lSource = list(x = "same"))
-  builder <- local_fake_builder(objects)
-  withr::local_options(gsm.testdata_builder = builder$fn)
-  server <- local_fake_releases()
-  fp <- server$release(objects)
-  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = c("1.0.0", "s1"))))
-  installed <- helper_pkg_state(gsm.core = "1.0.0")
-  cache <- local_testdata_env(server, function() installed)
-
-  expect_equal(
-    suppressMessages(helper_run_checker(cache)),
-    paste0("data-", substr(fp, 1, 12))
-  )
-  index <- jsonlite::read_json(file.path(cache, "local", "index.json"))
-  expect_equal(index[[fp]], fresh_inputs_hash(installed))
-
-  # Now the published packages are installed; the release is served from the
-  # local build.
-  installed <- helper_pkg_state(gsm.core = c("1.0.0", "s1"))
-  clear_testdata_snapshots()
-  server$reset_requests()
-  env <- new.env()
-  .register_testdata(env)
-  expect_equal(env$lSource$x, "same")
-  expect_false(any(grepl("releases/download", server$requests())))
-})
-
 test_that("an unavailable builder doesn't block published or cached data (#219)", {
   server <- local_published()
-  installed <- helper_pkg_state(gsm.core = c("1.0.0", "s1"), gsm.kri = c("1.0.0", "k1"))
+  installed <- helper_pkg_state(
+    gsm.core = c("1.0.0", "s1"),
+    gsm.kri = c("1.0.0", "k1")
+  )
   cache <- local_testdata_env(server, function() installed)
   withr::local_options(gsm.testdata_builder = "notapkg123::fn")
   # Exact match: published data, builder never resolved.
@@ -208,56 +320,23 @@ test_that("a rebuild evicts snapshots memoized for the old data (#219)", {
   expect_null(.testdata_local_find(old_tag))
 })
 
-test_that("a damaged local copy of a release falls back to downloading (#219)", {
-  objects <- list(lSource = list(x = "same"))
-  builder <- local_fake_builder(objects)
-  withr::local_options(gsm.testdata_builder = builder$fn)
-  server <- local_fake_releases()
-  fp <- server$release(objects)
-  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = c("1.0.0", "s1"))))
-  installed <- helper_pkg_state(gsm.core = "1.0.0")
-  cache <- local_testdata_env(server, function() installed)
-  suppressMessages(helper_run_checker(cache))
-  local_dir <- file.path(cache, "local", fresh_inputs_hash(installed))
-  saveRDS(list(x = "corrupt"), file.path(local_dir, "lSource.rds"))
-
-  withr::local_options(gsm.testdata_builder = NULL)
-  installed <- helper_pkg_state(gsm.core = c("1.0.0", "s1"))
-  clear_testdata_snapshots()
-  server$reset_requests()
-  env <- new.env()
-  .register_testdata(env)
-  expect_equal(env$lSource$x, "same")
-  expect_true(any(grepl("releases/download", server$requests())))
-})
-
-test_that("a damaged local-only build still errors (#219)", {
-  builder <- local_fake_builder()
-  withr::local_options(gsm.testdata_builder = builder$fn)
-  server <- local_published()
-  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
-  local_testdata_env(server, function() installed)
-  env <- new.env()
-  .register_testdata(env)
-  suppressMessages(env$lSource)
-  dir <- gsm_testdata()$state$get("lookup")$dir
-  saveRDS("corrupt", file.path(dir, "lSource.rds"))
-  clear_testdata_snapshots()
-  env2 <- new.env()
-  .register_testdata(env2, cache = cachem::cache_mem())
-  expect_error(suppressMessages(env2$lSource), "Digest mismatch")
-})
-
 test_that("an index with no builds builds locally (#219)", {
   builder <- local_fake_builder()
   withr::local_options(gsm.testdata_builder = builder$fn)
   server <- local_fake_releases()
   jsonlite::write_json(
-    list(format = 2, packages = "gsm.core", fingerprints = setNames(list(), character()), builds = list()),
+    list(
+      format = 2,
+      packages = "gsm.core",
+      fingerprints = setNames(list(), character()),
+      builds = list()
+    ),
     file.path(server$root, "index.json"),
     auto_unbox = TRUE
   )
-  cache <- local_testdata_env(server, function() helper_pkg_state(gsm.core = "1.0.0"))
+  cache <- local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0")
+  })
   expect_match(suppressMessages(helper_run_checker(cache)), "^data-")
   expect_equal(builder$calls(), 1)
 })

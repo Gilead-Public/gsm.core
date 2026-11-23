@@ -103,6 +103,8 @@ test_that("an unbuilt version falls back to the newest build at or below it (#20
 })
 
 test_that("no surviving build errors, naming the blocking package (#206)", {
+  # The error's hint depends on this option.
+  withr::local_options(gsm.testdata_builder = NULL)
   index <- helper_fake_index(
     helper_fake_build(
       strrep("a", 64),
@@ -229,6 +231,101 @@ test_that("an unreachable index falls back to the last release (#206)", {
   )
 })
 
+test_that("a failed lookup falls back to the last release with a warning (#223)", {
+  server <- local_fake_releases()
+  fp <- server$release(list(lSource = list(x = 1)))
+  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = "1.0.0")))
+  installed <- helper_pkg_state(gsm.core = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  tag <- helper_run_checker(cache)
+
+  installed <- helper_pkg_state(gsm.core = "0.5.0")
+  expect_warning(
+    expect_equal(helper_run_checker(cache), tag),
+    class = "gsm_testdata_fallback"
+  )
+})
+
+test_that("unavailable test data warns and returns NULL (#223)", {
+  server <- local_published()
+  local_testdata_env(server, function() {
+    helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "0.5.0")
+  })
+  env <- new.env()
+  .register_testdata(env)
+  w <- expect_warning(
+    expect_null(env$lSource),
+    class = "gsm_testdata_unavailable"
+  )
+  expect_s3_class(w$parent, "gsm_testdata_no_match")
+
+  # Silent in R CMD INSTALL/check, but still detectable.
+  withr::local_envvar(R_INSTALL_PKG = "gsm.core")
+  gsm_testdata()$invalidate()
+  expect_no_warning(cnd <- rlang::catch_cnd(
+    env$lSource,
+    classes = "gsm_testdata_unavailable"
+  ))
+  expect_s3_class(cnd, "gsm_testdata_unavailable")
+  expect_no_warning(expect_null(env$lSource))
+})
+
+test_that("an unreachable index with changed packages warns (#223)", {
+  server <- local_fake_releases()
+  fp <- server$release(list(lSource = 1))
+  server$index(helper_fake_build(fp, helper_pkg_state(gsm.core = "1.0.0")))
+  installed <- helper_pkg_state(gsm.core = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  tag <- helper_run_checker(cache)
+
+  unlink(file.path(server$root, "index.json"))
+  installed <- helper_pkg_state(gsm.core = "1.1.0")
+  expect_warning(
+    expect_equal(helper_run_checker(cache), tag),
+    class = "gsm_testdata_fallback"
+  )
+
+  # Silent in R CMD INSTALL/check, but still detectable.
+  withr::local_envvar(R_INSTALL_PKG = "gsm.core")
+  expect_no_warning(cnd <- rlang::catch_cnd(
+    helper_run_checker(cache),
+    classes = "gsm_testdata_fallback"
+  ))
+  expect_s3_class(cnd, "gsm_testdata_fallback")
+  expect_no_warning(expect_equal(helper_run_checker(cache), tag))
+})
+
+test_that("an unreachable index uses a matching local build (#223)", {
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  builder <- local_fake_builder(list(lSource = list(x = "local")), installed)
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  cache <- local_testdata_env(server, function() installed)
+  suppressMessages(helper_run_checker(cache))
+
+  # Fresh state, no builder, and no index.
+  withr::local_options(gsm.testdata_builder = NULL)
+  unlink(file.path(cache, "testdata-state.rds"))
+  clear_testdata_snapshots()
+  unlink(file.path(server$root, "index.json"))
+  env <- new.env()
+  .register_testdata(env)
+  expect_equal(suppressMessages(env$lSource$x), "local")
+})
+
+test_that("a malformed local build doesn't block published data (#223)", {
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  dir <- file.path(cache, "local", fresh_inputs_hash(installed))
+  dir.create(dir, recursive = TRUE)
+  writeLines("{not json", file.path(dir, "snapshot.json"))
+
+  env <- new.env()
+  .register_testdata(env)
+  expect_equal(env$lSource$x, "published")
+})
+
 test_that("use_testdata_tag() pins a release without the index (#206)", {
   server <- local_fake_releases()
   fp <- server$release(list(lSource = 1))
@@ -261,7 +358,10 @@ test_that("bindings load release objects, with state and cache in .testdata_dir(
   handle <- .register_testdata(env)
   expect_equal(env$analyticsInput, mtcars)
   expect_equal(env$lSource$x, 1)
-  expect_error(env$reportingGroups, "has no .*reportingGroups")
+  expect_warning(
+    expect_null(env$reportingGroups),
+    class = "gsm_testdata_unavailable"
+  )
   expect_s3_class(handle$cache, "cache_disk")
   expect_equal(
     normalizePath(handle$cache$info()$dir),
@@ -359,4 +459,80 @@ test_that("testdata_is_available() validates names and loads objects (#206)", {
   expect_error(testdata_is_available("nope"), "Unknown test data object")
   skip_if_no_testdata()
   expect_true(testdata_is_available("lSource"))
+})
+
+# Local builds serving releases (#219) ----
+
+test_that("a release matching a local build is copied, not downloaded (#219)", {
+  objects <- list(lSource = list(x = "same"))
+  builder <- local_fake_builder(objects)
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_fake_releases()
+  fp <- server$release(objects)
+  server$index(helper_fake_build(
+    fp,
+    helper_pkg_state(gsm.core = c("1.0.0", "s1"))
+  ))
+  installed <- helper_pkg_state(gsm.core = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+
+  expect_equal(
+    suppressMessages(helper_run_checker(cache)),
+    paste0("data-", substr(fp, 1, 12))
+  )
+  index <- jsonlite::read_json(file.path(cache, "local", "index.json"))
+  expect_equal(index[[fp]], fresh_inputs_hash(installed))
+
+  # Now the published packages are installed; the release is served from the
+  # local build.
+  installed <- helper_pkg_state(gsm.core = c("1.0.0", "s1"))
+  clear_testdata_snapshots()
+  server$reset_requests()
+  env <- new.env()
+  .register_testdata(env)
+  expect_equal(env$lSource$x, "same")
+  expect_false(any(grepl("releases/download", server$requests())))
+})
+
+test_that("a damaged local copy of a release falls back to downloading (#219)", {
+  objects <- list(lSource = list(x = "same"))
+  builder <- local_fake_builder(objects)
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_fake_releases()
+  fp <- server$release(objects)
+  server$index(helper_fake_build(
+    fp,
+    helper_pkg_state(gsm.core = c("1.0.0", "s1"))
+  ))
+  installed <- helper_pkg_state(gsm.core = "1.0.0")
+  cache <- local_testdata_env(server, function() installed)
+  suppressMessages(helper_run_checker(cache))
+  local_dir <- file.path(cache, "local", fresh_inputs_hash(installed))
+  saveRDS(list(x = "corrupt"), file.path(local_dir, "lSource.rds"))
+
+  withr::local_options(gsm.testdata_builder = NULL)
+  installed <- helper_pkg_state(gsm.core = c("1.0.0", "s1"))
+  clear_testdata_snapshots()
+  server$reset_requests()
+  env <- new.env()
+  .register_testdata(env)
+  expect_equal(env$lSource$x, "same")
+  expect_true(any(grepl("releases/download", server$requests())))
+})
+
+test_that("a damaged local-only build still errors (#219)", {
+  builder <- local_fake_builder()
+  withr::local_options(gsm.testdata_builder = builder$fn)
+  server <- local_published()
+  installed <- helper_pkg_state(gsm.core = "1.0.0", gsm.kri = "1.0.0")
+  local_testdata_env(server, function() installed)
+  env <- new.env()
+  .register_testdata(env)
+  suppressMessages(env$lSource)
+  dir <- gsm_testdata()$state$get("lookup")$dir
+  saveRDS("corrupt", file.path(dir, "lSource.rds"))
+  clear_testdata_snapshots()
+  env2 <- new.env()
+  .register_testdata(env2, cache = cachem::cache_mem())
+  expect_error(suppressMessages(env2$lSource), "Digest mismatch")
 })

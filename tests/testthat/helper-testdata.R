@@ -1,13 +1,26 @@
 # Helpers for test-testdata.R and tests that use the real test data.
 
 # Skip a test when gsm.datasim test data can't be loaded (e.g. offline with an
-# empty cache). The result is remembered for the rest of the run.
-skip_if_no_testdata <- function() {
+# empty cache), or when only a fallback that may not match the installed
+# packages is available. The result is remembered for the rest of the run.
+# Never runs a real builder (e.g. from the user's .Rprofile), which is slow:
+# the option is unset for the calling test, not just the first check. An
+# existing matching local build is still used.
+skip_if_no_testdata <- function(env = parent.frame()) {
+  withr::local_options(gsm.testdata_builder = NULL, .local_envir = env)
   if (is.null(.testdata_available$ok)) {
-    .testdata_available$ok <- testdata_is_available()
+    # A binding read before the tests may have already warned about a
+    # fallback, and the handle would return it silently; recheck.
+    if (!is.null(gsm$testdata_handle)) {
+      gsm$testdata_handle$invalidate()
+    }
+    .testdata_available$ok <- tryCatch(
+      testdata_is_available(),
+      gsm_testdata_fallback = function(w) FALSE
+    )
   }
   if (!.testdata_available$ok) {
-    testthat::skip("gsm.datasim test data is unavailable.")
+    testthat::skip("Matching gsm.datasim test data is unavailable.")
   }
   invisible(TRUE)
 }
@@ -142,7 +155,23 @@ helper_fake_build <- function(
 local_testdata_env <- function(server, installed, env = parent.frame()) {
   cache <- withr::local_tempdir(.local_envir = env)
   local_testdata_settings(env = env)
-  withr::local_options(gsm.testdata_cache = NULL, .local_envir = env)
+  # Tests run inside R CMD check, where messages are otherwise suppressed.
+  withr::local_envvar(
+    `_R_CHECK_PACKAGE_NAME_` = NA,
+    R_INSTALL_PKG = NA,
+    .local_envir = env
+  )
+  withr::local_options(
+    gsm.testdata_cache = NULL,
+    gsm.testdata_local_informed = NULL,
+    .local_envir = env
+  )
+  # Never run a real builder (e.g. from the user's .Rprofile): it's slow and
+  # not under test. Tests opt in to a fake one with as_fake_builder(), set
+  # before calling this helper.
+  if (!inherits(getOption("gsm.testdata_builder"), "gsm_fake_builder")) {
+    withr::local_options(gsm.testdata_builder = NULL, .local_envir = env)
+  }
   testthat::local_mocked_bindings(
     .testdata_dir = function() cache,
     safely_fetch = server$safely_fetch,
@@ -161,7 +190,7 @@ local_testdata_env <- function(server, installed, env = parent.frame()) {
 
 clear_testdata_snapshots <- function() {
   gsm$testdata_snapshots <- NULL
-  gsm$testdata_local_informed <- NULL
+  options(gsm.testdata_local_informed = NULL)
 }
 
 # Clear gsm.core's test data settings and handle for one test, restoring them
@@ -170,8 +199,15 @@ local_testdata_settings <- function(env = parent.frame()) {
   names <- c("testdata_dir", "testdata_tag", "testdata_handle")
   old <- mget(names, envir = gsm, ifnotfound = list(NULL))
   withr::defer(
-    for (n in names) {
-      assign(n, old[[n]], envir = gsm)
+    {
+      for (n in names) {
+        assign(n, old[[n]], envir = gsm)
+      }
+      # A failed lookup is remembered until the next check; don't let one
+      # from this test leak into later ones.
+      if (!is.null(gsm$testdata_handle)) {
+        gsm$testdata_handle$invalidate()
+      }
     },
     envir = env
   )
@@ -206,7 +242,12 @@ helper_select_fingerprint <- function(index, installed) {
 # Local test data builds (#219) ----
 
 # A fake builder that writes a bundle of `objects` and counts its calls.
-local_fake_builder <- function(objects = list(lSource = list(x = 1))) {
+# `packages` (helper_pkg_state() output) is recorded in snapshot.json, as the
+# real builder does.
+local_fake_builder <- function(
+  objects = list(lSource = list(x = 1)),
+  packages = NULL
+) {
   calls <- 0L
   fn <- function(output_dir, overwrite = FALSE, allow_local = FALSE) {
     stopifnot(isTRUE(overwrite), isTRUE(allow_local))
@@ -216,13 +257,24 @@ local_fake_builder <- function(objects = list(lSource = list(x = 1))) {
     for (name in names(objects)) {
       saveRDS(objects[[name]], file.path(output_dir, files[[name]]))
     }
-    write_snapshot_json(output_dir, as.list(files), key = "local")
+    write_snapshot_json(
+      output_dir,
+      as.list(files),
+      key = "local",
+      packages = packages
+    )
   }
   list(
-    fn = fn,
+    fn = as_fake_builder(fn),
     calls = function() calls,
     set_objects = function(x) objects <<- x
   )
+}
+
+# Mark a builder as a test fake, so local_testdata_env() keeps it. Any other
+# builder (e.g. the user's real one) is cleared.
+as_fake_builder <- function(fn) {
+  structure(fn, class = c("gsm_fake_builder", "function"))
 }
 
 # One published build at gsm.core 1.0.0 (sha s1) plus gsm.kri 1.0.0 (k1).

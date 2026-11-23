@@ -125,7 +125,8 @@ NULL
     state = state_file(function() {
       file.path(.testdata_dir(), "testdata-state.rds")
     }),
-    snapshot_names = .testdata_objects
+    snapshot_names = .testdata_objects,
+    on_error = .testdata_on_error
   )
   # Apply a folder set before the handle existed (e.g. GSM_TESTDATA_SNAPSHOT at
   # load). Never fail package loading over it.
@@ -139,6 +140,37 @@ NULL
     }
   )
   invisible(gsm$testdata_handle)
+}
+
+#' Turn a failed test data read into a warning
+#'
+#' Test data is a development convenience, so a failure shouldn't stop work
+#' (or package installation, which reads every binding).
+#'
+#' @param cnd `condition` The error.
+#' @param name `character(1)` The binding name.
+#' @returns `NULL`, with a `gsm_testdata_unavailable` warning (a silent
+#'   condition of the same class in R CMD INSTALL/check, so it can't add
+#'   warnings to their logs).
+#' @keywords internal
+.testdata_on_error <- function(cnd, name) {
+  if (.testdata_quiet_context()) {
+    rlang::signal(
+      "gsm test data is unavailable.",
+      class = "gsm_testdata_unavailable",
+      parent = cnd
+    )
+    return(NULL)
+  }
+  cli::cli_warn(
+    c(
+      "gsm test data {.val {name}} is unavailable; returning {.code NULL}.",
+      i = "See {.help gsm.core::lSource} for how test data is chosen."
+    ),
+    parent = cnd,
+    class = "gsm_testdata_unavailable"
+  )
+  NULL
 }
 
 #' Default test data cache
@@ -244,6 +276,7 @@ testdata_is_available <- function(objects = testdata_object_names()) {
       )
       TRUE
     },
+    gsm_testdata_unavailable = function(w) FALSE,
     error = function(e) FALSE
   )
 }
@@ -432,6 +465,59 @@ use_testdata_cache_dir <- function(dir) {
   # Fast path: an exact match stays exact until installed packages change, and
   # so does a local build (until it's rebuilt or removed).
   prev <- state$get("lookup")
+  tryCatch(
+    .testdata_lookup(state, prev),
+    error = function(e) {
+      # Dev tooling shouldn't stop work over a lookup problem: fall back to the
+      # last data used, if any.
+      if (is.null(prev$tag)) {
+        rlang::cnd_signal(e)
+      }
+      .testdata_fallback_warn(prev$tag, e)
+      prev$tag
+    }
+  )
+}
+
+#' Warn that test data fell back to the last release
+#'
+#' A silent condition of the same class in R CMD INSTALL/check, so it can't
+#' add warnings to their logs but can still be caught.
+#'
+#' @param tag `character(1)` The release used.
+#' @param cnd `condition` Why the lookup failed.
+#' @returns `NULL`, invisibly.
+#' @keywords internal
+.testdata_fallback_warn <- function(tag, cnd) {
+  if (.testdata_quiet_context()) {
+    rlang::signal(
+      "Using the last chosen gsm test data release.",
+      class = "gsm_testdata_fallback",
+      parent = cnd
+    )
+    return(invisible())
+  }
+  cli::cli_warn(
+    c(
+      "Can't find gsm test data matching your installed packages.",
+      i = "Using the last chosen release, {.val {tag}}, which may not
+           match them."
+    ),
+    parent = cnd,
+    class = "gsm_testdata_fallback"
+  )
+  invisible()
+}
+
+#' Look up the test data release for the installed packages
+#'
+#' The body of [.testdata_checker()], without its fallback.
+#'
+#' @inheritParams .testdata_checker
+#' @param prev `list` The previous `"lookup"` state entry, or `NULL`.
+#' @returns `character(1)` The release tag.
+#' @keywords internal
+.testdata_lookup <- function(state, prev) {
   if (
     isTRUE(prev$match %in% c("exact", "local")) &&
       identical(.testdata_installed(prev$packages), prev$installed)
@@ -439,40 +525,56 @@ use_testdata_cache_dir <- function(dir) {
     if (identical(prev$match, "exact")) {
       return(prev$tag)
     }
-    # Check the raw option, so an unavailable builder package can't block
-    # reuse; the builder is only resolved if a build is needed.
-    if (
-      !is.null(getOption("gsm.testdata_builder")) &&
-        .testdata_local_exists(prev$dir)
-    ) {
+    # Reuse an existing build even without the builder option (e.g. in
+    # non-interactive processes like R CMD INSTALL); the builder is only
+    # resolved if a build is needed.
+    if (.testdata_local_exists(prev$dir)) {
       return(.testdata_use_local(state, prev$packages, prev$installed))
     }
   }
 
   index <- tryCatch(.testdata_index(), error = function(e) {
-    if (is.null(prev)) {
-      cli::cli_abort(
-        c(
-          "Can't read the gsm.datasim test data index.",
-          i = "Check your connection, or use {.fn use_testdata_snapshot}."
-        ),
-        parent = e
-      )
+    # Without the index, a local build matching the installed packages is the
+    # best data available.
+    local <- .testdata_local_match()
+    if (!is.null(local)) {
+      return(structure(list(dir = local), class = "gsm_local_match"))
     }
-    cli::cli_inform(c(
-      "Can't read the gsm.datasim test data index.",
-      i = "Using the last chosen release, {.val {prev$tag}}."
-    ))
-    NULL
+    # The last choice is still right if no package changed since; otherwise
+    # the checker falls back to it with a warning.
+    if (
+      !is.null(prev$tag) &&
+        identical(.testdata_installed(prev$packages), prev$installed)
+    ) {
+      cli::cli_inform(c(
+        "Can't read the gsm.datasim test data index.",
+        i = "Using the last chosen release, {.val {prev$tag}}."
+      ))
+      return(NULL)
+    }
+    cli::cli_abort(
+      c(
+        "Can't read the gsm.datasim test data index.",
+        i = "Check your connection, or use {.fn use_testdata_snapshot}."
+      ),
+      parent = e
+    )
   })
   if (is.null(index)) {
     return(prev$tag)
   }
+  if (inherits(index, "gsm_local_match")) {
+    packages <- .testdata_local_packages(index$dir)
+    return(.testdata_use_local(state, packages, .testdata_installed(packages)))
+  }
 
   installed <- .testdata_installed(index$packages)
+  # A matching local build is used even without the builder option, which is
+  # only needed to make a new one.
   if (
-    !is.null(getOption("gsm.testdata_builder")) &&
-      .testdata_has_local_pkg(installed)
+    .testdata_has_local_pkg(installed) &&
+      (.testdata_local_exists(.testdata_local_dir(installed)) ||
+        !is.null(getOption("gsm.testdata_builder")))
   ) {
     pick <- if (nrow(index$builds)) {
       tryCatch(
