@@ -10,8 +10,24 @@ lSource
 
 ## Format
 
-A named list of 19 data frames, one per raw source domain, representing
-a single study snapshot:
+A named list of data frames, one per raw source domain, representing a
+single study snapshot.
+
+## Source
+
+`lSource.rds` from a `data-*` release of
+<https://github.com/Gilead-Public/gsm.datasim/releases>.
+
+## Details
+
+Downloaded on first use from a gsm.datasim test data release and cached
+locally. The release is automatically chosen to match the installed gsm
+packages. To change where or how the data is cached, see
+[`use_testdata_cache_dir()`](https://gilead-public.github.io/gsm.core/dev/reference/use_testdata_cache_dir.md).
+
+## Data frames
+
+Data frames may vary between test data releases. Typical entries:
 
 - "Raw_AE":
 
@@ -89,18 +105,6 @@ a single study snapshot:
 
   Vital Signs Source dataset
 
-## Source
-
-`lSource.rds` from a `data-*` release of
-<https://github.com/Gilead-Public/gsm.datasim/releases>.
-
-## Details
-
-Downloaded on first use from a gsm.datasim test data release and cached
-locally. The release is automatically chosen to match the installed gsm
-packages. To change where or how the data is cached, see
-[`use_testdata_cache_dir()`](https://gilead-public.github.io/gsm.core/dev/reference/use_testdata_cache_dir.md).
-
 ## Release selection
 
 The data comes from, in order of priority:
@@ -124,9 +128,11 @@ The data comes from, in order of priority:
 
   3.  Among the remaining candidates, the most recently built is used.
 
-  If nothing matches, an error names the package that ruled out every
-  build. Usually that means updating it (or the other gsm packages) to a
-  compatible set.
+  If nothing matches, gsm.core warns and falls back to the release it
+  used last. If there's none (or the data can't be read), the object is
+  `NULL` with a warning. The warning names the package that ruled out
+  every build; usually that means updating it (or the other gsm
+  packages) to a compatible set.
 
 Each override can also be set with an environment variable before
 gsm.core loads; see

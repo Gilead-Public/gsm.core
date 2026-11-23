@@ -70,6 +70,7 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_checker.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_default_cache.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_dir.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_fallback_warn.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_has_local_pkg.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_index.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_installed.html</loc></url>
@@ -79,10 +80,15 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_local_find.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_local_fingerprint.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_local_index.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_local_match.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_local_packages.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_local_register.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_local_root.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_lookup.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_object_entry.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_on_error.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_parse_index.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_quiet_context.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_select.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_setting.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/dot-testdata_snapshot.html</loc></url>
@@ -94,6 +100,7 @@
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_exports.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_fingerprint.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_inputs_hash.html</loc></url>
+<url><loc>https://gilead-public.github.io/gsm.core/dev/reference/fresh_rethrow.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/gsm.core-package.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/gsm_testdata.html</loc></url>
 <url><loc>https://gilead-public.github.io/gsm.core/dev/reference/index.html</loc></url>

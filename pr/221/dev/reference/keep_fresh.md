@@ -17,7 +17,8 @@ keep_fresh(
   state = state_memory(),
   check = "session",
   snapshot_path = NULL,
-  snapshot_names = NULL
+  snapshot_names = NULL,
+  on_error = fresh_rethrow
 )
 ```
 
@@ -77,6 +78,14 @@ keep_fresh(
   `character` Named vector mapping binding names to object names in
   snapshots, for bindings whose snapshot object has a different name.
   Unlisted bindings use their own name.
+
+- on_error:
+
+  `function` A function to call when the reading of a binding generates
+  an error. The result of `on_error(cnd, name)` is returned instead
+  (where `name` is the name of the binding). The default,
+  [`fresh_rethrow()`](https://gilead-public.github.io/gsm.core/dev/reference/fresh_rethrow.md),
+  signals the error.
 
 ## Value
 
