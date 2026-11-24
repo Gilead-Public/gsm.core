@@ -101,5 +101,11 @@ test_that("rows with a denominator of 0 are removed", {
       dfInput = testInput
     )
   })
-  expect_snapshot(row_removed)
+  expect_false(analyticsInput$GroupID[[1]] %in% row_removed$GroupID)
+  expect_equal(
+    row_removed,
+    suppressWarnings(Transform_Rate(
+      dfInput = dplyr::filter(testInput, GroupID != analyticsInput$GroupID[[1]])
+    ))
+  )
 })
