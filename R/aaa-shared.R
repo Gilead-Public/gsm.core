@@ -1,4 +1,7 @@
-.le <- new.env(parent = emptyenv())
+# Package-level state. Read as gsm$testdata_dir, gsm$testdata_handle,
+# gsm$testdata_snapshots (named list of parsed snapshots, by tag),
+# gsm$log_level, gsm$log_appender, etc.
+gsm <- new.env(parent = emptyenv())
 
 #' Parameters used in multiple functions
 #'

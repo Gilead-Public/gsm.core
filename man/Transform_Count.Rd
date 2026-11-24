@@ -43,6 +43,7 @@ The input data has one or more rows per site. \code{Transform_Count()} sums \cod
 }
 
 \examples{
+\dontshow{if (testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 dfTransformed <- Transform_Count(analyticsInput, strCountCol = "Numerator")
-
+\dontshow{\}) # examplesIf}
 }

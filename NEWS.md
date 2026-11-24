@@ -1,3 +1,15 @@
+# gsm.core v1.4.0
+
+This minor release serves gsm.core's exported data objects from gsm.datasim test data releases instead of bundling them, and adds `Input_Rate_Dist()` for numerator/denominator category distributions.
+
+- Exported data objects (`lSource`, `analytics*`, `reporting*`) no longer ship in `data/`. They are downloaded on first access from the gsm.datasim test data release that matches the installed gsm packages, verified and cached; code that reads `gsm.core::lSource` is unchanged. New experimental helpers `use_testdata_snapshot()`, `use_testdata_tag()`, `use_testdata_cache_dir()`, `gsm_testdata()`, `testdata_is_available()` and `testdata_object_names()` control and inspect where the data comes from (#206).
+- New experimental `Input_Rate_Dist()` breaks a metric's numerator and/or denominator down by one or more category columns per group, with qualification test T21_1 (#213, #214).
+- Data object docs list columns in a "Columns" section so R CMD check doesn't fail when the test data changes. A matching local build is reused without the `gsm.testdata_builder` option, the last used release is reused if lookup fails, and bindings return `NULL` with a `gsm_testdata_unavailable` warning when data can't be read (#223).
+- New `gsm.testdata_builder` option (e.g. `"gsm.datasim::build_testdata_bundle"`): when local gsm packages (e.g. from `devtools::load_all()`) don't exactly match a published test data build, gsm.core builds test data from them and reuses that build in later sessions. Call the new `rebuild_local_testdata()` after changing code to rebuild the local snapshot. A release with the same data as a local build is copied from it instead of downloaded (#219).
+
+- Exported experimental snapshot tools for other gsm packages: `fresh_digest()`, `fresh_fingerprint()`, `fresh_inputs_hash()`, `write_snapshot_json()`, `read_snapshot()`, and `package_versions()`. Snapshots now verify each object by the digest of the loaded R object (snapshot format 2), so files written by different R versions or with different compression still verify. Format 1 snapshots are no longer read (#216).
+- File checksums treat CRLF as LF in text files, so downloads whose line endings were converted still verify (#215).
+
 # gsm.core v1.3.2
 
 This patch release refreshes the bundled `lSource` and reporting data for the IP Monitoring (IP non-starters and premature treatment discontinuation) and Repeat Measurements metrics, and moves workflow runtime tests to `{workr}`.

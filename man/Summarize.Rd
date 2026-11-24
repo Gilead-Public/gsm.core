@@ -38,10 +38,11 @@ across assessments
 }
 
 \examples{
+\dontshow{if (testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 
 dfTransformed <- Transform_Rate(analyticsInput)
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed)
 dfFlagged <- Flag(dfAnalyzed)
 dfSummary <- Summarize(dfFlagged)
-
+\dontshow{\}) # examplesIf}
 }

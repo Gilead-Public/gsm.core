@@ -28,7 +28,7 @@ length (e.g. \code{NULL}).}
 \code{NULL}, invisibly.
 }
 \description{
-Validates \code{level} and sets \code{.le$log_level}. Called internally by
+Validates \code{level} and sets \code{gsm$log_level}. Called internally by
 \code{\link[=SetLogger]{SetLogger()}} methods and may be called directly when only the level (not a
 logger object) needs to change.
 }

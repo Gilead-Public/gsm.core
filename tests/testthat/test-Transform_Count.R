@@ -9,7 +9,10 @@ test_that("output is created as expected", {
   expect_true(is.data.frame(dfTransformed))
   expect_equal(names(dfTransformed), c("GroupID", "TotalCount", "Metric"))
   expect_equal(sort(unique(input$SiteID)), sort(dfTransformed$GroupID))
-  expect_equal(length(unique(input$SiteID)), length(unique(dfTransformed$GroupID)))
+  expect_equal(
+    length(unique(input$SiteID)),
+    length(unique(dfTransformed$GroupID))
+  )
   expect_equal(length(unique(input$SiteID)), nrow(dfTransformed))
 })
 

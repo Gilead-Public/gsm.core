@@ -24,7 +24,7 @@
 #' @return Simplified finding data.frame with columns for GroupID, GroupType,
 #'   Metric, Score, Flag when associated with a workflow.
 #'
-#' @examples
+#' @examplesIf testdata_is_available("analyticsInput")
 #'
 #' dfTransformed <- Transform_Rate(analyticsInput)
 #' dfAnalyzed <- Analyze_NormalApprox(dfTransformed)
@@ -37,9 +37,14 @@ Summarize <- function(
   dfFlagged,
   nMinDenominator = lifecycle::deprecated()
 ) {
-  stop_if(cnd = !is.data.frame(dfFlagged), message = "dfFlagged is not a data frame")
   stop_if(
-    cnd = !all(c("GroupID", "GroupLevel", "Flag", "Score") %in% names(dfFlagged)),
+    cnd = !is.data.frame(dfFlagged),
+    message = "dfFlagged is not a data frame"
+  )
+  stop_if(
+    cnd = !all(
+      c("GroupID", "GroupLevel", "Flag", "Score") %in% names(dfFlagged)
+    ),
     message = "One or more of these columns: GroupID, GroupLevel, Flag, Score, not found in dfFlagged"
   )
 

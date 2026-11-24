@@ -1,7 +1,5 @@
-dfTransformed <- Transform_Rate(analyticsInput)
-dfAnalyzed <- suppressMessages(Analyze_Identity(dfTransformed))
-
 test_that("output created as expected and has correct structure", {
+  skip_if_no_testdata()
   dfTransformed <- Transform_Rate(analyticsInput)
 
   expect_message(
@@ -28,6 +26,7 @@ test_that("incorrect inputs throw errors", {
 
 
 test_that("strValueCol works as intended", {
+  skip_if_no_testdata()
   dfTransformed <- Transform_Rate(analyticsInput)
   dfTransformed <- dfTransformed %>%
     rename(customKRI = "Metric")

@@ -30,7 +30,8 @@ More information can be found in \href{https://gilead-public.github.io/gsm.core/
 of the KRI Method vignette.
 }
 \examples{
+\dontshow{if (testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 dfTransformed <- Transform_Count(analyticsInput, strCountCol = "Numerator")
 dfAnalyzed <- Analyze_Identity(dfTransformed)
-
+\dontshow{\}) # examplesIf}
 }

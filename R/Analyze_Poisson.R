@@ -27,7 +27,7 @@
 #' @return `data.frame` with one row per site with columns: GroupID, Numerator,
 #'   Denominator, Metric, Score, and PredictedCount.
 #'
-#' @examplesIf rlang::is_installed("broom")
+#' @examplesIf rlang::is_installed("broom") && testdata_is_available("analyticsInput")
 #' dfTransformed <- Transform_Rate(analyticsInput)
 #'
 #' dfAnalyzed <- Analyze_Poisson(dfTransformed)
@@ -36,12 +36,21 @@
 
 Analyze_Poisson <- function(dfTransformed) {
   rlang::check_installed("broom")
-  stop_if(cnd = !is.data.frame(dfTransformed), message = "dfTransformed is not a data.frame")
   stop_if(
-    cnd = !all(c("GroupID", "GroupLevel", "Denominator", "Numerator", "Metric") %in% names(dfTransformed)),
+    cnd = !is.data.frame(dfTransformed),
+    message = "dfTransformed is not a data.frame"
+  )
+  stop_if(
+    cnd = !all(
+      c("GroupID", "GroupLevel", "Denominator", "Numerator", "Metric") %in%
+        names(dfTransformed)
+    ),
     message = "One or more of these columns not found: GroupID, GroupLevel, Denominator, Numerator, Metric"
   )
-  stop_if(cnd = !all(!is.na(dfTransformed[["GroupID"]])), message = "NA value(s) found in GroupID")
+  stop_if(
+    cnd = !all(!is.na(dfTransformed[["GroupID"]])),
+    message = "NA value(s) found in GroupID"
+  )
 
   dfModel <- dfTransformed %>%
     mutate(LogDenominator = log(.data$Denominator))
@@ -51,7 +60,6 @@ Analyze_Poisson <- function(dfTransformed) {
     message = "Fitting log-linked Poisson generalized linear model of [ Numerator ] ~ [ log( Denominator ) ].",
     cli_detail = "alert_info"
   )
-
 
   cModel <- stats::glm(
     Numerator ~ stats::offset(LogDenominator),

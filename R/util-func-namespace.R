@@ -14,7 +14,9 @@
 GetStrFunctionIfNamespaced <- function(strFunction) {
   fn_pieces <- strsplit(strFunction, "::")[[1]]
   if (length(fn_pieces) > 2) {
-    rlang::abort("function pieces should only be namespaced via <pkg>::<fn>, detected more :: calls")
+    rlang::abort(
+      "function pieces should only be namespaced via <pkg>::<fn>, detected more :: calls"
+    )
   }
   if (length(fn_pieces) == 2) {
     pkg <- fn_pieces[[1]]

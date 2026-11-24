@@ -10,7 +10,6 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^data-raw$
 ^LICENSE\.md$
 ^inst/snapshots$
 ^inst/demo$

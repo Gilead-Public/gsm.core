@@ -20,15 +20,21 @@
 #' @return `data.frame` with one row per site with columns: GroupID, TotalCount,
 #'   Metric, and Score.
 #'
-#' @examples
+#' @examplesIf testdata_is_available("analyticsInput")
 #' dfTransformed <- Transform_Count(analyticsInput, strCountCol = "Numerator")
 #' dfAnalyzed <- Analyze_Identity(dfTransformed)
 #'
 #' @export
 
 Analyze_Identity <- function(dfTransformed, strValueCol = "Metric") {
-  stop_if(!is.data.frame(dfTransformed), message = "dfTransformed is not a data.frame")
-  stop_if(!(strValueCol %in% names(dfTransformed)), message = "strValueCol not found in dfTransformed")
+  stop_if(
+    !is.data.frame(dfTransformed),
+    message = "dfTransformed is not a data.frame"
+  )
+  stop_if(
+    !(strValueCol %in% names(dfTransformed)),
+    message = "strValueCol not found in dfTransformed"
+  )
 
   dfAnalyzed <- dfTransformed %>%
     mutate(

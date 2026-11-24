@@ -4,9 +4,8 @@ test_that("gsm.core::RunQuery forwards to workr with a deprecation warning", {
 
   expected <- suppressMessages(workr::RunQuery(query, df))
 
-  expect_warning(
-    result <- suppressMessages(gsm.core::RunQuery(query, df)),
-    "deprecated"
+  lifecycle::expect_deprecated(
+    result <- suppressMessages(gsm.core::RunQuery(query, df))
   )
   expect_equal(result, expected)
 })

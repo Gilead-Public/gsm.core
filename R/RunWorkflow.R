@@ -25,7 +25,7 @@
 #'   `bLastResult` is `TRUE`) or the full workflow object (if `bReturnResults`
 #'   is `TRUE`) or the full workflow object (if `bReturnResults` is `FALSE`).
 #'
-#' @examples
+#' @examplesIf testdata_is_available("lSource")
 #' # Generate mapped input data to metric workflow.
 #' lMappingWorkflows <- workr::MakeWorkflowList(
 #'   strNames = c("AE", "SUBJ"),

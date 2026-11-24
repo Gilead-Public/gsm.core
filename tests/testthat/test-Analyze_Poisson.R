@@ -1,4 +1,5 @@
 test_that("output created as expected and has correct structure", {
+  skip_if_no_testdata()
   ae_prep <- Transform_Rate(analyticsInput)
   expect_message(
     {
@@ -7,8 +8,24 @@ test_that("output created as expected and has correct structure", {
     "Fitting log-linked Poisson generalized linear model"
   )
   expect_true(is.data.frame(ae_anly))
-  expect_equal(sort(unique(analyticsInput$GroupID[which(analyticsInput$Denominator != 0)])), sort(ae_anly$GroupID))
-  expect_equal(names(ae_anly), c("GroupID", "GroupLevel", "Numerator", "Denominator", "Metric", "Score", "PredictedCount"))
+  expect_equal(
+    sort(unique(analyticsInput$GroupID[which(
+      analyticsInput$Denominator != 0
+    )])),
+    sort(ae_anly$GroupID)
+  )
+  expect_equal(
+    names(ae_anly),
+    c(
+      "GroupID",
+      "GroupLevel",
+      "Numerator",
+      "Denominator",
+      "Metric",
+      "Score",
+      "PredictedCount"
+    )
+  )
 })
 
 test_that("incorrect inputs throw errors", {
@@ -17,6 +34,7 @@ test_that("incorrect inputs throw errors", {
 })
 
 test_that("error given if required column not found", {
+  skip_if_no_testdata()
   ae_prep <- Transform_Rate(analyticsInput)
 
   expect_error(Analyze_Poisson(ae_prep %>% select(-GroupID)))
@@ -27,6 +45,7 @@ test_that("error given if required column not found", {
 })
 
 test_that("NA values are caught", {
+  skip_if_no_testdata()
   createNA <- function(x) {
     df <- analyticsInput %>%
       Transform_Rate()

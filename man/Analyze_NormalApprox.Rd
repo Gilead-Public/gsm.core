@@ -42,6 +42,7 @@ exposure of the sites) to assess data quality and safety.
 }
 
 \examples{
+\dontshow{if (testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 # Binary
 dfTransformed <- Transform_Rate(analyticsInput)
 
@@ -49,5 +50,5 @@ dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "binary")
 
 # Rate
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "rate")
-
+\dontshow{\}) # examplesIf}
 }

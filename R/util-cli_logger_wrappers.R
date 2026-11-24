@@ -7,7 +7,8 @@
 #' @returns `NULL`, invisibly.
 #' @export
 cli_fmt <- function(level, message, cli_detail = NULL) {
-  switch(level,
+  switch(
+    level,
     INFO = cli_fmt_inform(message, cli_detail),
     WARN = cli::cli_warn(message),
     ERROR = ,
@@ -25,15 +26,16 @@ cli_fmt <- function(level, message, cli_detail = NULL) {
 #' @returns The return value of the dispatched `cli` function, invisibly.
 #' @keywords internal
 cli_fmt_inform <- function(message, cli_detail) {
-  switch(cli_detail,
-    h1            = cli::cli_h1(message),
-    h2            = cli::cli_h2(message),
-    h3            = cli::cli_h3(message),
-    alert         = cli::cli_alert(message),
+  switch(
+    cli_detail,
+    h1 = cli::cli_h1(message),
+    h2 = cli::cli_h2(message),
+    h3 = cli::cli_h3(message),
+    alert = cli::cli_alert(message),
     alert_success = cli::cli_alert_success(message),
-    alert_info    = cli::cli_alert_info(message),
-    text          = cli::cli_text(message),
-    inform        = cli::cli_inform(message)
+    alert_info = cli::cli_alert_info(message),
+    text = cli::cli_text(message),
+    inform = cli::cli_inform(message)
   )
 }
 
@@ -54,7 +56,12 @@ cli_fmt_inform <- function(message, cli_detail) {
 #'
 #' @returns `NULL`, invisibly.
 #' @export
-LogMessage <- function(level, message, cli_detail = NULL, .envir = parent.frame()) {
+LogMessage <- function(
+  level,
+  message,
+  cli_detail = NULL,
+  .envir = parent.frame()
+) {
   level <- toupper(level)
 
   # Check threshold

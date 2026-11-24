@@ -49,6 +49,7 @@ and metadata (\code{lMapping}). Calls \code{RunStep} for each item in
 \code{lWorkflow$workflow} and saves the results to \code{lWorkflow}.
 }
 \examples{
+\dontshow{if (testdata_is_available("lSource")) withAutoprint(\{ # examplesIf}
 # Generate mapped input data to metric workflow.
 lMappingWorkflows <- workr::MakeWorkflowList(
   strNames = c("AE", "SUBJ"),
@@ -76,4 +77,5 @@ lMetricOutput <- workr::RunWorkflow(
   lMetricWorkflow,
   lMappedData
 )
+\dontshow{\}) # examplesIf}
 }

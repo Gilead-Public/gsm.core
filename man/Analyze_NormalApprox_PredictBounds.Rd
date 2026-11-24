@@ -51,6 +51,7 @@ sizes/total exposure values.
 }
 
 \examples{
+\dontshow{if (testdata_is_available("analyticsInput")) withAutoprint(\{ # examplesIf}
 # Binary
 dfTransformed <- Transform_Rate(analyticsInput)
 
@@ -60,5 +61,5 @@ dfBounds <- Analyze_NormalApprox_PredictBounds(dfTransformed, c(-3, -2, 2, 3), s
 # Rate
 dfAnalyzed <- Analyze_NormalApprox(dfTransformed, strType = "rate")
 dfBounds <- Analyze_NormalApprox_PredictBounds(dfTransformed, c(-3, -2, 2, 3), strType = "rate")
-
+\dontshow{\}) # examplesIf}
 }

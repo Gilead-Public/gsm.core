@@ -1,7 +1,9 @@
 test_that("output is created as expected", {
+  skip_if_no_testdata()
   dfTransformed <- Transform_Rate(
     dfInput = analyticsInput
-  ) %>% suppressWarnings()
+  ) %>%
+    suppressWarnings()
 
   expect_true(is.data.frame(dfTransformed))
   expect_equal(
@@ -9,15 +11,21 @@ test_that("output is created as expected", {
     c("GroupID", "GroupLevel", "Numerator", "Denominator", "Metric")
   )
   expect_equal(
-    sort(unique(analyticsInput$GroupID[which(analyticsInput$Denominator != 0)])),
+    sort(unique(analyticsInput$GroupID[which(
+      analyticsInput$Denominator != 0
+    )])),
     sort(dfTransformed$GroupID)
   )
   expect_equal(
-    length(unique(analyticsInput$GroupID[which(analyticsInput$Denominator != 0)])),
+    length(unique(analyticsInput$GroupID[which(
+      analyticsInput$Denominator != 0
+    )])),
     length(unique(dfTransformed$GroupID))
   )
   expect_equal(
-    length(unique(analyticsInput$GroupID[which(analyticsInput$Denominator != 0)])),
+    length(unique(analyticsInput$GroupID[which(
+      analyticsInput$Denominator != 0
+    )])),
     nrow(dfTransformed)
   )
 })
@@ -25,6 +33,7 @@ test_that("output is created as expected", {
 # Count / Exposure
 
 test_that("incorrect inputs throw errors", {
+  skip_if_no_testdata()
   expect_error(
     Transform_Rate(list()),
     "dfInput is not a data frame"
@@ -71,6 +80,7 @@ test_that("incorrect inputs throw errors", {
 })
 
 test_that("rows with a denominator of 0 are removed", {
+  skip_if_no_testdata()
   testInput <- analyticsInput %>%
     dplyr::group_by(GroupID) %>%
     dplyr::mutate(
@@ -91,5 +101,11 @@ test_that("rows with a denominator of 0 are removed", {
       dfInput = testInput
     )
   })
-  expect_snapshot(row_removed)
+  expect_false(analyticsInput$GroupID[[1]] %in% row_removed$GroupID)
+  expect_equal(
+    row_removed,
+    suppressWarnings(Transform_Rate(
+      dfInput = dplyr::filter(testInput, GroupID != analyticsInput$GroupID[[1]])
+    ))
+  )
 })

@@ -1,0 +1,289 @@
+# Helpers for test-testdata.R and tests that use the real test data.
+
+# Skip a test when gsm.datasim test data can't be loaded (e.g. offline with an
+# empty cache), or when only a fallback that may not match the installed
+# packages is available. The result is remembered for the rest of the run.
+# Never runs a real builder (e.g. from the user's .Rprofile), which is slow:
+# the option is unset for the calling test, not just the first check. An
+# existing matching local build is still used.
+skip_if_no_testdata <- function(env = parent.frame()) {
+  withr::local_options(gsm.testdata_builder = NULL, .local_envir = env)
+  if (is.null(.testdata_available$ok)) {
+    # A binding read before the tests may have already warned about a
+    # fallback, and the handle would return it silently; recheck.
+    if (!is.null(gsm$testdata_handle)) {
+      gsm$testdata_handle$invalidate()
+    }
+    .testdata_available$ok <- tryCatch(
+      testdata_is_available(),
+      gsm_testdata_fallback = function(w) FALSE
+    )
+  }
+  if (!.testdata_available$ok) {
+    testthat::skip("Matching gsm.datasim test data is unavailable.")
+  }
+  invisible(TRUE)
+}
+.testdata_available <- new.env(parent = emptyenv())
+
+# Fake gsm.datasim for testdata tests. Release assets live in
+# `<root>/<tag>/<file>`, the data-index in `<root>/index.json`.
+#
+# `safely_fetch` stands in for refresh's safely_fetch() (see local_testdata_env()):
+# it copies from `root`, fails like a 404 for anything missing, and records
+# each URL and the checksum gsm.core asked for. Verification itself is
+# refresh's job and is tested in test-refresh-download.R.
+local_fake_releases <- function(env = parent.frame()) {
+  root <- withr::local_tempdir(.local_envir = env)
+  requests <- character()
+  checksums <- list()
+
+  # Publish a `data-<fp12>` release: one RDS per object plus snapshot.json.
+  # Returns the fingerprint.
+  release <- function(objects = list(), fingerprint = NULL) {
+    fingerprint <- fingerprint %||%
+      fresh_fingerprint(lapply(objects, fresh_digest))
+    tag <- paste0("data-", substr(fingerprint, 1, 12))
+    dir <- file.path(root, tag)
+    dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+    files <- rlang::set_names(paste0(names(objects), ".rds"), names(objects))
+    for (name in names(objects)) {
+      saveRDS(objects[[name]], file.path(dir, files[[name]]))
+    }
+    write_snapshot_json(
+      dir,
+      objects = as.list(files),
+      key = paste0("sha256:", fingerprint),
+      metadata = list(fingerprint = fingerprint)
+    )
+    invisible(fingerprint)
+  }
+
+  # Write index.json (format 2) from builds made with helper_fake_build().
+  index <- function(...) {
+    builds <- list(...)
+    pkgs <- sort(unique(unlist(lapply(builds, function(b) names(b$packages)))))
+    fps <- unique(vapply(builds, `[[`, "", "fingerprint"))
+    entries <- lapply(builds, function(b) {
+      full <- lapply(rlang::set_names(pkgs), function(p) {
+        b$packages[[p]] %||% list(version = NA, remote_sha = NA)
+      })
+      list(
+        inputs_hash = fresh_inputs_hash(full),
+        fingerprint = b$fingerprint,
+        tag = paste0("data-", substr(b$fingerprint, 1, 12)),
+        source = b$source,
+        built_at = b$built_at,
+        packages = unname(lapply(pkgs, function(p) {
+          na_null <- function(x) if (is.null(x) || is.na(x)) NULL else x
+          list(
+            package = p,
+            version = na_null(full[[p]]$version),
+            remote_sha = na_null(full[[p]]$remote_sha)
+          )
+        }))
+      )
+    })
+    jsonlite::write_json(
+      list(
+        format = 2,
+        packages = pkgs,
+        fingerprints = lapply(rlang::set_names(fps), function(fp) {
+          list(tag = paste0("data-", substr(fp, 1, 12)), first_built_at = "x")
+        }),
+        builds = entries
+      ),
+      file.path(root, "index.json"),
+      auto_unbox = TRUE,
+      null = "null",
+      pretty = TRUE
+    )
+    invisible(entries)
+  }
+
+  safely_fetch <- function(
+    url,
+    dest,
+    checksum = NULL,
+    downloader = fetch_binary
+  ) {
+    requests <<- c(requests, url)
+    checksums[url] <<- list(checksum)
+    rel <- if (grepl("/data-index/index\\.json$", url)) {
+      "index.json"
+    } else {
+      sub("^.*/releases/download/", "", url)
+    }
+    src <- file.path(root, rel)
+    if (!file.exists(src)) {
+      stop("404: ", url)
+    }
+    dir.create(dirname(dest), recursive = TRUE, showWarnings = FALSE)
+    file.copy(src, dest, overwrite = TRUE)
+    invisible(dest)
+  }
+
+  list(
+    release = release,
+    index = index,
+    safely_fetch = safely_fetch,
+    requests = function() requests,
+    checksums = function() checksums,
+    reset_requests = function() requests <<- character(),
+    root = root
+  )
+}
+
+# A build entry for the fake index. `packages` is from helper_pkg_state() (in
+# helper-refresh.R).
+helper_fake_build <- function(
+  fingerprint,
+  packages,
+  built_at = "2026-01-01T00:00:00Z",
+  source = "dev"
+) {
+  list(
+    fingerprint = fingerprint,
+    packages = packages,
+    built_at = built_at,
+    source = source
+  )
+}
+
+# Isolate cache, settings, snapshot memo, and network for one test.
+# `installed` is a function returning helper_pkg_state() output.
+local_testdata_env <- function(server, installed, env = parent.frame()) {
+  cache <- withr::local_tempdir(.local_envir = env)
+  local_testdata_settings(env = env)
+  # Tests run inside R CMD check, where messages are otherwise suppressed.
+  withr::local_envvar(
+    `_R_CHECK_PACKAGE_NAME_` = NA,
+    R_INSTALL_PKG = NA,
+    .local_envir = env
+  )
+  withr::local_options(
+    gsm.testdata_cache = NULL,
+    gsm.testdata_local_informed = NULL,
+    .local_envir = env
+  )
+  # Never run a real builder (e.g. from the user's .Rprofile): it's slow and
+  # not under test. Tests opt in to a fake one with as_fake_builder(), set
+  # before calling this helper.
+  if (!inherits(getOption("gsm.testdata_builder"), "gsm_fake_builder")) {
+    withr::local_options(gsm.testdata_builder = NULL, .local_envir = env)
+  }
+  testthat::local_mocked_bindings(
+    .testdata_dir = function() cache,
+    safely_fetch = server$safely_fetch,
+    .testdata_installed = function(pkgs) {
+      have <- installed()
+      lapply(rlang::set_names(pkgs), function(p) {
+        have[[p]] %||% list(version = NA_character_, remote_sha = NA_character_)
+      })
+    },
+    .env = env
+  )
+  clear_testdata_snapshots()
+  withr::defer(clear_testdata_snapshots(), envir = env)
+  invisible(cache)
+}
+
+clear_testdata_snapshots <- function() {
+  gsm$testdata_snapshots <- NULL
+  options(gsm.testdata_local_informed = NULL)
+}
+
+# Clear gsm.core's test data settings and handle for one test, restoring them
+# afterwards.
+local_testdata_settings <- function(env = parent.frame()) {
+  names <- c("testdata_dir", "testdata_tag", "testdata_handle")
+  old <- mget(names, envir = gsm, ifnotfound = list(NULL))
+  withr::defer(
+    {
+      for (n in names) {
+        assign(n, old[[n]], envir = gsm)
+      }
+      # A failed lookup is remembered until the next check; don't let one
+      # from this test leak into later ones.
+      if (!is.null(gsm$testdata_handle)) {
+        gsm$testdata_handle$invalidate()
+      }
+    },
+    envir = env
+  )
+  for (n in names) {
+    assign(n, NULL, envir = gsm)
+  }
+  invisible()
+}
+
+# Run the gsm checker against the state file in a test cache dir.
+helper_run_checker <- function(cache) {
+  .testdata_checker(state_file(file.path(cache, "testdata-state.rds")))
+}
+
+# Parse a fake index the way .testdata_index() does.
+helper_fake_index <- function(...) {
+  server <- local_fake_releases()
+  server$index(...)
+  .testdata_parse_index(
+    jsonlite::read_json(
+      file.path(server$root, "index.json"),
+      simplifyVector = TRUE
+    )
+  )
+}
+
+# Fingerprint chosen by .testdata_select().
+helper_select_fingerprint <- function(index, installed) {
+  .testdata_select(index, installed)$build$fingerprint
+}
+
+# Local test data builds (#219) ----
+
+# A fake builder that writes a bundle of `objects` and counts its calls.
+# `packages` (helper_pkg_state() output) is recorded in snapshot.json, as the
+# real builder does.
+local_fake_builder <- function(
+  objects = list(lSource = list(x = 1)),
+  packages = NULL
+) {
+  calls <- 0L
+  fn <- function(output_dir, overwrite = FALSE, allow_local = FALSE) {
+    stopifnot(isTRUE(overwrite), isTRUE(allow_local))
+    calls <<- calls + 1L
+    dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+    files <- rlang::set_names(paste0(names(objects), ".rds"), names(objects))
+    for (name in names(objects)) {
+      saveRDS(objects[[name]], file.path(output_dir, files[[name]]))
+    }
+    write_snapshot_json(
+      output_dir,
+      as.list(files),
+      key = "local",
+      packages = packages
+    )
+  }
+  list(
+    fn = as_fake_builder(fn),
+    calls = function() calls,
+    set_objects = function(x) objects <<- x
+  )
+}
+
+# Mark a builder as a test fake, so local_testdata_env() keeps it. Any other
+# builder (e.g. the user's real one) is cleared.
+as_fake_builder <- function(fn) {
+  structure(fn, class = c("gsm_fake_builder", "function"))
+}
+
+# One published build at gsm.core 1.0.0 (sha s1) plus gsm.kri 1.0.0 (k1).
+local_published <- function(env = parent.frame()) {
+  server <- local_fake_releases(env)
+  fp <- server$release(list(lSource = list(x = "published")))
+  server$index(helper_fake_build(
+    fp,
+    helper_pkg_state(gsm.core = c("1.0.0", "s1"), gsm.kri = c("1.0.0", "k1"))
+  ))
+  server
+}

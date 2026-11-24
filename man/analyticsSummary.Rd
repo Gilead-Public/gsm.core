@@ -5,7 +5,27 @@
 \alias{analyticsSummary}
 \title{analyticsSummary Dataset}
 \format{
-A data frame with 141 rows and 7 columns:
+A data frame.
+}
+\source{
+\code{analyticsSummary.rds} from a \verb{data-*} release of
+\url{https://github.com/Gilead-Public/gsm.datasim/releases}.
+}
+\usage{
+analyticsSummary
+}
+\description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+}
+\details{
+Downloaded on first use from a gsm.datasim test data release and cached
+locally. The release is automatically chosen to match the installed gsm
+packages. To change where or how the data is cached, see
+\code{\link[=use_testdata_cache_dir]{use_testdata_cache_dir()}}.
+}
+\section{Columns}{
+
+Columns may vary between test data releases. Typical columns:
 \describe{
 \item{GroupID}{grouping variable}
 \item{GroupLevel}{level of grouping variable}
@@ -16,13 +36,35 @@ A data frame with 141 rows and 7 columns:
 \item{Flag}{ordinal flag to be applied}
 }
 }
-\source{
-Generated from \code{analyticsSummary.csv} dataset in the \code{gsm.core} package.
+
+\section{Release selection}{
+
+The data comes from, in order of priority:
+\itemize{
+\item \code{\link[=use_testdata_snapshot]{use_testdata_snapshot()}}: a local snapshot folder. Nothing is downloaded
+or cached.
+\item \code{\link[=use_testdata_tag]{use_testdata_tag()}}: an exact \verb{data-*} release tag.
+\item Otherwise, the release built with the gsm packages you have installed,
+looked up in gsm.datasim's test data index:
+\enumerate{
+\item If gsm.datasim built the data with exactly your installed versions,
+that data is used.
+\item Otherwise, each installed package narrows the candidates: by its
+GitHub commit (\code{RemoteSha}) if that commit was built, else by the
+same version, else by the newest built version no higher than yours.
+Packages that aren't installed don't narrow anything.
+\item Among the remaining candidates, the most recently built is used.
 }
-\usage{
-analyticsSummary
+
+If nothing matches, gsm.core warns and falls back to the release it used
+last. If there's none (or the data can't be read), the object is \code{NULL}
+with a warning. The warning names the package that ruled out every
+build; usually that means updating it (or the other gsm packages) to a
+compatible set.
 }
-\description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
+Each override can also be set with an environment variable before gsm.core
+loads; see \code{\link[=use_testdata_snapshot]{use_testdata_snapshot()}}.
 }
+
 \keyword{datasets}
