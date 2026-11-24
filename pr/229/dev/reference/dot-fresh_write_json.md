@@ -1,6 +1,6 @@
-# Write JSON atomically
+# Write JSON via a temp file
 
-Write JSON atomically
+Write JSON via a temp file
 
 ## Usage
 

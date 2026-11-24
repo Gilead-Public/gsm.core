@@ -1,6 +1,6 @@
-# Write an RDS file atomically
+# Write an RDS file via a temp file
 
-Write an RDS file atomically
+Write an RDS file via a temp file
 
 ## Usage
 

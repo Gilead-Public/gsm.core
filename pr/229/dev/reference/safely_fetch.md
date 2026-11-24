@@ -16,7 +16,7 @@ safely_fetch(url, dest, checksum = NULL, downloader = fetch_binary)
 
 - dest:
 
-  `character(1)` Destination path. Written atomically.
+  `character(1)` Destination path. Written via a temp file.
 
 - checksum:
 
