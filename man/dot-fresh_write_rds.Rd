@@ -2,7 +2,7 @@
 % Please edit documentation in R/refresh.R
 \name{.fresh_write_rds}
 \alias{.fresh_write_rds}
-\title{Write an RDS file atomically}
+\title{Write an RDS file via a temp file}
 \usage{
 .fresh_write_rds(value, path)
 }
@@ -15,6 +15,6 @@
 \code{character(1)} \code{path}, invisibly.
 }
 \description{
-Write an RDS file atomically
+Write an RDS file via a temp file
 }
 \keyword{internal}

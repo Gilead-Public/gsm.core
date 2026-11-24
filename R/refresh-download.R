@@ -5,7 +5,7 @@
 #' Download a file, optionally verifying a sha256 checksum
 #'
 #' @param url `character(1)` URL to download.
-#' @param dest `character(1)` Destination path. Written atomically.
+#' @param dest `character(1)` Destination path. Written via a temp file.
 #' @param checksum `character(1)` Expected sha256 (hex), or `NULL` to skip
 #'   verification.
 #' @param downloader `function` `function(url, dest)` that downloads `url` to

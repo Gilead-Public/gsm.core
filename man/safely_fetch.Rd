@@ -9,7 +9,7 @@ safely_fetch(url, dest, checksum = NULL, downloader = fetch_binary)
 \arguments{
 \item{url}{\code{character(1)} URL to download.}
 
-\item{dest}{\code{character(1)} Destination path. Written atomically.}
+\item{dest}{\code{character(1)} Destination path. Written via a temp file.}
 
 \item{checksum}{\code{character(1)} Expected sha256 (hex), or \code{NULL} to skip
 verification.}

@@ -562,7 +562,7 @@ FreshStateFile <- R6::R6Class(
   rlang::hash(list(key, name))
 }
 
-#' Write JSON atomically
+#' Write JSON via a temp file
 #'
 #' @param value `list` Value to write.
 #' @param path `character(1)` Destination path. Parent folders are created.
@@ -583,7 +583,7 @@ FreshStateFile <- R6::R6Class(
   .fresh_move(tmp, path)
 }
 
-#' Write an RDS file atomically
+#' Write an RDS file via a temp file
 #'
 #' @param value Value to write.
 #' @inheritParams .fresh_write_json

@@ -2,7 +2,7 @@
 % Please edit documentation in R/refresh.R
 \name{.fresh_write_json}
 \alias{.fresh_write_json}
-\title{Write JSON atomically}
+\title{Write JSON via a temp file}
 \usage{
 .fresh_write_json(value, path)
 }
@@ -15,6 +15,6 @@
 \code{character(1)} \code{path}, invisibly.
 }
 \description{
-Write JSON atomically
+Write JSON via a temp file
 }
 \keyword{internal}
